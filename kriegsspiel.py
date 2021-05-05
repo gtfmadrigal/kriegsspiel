@@ -176,8 +176,7 @@ def info(unit):
 
 def details():
     print(secrets)
-    print("French percentage:", frenchPercentage)
-    print("British percentage:", britishPercentage)
+    gameEnd()
 
 def manual(unit):
     print("Manual adjustment commands: newValue, changeList, clearList, exit")
