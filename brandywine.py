@@ -70,4 +70,4 @@ def gameEnd():
     britishScore = (britishFinal / britishTotality) * 100
     if frenchScore > britishScore: print("French team wins, with score:", frenchScore, "to", britishScore)
     elif frenchScore < britishScore: print("British team wins, with score:", britishScore, "to", frenchScore)
-    else: print("Tie game, with score:", frenchScore, "to", britishScore)
+    else: print("Tie game, both teams have score:", britishScore)
