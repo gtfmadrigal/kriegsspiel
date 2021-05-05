@@ -24,6 +24,7 @@ def getCommand(command, unit): # Primary function
     elif command == "build": build(unit)
     elif command == "hide": hide(unit)
     elif command == "search": search(unit)
+    elif command == "spy": spy(unit)
     elif command == "convert": convert(unit)
     elif command == "info": info(unit)
     elif command == "manual": manual(unit)
@@ -134,7 +135,7 @@ def convert(unit):
     immovableUnits.append(globals()[unit])
 
 def spy(unit):
-    if not globals()[unit] in spy:
+    if not globals()[unit] in spyUnits:
         print(unit, "cannot spy for information.")
         return
     elif globals()[unit] in usedUnits:
@@ -206,6 +207,7 @@ def manual(unit):
         
 # Game loop
 while warPhase == True:
+    endGame = False
     turnPortion = 1
     print("Round:", round)
     usedUnits.clear()
@@ -214,8 +216,7 @@ while warPhase == True:
     while turnPortion == 1:
         print("Command:", commandNumber)
         command = input("[British]$ ")
-        if command == "spy": spy()
-        elif command == "endTurn": turnPortion = turnPortion + 1
+        if command == "endTurn": turnPortion = turnPortion + 1
         elif command == "endGame": 
             endGame = True
             break
@@ -232,8 +233,7 @@ while warPhase == True:
     while turnPortion == 2:
         print("Command:", commandNumber)
         command = input("[French]$ ")
-        if command == "spy": spy()
-        elif command == "endTurn": turnPortion = turnPortion + 1
+        if command == "endTurn": turnPortion = turnPortion + 1
         elif command == "endGame": 
             endGame = True
             break

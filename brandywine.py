@@ -38,9 +38,9 @@ bombadiers = [firstBomb, secondBomb]
 hussars = [Mx1, Mx2, Lt1, Lt2, Lt3]
 dragoons = [Pl, Mc, sixteenthDragoon, seventeenthDragoon, jag]
 special = [frenchSpecial1, frenchSpecial2, frenchSpecial3, britishSpecial1, britishSpecial2]
-spy = [frenchSpyCommand, britishSpyCommand]
+spyUnits = [frenchSpyCommand, britishSpyCommand]
 highCommand = [frenchHighCommand, britishHighCommand]
-allUnits = [infantry, sappers, fusiliers, grenadiers, bombadiers, hussars, dragoons, special, spy, highCommand]
+allUnits = [infantry, sappers, fusiliers, grenadiers, bombadiers, hussars, dragoons, special, spyUnits, highCommand]
 # Small Arms
 d4_smallArms = [infantry, sappers, fusiliers, grenadiers, bombadiers]
 d12_smallArms = [hussars, highCommand]
@@ -59,7 +59,7 @@ build = [d4_build, d8_build]
 # Search
 search = [infantry, sappers, fusiliers]
 # Hide
-hide = [infantry, sappers, fusiliers, grenadiers, special, spy]
+hide = [infantry, sappers, fusiliers, grenadiers, special, spyUnits]
 # Move and Fire
 moveAndFire = [infantry, sappers, fusiliers, hussars, dragoons, special]
 
