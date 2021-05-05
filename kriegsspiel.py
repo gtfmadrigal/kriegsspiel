@@ -24,12 +24,7 @@ def getCommand(command, unit): # Primary function
     elif command == "hide": hide(unit)
     elif command == "search": search(unit)
     elif command == "convert": convert(unit)
-    elif command == "spy": spy()
-    elif command == "endTurn": turnPortion = turnPortion + 1
-    elif command == "endGame": warPhase = False
-    elif command == "help": help()
     elif command == "info": info(unit)
-    elif command == "details": details()
     elif command == "manual": manual(unit)
     else: 
         print("Unknown command.")
@@ -217,15 +212,29 @@ while warPhase == True:
     immovableUnits.append(highCommand)
     while turnPortion == 1:
         print("Command:", commandNumber)
-        command, unit = input("[British]$ ").split()
-        getCommand(command, unit)
+        command = input("[British]$ ")
+        if command == "spy": spy()
+        elif command == "endTurn": turnPortion = turnPortion + 1
+        elif command == "endGame": warPhase = False
+        elif command == "help": help()
+        elif command == "details": details()
+        else: 
+            unit = input("[unit]$ ")
+            getCommand(command, unit)
         commandNumber = commandNumber + 1
     usedUnits.clear()
     immovableUnits.clear()
     immovableUnits.append(highCommand)
     while turnPortion == 2:
         print("Command:", commandNumber)
-        command, unit = input("[French]$ ").split()
-        getCommand(command, unit)
+        command = input("[French]$ ")
+        if command == "spy": spy()
+        elif command == "endTurn": turnPortion = turnPortion + 1
+        elif command == "endGame": warPhase = False
+        elif command == "help": help()
+        elif command == "details": details()
+        else: 
+            unit = input("[unit]$ ")
+            getCommand(command, unit)
         commandNumber = commandNumber + 1
     roundNumber = roundNumber + 1
