@@ -9,16 +9,16 @@ frenchUnits = []
 britishUnits = []
 # Group units by category
 # Type of unit
-infantry = []
-sappers = [] # engineers
-fusiliers = [] # mechanized infantry
-grenadiers = [] # light artillery
-bombadiers = [] # heavy artillery
-hussars = [] # light cavalry
-dragoons = [] # heavy cavalry
-special = [] # special forces
-spy = [frenchSpyCommand, britishSpyCommand]
-highCommand = [frenchHighCommand, britishHighCommand]
+infantry = [] # light infantry, 10cm movement
+sappers = [] # engineers, 10cm movement
+fusiliers = [] # mechanized infantry, 15cm movement
+grenadiers = [] # light artillery, 10cm movement
+bombadiers = [] # heavy artillery, 5cm movement
+hussars = [] # light cavalry, 10cm movement
+dragoons = [] # heavy cavalry, 5cm movement
+special = [] # special forces, 10cm movement
+spy = [frenchSpyCommand, britishSpyCommand] # 5cm movement
+highCommand = [frenchHighCommand, britishHighCommand] # 5cm movement
 allUnits = [infantry, sappers, fusiliers, grenadiers, bombadiers, hussars, dragoons, special, spy, highCommand]
 # Small Arms
 d4_smallArms = [infantry, sappers, fusiliers, grenadiers, bombadiers]

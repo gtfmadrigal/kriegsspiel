@@ -15,7 +15,7 @@ hiddenUnits = []
 # Functions
 def getCommand(command, unit): # Primary function
     if globals()[unit] in deadUnits:
-        print(globals()[unit], " is dead.")
+        print(unit, " is dead.")
         return
     if command == "move": move(unit)
     elif command == "attack": attack(unit)
@@ -38,53 +38,80 @@ def getCommand(command, unit): # Primary function
 
 def move(unit):
     if globals()[unit] in immovableUnits:
-        print(globals()[unit], " is immovable.")
+        print(unit, " is immovable.")
         return
-    print(globals()[unit], " is moved.")
+    print(unit, " is moved.")
     immovableUnits.append(globals()[unit])
     if not globals()[unit] in moveAndFire:
         usedUnits.append(globals()[unit])
 
-# def attack(unit):
-# def fire(unit):
+def attack(unit):
+    if globals()[unit] in usedUnits or not globals()[unit] in smallArms:
+        print(unit, " cannot attack.")
+        return
+    multipleUnits = input("Are multiple enemy units being targeted? N/y: ")
+    if globals()[unit] in d4_smallArms: damage = random.randrange(1,4)
+    elif globals()[unit] in d12_smallArms: damage = random.randrange(1,12)
+    elif globals()[unit] in d20_smallArms: damage = random.randrange(1,20)
+    print(damage, " damage done.")
+    if multipleUnits == "y":
+        enemyUnit = input("Enemy unit: ")
+        globals()[enemyUnit] = globals()[enemyUnit] - damage
+    else: 
+        print("Manually enter damage with the manual command.")
+
+def fire(unit):
+    if globals()[unit] in usedUnits or not globals()[unit] in artillery:
+        print(unit, " cannot fire.")
+        return
+    multipleUnits = input("Are multiple enemy units being targeted? N/y: ")
+    if globals()[unit] in d8_artillery: damage = random.randrange(1,8)
+    elif globals()[unit] in d10_artillery: damage = random.randrange(1,10) 
+    elif globals()[unit] in d12_artillery: damage = random.randrange(1,12)
+    elif globals()[unit] in d20_artillery: damage = random.randrange(1,20)
+    print(damage, " damage done.")
+    if multipleUnits == "y":
+        enemyUnit = input("Enemy unit: ")
+        globals()[enemyUnit] = globals()[enemyUnit] - damage
+    else:
+        print("Manually enter damage with the manual command.")
+
 def build(unit):
     if not globals()[unit] in build:
-        print(globals()[unit], " cannot build.")
+        print(unit, " cannot build.")
         return
     elif globals()[unit] in usedUnits:
-        print(globals()[unit], " cannot build.")
+        print(unit, " cannot build.")
         return
-    elif globals()[unit] in d4_build:
-        fortificationStrength = random.randrange(1,4)
-    else:
-        fortificationStrength = random.randrande(1,8) 
+    if globals()[unit] in d4_build: fortificationStrength = random.randrange(1,4)
+    elif globals()[unit] in d8_build: fortificationStrength = random.randrange(1,8)
     print("Fortification of strength ", fortificationStrength, " built.")
     usedUnits.append(globals()[unit])
     immovableUnits.append(globals()[unit])
 
 def hide(unit):
     if not globals()[unit] in hide:
-        print(globals()[unit], " cannot hide.")
+        print(unit, " cannot hide.")
         return
     elif globals()[unit] in usedUnits:
-        print(globals()[unit], " cannot hide.")
+        print(unit, " cannot hide.")
         return
     elif globals()[unit] in hiddenUnits:
-        print(globals()[unit], " is already hidden.")
+        print(unit, " is already hidden.")
         return
     secretLocation = input("Location to hide: ")
     secrets = secrets + " " + secretLocation
-    print(globals()[unit], " hidden.")
+    print(unit, " hidden.")
     hiddenUnits.append(globals()[unit])
     usedUnits.append(globals()[unit])
     immovableUnits.append(globals()[unit])
 
 def search(unit):
     if not globals()[unit] in search:
-        print(globals()[unit], " cannot search.")
+        print(unit, " cannot search.")
         return
     elif globals()[unit] in usedUnits:
-        print(globals()[unit], " cannot search.")
+        print(unit, " cannot search.")
         return
     searchEfficacy = random.randrange(1,6)
     if searchEfficacy == 6:
@@ -98,10 +125,10 @@ def search(unit):
 
 def convert(unit):
     if not globals()[unit] in artillery:
-        print(globals()[unit], " cannot be converted or is already infantry.")
+        print(unit, " cannot be converted or is already infantry.")
         return
     elif globals()[unit] in usedUnits:
-        print(globals()[unit], " cannot be converted or is already infantry.")
+        print(unit, " cannot be converted or is already infantry.")
         return
     elif globals()[unit] in grenadiers: grenadiers.remove(globals()[unit])
     elif globals()[unit] in bombadiers: bombadiers.remove(globals()[unit])
@@ -113,10 +140,10 @@ def convert(unit):
 
 def spy(unit):
     if not globals()[unit] in spy:
-        print(globals()[unit], " cannot spy for information.")
+        print(unit, " cannot spy for information.")
         return
     elif globals()[unit] in usedUnits:
-        print(globals()[unit], " cannot spy for information.")
+        print(unit, " cannot spy for information.")
         return
     spyEfficacy = random.randrange(1,6)
     usedUnits.append(globals()[unit])
@@ -140,16 +167,16 @@ def info(unit):
     if globals()[unit] in deadUnits: print("Dead.")
     if globals()[unit] in immovableUnits: print("Immovable this turn.")
     if globals()[unit] in hiddenUnits: print("Hidden.")
-    if globals()[unit] in infantry: print("Infantry: D4 small arms, D4 build, can search, hide, and move and fire.")
-    if globals()[unit] in sappers: print("Sapper: D4 small arms, D8 build, can search, hide, and move and fire.")
-    if globals()[unit] in fusiliers: print("Fusilier: D4 small arms, can search, hide, and move and fire.")
-    if globals()[unit] in grenadiers: print("Grenadier: D4 small arms, D8 artillery, can hide.")
-    if globals()[unit] in bombadiers: print("Bombadier: D4 small arms, D10 artillery.")
-    if globals()[unit] in hussars: print("Hussar: D12 small arms and artillery, can move and fire.")
-    if globals()[unit] in dragoons: print("Dragoon: D20 small arms and artillery, can move and fire.")
-    if globals()[unit] in special: print("Special: D20 small arms, can hide, and move and fire.")
-    if globals()[unit] in spy: print("Spy: D4 small arms, always hidden, no special abilities.")
-    if globals()[unit] in highCommand: print("High command: D20 small arms, immovable.")
+    if globals()[unit] in infantry: print("Infantry: 4HP, 10cm movement, D4 small arms, D4 build, can search, hide, and move and fire.")
+    if globals()[unit] in sappers: print("Sapper: 4HP, 10cm movement, D4 small arms, D8 build, can search, hide, and move and fire.")
+    if globals()[unit] in fusiliers: print("Fusilier: 6HP, 15cm movement, D4 small arms, can search, hide, and move and fire.")
+    if globals()[unit] in grenadiers: print("Grenadier: 8HP, 10cm movement, D4 small arms, D8 artillery, can hide.")
+    if globals()[unit] in bombadiers: print("Bombadier: 10HP, 5cm movement, D4 small arms, D10 artillery.")
+    if globals()[unit] in hussars: print("Hussar: 12HP, 10cm movement, D12 small arms and artillery, can move and fire.")
+    if globals()[unit] in dragoons: print("Dragoon: 16HP, 5cm movement, D20 small arms and artillery, can move and fire.")
+    if globals()[unit] in special: print("Special: 20HP, 10cm movement, D20 small arms, can hide, and move and fire.")
+    if globals()[unit] in spy: print("Spy: 10HP, 5cm movement, D4 small arms, always hidden, no special abilities.")
+    if globals()[unit] in highCommand: print("High command: 20HP, 5cm movement, D20 small arms, immovable.")
 
 def details():
     print(secrets)
