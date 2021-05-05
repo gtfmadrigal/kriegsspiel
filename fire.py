@@ -9,7 +9,7 @@ def fire(unit):
     elif globals()[unit] in d20_artillery: damage = random.randrange(1,20)
     print(damage, "damage done.")
     if multipleUnits == "y":
-        enemyUnit = input("Enemy unit:")
+        enemyUnit = input("[target]% ")
         globals()[enemyUnit] = globals()[enemyUnit] - damage
     else:
         print("Manually enter damage with the manual command.")

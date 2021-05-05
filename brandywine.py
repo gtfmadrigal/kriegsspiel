@@ -63,6 +63,25 @@ hide = [infantry, sappers, fusiliers, grenadiers, special, spyUnits]
 # Move and Fire
 moveAndFire = [infantry, sappers, fusiliers, hussars, dragoons, special]
 
+# informational function
+def info(unit):
+    print("Attributes of unit", unit)
+    if globals()[unit] in usedUnits: print("Unusable this turn.")
+    if globals()[unit] in deadUnits: print("Dead.")
+    if globals()[unit] in immovableUnits: print("Immovable this turn.")
+    if globals()[unit] in hiddenUnits: print("Hidden.")
+    if globals()[unit] in infantry: print("Infantry: 4HP, 10cm movement, D4 small arms, D4 build, can search, hide, and move and fire.")
+    if globals()[unit] in sappers: print("Sapper: 4HP, 10cm movement, D4 small arms, D8 build, can search, hide, and move and fire.")
+    if globals()[unit] in fusiliers: print("Fusilier: 6HP, 15cm movement, D4 small arms, can search, hide, and move and fire.")
+    if globals()[unit] in grenadiers: print("Grenadier: 8HP, 10cm movement, D4 small arms, D8 artillery, can hide.")
+    if globals()[unit] in bombadiers: print("Bombadier: 10HP, 5cm movement, D4 small arms, D10 artillery.")
+    if globals()[unit] in hussars: print("Hussar: 12HP, 10cm movement, D12 small arms and artillery, can move and fire.")
+    if globals()[unit] in dragoons: print("Dragoon: 16HP, 5cm movement, D20 small arms and artillery, can move and fire.")
+    if globals()[unit] in special: print("Special: 20HP, 10cm movement, D20 small arms, can hide, and move and fire.")
+    if globals()[unit] in spyUnits: print("Spy: 10HP, 5cm movement, D4 small arms, always hidden, no special abilities.")
+    if globals()[unit] in highCommand: print("High command: 20HP, 5cm movement, D20 small arms, immovable.")
+    print("Unit value: ", globals()[unit])
+
 # gameEnd function
 def gameEnd():
     frenchFinal = sum(frenchUnits)
