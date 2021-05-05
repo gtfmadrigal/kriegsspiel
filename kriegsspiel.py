@@ -42,7 +42,10 @@ def move(unit):
         usedUnits.append(globals()[unit])
 
 def attack(unit):
-    if globals()[unit] in usedUnits or not globals()[unit] in smallArms:
+    if globals()[unit] in usedUnits:
+        print(unit, "cannot attack.")
+        return
+    elif not globals()[unit] in smallArms:
         print(unit, "cannot attack.")
         return
     multipleUnits = input("Are multiple enemy units being targeted? N/y:")
@@ -171,7 +174,7 @@ def info(unit):
     if globals()[unit] in hussars: print("Hussar: 12HP, 10cm movement, D12 small arms and artillery, can move and fire.")
     if globals()[unit] in dragoons: print("Dragoon: 16HP, 5cm movement, D20 small arms and artillery, can move and fire.")
     if globals()[unit] in special: print("Special: 20HP, 10cm movement, D20 small arms, can hide, and move and fire.")
-    if globals()[unit] in spy: print("Spy: 10HP, 5cm movement, D4 small arms, always hidden, no special abilities.")
+    if globals()[unit] in spyUnits: print("Spy: 10HP, 5cm movement, D4 small arms, always hidden, no special abilities.")
     if globals()[unit] in highCommand: print("High command: 20HP, 5cm movement, D20 small arms, immovable.")
 
 def details():
@@ -211,7 +214,8 @@ while warPhase == True:
     print("Round:", round)
     usedUnits.clear()
     immovableUnits.clear()
-    immovableUnits.append(highCommand)
+    immovableUnits.append(britishHighCommand)
+    immovableUnits.append(frenchHighCommand)
     while turnPortion == 1:
         print("Command:", commandNumber)
         command = input("[British]$ ")
