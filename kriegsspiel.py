@@ -1,6 +1,6 @@
 # Imports
 import random
-from setup import *
+from brandywine import * # Gamefile is imported on this line. Brandywine included as default.
 
 # Universal variables
 warPhase = True
@@ -202,11 +202,14 @@ def manual(unit):
     else:
         print("Bad command. Try again.")
         return
+
+def endGame():
+    warPhase = False
         
 # Game loop
 while warPhase == True:
     turnPortion = 1
-    print("Round:",round)
+    print("Round:", round)
     usedUnits.clear()
     immovableUnits.clear()
     immovableUnits.append(highCommand)
@@ -215,7 +218,9 @@ while warPhase == True:
         command = input("[British]$ ")
         if command == "spy": spy()
         elif command == "endTurn": turnPortion = turnPortion + 1
-        elif command == "endGame": warPhase = False
+        elif command == "endGame": 
+            endGame = True
+            break
         elif command == "help": help()
         elif command == "details": details()
         else: 
@@ -225,16 +230,28 @@ while warPhase == True:
     usedUnits.clear()
     immovableUnits.clear()
     immovableUnits.append(highCommand)
+    if endGame == True: break
     while turnPortion == 2:
         print("Command:", commandNumber)
         command = input("[French]$ ")
         if command == "spy": spy()
         elif command == "endTurn": turnPortion = turnPortion + 1
-        elif command == "endGame": warPhase = False
+        elif command == "endGame": 
+            endGame = True
+            break
         elif command == "help": help()
         elif command == "details": details()
         else: 
             unit = input("[unit]$ ")
             getCommand(command, unit)
         commandNumber = commandNumber + 1
-    roundNumber = roundNumber + 1
+    round = round + 1
+    if endGame == True: break
+
+frenchFinal = sum(frenchUnits)
+frenchScore = (frenchFinal / frenchTotality) * 100
+britishFinal = sum(britishUnits)
+britishScore = (britishFinal / britishTotality) * 100
+if frenchScore > britishScore: print("French team wins, with score:", frenchScore, "to", britishScore)
+elif frenchScore < britishScore: print("British team wins, with score:", britishScore, "to", frenchScore)
+else: print("Tie game, with score:", frenchScore, "to", britishScore)

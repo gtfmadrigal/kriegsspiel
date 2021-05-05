@@ -26,6 +26,7 @@ sixteenthDragoon = seventeenthDragoon = jag = 16
 britishSpecial1 = britishSpecial2 = 20
 britishHighCommand = 20
 britishUnits = [fourth, fifth, tenth, fifteenth, seventeenth, twentythird, twentyeighth, thirtythird, thirtyeighth, fourtieth, fourtyfourth, sixtyfourth, seventyfirst, seventysecond, seventythird, Gd1, Gd2, L_Rg, Eb, Lg, Dp, Wb, Mg, Ls, St, Mb, Grn1, Grn2, Grn3, Grn4, Grn5, firstBomb, secondBomb, britishSpyCommand, Lt1, Lt2, Lt3, britishSpecial1, britishSpecial2, sixteenthDragoon, seventeenthDragoon, jag, britishHighCommand]
+britishTotality = 334
 
 # Group units by category
 # Type of unit
