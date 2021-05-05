@@ -1,6 +1,7 @@
 # Imports
 import random
 from brandywine import * # Gamefile is imported on this line. Brandywine included as default.
+from brandywine import gameEnd
 
 # Universal variables
 warPhase = True
@@ -202,9 +203,6 @@ def manual(unit):
     else:
         print("Bad command. Try again.")
         return
-
-def endGame():
-    warPhase = False
         
 # Game loop
 while warPhase == True:
@@ -248,10 +246,4 @@ while warPhase == True:
     round = round + 1
     if endGame == True: break
 
-frenchFinal = sum(frenchUnits)
-frenchScore = (frenchFinal / frenchTotality) * 100
-britishFinal = sum(britishUnits)
-britishScore = (britishFinal / britishTotality) * 100
-if frenchScore > britishScore: print("French team wins, with score:", frenchScore, "to", britishScore)
-elif frenchScore < britishScore: print("British team wins, with score:", britishScore, "to", frenchScore)
-else: print("Tie game, with score:", frenchScore, "to", britishScore)
+gameEnd()

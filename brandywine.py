@@ -62,3 +62,12 @@ search = [infantry, sappers, fusiliers]
 hide = [infantry, sappers, fusiliers, grenadiers, special, spy]
 # Move and Fire
 moveAndFire = [infantry, sappers, fusiliers, hussars, dragoons, special]
+
+def gameEnd():
+    frenchFinal = sum(frenchUnits)
+    frenchScore = (frenchFinal / frenchTotality) * 100
+    britishFinal = sum(britishUnits)
+    britishScore = (britishFinal / britishTotality) * 100
+    if frenchScore > britishScore: print("French team wins, with score:", frenchScore, "to", britishScore)
+    elif frenchScore < britishScore: print("British team wins, with score:", britishScore, "to", frenchScore)
+    else: print("Tie game, with score:", frenchScore, "to", britishScore)
