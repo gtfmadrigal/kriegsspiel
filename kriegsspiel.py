@@ -29,8 +29,6 @@ def move(unit, unitType):
     immovableUnits.append(unit)
 
 # def attack(unit, unitType):
-    
-
 # def fire(unit)
 # def build(unit)
 # def hide(unit)
@@ -44,7 +42,6 @@ def getCommand(command, unit, unitType):
         return
     elif unit in usedUnits:
         print("Used.")
-        return
     if command == "move": move(unit, unitType)
     elif command == "attack": attack(unit, unitType)
     # elif command == "fire": fire(unit)
