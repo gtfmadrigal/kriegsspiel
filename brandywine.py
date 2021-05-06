@@ -9,7 +9,7 @@ deadUnits = []
 commandNumber = 1
 secrets = ""
 hiddenUnits = []
-validCommands = ["attack", "fire", "build", "hide", "search", "spy", "convert", "info", "manual"]
+validCommands = ["manual", "attack", "fire", "build", "hide", "search", "spy", "convert", "info", "manual"]
 
 # Unique to game scenario
 rebelDamage = 0
@@ -30,11 +30,13 @@ britishHealth = 334
 # def info(unit)
 
 # Universal functions
-# def getCommand(unit):
+def getCommand(command, unit):
+    if command == "manual": manual(unit)
+    else: "Unknown command."
 
-def manual(argument):
-    if argument == "help": print("Arguments for manual() function: health, kill, freeze.")
-    elif argument == "health":
+def manual(unit):
+    if unit == "help": print("Arguments for manual() function: health, kill, freeze.")
+    elif unit == "health":
         score()
         newValue = int(input("New health value: "))
         teamToChange = input("Alter Rebel or British health? [R/b]: ")
@@ -44,8 +46,8 @@ def manual(argument):
         else:
             global britishDamage
             britishDamage = rebelHealth - newValue
-    # elif argument == "kill"
-    # elif argument == "freeze"
+    # elif unit == "kill"
+    # elif unit == "freeze"
     else:
         print("Bad argument for manual function.")
         return
@@ -60,9 +62,8 @@ def score():
 
 # Game loop
 while warPhase == True:
-    print("Round:", round)
-    print("Command:", commandNumber)
-    command = input("% ")
+    prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "]% "
+    command = input(prompt)
     if command == "turn":
         usedUnits.clear()
         immovableUnits.clear()
@@ -76,11 +77,9 @@ while warPhase == True:
     elif command == "details": print(secrets)
     elif command == "score": score()
     elif command == "new": newGame()
-    elif command == "manual":
-        argument = input("[manual]% ")
-        manual(argument)
     elif command in validCommands:
-        unit = input("[unit]% ")
+        subPrompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + command + "]% "
+        unit = input(subPrompt)
         getCommand(command, unit)
     else: print("Unknown command.")
     commandNumber = commandNumber + 1
