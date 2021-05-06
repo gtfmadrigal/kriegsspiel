@@ -10,8 +10,12 @@ commandNumber = 1
 secrets = ""
 hiddenUnits = []
 validCommands = ["move", "attack", "fire", "build", "hide", "search", "spy", "convert", "info", "manual"]
+
+# Unique to game scenario
 rebelDamage = 0
 britishDamage = 0
+rebelHealth = 276
+britishHealth = 334 
 
 # Functions
 
@@ -25,12 +29,19 @@ britishDamage = 0
 # def convert(unit)
 # def info(unit)
 # def manual(unit)
-# def score()
+
+def score():
+    print("Rebel damage dealt:", rebelDamage)
+    print("British damage dealt:", britishDamage)
+    rebelPercent = (rebelHealth - britishDamage) / rebelHealth * 100
+    britishPercent = (britishHealth - rebelDamage) / britishHealth * 100
+    print("Rebel percent remaining:", rebelPercent)
+    print("British percent remaining:", britishPercent)
 
 # Game loop
 while warPhase == True:
     print("Round:", round)
-    print("Command: ", commandNumber)
+    print("Command:", commandNumber)
     command = input("% ")
     if command == "turn":
         usedUnits.clear()
