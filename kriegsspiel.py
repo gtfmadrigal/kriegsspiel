@@ -27,16 +27,17 @@ secondHealth = 334
 # def spy(unit)
 
 # Universal functions
-def getCommand(command, unit):
-    if command == "manual": manual(unit)
-    # elif command == "move": move(unit)
+def getCommand(command, unit, unitType):
+    if command == "move": move(unit)
     # elif command == "attack": attack(unit)
     # elif command == "fire": fire(unit)
     # elif command == "build": build(unit)
     # elif command == "hide": hide(unit)
     # elif command == "search": search(unit)
-    # elif command == "spy": spy(unit)
-    elif command == "info": info(unit)
+    # elif command == "spy": spy(unit, unitType)
+    elif command == "info": 
+        info(unitType)
+        if unit in deadUnits: print("Dead.")
     else: "Unknown command."
 
 def manual(unit):
@@ -90,10 +91,14 @@ while warPhase == True:
         print(*validCommands, sep = ", ") 
     elif command == "details": print(secrets)
     elif command == "score": score()
+    elif command == "manual":
+        subPrompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + command + "]% "
+        unit = input(subPrompt)
+        manual(unit)
     elif command == "new": newGame()
     elif command in validCommands:
         subPrompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + command + "]% "
-        unit = input(subPrompt)
-        getCommand(command, unit)
+        unit, unitType = input(subPrompt).split()
+        getCommand(command, unit, unitType)
     else: print("Unknown command.")
     commandNumber = commandNumber + 1

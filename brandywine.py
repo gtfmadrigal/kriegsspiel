@@ -1,12 +1,13 @@
 # Gamefile fo the Battle of the Brandywine
+
 # Variables
 firstTeam = "Rebel"
 secondTeam = "British"
-validCommands = ["manual", "attack", "fire", "build", "hide", "search", "spy", "info", "manual"]
+validCommands = ["attack", "fire", "build", "hide", "search", "spy", "info", "manual"]
 
 # Unit types
 # Health
-health4HP = ["infantry", "sappers"]
+health4HP = ["infantry", "sapper"]
 health6HP = ["fusilier"]
 health8HP = ["grenadier"]
 health10HP = ["bombadier, spy"]
@@ -38,53 +39,53 @@ manualHelpPrompt = "Alter Rebel(A) or British health(B) [A/b]: "
 ownerPrompt = "Rebel(A) or British(B) unit? [A/b]: "
 
 # info() function
-def info(unit):
+def info(unitType):
     # Health
-    if unit in health4HP: 
+    if unitType in health4HP: 
         print("Health:      4")
-    elif unit in health6HP: 
+    elif unitType in health6HP: 
         print("Health:      6")
-    elif unit in health8HP: 
+    elif unitType in health8HP: 
         print("Health:      8")
-    elif unit in health10HP:
+    elif unitType in health10HP:
         print("Health:      10")
-    elif unit in health12HP:
+    elif unitType in health12HP:
         print("Health:      12")
-    elif unit in health16HP:
+    elif unitType in health16HP:
         print("Health:      16")
-    elif unit in health20HP:
+    elif unitType in health20HP:
         print("Health:      20")
     # Movement
-    if unit in movement5cm:
+    if unitType in movement5cm:
         print("Movement:    5")
-    elif unit in movement10cm:
+    elif unitType in movement10cm:
         print("Movement:    10")
-    elif unit in movement15cm:
+    elif unitType in movement15cm:
         print("Movement:    15")
     # Attack
-    if unit in attack4:
+    if unitType in attack4:
         print("Attack:      D4")
-    elif unit in attack12:
+    elif unitType in attack12:
         print("Attack:      D12")
-    elif unit in attack20:
+    elif unitType in attack20:
         print("Attack:      D20")
     # Fire
-    if unit in fire8:
+    if unitType in fire8:
         print("Fire:        D8")
-    elif unit in fire10:
+    elif unitType in fire10:
         print("Fire:        D10")
-    elif unit in fire12:
+    elif unitType in fire12:
         print("Fire:        D12")
-    elif unit in fire20:
+    elif unitType in fire20:
         print("Fire:        D20")
     # Search
-    if unit in searchable:
+    if unitType in searchable:
         print("Can search.")
     # Hide
-    if unit in hideable:
+    if unitType in hideable:
         print("Can hide.")
     # Move and fire
-    if unit in moveAndFire:
+    if unitType in moveAndFire:
         print("Can move and fire in the same turn.")
 
 
