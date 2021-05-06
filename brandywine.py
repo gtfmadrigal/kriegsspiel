@@ -35,18 +35,21 @@ def getCommand(command, unit):
     else: "Unknown command."
 
 def manual(unit):
+    global rebelDamage
+    global britishDamage
+    global deadUnits
     if unit == "help": print("Arguments for manual() function: health, kill, freeze.")
     elif unit == "health":
         score()
-        newValue = int(input("New health value: "))
         teamToChange = input("Alter Rebel or British health? [R/b]: ")
-        if teamToChange == "b": 
-            global rebelDamage
-            rebelDamage = britishHealth - newValue
-        else:
-            global britishDamage
-            britishDamage = rebelHealth - newValue
-    # elif unit == "kill"
+        newValue = int(input("New health value: "))
+        if teamToChange == "b": rebelDamage = britishHealth - newValue
+        else: britishDamage = rebelHealth - newValue
+    elif unit == "kill":
+        currentValue = int(input("Current value of unit: "))
+        owner = input("Rebel or British unit? [R/b]: ")
+        if owner == "b": rebelDamage = rebelDamage + currentValue
+        else: britishDamage = britishDamage + currentValue
     # elif unit == "freeze"
     else:
         print("Bad argument for manual function.")
