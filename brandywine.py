@@ -1,4 +1,4 @@
-# Gamefile fo the Battle of the Brandywine
+# Gamefile for the Battle of the Brandywine
 
 # Variables
 firstTeam = "Rebel"
