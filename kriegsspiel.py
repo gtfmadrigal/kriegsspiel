@@ -18,20 +18,25 @@ firstHealth = 276
 secondHealth = 334 
 
 # Functions
-
-# Game-specific functions
+# def move(unit)
 # def attack(unit)
 # def fire(unit)
 # def build(unit)
 # def hide(unit)
 # def search(unit)
 # def spy(unit)
-# def convert(unit)
-# def info(unit)
 
 # Universal functions
 def getCommand(command, unit):
     if command == "manual": manual(unit)
+    # elif command == "move": move(unit)
+    # elif command == "attack": attack(unit)
+    # elif command == "fire": fire(unit)
+    # elif command == "build": build(unit)
+    # elif command == "hide": hide(unit)
+    # elif command == "search": search(unit)
+    # elif command == "spy": spy(unit)
+    elif command == "info": info(unit)
     else: "Unknown command."
 
 def manual(unit):
