@@ -4,6 +4,9 @@
 firstTeam = "Rebel"
 secondTeam = "British"
 validCommands = ["move", "attack", "fire", "build", "hide", "search", "spy", "info", "manual"]
+allUnitTypes = ["infantry", "sapper", "fusilier", "grenadier", "bombadier", "hussar", "dragoon", "spy", "special", "command"] # Never used, only kept here for redundancy's sake
+manualHelpPrompt = "Alter Rebel(A) or British health(B) [A/b]: "
+ownerPrompt = "Rebel(A) or British(B) unit? [A/b]: "
 
 # Unit types
 # Health
@@ -33,10 +36,6 @@ searchable = ["infantry", "sapper", "fusilier"]
 hideable = ["infantry", "sapper", "fusilier", "grenadier", "spy", "special"]
 # Move and Fire
 moveAndFire = ["infantry", "sapper", "fusilier", "hussar", "dragoon", "special"]
-
-# Prompts
-manualHelpPrompt = "Alter Rebel(A) or British health(B) [A/b]: "
-ownerPrompt = "Rebel(A) or British(B) unit? [A/b]: "
 
 # info() function
 def info(unitType):
@@ -87,5 +86,3 @@ def info(unitType):
     # Move and fire
     if unitType in moveAndFire:
         print("Can move and fire in the same turn.")
-
-
