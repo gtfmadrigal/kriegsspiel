@@ -38,6 +38,7 @@ def manual(unit):
     global firstDamage
     global secondDamage
     global deadUnits
+    global immovableUnits
     if unit == "help": print("Arguments for manual() function: health, kill, freeze.")
     elif unit == "health":
         score()
@@ -49,10 +50,13 @@ def manual(unit):
         currentValue = int(input("Current value of unit: "))
         namedUnit = input("Name of unit: ")
         deadUnits.append(namedUnit)
-        owner = input(manualKillPrompt)
+        owner = input(ownerPrompt)
         if owner == "b": firstDamage = firstDamage + currentValue
         else: secondDamage = secondDamage + currentValue
-    # elif unit == "freeze"
+    elif unit == "freeze":
+        namedUnit = input("Name of unit: ")
+        owner = input(ownerPrompt)
+        immovableUnits.append(namedUnit)
     else:
         print("Bad argument for manual function.")
         return
