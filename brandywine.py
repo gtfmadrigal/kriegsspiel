@@ -9,7 +9,7 @@ deadUnits = []
 commandNumber = 1
 secrets = ""
 hiddenUnits = []
-validCommands = ["move", "attack", "fire", "build", "hide", "search", "spy", "convert", "info", "manual"]
+validCommands = ["attack", "fire", "build", "hide", "search", "spy", "convert", "info", "manual"]
 
 # Unique to game scenario
 rebelDamage = 0
@@ -19,7 +19,7 @@ britishHealth = 334
 
 # Functions
 
-# def move(unit)
+# Game-specific functions
 # def attack(unit)
 # def fire(unit)
 # def build(unit)
@@ -28,7 +28,27 @@ britishHealth = 334
 # def spy(unit)
 # def convert(unit)
 # def info(unit)
-# def manual(unit)
+
+# Universal functions
+# def getCommand(unit):
+
+def manual(argument):
+    if argument == "help": print("Arguments for manual() function: health, kill, freeze.")
+    elif argument == "health":
+        score()
+        newValue = int(input("New health value: "))
+        teamToChange = input("Alter Rebel or British health? [R/b]: ")
+        if teamToChange == "b": 
+            global rebelDamage
+            rebelDamage = britishHealth - newValue
+        else:
+            global britishDamage
+            britishDamage = rebelHealth - newValue
+    # elif argument == "kill"
+    # elif argument == "freeze"
+    else:
+        print("Bad argument for manual function.")
+        return
 
 def score():
     print("Rebel damage dealt:", rebelDamage)
@@ -51,10 +71,14 @@ while warPhase == True:
         score()
         warPhase = False
     elif command == "help":
-        print("Meta commands: help, info, turn, quit, details, manual")
-        print("Unit commands: move, attack, fire, build, hide, search, spy, convert")
+        print("Meta commands: new, help, info, turn, quit, details, manual")
+        print("Unit commands: attack, fire, build, hide, search, spy, convert")
     elif command == "details": print(secrets)
     elif command == "score": score()
+    elif command == "new": newGame()
+    elif command == "manual":
+        argument = input("[manual]% ")
+        manual(argument)
     elif command in validCommands:
         unit = input("[unit]% ")
         getCommand(command, unit)
