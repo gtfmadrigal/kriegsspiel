@@ -3,7 +3,7 @@
 # Variables
 firstTeam = "Rebel"
 secondTeam = "British"
-validCommands = ["attack", "fire", "build", "hide", "search", "spy", "info", "manual"]
+validCommands = ["move", "attack", "fire", "build", "hide", "search", "spy", "info", "manual"]
 
 # Unit types
 # Health

@@ -18,7 +18,14 @@ firstHealth = 276
 secondHealth = 334 
 
 # Functions
-# def move(unit)
+def move(unit, unitType):
+    if unit in deadUnits:
+        print("Dead.")
+        return
+    elif unit in immovableUnits:
+        print("Immovable.")
+        return
+
 # def attack(unit)
 # def fire(unit)
 # def build(unit)
@@ -28,7 +35,7 @@ secondHealth = 334
 
 # Universal functions
 def getCommand(command, unit, unitType):
-    if command == "move": move(unit)
+    if command == "move": move(unit, unitType)
     # elif command == "attack": attack(unit)
     # elif command == "fire": fire(unit)
     # elif command == "build": build(unit)
