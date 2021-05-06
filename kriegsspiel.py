@@ -36,7 +36,7 @@ def move(unit, unitType):
 # Universal functions
 def getCommand(command, unit, unitType):
     if command == "move": move(unit, unitType)
-    # elif command == "attack": attack(unit)
+    elif command == "attack": attack(unit, unitType)
     # elif command == "fire": fire(unit)
     # elif command == "build": build(unit)
     # elif command == "hide": hide(unit)
@@ -47,26 +47,26 @@ def getCommand(command, unit, unitType):
         if unit in deadUnits: print("Dead.")
     else: "Unknown command."
 
-def manual(unit):
+def manual(argument):
     global firstDamage
     global secondDamage
     global deadUnits
     global immovableUnits
-    if unit == "help": print("Arguments for manual() function: health, kill, freeze.")
-    elif unit == "health":
+    if argument == "help": print("Arguments for manual() function: health, kill, freeze.")
+    elif argument == "health":
         score()
         teamToChange = input(manualHelpPrompt)
         newValue = int(input("New health value: "))
         if teamToChange == "b": firstDamage = secondHealth - newValue
         else: secondDamage = firstHealth - newValue
-    elif unit == "kill":
+    elif argument == "kill":
         currentValue = int(input("Current value of unit: "))
         namedUnit = input("Name of unit: ")
         deadUnits.append(namedUnit)
         owner = input(ownerPrompt)
         if owner == "b": firstDamage = firstDamage + currentValue
         else: secondDamage = secondDamage + currentValue
-    elif unit == "freeze":
+    elif argument == "freeze":
         namedUnit = input("Name of unit: ")
         owner = input(ownerPrompt)
         immovableUnits.append(namedUnit)
@@ -100,8 +100,8 @@ while warPhase == True:
     elif command == "score": score()
     elif command == "manual":
         subPrompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + command + "]% "
-        unit = input(subPrompt)
-        manual(unit)
+        argument = input(subPrompt)
+        manual(argument)
     elif command == "new": newGame()
     elif command in validCommands:
         subPrompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + command + "]% "
