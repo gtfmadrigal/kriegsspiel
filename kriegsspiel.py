@@ -19,14 +19,18 @@ secondHealth = 334
 
 # Functions
 def move(unit, unitType):
-    if unit in deadUnits:
-        print("Dead.")
-        return
-    elif unit in immovableUnits:
+    global immovableUnits
+    global usedUnits
+    if unit in immovableUnits:
         print("Immovable.")
         return
+    if not unitType in moveAndFire:
+        usedUnits.append(unit)
+    immovableUnits.append(unit)
 
-# def attack(unit)
+# def attack(unit, unitType):
+    
+
 # def fire(unit)
 # def build(unit)
 # def hide(unit)
@@ -35,6 +39,12 @@ def move(unit, unitType):
 
 # Universal functions
 def getCommand(command, unit, unitType):
+    if unit in deadUnits:
+        print("Dead.")
+        return
+    elif unit in usedUnits:
+        print("Used.")
+        return
     if command == "move": move(unit, unitType)
     elif command == "attack": attack(unit, unitType)
     # elif command == "fire": fire(unit)
@@ -45,6 +55,8 @@ def getCommand(command, unit, unitType):
     elif command == "info": 
         info(unitType)
         if unit in deadUnits: print("Dead.")
+        if unit in immovableUnits: print("Immovable this turn.")
+        if unit in usedUnits: print("Unusable this turn.")
     else: "Unknown command."
 
 def manual(argument):
