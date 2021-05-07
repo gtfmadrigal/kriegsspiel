@@ -2,7 +2,7 @@
 # When creating a gamefile, give it a unique name.
 # Good practice is to list all your gamefiles in your copy of kriegsspiel.py, just under "import random", with the command "from [gamefile] import *" leaving them all commented out. When you want to start a new game, uncomment the line with the gamefile you want.
 
-# A gamefile consists of three portions: a section defining the global variables, a section defining the attributes of various unit types, and an info(unitType) function. Each will be discussed in turn.
+# A gamefile consists of three portions: a section defining the global variables, a section defining the attributes of various unit types, and the global functions. Each will be discussed in turn.
 
 # Global variables defined
 firstTeam = "" # Name your first team here in the singular demonymic, e.g. "Rebel", "French", "Soviet", etc.
@@ -35,7 +35,8 @@ attack20 = []
 moveAndFire = [] # This list includes all unit types that can move and fire in the same turn. Not optional.
 # Using the above format, you can include various attributes in lists. Just make sure to include them in the info() function.
 
-# info() function
+# global functions
+# info()
 def info(unitType): # info() calls only the unitType argument, as the name is irrelevant.
     # Health attribute
     if unitType in health4HP: 

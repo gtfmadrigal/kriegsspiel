@@ -24,16 +24,28 @@ def move(unit, unitType):
     if unit in immovableUnits:
         print("Immovable.")
         return
-    if not unitType in moveAndFire:
-        usedUnits.append(unit)
+    if not unitType in moveAndFire: usedUnits.append(unit)
     immovableUnits.append(unit)
 
 # def attack(unit, unitType):
-# def fire(unit)
-# def build(unit)
-# def hide(unit)
-# def search(unit)
-# def spy(unit)
+# def fire(unit, unitType)
+
+def build(unit, unitType):
+    global immovableUnits
+    global usedUnits
+    if not unitType in buildable:
+        print("Cannot build.")
+        return
+    if unitType in build4: print("Fortification of strength", random.randrange(1,4), "built.")
+    elif unitType in build8: print("Fortification of strength", random.randrange(1,8), "built.")
+    immovableUnits.append(unit)
+    usedUnits.append(unit)
+
+# def hide(unit, unitType)
+# def search(unit, unitType)
+# def spy(unit, unitType)
+# def torpedo(unit, unitType)
+# def sortie(unit, unitType)
 
 # Universal functions
 def getCommand(command, unit, unitType):
@@ -44,10 +56,10 @@ def getCommand(command, unit, unitType):
         print("Used.")
     if command == "move": move(unit, unitType)
     elif command == "attack": attack(unit, unitType)
-    # elif command == "fire": fire(unit)
-    # elif command == "build": build(unit)
-    # elif command == "hide": hide(unit)
-    # elif command == "search": search(unit)
+    # elif command == "fire": fire(unit, unitType)
+    elif command == "build": build(unit, unitType)
+    # elif command == "hide": hide(unit, unitType)
+    # elif command == "search": search(unit, unitType)
     # elif command == "spy": spy(unit, unitType)
     elif command == "info": 
         info(unitType)

@@ -30,6 +30,10 @@ fire8 = ["grenadier"]
 fire10 = ["bombadier"]
 fire12 = ["hussar"]
 fire20 = ["dragoon"]
+# Build
+build4 = ["infantry"]
+build8 = ["sapper"]
+buildable = ["infantry", "sapper"]
 # Search
 searchable = ["infantry", "sapper", "fusilier"]
 # Hide
@@ -77,6 +81,11 @@ def info(unitType):
         print("Fire:        D12")
     elif unitType in fire20:
         print("Fire:        D20")
+    # Build
+    if unitType in build4:
+        print("Build:       D4")
+    elif unitType in build8:
+        print("Build:       D8")
     # Search
     if unitType in searchable:
         print("Can search.")
