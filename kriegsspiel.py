@@ -54,7 +54,13 @@ def hide(unit, unitType):
     newSecret = input("Describe information about this command: ")
     secrets = secrets + ", " + newSecret
 
-# def reveal(unit, unitType):
+def reveal(unit, unitType):
+    global hiddenUnits
+    if not unit in hiddenUnits:
+        print("Not hidden.")
+        return
+    hiddenUnits.remove(unit)
+
 # def search(unit, unitType):
 # def spy(unit, unitType):
 # def torpedo(unit, unitType):
@@ -74,6 +80,7 @@ def getCommand(command, unit, unitType):
     # elif command == "fire": fire(unit, unitType)
     elif command == "build": build(unit, unitType)
     elif command == "hide": hide(unit, unitType)
+    elif command == "reveal": reveal(unit, unitType)
     # elif command == "search": search(unit, unitType)
     # elif command == "spy": spy(unit, unitType)
     elif command == "info": 
@@ -81,6 +88,7 @@ def getCommand(command, unit, unitType):
         if unit in deadUnits: print("Dead.")
         if unit in immovableUnits: print("Immovable this turn.")
         if unit in usedUnits: print("Unusable this turn.")
+        if unit in hiddenUnits: print("Hidden.")
     else: "Unknown command."
 
 def manual(argument):
