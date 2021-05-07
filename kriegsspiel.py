@@ -61,7 +61,21 @@ def reveal(unit, unitType):
         return
     hiddenUnits.remove(unit)
 
-# def search(unit, unitType):
+def search(unit, unitType):
+    global usedUnits
+    if not unitType in searchable:
+        print("Cannot search.")
+        return
+    searchEffectiveness = random.randrange(1,6)
+    if searchEffectiveness == 6:
+        print("Good formation.")
+        print(secrets)
+    elif searchEffectiveness ==1:
+        print("Bad information.")
+        print(secrets)
+    else: print("No information.")
+    usedUnits.append(unit)
+
 def spy(unit, unitType):
     global usedUnits
     if not unitType in deadUnits: maximum = 8
@@ -95,7 +109,7 @@ def getCommand(command, unit, unitType):
     elif command == "build": build(unit, unitType)
     elif command == "hide": hide(unit, unitType)
     elif command == "reveal": reveal(unit, unitType)
-    # elif command == "search": search(unit, unitType)
+    elif command == "search": search(unit, unitType)
     elif command == "spy": spy(unit, unitType)
     # elif command == "torpedo": torpedo(unit, unitType)
     # elif command == "sortie": sortie(unit, unitType)
@@ -107,7 +121,7 @@ def getCommand(command, unit, unitType):
         if unit in immovableUnits: print("Immovable this turn.")
         if unit in usedUnits: print("Unusable this turn.")
         if unit in hiddenUnits: print("Hidden.")
-    else: "Unknown command."
+    else: print("Unknown command.")
 
 def manual(argument):
     global firstDamage
