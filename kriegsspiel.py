@@ -55,7 +55,34 @@ def attack(unit, unitType):
     usedUnits.append(unit)
     immovableUnits.append(unit)
 
-# def fire(unit, unitType):
+def fire(unit, unitType):
+    global immovableUnits
+    global usedUnits
+    global deadUnits
+    global hiddenUnits
+    global firstDamage
+    global secondDamage
+    if not unitType in fireable:
+        print("Cannot attack.")
+        return
+    if unit in hiddenUnits:
+        print("Unit revealed.")
+        reveal(unit, unitType)
+    if unitType in fire8: maximum = 4
+    elif unitType in fire10: maximum = 10
+    elif unitType in fire12: maximum = 12
+    elif unitType in fire20: maximum = 20
+    damageDealt = random.randrange(1,maximum)
+    owner = input(ownerPrompt)
+    if owner == "a": 
+        firstDamage = firstDamage + damageDealt
+        print(firstTeam, "deal", damageDealt, "damage.")
+    else: 
+        secondDamage = secondDamage + damageDealt
+        print(secondTeam, "deal", damageDealt, "damage.")
+    print("Manually enter any dead units using the manual(kill) command.")
+    usedUnits.append(unit)
+    immovableUnits.append(unit)
 
 def build(unit, unitType):
     global immovableUnits
