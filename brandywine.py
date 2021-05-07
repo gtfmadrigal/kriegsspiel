@@ -25,6 +25,7 @@ movement15cm = ["fusilier"]
 attack4 = ["infantry", "sapper", "fusilier", "grenadier", "bombadier", "spy"]
 attack12 = ["hussar"]
 attack20 = ["dragoon", "special", "command"]
+attackable = ["infantry", "sapper", "fusilier", "grenadier", "bombadier", "hussar", "dragoon", "spy", "special", "command"]
 # Fire
 fire8 = ["grenadier"]
 fire10 = ["bombadier"]

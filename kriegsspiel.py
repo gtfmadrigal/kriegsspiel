@@ -34,10 +34,12 @@ def attack(unit, unitType):
     global hiddenUnits
     global firstDamage
     global secondDamage
+    if not unitType in attackable:
+        print("Cannot attack.")
+        return
     if unit in hiddenUnits:
         print("Unit revealed.")
         reveal(unit, unitType)
-        return
     if unitType in attack4: maximum = 4
     elif unitType in attack12: maximum = 12
     elif unitType in attack20: maximum = 20
@@ -52,7 +54,6 @@ def attack(unit, unitType):
     print("Manually enter any dead units using the manual(kill) command.")
     usedUnits.append(unit)
     immovableUnits.append(unit)
-
 
 # def fire(unit, unitType):
 
@@ -131,7 +132,7 @@ def getCommand(command, unit, unitType):
         return
     if command == "move": move(unit, unitType)
     elif command == "attack": attack(unit, unitType)
-    # elif command == "fire": fire(unit, unitType)
+    elif command == "fire": fire(unit, unitType)
     elif command == "build": build(unit, unitType)
     elif command == "hide": hide(unit, unitType)
     elif command == "reveal": reveal(unit, unitType)
