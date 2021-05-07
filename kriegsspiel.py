@@ -97,6 +97,10 @@ def getCommand(command, unit, unitType):
     elif command == "reveal": reveal(unit, unitType)
     # elif command == "search": search(unit, unitType)
     elif command == "spy": spy(unit, unitType)
+    # elif command == "torpedo": torpedo(unit, unitType)
+    # elif command == "sortie": sortie(unit, unitType)
+    # elif command == "missile": missile(unit, unitType)
+    # elif command == "dropcharge": missile(unit, unitType)
     elif command == "info": 
         info(unitType)
         if unit in deadUnits: print("Dead.")
