@@ -28,7 +28,7 @@ def move(unit, unitType):
     immovableUnits.append(unit)
 
 # def attack(unit, unitType):
-# def fire(unit, unitType)
+# def fire(unit, unitType):
 
 def build(unit, unitType):
     global immovableUnits
@@ -41,11 +41,26 @@ def build(unit, unitType):
     immovableUnits.append(unit)
     usedUnits.append(unit)
 
-# def hide(unit, unitType)
-# def search(unit, unitType)
-# def spy(unit, unitType)
-# def torpedo(unit, unitType)
-# def sortie(unit, unitType)
+def hide(unit, unitType):
+    global hiddenUnits
+    global secrets
+    if not unitType in hideable:
+        print("Cannot hide.")
+        return
+    if unit in hiddenUnits:
+        print("Already hidden.")
+        return
+    hiddenUnits.append(unit)
+    newSecret = input("Describe information about this command: ")
+    secrets = secrets + ", " + newSecret
+
+# def reveal(unit, unitType):
+# def search(unit, unitType):
+# def spy(unit, unitType):
+# def torpedo(unit, unitType):
+# def sortie(unit, unitType):
+# def missile(unit, unitType):
+# def dropcharge(unit, unitType):
 
 # Universal functions
 def getCommand(command, unit, unitType):
@@ -58,7 +73,7 @@ def getCommand(command, unit, unitType):
     elif command == "attack": attack(unit, unitType)
     # elif command == "fire": fire(unit, unitType)
     elif command == "build": build(unit, unitType)
-    # elif command == "hide": hide(unit, unitType)
+    elif command == "hide": hide(unit, unitType)
     # elif command == "search": search(unit, unitType)
     # elif command == "spy": spy(unit, unitType)
     elif command == "info": 

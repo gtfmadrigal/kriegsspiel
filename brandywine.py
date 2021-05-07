@@ -3,7 +3,7 @@
 # Variables
 firstTeam = "Rebel"
 secondTeam = "British"
-validCommands = ["move", "attack", "fire", "build", "hide", "search", "spy", "info", "manual"]
+validCommands = ["move", "attack", "fire", "build", "hide", "search", "spy", "info", "manual", "reveal"]
 allUnitTypes = ["infantry", "sapper", "fusilier", "grenadier", "bombadier", "hussar", "dragoon", "spy", "special", "command"] # Never used, only kept here for redundancy's sake
 manualHelpPrompt = "Alter Rebel(A) or British health(B) [A/b]: "
 ownerPrompt = "Rebel(A) or British(B) unit? [A/b]: "
