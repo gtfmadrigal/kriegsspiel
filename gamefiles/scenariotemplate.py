@@ -10,7 +10,7 @@ secondTeam = "" # Name your second team here
 validCommands = ["move", "attack", "info", "manual"] # All valid commands are contained here as strings in a list. move, attack, info, and manual are universal. Others can be added, like "fire", "build", "hide", "search", "spy", "bomb", "torpedo", "launch", and so on, depending on the scenario
 allUnitTypes = [] # All unit types are contained here as strings in a list. This list is never referenced, but it's good practice to keep them here so as not to be confused later. Unit types should be singular.
 manualHelpPrompt = ""
-ownerPrompt = "" # These prompts are given to the user when calling the manual() command. See brandywine.py for more details and an example.
+ownerPrompt = "" # These prompts are given to the user when calling certain commands. See brandywine.py for more details and an example.
 
 # Attributes of the various units
 # Health
@@ -31,9 +31,10 @@ attack8 = []
 attack10 = []
 attack12 = []
 attack20 = []
+attackable = [] # This list contains all types of units contained within the preceding lists. The attack function checks to see if the given unitType is within this list.
 # Move and Fire
 moveAndFire = [] # This list includes all unit types that can move and fire in the same turn. Not optional.
-# Using the above format, you can include various attributes in lists. Just make sure to include them in the info() function.
+# Using the above format, you can include various attributes in lists. Just make sure to include them in the info() function. The format should be as follows: "[command][maximum] = []" for all maximum values, followed by "[command]able = []".
 
 # global functions
 # info()

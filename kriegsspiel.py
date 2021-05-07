@@ -252,7 +252,6 @@ while warPhase == True:
         subPrompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + command + "]% "
         argument = input(subPrompt)
         manual(argument)
-    elif command == "new": newGame()
     elif command in validCommands:
         subPrompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + command + "]% "
         unit, unitType = input(subPrompt).split()
