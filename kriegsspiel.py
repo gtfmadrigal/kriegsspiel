@@ -62,7 +62,20 @@ def reveal(unit, unitType):
     hiddenUnits.remove(unit)
 
 # def search(unit, unitType):
-# def spy(unit, unitType):
+def spy(unit, unitType):
+    global usedUnits
+    if not unitType in deadUnits: maximum = 8
+    else: maximum = 6
+    spyEffectiveness = random.randrange(1,maximum)
+    if spyEffectiveness >= 6: 
+        print("Good information.")
+        print(secrets)
+    elif spyEffectiveness == 1: 
+        print("Bad information.")
+        print(secrets)
+    else: print("No information.")
+    usedUnits.append(unit)
+
 # def torpedo(unit, unitType):
 # def sortie(unit, unitType):
 # def missile(unit, unitType):
@@ -75,14 +88,15 @@ def getCommand(command, unit, unitType):
         return
     elif unit in usedUnits:
         print("Used.")
+        return
     if command == "move": move(unit, unitType)
-    elif command == "attack": attack(unit, unitType)
+    # elif command == "attack": attack(unit, unitType)
     # elif command == "fire": fire(unit, unitType)
     elif command == "build": build(unit, unitType)
     elif command == "hide": hide(unit, unitType)
     elif command == "reveal": reveal(unit, unitType)
     # elif command == "search": search(unit, unitType)
-    # elif command == "spy": spy(unit, unitType)
+    elif command == "spy": spy(unit, unitType)
     elif command == "info": 
         info(unitType)
         if unit in deadUnits: print("Dead.")
