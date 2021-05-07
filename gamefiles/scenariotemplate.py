@@ -7,7 +7,7 @@
 # Global variables defined
 firstTeam = "" # Name your first team here in the singular demonymic, e.g. "Rebel", "French", "Soviet", etc.
 secondTeam = "" # Name your second team here
-validCommands = ["move", "attack", "info", "manual"] # All valid commands are contained here as strings in a list. move, attack, info, and manual are universal. Others can be added, like "fire", "build", "hide", "search", "spy", "bomb", "torpedo", "launch", and so on, depending on the scenario
+validCommands = ["move", "defend", "attack", "info", "manual"] # All valid commands are contained here as strings in a list. move, attack, info, and manual are universal. Others can be added, like "fire", "build", "hide", "search", "spy", "bomb", "torpedo", "launch", and so on, depending on the scenario
 allUnitTypes = [] # All unit types are contained here as strings in a list. This list is never referenced, but it's good practice to keep them here so as not to be confused later. Unit types should be singular.
 manualHelpPrompt = ""
 ownerPrompt = "" # These prompts are given to the user when calling certain commands. See brandywine.py for more details and an example.
