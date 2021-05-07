@@ -52,8 +52,27 @@ def attack(unit, unitType):
         secondDamage = secondDamage + damageDealt
         print(secondTeam, "deal", damageDealt, "damage.")
     print("Manually enter any dead units using the manual(kill) command.")
+    print("Call defend() function if relevant.")
     usedUnits.append(unit)
     immovableUnits.append(unit)
+
+def defend(unit, unitType):
+    global firstDamage
+    global secondDamage
+    if not unitType in attackable:
+        print("Cannot defend.")
+        return
+    if unitType in attack4: maximum = 4
+    elif unitType in attack12: maximum = 12
+    elif unitType in attack20: maximum = 20
+    damageDealt = random.randrange(1,maximum)
+    owner = input(ownerPrompt)
+    if owner == "a":
+        secondDamage = secondDamage - damageDealt
+        print(firstTeam, "defends for", damageDealt, "damage.")
+    else:
+        firstDamage = firstDamage - damageDealt
+        print(secondTeam, "defends for", damageDealt, "damage.")
 
 def fire(unit, unitType):
     global immovableUnits
@@ -83,8 +102,6 @@ def fire(unit, unitType):
     print("Manually enter any dead units using the manual(kill) command.")
     usedUnits.append(unit)
     immovableUnits.append(unit)
-
-# def defend(unit, unitType)
 
 def build(unit, unitType):
     global immovableUnits
@@ -167,7 +184,7 @@ def getCommand(command, unit, unitType):
     elif command == "reveal": reveal(unit, unitType)
     elif command == "search": search(unit, unitType)
     elif command == "spy": spy(unit, unitType)
-    # elif command == "defend": defend(unit, unitType)
+    elif command == "defend": defend(unit, unitType)
     # elif command == "torpedo": torpedo(unit, unitType)
     # elif command == "sortie": sortie(unit, unitType)
     # elif command == "missile": missile(unit, unitType)
