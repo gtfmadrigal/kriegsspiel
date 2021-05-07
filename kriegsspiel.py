@@ -84,6 +84,8 @@ def fire(unit, unitType):
     usedUnits.append(unit)
     immovableUnits.append(unit)
 
+# def defend(unit, unitType)
+
 def build(unit, unitType):
     global immovableUnits
     global usedUnits
@@ -165,6 +167,7 @@ def getCommand(command, unit, unitType):
     elif command == "reveal": reveal(unit, unitType)
     elif command == "search": search(unit, unitType)
     elif command == "spy": spy(unit, unitType)
+    # elif command == "defend": defend(unit, unitType)
     # elif command == "torpedo": torpedo(unit, unitType)
     # elif command == "sortie": sortie(unit, unitType)
     # elif command == "missile": missile(unit, unitType)
