@@ -27,7 +27,33 @@ def move(unit, unitType):
     if not unitType in moveAndFire: usedUnits.append(unit)
     immovableUnits.append(unit)
 
-# def attack(unit, unitType):
+def attack(unit, unitType):
+    global immovableUnits
+    global usedUnits
+    global deadUnits
+    global hiddenUnits
+    global firstDamage
+    global secondDamage
+    if unit in hiddenUnits:
+        print("Unit revealed.")
+        reveal(unit, unitType)
+        return
+    if unitType in attack4: maximum = 4
+    elif unitType in attack12: maximum = 12
+    elif unitType in attack20: maximum = 20
+    damageDealt = random.randrange(1,maximum)
+    owner = input(ownerPrompt)
+    if owner == "a": 
+        firstDamage = firstDamage + damageDealt
+        print(firstTeam, "deal", damageDealt, "damage.")
+    else: 
+        secondDamage = secondDamage + damageDealt
+        print(secondTeam, "deal", damageDealt, "damage.")
+    print("Manually enter any dead units using the manual(kill) command.")
+    usedUnits.append(unit)
+    immovableUnits.append(unit)
+
+
 # def fire(unit, unitType):
 
 def build(unit, unitType):
@@ -104,7 +130,7 @@ def getCommand(command, unit, unitType):
         print("Used.")
         return
     if command == "move": move(unit, unitType)
-    # elif command == "attack": attack(unit, unitType)
+    elif command == "attack": attack(unit, unitType)
     # elif command == "fire": fire(unit, unitType)
     elif command == "build": build(unit, unitType)
     elif command == "hide": hide(unit, unitType)

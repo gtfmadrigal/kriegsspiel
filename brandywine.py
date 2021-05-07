@@ -30,6 +30,7 @@ fire8 = ["grenadier"]
 fire10 = ["bombadier"]
 fire12 = ["hussar"]
 fire20 = ["dragoon"]
+fireable = ["grenadier", "bombadier", "hussar", "dragoon"]
 # Build
 build4 = ["infantry"]
 build8 = ["sapper"]
