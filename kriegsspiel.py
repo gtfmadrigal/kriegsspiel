@@ -188,6 +188,17 @@ Causes a unit to fire a torpedo.
 2. Generates a torpedo effectiveness number between 1 and 6. If the number is six, manual(kill) is called. If the number is anything else, attack() is called.
 3. Adds the unit to the usedUnits[] and immobileUnits[] lists.
 """
+manSortie = """
+sortie(unit, unitType)
+Game function
+
+Causes a unit to launch a sortie.
+
+1. Checks if the unitType has the ability to launch sorties. If not, the function throws an error and quits.
+2. Checks if the unit has already been used that turn, in which case the function throws an error and quits.
+3. Deals damage equal to a random number between 1 and the maximum dictated by the unitType.
+4. Adds the unit to the usedUnits[] and immobileUnits[] lists.
+"""
 
 # Functions
 def move(unit, unitType):
@@ -364,7 +375,31 @@ def torpedo(unit, unitType):
     usedUnits.append(unit)
     immobileUnits.append(unit)
 
-# def sortie(unit, unitType):
+def sortie(unit, unitType):
+    global usedUnits
+    global immobileUnits
+    global firstDamage
+    global secondDamage
+    if not unitType in sortieable:
+        print("Cannot launch sorties.")
+        return
+    if unit in hideable:
+        print("Unit revealed.")
+        reveal(unit, unitType)
+    if unitType in sortie8: maximum = 8
+    damageDealt = random.randrange(1,maximum)
+    owner = input(ownerPrompt)
+    if owner == "a": 
+        firstDamage = firstDamage + damageDealt
+        print(firstTeam, "deal", damageDealt, "damage.")
+    else: 
+        secondDamage = secondDamage + damageDealt
+        print(secondTeam, "deal", damageDealt, "damage.")
+    print("Manually enter any dead units using the manual(kill) command.")
+    print("Sorties can be defended against with the defend() command.")
+    usedUnits.append(unit)
+    immobileUnits.append(unit)
+
 # def depthcharge(unit, unitType):
 
 # Universal functions
@@ -386,7 +421,7 @@ def man(argument):
     elif argument == "spy": print(manSpy)
     elif argument == "heading": print(manHeading)
     elif argument == "torpedo": print(manTorpedo)
-    # elif argument == "sortie": print(manSortie)
+    elif argument == "sortie": print(manSortie)
     # elif argument == "depthcharge": print(manDepthcharge)
 
 def getCommand(command, unit, unitType):
@@ -406,7 +441,7 @@ def getCommand(command, unit, unitType):
     elif command == "defend": defend(unit, unitType)
     elif command == "heading": heading(unit, unitType)
     elif command == "torpedo": torpedo(unit, unitType)
-    # elif command == "sortie": sortie(unit, unitType)
+    elif command == "sortie": sortie(unit, unitType)
     # elif command == "depthcharge": missile(unit, unitType)
     elif command == "info": 
         info(unitType)
