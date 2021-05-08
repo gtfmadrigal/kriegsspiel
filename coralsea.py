@@ -7,6 +7,10 @@ validCommands = ["move", "heading", "depthcharge", "atttack", "sortie", "fire", 
 allUnitTypes = ["carrier", "battleship", "cruiser", "destroyer", "corvette", "amphibious", "patrol", "attack-submarine", "missile-submarine"]
 manualHelpPrompt = "Alter French(a) or British(b) health? [a/b]: "
 ownerPrompt = "French(a) or British(b) unit? [a/b]: "
+firstDamage = 0
+secondDamage = 0
+firstHealth = 100
+secondHealth = 100
 
 # Unit Types
 # Health
@@ -73,8 +77,6 @@ def info(unitType):
         print("Movement:    10")
     elif unitType in movement15cm:
         print("Movement:    15")
-    if unitType in headingChange:
-        print("Must change heading to alter course.")
     if unitType in depthcharge6:
         print("Depthcharge: D6")
     elif unitType in depthcharge12:
@@ -105,3 +107,5 @@ def info(unitType):
         print("Can hide.")
     if unitType in moveAndFire:
         print("Can move and fire in the same turn.")
+    if unitType in headingChange:
+        print("Must change heading to alter course.")

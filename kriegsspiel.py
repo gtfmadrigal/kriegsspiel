@@ -105,8 +105,21 @@ Game function
 Moves a unit.
 
 1. Checks if unit is in the list immobileUnits[], in which case the function throws an error and quits.
-2. Checks if unitType is not in the list moveAndFire, in which case the unit is added to the list usedUnits[], preventing another command being given to that unit in the current turn.
+2. Checks if unitType is not in the list moveAndFire[], in which case the unit is added to the list usedUnits[], preventing another command being given to that unit in the current turn.
 3. Adds the unit to the immobileUnits[] list, preventing the unit from moving again in the current turn.
+
+"""
+manHeading = """
+
+heading(unit, unitType)
+Game function
+
+Changes the heading of a unit.
+
+1. Checks if unitType is required to change heading. If not, the function throws an error and quits.
+2. Checks if unit is in the list immobileUnits[], in which case the function throws an error and quits.
+3. Checks if unitType is not in the list moveAndFire[], in which case the unit is added to the list usedUnits[], preventing another command being given to that unit in the current turn.
+4. Adds the unit to the immobileUnits[] list, preventing the unit from moving again in the current turn.
 
 """
 manAttack = """
@@ -198,16 +211,23 @@ Causes a unit to search for hidden units. Information is then passed on to the p
 
 """
 
-# Unique to game scenario
-firstDamage = 0
-secondDamage = 0
-firstHealth = 276
-secondHealth = 334 
-
 # Functions
 def move(unit, unitType):
     global immobileUnits
     global usedUnits
+    if unit in immobileUnits:
+        print("Immovable.")
+        return
+    if unitType in headingChange: print("Unit cannot exceed its maximum heading change.")
+    if not unitType in moveAndFire: usedUnits.append(unit)
+    immobileUnits.append(unit)
+
+def heading(unit, unitType):
+    global immobileUnits
+    global usedUnits
+    if not unitType in headingChange:
+        print("Heading change not required.")
+        return
     if unit in immobileUnits:
         print("Immovable.")
         return
@@ -358,6 +378,7 @@ def man(argument):
     elif argument == "hide": print(manHide)
     elif argument == "reveal": print(manReveal)
     elif argument == "spy": print(manSpy)
+    elif argument == "heading": print(manHeading)
     # elif argument == "torpedo"
     # elif argument == "sortie"
     # elif argument == "depthcharge"
@@ -377,7 +398,7 @@ def getCommand(command, unit, unitType):
     elif command == "reveal": reveal(unit, unitType)
     elif command == "spy": spy(unit, unitType)
     elif command == "defend": defend(unit, unitType)
-    # elif command == "heading": heading(unit, unitType)
+    elif command == "heading": heading(unit, unitType)
     # elif command == "torpedo": torpedo(unit, unitType)
     # elif command == "sortie": sortie(unit, unitType)
     # elif command == "depthcharge": missile(unit, unitType)

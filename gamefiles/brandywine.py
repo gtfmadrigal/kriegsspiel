@@ -7,6 +7,10 @@ validCommands = ["move", "attack", "fire", "build", "defend", "hide", "spy", "in
 allUnitTypes = ["infantry", "sapper", "fusilier", "grenadier", "bombadier", "hussar", "dragoon", "spy", "special", "command"] # Never used, only kept here for redundancy's sake
 manualHelpPrompt = "Alter Rebel(a) or British health(b) [a/b]: "
 ownerPrompt = "Rebel(a) or British(B) unit? [a/b]: "
+firstDamage = 0
+secondDamage = 0
+firstHealth = 276
+secondHealth = 334 
 
 # Unit types
 # Health
