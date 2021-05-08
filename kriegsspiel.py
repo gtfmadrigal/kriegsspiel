@@ -10,6 +10,7 @@ deadUnits = []
 commandNumber = 1
 secrets = ""
 hiddenUnits = []
+alreadyDropped = []
 
 # man() pages
 manManual = """
@@ -383,7 +384,7 @@ def sortie(unit, unitType):
     if not unitType in sortieable:
         print("Cannot launch sorties.")
         return
-    if unit in hideable:
+    if unit in hiddenUnits:
         print("Unit revealed.")
         reveal(unit, unitType)
     if unitType in sortie8: maximum = 8
@@ -400,7 +401,36 @@ def sortie(unit, unitType):
     usedUnits.append(unit)
     immobileUnits.append(unit)
 
-# def depthcharge(unit, unitType):
+def depthcharge(unit, unitType):
+    global immobileUnits
+    global usedUnits
+    global alreadyDropped
+    global firstDamage
+    global secondDamage
+    if not unitType in depthchargeable:
+        print("Cannot drop depth charges.")
+        return
+    if unit in alreadyDropped:
+        print("Already dropped depth charges.")
+        return
+    chargeEffectiveness = random.randrange(1,6)
+    if chargeEffectiveness == 6:
+        print("Submarine sunk.")
+        owner = input(ownerPrompt)
+        if owner == "a": 
+            firstDamage = firstDamage + damageDealt
+            print(firstTeam, "deal", damageDealt, "damage.")
+        else: 
+            secondDamage = secondDamage + damageDealt
+            print(secondTeam, "deal", damageDealt, "damage.")
+        manual(kill)
+    elif chargeEffectiveness == 5:
+        print("Submarine disabled.")
+        disabled = input("Submarine unit disabled: ")
+        immobileUnits.append(disabled)
+        usedUnits.append(disabled)
+    else: print("Failed.")
+    immobileUnits.append(unit)
 
 # Universal functions
 def man(argument):
@@ -442,7 +472,7 @@ def getCommand(command, unit, unitType):
     elif command == "heading": heading(unit, unitType)
     elif command == "torpedo": torpedo(unit, unitType)
     elif command == "sortie": sortie(unit, unitType)
-    # elif command == "depthcharge": missile(unit, unitType)
+    elif command == "depthcharge": depthcharge(unit, unitType)
     elif command == "info": 
         info(unitType)
         if unit in deadUnits: print("Dead.")

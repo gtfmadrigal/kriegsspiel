@@ -53,6 +53,8 @@ torpedoable = ["attack-submarine", "missile-submarine"]
 hideable = ["attack-submarine", "missile-submarine"]
 # Move and Fire
 moveAndFire = ["carrier", "battleship", "cruiser", "destroyer", "corvette", "amphibious", "patrol"]
+# Depthchargable
+depthchargeable = ["carrier", "battleship", "cruiser", "destroyer", "corvette"]
 
 def info(unitType):
     if unitType in health1HP:
