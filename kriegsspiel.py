@@ -13,7 +13,6 @@ hiddenUnits = []
 
 # man() pages
 manManual = """
-
 manual(argument)
 Meta-function
 
@@ -37,26 +36,20 @@ Allows the umpire to directly alter the attributes of units or teams in their en
 --freeze:
 1. Requests the name of the unit to freeze.
 2. Places the unit in the immobileUnits[] list.
-
 """
 manMan = """
-
 man(argument)
 Meta-function
 
 Displays the informational page for the command passed to it.
-
 """
 manScore = """
-
 score()
 Meta-function
 
 Displays the damage dealt by each team and the percent remaining of their total initial health points.
-
 """
 manTurn = """
-
 turn()
 Pseudo-function
 
@@ -65,10 +58,8 @@ Ends the current turn.
 1. Clears the usedUnits[] list, making all units available for use again.
 2. Clears the immobileUnits[] list, making all units movable again.
 3. Increments the round.
-
 """
 manQuit = """
-
 quit()
 Pseudo-function
 
@@ -76,10 +67,8 @@ Ends the game.
 
 1. Calls score().
 2. Sets warPhase to False, closing the primary game loop and exiting the script.
-
 """
 manHelp = """
-
 help()
 Pseudo-function
 
@@ -87,18 +76,14 @@ Displays all valid commands
 
 1. Displays the universal commands.
 2. Displays the commands specified as available in the validCommands[] list.
-
 """
 manDetails = """
-
 details()
 Meta-function
 
 Displays relevant game information held in the secrets variable.
-
 """
 manMove = """
-
 move(unit, unitType)
 Game function
 
@@ -107,10 +92,8 @@ Moves a unit.
 1. Checks if unit is in the list immobileUnits[], in which case the function throws an error and quits.
 2. Checks if unitType is not in the list moveAndFire[], in which case the unit is added to the list usedUnits[], preventing another command being given to that unit in the current turn.
 3. Adds the unit to the immobileUnits[] list, preventing the unit from moving again in the current turn.
-
 """
 manHeading = """
-
 heading(unit, unitType)
 Game function
 
@@ -120,10 +103,8 @@ Changes the heading of a unit.
 2. Checks if unit is in the list immobileUnits[], in which case the function throws an error and quits.
 3. Checks if unitType is not in the list moveAndFire[], in which case the unit is added to the list usedUnits[], preventing another command being given to that unit in the current turn.
 4. Adds the unit to the immobileUnits[] list, preventing the unit from moving again in the current turn.
-
 """
 manAttack = """
-
 attack(unit, unitType)
 Game function
 
@@ -138,26 +119,20 @@ Primary game function, causes a unit to attack another using its primary weapon,
 7. Adds the unit to the usedUnits[] list.
 8. Adds the unit to the immobileUnits[] list.
 9. Requests that the user calls the manual function to kill any units that are now dead, and the defend function.
-
 """
 manDefend = """
-
 defend(unit, unitType)
 Game function
 
 Reduces damage inflicted by an attack command. Effectively identical to the attack(unit, unitType) function, but inverted.
-
 """
 manFire = """
-
 fire(unit, unitType)
 Game function
 
 Inflicts damage based on the secondary weapon of a unit. Functionally similar to attack(unit, unitType). Cannot be defended.
-
 """
 manBuild = """
-
 build(unit, unitType)
 Game function
 
@@ -168,10 +143,8 @@ Constructs a fortification.
 3. Creates a fortification where the strength is a random number between 1 and the maximum.
 4. Adds unit to immobileUnits[].
 5. Adds unit to usedUnits[].
-
 """
 manHide = """
-
 hide(unit, unitType)
 Game function
 
@@ -182,10 +155,8 @@ Hides unit from the enemy.
 3. Adds unit to the hiddenUnits[] list.
 4. Requests information about the location of the hidden unit.
 5. Adds the information to the secrets variable.
-
 """
 manReveal = """
-
 reveal(unit, unitType)
 Game function
 
@@ -193,10 +164,8 @@ Reveals a hidden unit.
 
 1. Checks if unit is not hidden, in which case the function throws an error and quits.
 2. Removes the unit from the hiddenUnits[] list.
-
 """
 manSpy = """
-
 spy(unit, unitType)
 Game function
 
@@ -208,7 +177,6 @@ Causes a unit to search for hidden units. Information is then passed on to the p
 4. If the effectiveness is 1: tells the umpire to give wrong information, and calls details().
 5. If the effectiveness is 2, 3, 4, or 5: tells the umpire to give no information.
 6. Adds the unit to the usedUnits[] list.
-
 """
 
 # Functions
