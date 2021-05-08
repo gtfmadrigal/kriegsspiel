@@ -237,13 +237,13 @@ def attack(unit, unitType):
     if unit in hiddenUnits:
         print("Unit revealed.")
         reveal(unit, unitType)
-    if unitType in attack4: maximum = 4
-    elif unitType in attack6: maximum = 6
-    elif unitType in attack8: maximum = 8
-    elif unitType in attack12: maximum = 12
-    elif unitType in attack16: maximum = 16
-    elif unitType in attack20: maximum = 20
-    elif unitType in attack24: maximum = 24
+    if unitType in attack4: maximum = 5
+    elif unitType in attack6: maximum = 7
+    elif unitType in attack8: maximum = 9
+    elif unitType in attack12: maximum = 13
+    elif unitType in attack16: maximum = 17
+    elif unitType in attack20: maximum = 21
+    elif unitType in attack24: maximum = 25
     damageDealt = random.randrange(1,maximum)
     owner = input(ownerPrompt)
     if owner == "a": 
@@ -263,9 +263,9 @@ def defend(unit, unitType):
     if not unitType in attackable:
         print("Cannot defend.")
         return
-    if unitType in attack4: maximum = 4
-    elif unitType in attack12: maximum = 12
-    elif unitType in attack20: maximum = 20
+    if unitType in attack4: maximum = 5
+    elif unitType in attack12: maximum = 13
+    elif unitType in attack20: maximum = 21
     damageDealt = random.randrange(1,maximum)
     owner = input(ownerPrompt)
     if owner == "a":
@@ -288,11 +288,11 @@ def fire(unit, unitType):
     if unit in hiddenUnits:
         print("Unit revealed.")
         reveal(unit, unitType)
-    if unitType in fire8: maximum = 4
-    elif unitType in fire10: maximum = 10
-    elif unitType in fire12: maximum = 12
-    elif unitType in fire16: maximum = 16
-    elif unitType in fire20: maximum = 20
+    if unitType in fire8: maximum = 9
+    elif unitType in fire10: maximum = 11
+    elif unitType in fire12: maximum = 13
+    elif unitType in fire16: maximum = 17
+    elif unitType in fire20: maximum = 21
     damageDealt = random.randrange(1,maximum)
     owner = input(ownerPrompt)
     if owner == "a": 
@@ -311,8 +311,8 @@ def build(unit, unitType):
     if not unitType in buildable:
         print("Cannot build.")
         return
-    if unitType in build4: print("Fortification of strength", random.randrange(1,4), "built.")
-    elif unitType in build8: print("Fortification of strength", random.randrange(1,8), "built.")
+    if unitType in build4: print("Fortification of strength", random.randrange(1,5), "built.")
+    elif unitType in build8: print("Fortification of strength", random.randrange(1,9), "built.")
     immobileUnits.append(unit)
     usedUnits.append(unit)
 
@@ -341,7 +341,7 @@ def spy(unit, unitType):
     if not unitType in searchable:
         print("Cannot search.")
         return
-    searchEffectiveness = random.randrange(1,6)
+    searchEffectiveness = random.randrange(1,7)
     if searchEffectiveness == 6:
         print("Good information.")
         details()
@@ -359,7 +359,7 @@ def torpedo(unit, unitType):
     if not unitType in torpedoable:
         print("Cannot launch torpedoes.")
         return
-    torpedoEffectiveness = random.randrange(1,6)
+    torpedoEffectiveness = random.randrange(1,7)
     if torpedoEffectiveness == 6:
         print("Ship sunk.")
         manual(kill)
@@ -387,7 +387,7 @@ def sortie(unit, unitType):
     if unit in hiddenUnits:
         print("Unit revealed.")
         reveal(unit, unitType)
-    if unitType in sortie8: maximum = 8
+    if unitType in sortie8: maximum = 9
     damageDealt = random.randrange(1,maximum)
     owner = input(ownerPrompt)
     if owner == "a": 
@@ -413,7 +413,7 @@ def depthcharge(unit, unitType):
     if unit in alreadyDropped:
         print("Already dropped depth charges.")
         return
-    chargeEffectiveness = random.randrange(1,6)
+    chargeEffectiveness = random.randrange(1,7)
     if chargeEffectiveness == 6:
         print("Submarine sunk.")
         owner = input(ownerPrompt)
