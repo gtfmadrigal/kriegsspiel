@@ -178,6 +178,16 @@ Causes a unit to search for hidden units. Information is then passed on to the p
 5. If the effectiveness is 2, 3, 4, or 5: tells the umpire to give no information.
 6. Adds the unit to the usedUnits[] list.
 """
+manTorpedo = """
+torpedo(unit, unitType)
+Game function
+
+Causes a unit to fire a torpedo.
+
+1. Checks if the unitType has the ability to fire torpedoes. If not, the function throws an erorr and quits.
+2. Generates a torpedo effectiveness number between 1 and 6. If the number is six, manual(kill) is called. If the number is anything else, attack() is called.
+3. Adds the unit to the usedUnits[] and immobileUnits[] lists.
+"""
 
 # Functions
 def move(unit, unitType):
@@ -216,8 +226,12 @@ def attack(unit, unitType):
         print("Unit revealed.")
         reveal(unit, unitType)
     if unitType in attack4: maximum = 4
+    elif unitType in attack6: maximum = 6
+    elif unitType in attack8: maximum = 8
     elif unitType in attack12: maximum = 12
+    elif unitType in attack16: maximum = 16
     elif unitType in attack20: maximum = 20
+    elif unitType in attack24: maximum = 24
     damageDealt = random.randrange(1,maximum)
     owner = input(ownerPrompt)
     if owner == "a": 
@@ -265,6 +279,7 @@ def fire(unit, unitType):
     if unitType in fire8: maximum = 4
     elif unitType in fire10: maximum = 10
     elif unitType in fire12: maximum = 12
+    elif unitType in fire16: maximum = 16
     elif unitType in fire20: maximum = 20
     damageDealt = random.randrange(1,maximum)
     owner = input(ownerPrompt)
@@ -324,9 +339,32 @@ def spy(unit, unitType):
     else: print("No information.")
     usedUnits.append(unit)
 
-# def torpedo(unit, unitType):
+def torpedo(unit, unitType):
+    global usedUnits
+    global immobileUnits
+    global firstDamage
+    global secondDamage
+    if not unitType in torpedoable:
+        print("Cannot launch torpedoes.")
+        return
+    torpedoEffectiveness = random.randrange(1,6)
+    if torpedoEffectiveness == 6:
+        print("Ship sunk.")
+        manual(kill)
+    else:
+        owner = input(ownerPrompt)
+        if owner == "a": 
+            firstDamage = firstDamage + torpedoEffectiveness
+            print(firstTeam, "deal", torpedoEffectiveness, "damage.")
+        else: 
+            secondDamage = secondDamage + torpedoEffectiveness
+            print(secondTeam, "deal", torpedoEffectiveness, "damage.")
+        print("Manually enter any dead units using the manual(kill) command.")
+        print("Call defend() function if relevant.")
+    usedUnits.append(unit)
+    immobileUnits.append(unit)
+
 # def sortie(unit, unitType):
-# def missile(unit, unitType):
 # def depthcharge(unit, unitType):
 
 # Universal functions
@@ -347,9 +385,9 @@ def man(argument):
     elif argument == "reveal": print(manReveal)
     elif argument == "spy": print(manSpy)
     elif argument == "heading": print(manHeading)
-    # elif argument == "torpedo"
-    # elif argument == "sortie"
-    # elif argument == "depthcharge"
+    elif argument == "torpedo": print(manTorpedo)
+    # elif argument == "sortie": print(manSortie)
+    # elif argument == "depthcharge": print(manDepthcharge)
 
 def getCommand(command, unit, unitType):
     if unit in deadUnits:
@@ -367,7 +405,7 @@ def getCommand(command, unit, unitType):
     elif command == "spy": spy(unit, unitType)
     elif command == "defend": defend(unit, unitType)
     elif command == "heading": heading(unit, unitType)
-    # elif command == "torpedo": torpedo(unit, unitType)
+    elif command == "torpedo": torpedo(unit, unitType)
     # elif command == "sortie": sortie(unit, unitType)
     # elif command == "depthcharge": missile(unit, unitType)
     elif command == "info": 
