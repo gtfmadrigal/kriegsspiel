@@ -5,8 +5,8 @@ firstTeam = "Rebel"
 secondTeam = "British"
 validCommands = ["move", "attack", "fire", "build", "defend", "hide", "spy", "info", "manual", "reveal"]
 allUnitTypes = ["infantry", "sapper", "fusilier", "grenadier", "bombadier", "hussar", "dragoon", "spy", "special", "command"] # Never used, only kept here for redundancy's sake
-manualHelpPrompt = "Alter Rebel(A) or British health(B) [A/b]: "
-ownerPrompt = "Rebel(A) or British(B) unit? [A/b]: "
+manualHelpPrompt = "Alter Rebel(a) or British health(b) [a/b]: "
+ownerPrompt = "Rebel(a) or British(B) unit? [a/b]: "
 
 # Unit types
 # Health
@@ -21,6 +21,7 @@ health20HP = ["special, command"]
 movement5cm = ["bombadier", "dragoon", "spy", "command"]
 movement10cm = ["infantry", "sapper", "grenadier", "hussar", "special"]
 movement15cm = ["fusilier"]
+headingChange = []
 # Attack
 attack4 = ["infantry", "sapper", "fusilier", "grenadier", "bombadier", "spy"]
 attack12 = ["hussar"]

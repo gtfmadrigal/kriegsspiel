@@ -24,6 +24,7 @@ health20HP = []
 movement5cm = [] # These lists give the distance different unit types can move in a single turn.
 movement10cm = []
 movement15cm = []
+headingChange = [] # Required
 # Attack
 attack4 = [] # The example attack damages refer to the *maximum* damage dealt in an attack() command. Again, they can be anything, these are only suggestions.
 attack6 = []

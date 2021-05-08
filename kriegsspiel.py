@@ -1,5 +1,5 @@
 import random
-from brandywine import *
+from coralsea import *
 
 # Global variables and lists
 warPhase = True
@@ -339,7 +339,7 @@ def spy(unit, unitType):
 # def torpedo(unit, unitType):
 # def sortie(unit, unitType):
 # def missile(unit, unitType):
-# def dropcharge(unit, unitType):
+# def depthcharge(unit, unitType):
 
 # Universal functions
 def man(argument):
@@ -360,8 +360,7 @@ def man(argument):
     elif argument == "spy": print(manSpy)
     # elif argument == "torpedo"
     # elif argument == "sortie"
-    # elif argument == "missile"
-    # elif argument == "dropcharge"
+    # elif argument == "depthcharge"
 
 def getCommand(command, unit, unitType):
     if unit in deadUnits:
@@ -378,10 +377,10 @@ def getCommand(command, unit, unitType):
     elif command == "reveal": reveal(unit, unitType)
     elif command == "spy": spy(unit, unitType)
     elif command == "defend": defend(unit, unitType)
+    # elif command == "heading": heading(unit, unitType)
     # elif command == "torpedo": torpedo(unit, unitType)
     # elif command == "sortie": sortie(unit, unitType)
-    # elif command == "missile": missile(unit, unitType)
-    # elif command == "dropcharge": missile(unit, unitType)
+    # elif command == "depthcharge": missile(unit, unitType)
     elif command == "info": 
         info(unitType)
         if unit in deadUnits: print("Dead.")
@@ -440,7 +439,8 @@ while warPhase == True:
         warPhase = False
     elif command == "help":
         print("turn, quit, man, help, details, score, new")
-        print(*validCommands, sep = ", ") 
+        print(*validCommands, sep = ", ")
+        print(*allUnitTypes, sep = ", ")
     elif command == "details": details()
     elif command == "score": score()
     elif command == "man":
