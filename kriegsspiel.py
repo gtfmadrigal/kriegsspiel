@@ -237,7 +237,6 @@ def depthcharge(unit, unitType):
         disabled = input("Submarine unit disabled: ")
         immobileUnits.append(disabled)
         usedUnits.append(disabled)
-    else: print("Failed.")
     immobileUnits.append(unit)
 
 # Universal functions
@@ -327,37 +326,38 @@ def score():
 def details():
     print(secrets)
 
+def turn():
+    global round
+    usedUnits.clear()
+    immobileUnits.clear()
+    round = round + 1
+
 # Game loop
 while warPhase == True:
     prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "]% "
-    command = input(prompt)
-    if command == "turn":
-        usedUnits.clear()
-        immobileUnits.clear()
-        round = round + 1
-    elif command == "quit": 
-        score()
-        warPhase = False
-    elif command == "help":
-        print("turn, quit, man, help, details, score, new")
-        print(*validCommands, sep = ", ")
-        print(*allUnitTypes, sep = ", ")
-    elif command == "details": details()
-    elif command == "score": score()
-    elif command == "man":
-        subPrompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + command + "]% "
-        argument = input(subPrompt)
-        man(argument)
-    elif command == "manual":
-        subPrompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + command + "]% "
-        argument = input(subPrompt)
-        manual(argument)
-    elif command in validCommands:
-        subPrompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + command + "]% "
-        try:
-            unit, unitType = input(subPrompt).split()
-            getCommand(command, unit, unitType)
-        except ValueError:
-            print(command, "requires two arguments, unit and unitType.")
-    else: print("Unknown command.")
+    rawCommand = input(prompt)
+    argsInCommand = rawCommand.split()
+    if len(argsInCommand) == 3:
+        command, unit, unitType = rawCommand.split()
+        if command in validCommands: getCommand(command, unit, unitType)
+        else: print("Bad command, or wrong number of arguments for command. See help() or man(command) for help.")
+    elif len(argsInCommand) == 2:
+        command, argument = rawCommand.split()
+        if command == "man": man(argument)
+        elif command == "manual": manual(argument)
+        else: print("Bad command, or wrong number of arguments for command. See help() or man(command) for help.")
+    elif len(argsInCommand) == 1:
+        if rawCommand == "score": score()
+        elif rawCommand == "turn": turn()
+        elif rawCommand == "quit":
+            score()
+            warPhase = False
+        elif rawCommand == "help":
+            print("turn, quit, man, help, details, score, new")
+            print(*validCommands, sep = ", ")
+            print(*allUnitTypes, sep = ", ")
+        elif rawCommand == "details": details()
+        else: print("Bad command, or wrong number of arguments for command. See help() or man(command) for help.")
+    else:
+        print("A command requires 1 to 3 words.")
     commandNumber = commandNumber + 1
