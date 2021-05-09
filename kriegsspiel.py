@@ -332,6 +332,16 @@ def turn():
     immobileUnits.clear()
     round = round + 1
 
+def quitGame():
+    global warPhase
+    score()
+    warPhase = False
+
+def helpText():
+    print("turn, quit, man, help, details, score, new")
+    print(*validCommands, sep = ", ")
+    print(*allUnitTypes, sep = ", ")
+
 # Game loop
 while warPhase == True:
     prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "]% "
@@ -349,13 +359,8 @@ while warPhase == True:
     elif len(argsInCommand) == 1:
         if rawCommand == "score": score()
         elif rawCommand == "turn": turn()
-        elif rawCommand == "quit":
-            score()
-            warPhase = False
-        elif rawCommand == "help":
-            print("turn, quit, man, help, details, score, new")
-            print(*validCommands, sep = ", ")
-            print(*allUnitTypes, sep = ", ")
+        elif rawCommand == "quit": quitGame()
+        elif rawCommand == "help": helpText()
         elif rawCommand == "details": details()
         else: print("Bad command, or wrong number of arguments for command. See help() or man(command) for help.")
     else:
