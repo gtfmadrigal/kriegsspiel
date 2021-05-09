@@ -354,7 +354,10 @@ while warPhase == True:
         manual(argument)
     elif command in validCommands:
         subPrompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + command + "]% "
-        unit, unitType = input(subPrompt).split()
-        getCommand(command, unit, unitType)
+        try:
+            unit, unitType = input(subPrompt).split()
+            getCommand(command, unit, unitType)
+        except ValueError:
+            print(command, "requires two arguments, unit and unitType.")
     else: print("Unknown command.")
     commandNumber = commandNumber + 1
