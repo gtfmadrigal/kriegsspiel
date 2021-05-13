@@ -3,7 +3,7 @@
 # Variables
 firstTeam = "French"
 secondTeam = "British"
-validCommands = ["move", "heading", "depthcharge", "atttack", "sortie", "fire", "torpedo", "spy", "defend", "hide", "reveal", "info", "manual"]
+validCommands = ["move", "heading", "depthcharge", "attack", "sortie", "fire", "torpedo", "spy", "defend", "hide", "reveal", "info", "manual"]
 allUnitTypes = ["carrier", "battleship", "cruiser", "destroyer", "corvette", "amphibious", "patrol", "attack-submarine", "missile-submarine"]
 manualHelpPrompt = "Alter French(a) or British(b) health? [a/b]: "
 ownerPrompt = "French(a) or British(b) unit? [a/b]: "

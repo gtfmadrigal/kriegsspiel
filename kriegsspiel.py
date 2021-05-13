@@ -1,6 +1,6 @@
 import random
 from manpages import * 
-from coralsea import * # Gamefile import
+from agincourt import * # Gamefile import
 
 # Global variables and lists
 warPhase = True
