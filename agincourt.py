@@ -11,6 +11,7 @@ firstDamage = 0
 secondDamage = 0
 firstHealth = 215
 secondHealth = 180
+headingChange = []
 
 # Unit types
 # Health

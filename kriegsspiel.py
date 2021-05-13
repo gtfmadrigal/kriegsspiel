@@ -262,32 +262,50 @@ def man(argument):
     elif argument == "depthcharge": print(manDepthcharge)
     else: print("Bad command.")
 
-def getCommand(command, unit, unitType):
-    if unit in deadUnits:
-        print("Dead.")
-        return
-    elif unit in usedUnits:
-        print("Used.")
-        return
-    if command == "move": move(unit, unitType)
-    elif command == "attack": attack(unit, unitType)
-    elif command == "fire": fire(unit, unitType)
-    elif command == "build": build(unit, unitType)
-    elif command == "hide": hide(unit, unitType)
-    elif command == "reveal": reveal(unit, unitType)
-    elif command == "spy": spy(unit, unitType)
-    elif command == "defend": defend(unit, unitType)
-    elif command == "heading": heading(unit, unitType)
-    elif command == "torpedo": torpedo(unit, unitType)
-    elif command == "sortie": sortie(unit, unitType)
-    elif command == "depthcharge": depthcharge(unit, unitType)
-    elif command == "info": 
-        info(unitType)
-        if unit in deadUnits: print("Dead.")
-        if unit in immobileUnits: print("Immovable this turn.")
-        if unit in usedUnits: print("Unusable this turn.")
-        if unit in hiddenUnits: print("Hidden.")
-    else: print("Unknown command.")
+def getCommand(rawCommand):
+    argsInCommand = rawCommand.split()
+    if len(argsInCommand) == 3:
+        command, unit, unitType = rawCommand.split()
+        if command in validCommands:
+            if unit in deadUnits:
+                print("Dead.")
+                return
+            elif unit in usedUnits:
+                print("Used.")
+                return
+            if command == "move": move(unit, unitType)
+            elif command == "attack": attack(unit, unitType)
+            elif command == "fire": fire(unit, unitType)
+            elif command == "build": build(unit, unitType)
+            elif command == "hide": hide(unit, unitType)
+            elif command == "reveal": reveal(unit, unitType)
+            elif command == "spy": spy(unit, unitType)
+            elif command == "defend": defend(unit, unitType)
+            elif command == "heading": heading(unit, unitType)
+            elif command == "torpedo": torpedo(unit, unitType)
+            elif command == "sortie": sortie(unit, unitType)
+            elif command == "depthcharge": depthcharge(unit, unitType)
+            elif command == "info": 
+                info(unitType)
+                if unit in deadUnits: print("Dead.")
+                if unit in immobileUnits: print("Immovable this turn.")
+                if unit in usedUnits: print("Unusable this turn.")
+                if unit in hiddenUnits: print("Hidden.") 
+            else: print("Bad command, or wrong number of arguments for command. See help() or man(command) for help.")
+    elif len(argsInCommand) == 2:
+        command, argument = rawCommand.split()
+        if command == "man": man(argument)
+        elif command == "manual": manual(argument)
+        else: print("Bad command, or wrong number of arguments for command. See help() or man(command) for help.")
+    elif len(argsInCommand) == 1:
+        if rawCommand == "score": score()
+        elif rawCommand == "turn": turn()
+        elif rawCommand == "quit": quitGame()
+        elif rawCommand == "help": helpText()
+        elif rawCommand == "details": details()
+        else: print("Bad command, or wrong number of arguments for command. See help() or man(command) for help.")
+    else:
+        print("A command requires 1 to 3 words.")
 
 def manual(argument):
     global firstDamage
@@ -346,23 +364,5 @@ def helpText():
 while warPhase == True:
     prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "]% "
     rawCommand = input(prompt)
-    argsInCommand = rawCommand.split()
-    if len(argsInCommand) == 3:
-        command, unit, unitType = rawCommand.split()
-        if command in validCommands: getCommand(command, unit, unitType)
-        else: print("Bad command, or wrong number of arguments for command. See help() or man(command) for help.")
-    elif len(argsInCommand) == 2:
-        command, argument = rawCommand.split()
-        if command == "man": man(argument)
-        elif command == "manual": manual(argument)
-        else: print("Bad command, or wrong number of arguments for command. See help() or man(command) for help.")
-    elif len(argsInCommand) == 1:
-        if rawCommand == "score": score()
-        elif rawCommand == "turn": turn()
-        elif rawCommand == "quit": quitGame()
-        elif rawCommand == "help": helpText()
-        elif rawCommand == "details": details()
-        else: print("Bad command, or wrong number of arguments for command. See help() or man(command) for help.")
-    else:
-        print("A command requires 1 to 3 words.")
+    getCommand(rawCommand)
     commandNumber = commandNumber + 1
