@@ -29,13 +29,17 @@ movement15cm = ["fusilier"]
 headingChange = []
 # Attack
 attack4 = ["infantry", "sapper", "fusilier", "grenadier", "bombadier", "spy"]
+attack6 = []
+attack8 = []
 attack12 = ["hussar"]
+attack16 = []
 attack20 = ["dragoon", "special", "command"]
 attackable = ["infantry", "sapper", "fusilier", "grenadier", "bombadier", "hussar", "dragoon", "spy", "special", "command"]
 # Fire
 fire8 = ["grenadier"]
 fire10 = ["bombadier"]
 fire12 = ["hussar"]
+fire16 = []
 fire20 = ["dragoon"]
 fireable = ["grenadier", "bombadier", "hussar", "dragoon"]
 # Build

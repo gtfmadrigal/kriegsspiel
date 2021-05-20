@@ -85,7 +85,10 @@ def attack(unit, unitType):
         print("Unit revealed.")
         reveal(unit, unitType)
     if unitType in attack4: maximum = 5
+    elif unitType in attack6: maximum = 7
+    elif unitType in attack8: maximum = 9
     elif unitType in attack12: maximum = 13
+    elif unitType in attack16: maximum = 17
     elif unitType in attack20: maximum = 21
     damageDealt = random.randrange(1,maximum)
     owner = input(ownerPrompt)
@@ -107,7 +110,10 @@ def defend(unit, unitType):
         print("Cannot defend.")
         return
     if unitType in attack4: maximum = 5
+    elif unitType in attack6: maximum = 7
+    elif unitType in attack8: maximum = 9
     elif unitType in attack12: maximum = 13
+    elif unitType in attack16: maximum = 17
     elif unitType in attack20: maximum = 21
     damageDealt = random.randrange(1,maximum)
     owner = input(ownerPrompt)
@@ -134,6 +140,7 @@ def fire(unit, unitType):
     if unitType in fire8: maximum = 9
     elif unitType in fire10: maximum = 11
     elif unitType in fire12: maximum = 13
+    elif unitType in fire16: maximum = 17
     elif unitType in fire20: maximum = 21
     damageDealt = random.randrange(1,maximum)
     owner = input(ownerPrompt)
