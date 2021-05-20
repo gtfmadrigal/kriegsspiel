@@ -36,6 +36,7 @@ attack8 = []
 attack10 = []
 attack12 = []
 attack20 = []
+attack24 = [] # all required
 attackable = [] # This list contains all types of units contained within the preceding lists. The attack function checks to see if the given unitType is within this list.
 # Move and Fire
 moveAndFire = [] # This list includes all unit types that can move and fire in the same turn. Not optional.
