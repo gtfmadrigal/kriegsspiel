@@ -1,6 +1,6 @@
 import random
 from manpages import * 
-from agincourt import * # Gamefile import
+from brandywine import * # Gamefile import
 
 # Global variables and lists
 warPhase = True
@@ -36,6 +36,41 @@ def heading(unit, unitType):
     if not unitType in moveAndFire: usedUnits.append(unit)
     immobileUnits.append(unit)
 
+def hide(unit, unitType):
+    global hiddenUnits
+    global secrets
+    if not unitType in hideable:
+        print("Cannot hide.")
+        return
+    if unit in hiddenUnits:
+        print("Already hidden.")
+        return
+    hiddenUnits.append(unit)
+    newSecret = input("Describe information about this command: ")
+    secrets = secrets + ", " + newSecret
+
+def reveal(unit, unitType):
+    global hiddenUnits
+    if not unit in hiddenUnits:
+        print("Not hidden.")
+        return
+    hiddenUnits.remove(unit)
+
+def spy(unit, unitType):
+    global usedUnits
+    if not unitType in searchable:
+        print("Cannot search.")
+        return
+    searchEffectiveness = random.randrange(1,7)
+    if searchEffectiveness == 6:
+        print("Good information.")
+        details()
+    elif searchEffectiveness == 1:
+        print("Bad information.")
+        details()
+    else: print("No information.")
+    usedUnits.append(unit)
+
 def attack(unit, unitType):
     global immobileUnits
     global usedUnits
@@ -50,12 +85,8 @@ def attack(unit, unitType):
         print("Unit revealed.")
         reveal(unit, unitType)
     if unitType in attack4: maximum = 5
-    elif unitType in attack6: maximum = 7
-    elif unitType in attack8: maximum = 9
     elif unitType in attack12: maximum = 13
-    elif unitType in attack16: maximum = 17
     elif unitType in attack20: maximum = 21
-    elif unitType in attack24: maximum = 25
     damageDealt = random.randrange(1,maximum)
     owner = input(ownerPrompt)
     if owner == "a": 
@@ -103,7 +134,6 @@ def fire(unit, unitType):
     if unitType in fire8: maximum = 9
     elif unitType in fire10: maximum = 11
     elif unitType in fire12: maximum = 13
-    elif unitType in fire16: maximum = 17
     elif unitType in fire20: maximum = 21
     damageDealt = random.randrange(1,maximum)
     owner = input(ownerPrompt)
@@ -126,41 +156,6 @@ def build(unit, unitType):
     if unitType in build4: print("Fortification of strength", random.randrange(1,5), "built.")
     elif unitType in build8: print("Fortification of strength", random.randrange(1,9), "built.")
     immobileUnits.append(unit)
-    usedUnits.append(unit)
-
-def hide(unit, unitType):
-    global hiddenUnits
-    global secrets
-    if not unitType in hideable:
-        print("Cannot hide.")
-        return
-    if unit in hiddenUnits:
-        print("Already hidden.")
-        return
-    hiddenUnits.append(unit)
-    newSecret = input("Describe information about this command: ")
-    secrets = secrets + ", " + newSecret
-
-def reveal(unit, unitType):
-    global hiddenUnits
-    if not unit in hiddenUnits:
-        print("Not hidden.")
-        return
-    hiddenUnits.remove(unit)
-
-def spy(unit, unitType):
-    global usedUnits
-    if not unitType in searchable:
-        print("Cannot search.")
-        return
-    searchEffectiveness = random.randrange(1,7)
-    if searchEffectiveness == 6:
-        print("Good information.")
-        details()
-    elif searchEffectiveness == 1:
-        print("Bad information.")
-        details()
-    else: print("No information.")
     usedUnits.append(unit)
 
 def torpedo(unit, unitType):
@@ -356,7 +351,9 @@ def quitGame():
     warPhase = False
 
 def helpText():
-    print("turn, quit, man, help, details, score, new")
+    global validCommands
+    global allUnitTypes
+    print("turn, quit, man, help, details, score")
     print(*validCommands, sep = ", ")
     print(*allUnitTypes, sep = ", ")
 

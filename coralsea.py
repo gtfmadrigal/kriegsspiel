@@ -1,4 +1,5 @@
 # Gamefile for the Battle of the Coral Sea
+import random
 
 # Variables
 firstTeam = "French"

@@ -1,4 +1,5 @@
 # Gamefile for the Battle of the Brandywine
+import random
 
 # Variables
 firstTeam = "Rebel"
