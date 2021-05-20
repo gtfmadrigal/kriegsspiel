@@ -1,0 +1,12 @@
+depthcharge(unit, unitTye)
+Game function
+
+Causes a unit to drop a depthcharge in order to sink a submarine.
+
+1. Checks if the unitType has the ability to drop depthcharges. If not, the function throws an error and quits.
+2. Checks if the unit has already dropped a depthcharge this turn, in which case the function throws an error and quits.
+3. Generates a charge effectiveness between 1 and 6.
+4. If the charge effectiveness is 6, the submarine is sunk, damage is altered, and manual(kill) is called.
+5. If the charge effectiveness is 5, the submarine is disabled, and added to the immobileUnits[] and usedUnits[] lists.
+6. If the charge effectiveness is anything else, nothing happens.
+7. The unit dropping the depthcharge is added to immobileUnits[].

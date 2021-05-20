@@ -1,0 +1,4 @@
+fire(unit, unitType)
+Game function
+
+Inflicts damage based on the secondary weapon of a unit. Functionally similar to attack(unit, unitType). Cannot be defended.

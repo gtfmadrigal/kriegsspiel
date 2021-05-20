@@ -1,0 +1,7 @@
+reveal(unit, unitType)
+Game function
+
+Reveals a hidden unit.
+
+1. Checks if unit is not hidden, in which case the function throws an error and quits.
+2. Removes the unit from the hiddenUnits[] list.

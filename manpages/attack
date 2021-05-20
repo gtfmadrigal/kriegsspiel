@@ -1,0 +1,14 @@
+attack(unit, unitType)
+Game function
+
+Primary game function, causes a unit to attack another using its primary weapon, typically small arms.
+
+1. Checks if the unitType has a primary weapon capability. If not, the function throws an error and quits.
+2. Checks if the unit is hidden, in which case the reveal(unit, unitType) function is called.
+3. Assigns a maximum value for the attack, based on the gamefile.
+4. Determines the damage dealt by the attack, by randomly choosing a value from 1 to the maximum.
+5. Requests the owner of the unit.
+6. Deals the damage to the other team.
+7. Adds the unit to the usedUnits[] list.
+8. Adds the unit to the immobileUnits[] list.
+9. Requests that the user calls the manual function to kill any units that are now dead, and the defend function.

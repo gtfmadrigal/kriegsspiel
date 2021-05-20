@@ -1,0 +1,8 @@
+turn()
+Pseudo-function
+
+Ends the current turn.
+
+1. Clears the usedUnits[] list, making all units available for use again.
+2. Clears the immobileUnits[] list, making all units movable again.
+3. Increments the round.

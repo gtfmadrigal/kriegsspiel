@@ -1,0 +1,8 @@
+torpedo(unit, unitType)
+Game function
+
+Causes a unit to fire a torpedo.
+
+1. Checks if the unitType has the ability to fire torpedoes. If not, the function throws an erorr and quits.
+2. Generates a torpedo effectiveness number between 1 and 6. If the number is six, manual(kill) is called. If the number is anything else, attack() is called.
+3. Adds the unit to the usedUnits[] and immobileUnits[] lists.

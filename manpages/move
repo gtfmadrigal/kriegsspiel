@@ -1,0 +1,8 @@
+move(unit, unitType)
+Game function
+
+Moves a unit.
+
+1. Checks if unit is in the list immobileUnits[], in which case the function throws an error and quits.
+2. Checks if unitType is not in the list moveAndFire[], in which case the unit is added to the list usedUnits[], preventing another command being given to that unit in the current turn.
+3. Adds the unit to the immobileUnits[] list, preventing the unit from moving again in the current turn.

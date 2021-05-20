@@ -1,0 +1,7 @@
+quit()
+Pseudo-function
+
+Ends the game.
+
+1. Calls score().
+2. Sets warPhase to False, closing the primary game loop and exiting the script.

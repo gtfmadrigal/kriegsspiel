@@ -243,26 +243,11 @@ def depthcharge(unit, unitType):
 
 # Universal functions
 def man(argument):
-    if argument == "manual": print(manManual)
-    elif argument == "man": print(manMan)
-    elif argument == "score": print(manScore)
-    elif argument == "turn": print(manTurn)
-    elif argument == "quit": print(manQuit)
-    elif argument == "help": print(manHelp)
-    elif argument == "details": print(manDetails)
-    elif argument == "move": print(manMove)
-    elif argument == "attack": print(manAttack)
-    elif argument == "defend": print(manDefend)
-    elif argument == "fire": print(manFire)
-    elif argument == "build": print(manBuild)
-    elif argument == "hide": print(manHide)
-    elif argument == "reveal": print(manReveal)
-    elif argument == "spy": print(manSpy)
-    elif argument == "heading": print(manHeading)
-    elif argument == "torpedo": print(manTorpedo)
-    elif argument == "sortie": print(manSortie)
-    elif argument == "depthcharge": print(manDepthcharge)
-    else: print("Bad command.")
+    manpage = str(argument)
+    path = "manpages\\" + manpage
+    file = open(path, "r")
+    for line in file:
+        print(file.read())
 
 def getCommand(rawCommand):
     argsInCommand = rawCommand.split()

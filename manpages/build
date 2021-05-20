@@ -1,0 +1,10 @@
+build(unit, unitType)
+Game function
+
+Constructs a fortification.
+
+1. Checks if unitType has building capacity. If not, the function throws an error and quits.
+2. Assigns the maximum strength of the fortification based on the capabilities of the unitType.
+3. Creates a fortification where the strength is a random number between 1 and the maximum.
+4. Adds unit to immobileUnits[].
+5. Adds unit to usedUnits[].
