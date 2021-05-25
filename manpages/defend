@@ -1,4 +1,0 @@
-defend(unit, unitType)
-Game function
-
-Reduces damage inflicted by an attack command. Effectively identical to the attack(unit, unitType) function, but inverted.
