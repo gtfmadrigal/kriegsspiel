@@ -14,6 +14,7 @@ v2.0 - Naval battle release (5/12/21)
     v2.0.11 - changelog fully fleshed out
     v2.0.12 - removed temporary files
     v2.0.13 - added to the readme
+    v2.0.14 - cleaned up commit history
 
 v1.2 - Polished release (5/7/21)
     v1.2.1 - removed search function(), added man() function
