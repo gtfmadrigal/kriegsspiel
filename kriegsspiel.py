@@ -240,7 +240,7 @@ def attackDefend():
     totalDefenseDamage = 0
     willQuit = False
     while attackPhase == True:
-        prompt = "[attack]% "
+        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][attack]% "
         attackCommand = input(prompt)
         argsInAttackCommand = attackCommand.split()
         if len(argsInAttackCommand) == 1:
@@ -253,14 +253,16 @@ def attackDefend():
             elif attackCommand == "defend":
                 attackPhase = False
                 defensePhase = True
+            else: print("Unknown command.")
         elif len(argsInAttackCommand) == 2:
             unit, unitType = attackCommand.split()
             attackDamage = attack(unit, unitType)
             totalAttackDamage = totalAttackDamage + attackDamage
-            print("Total damage dealt: ", totalAttackDamage)
+            print("Damage dealt:", attackDamage)
+            print("Total amage dealt:", totalAttackDamage)
         else: print("Too many arguments.")
     while defensePhase == True:
-        prompt = "[defend]% "
+        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][defense]% "
         defenseCommand = input(prompt)
         argsInDefendCommand = defenseCommand.split()
         if len(argsInDefendCommand) == 1:
@@ -271,10 +273,12 @@ def attackDefend():
                 defensePhase = False
                 willQuit = True
             elif defenseCommand == "save": defensePhase = False
+            else: print("Unknown command.")
         elif len(argsInDefendCommand) == 2:
             unit, unitType = defenseCommand.split()
             defenseDamage = attack(unit, unitType)
             totalDefenseDamage = totalDefenseDamage + defenseDamage
+            print("Defense damage dealth: ", defenseDamage)
             print("Total defense damage dealt: ", totalDefenseDamage)
         else: print("Too many arguments.")
     if willQuit == True: return
