@@ -22,6 +22,7 @@ v2.0 - Naval battle release (5/12/21)
     v2.0.14 - cleaned up commit history
     v2.0.15 - added a naming convention scheme to the changelog
     v2.0.16 - updated attackDefend() function
+    v2.0.17 - fixed typo
 
 v1.2 - Polished release (5/7/21)
     v1.2.1 - removed search function(), added man() function

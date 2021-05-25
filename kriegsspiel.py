@@ -278,7 +278,7 @@ def attackDefend():
             unit, unitType = defenseCommand.split()
             defenseDamage = attack(unit, unitType)
             totalDefenseDamage = totalDefenseDamage + defenseDamage
-            print("Defense damage dealth: ", defenseDamage)
+            print("Defense damage dealt: ", defenseDamage)
             print("Total defense damage dealt: ", totalDefenseDamage)
         else: print("Too many arguments.")
     if willQuit == True: return
