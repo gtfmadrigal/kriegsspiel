@@ -72,7 +72,7 @@ def spy(unit, unitType):
     else: print("No information.")
     usedUnits.append(unit)
 
-def attack(unit, unitType):
+def attackMeta(unit, unitType):
     global immobileUnits
     global usedUnits
     global deadUnits
@@ -148,7 +148,7 @@ def torpedo(unit, unitType):
     torpedoEffectiveness = random.randrange(1,7)
     if torpedoEffectiveness == 6:
         print("Ship sunk.")
-        manual(kill)
+        manual("kill")
     else:
         owner = input(ownerPrompt)
         if owner == "a": 
@@ -205,7 +205,7 @@ def depthcharge(unit, unitType):
         owner = input(ownerPrompt)
         if owner == "a": firstDamage = firstDamage + 1
         else: secondDamage = secondDamage + 1
-        manual(kill)
+        manual("kill")
     elif chargeEffectiveness == 5:
         print("Submarine disabled.")
         disabled = input("Submarine unit disabled: ")
@@ -227,7 +227,7 @@ def man(argument):
     for line in file:
         print(file.read())
 
-def attackDefend():
+def attack():
     global immobileUnits
     global usedUnits
     global deadUnits
@@ -256,7 +256,7 @@ def attackDefend():
             else: print("Unknown command.")
         elif len(argsInAttackCommand) == 2:
             unit, unitType = attackCommand.split()
-            attackDamage = attack(unit, unitType)
+            attackDamage = attackMeta(unit, unitType)
             totalAttackDamage = totalAttackDamage + attackDamage
             print("Damage dealt:", attackDamage)
             print("Total amage dealt:", totalAttackDamage)
@@ -276,7 +276,7 @@ def attackDefend():
             else: print("Unknown command.")
         elif len(argsInDefendCommand) == 2:
             unit, unitType = defenseCommand.split()
-            defenseDamage = attack(unit, unitType)
+            defenseDamage = attackMeta(unit, unitType)
             totalDefenseDamage = totalDefenseDamage + defenseDamage
             print("Defense damage dealt: ", defenseDamage)
             print("Total defense damage dealt: ", totalDefenseDamage)
@@ -304,36 +304,23 @@ def getCommand(rawCommand):
             elif unit in usedUnits:
                 print("Used.")
                 return
-            if command == "move": move(unit, unitType)
-            elif command == "fire": fire(unit, unitType)
-            elif command == "build": build(unit, unitType)
-            elif command == "hide": hide(unit, unitType)
-            elif command == "reveal": reveal(unit, unitType)
-            elif command == "spy": spy(unit, unitType)
-            elif command == "heading": heading(unit, unitType)
-            elif command == "torpedo": torpedo(unit, unitType)
-            elif command == "sortie": sortie(unit, unitType)
-            elif command == "depthcharge": depthcharge(unit, unitType)
-            elif command == "info": 
+            if command == "info": 
                 info(unitType)
                 if unit in deadUnits: print("Dead.")
                 if unit in immobileUnits: print("Immovable this turn.")
                 if unit in usedUnits: print("Unusable this turn.")
-                if unit in hiddenUnits: print("Hidden.") 
-            else: print("Bad command, or wrong number of arguments for command. See help() or man(command) for help.")
+                if unit in hiddenUnits: print("Hidden.")
+            globals()[command](unit, unitType)
+        else: print("Unknown command or bad syntax.")
     elif len(argsInCommand) == 2:
         command, argument = rawCommand.split()
-        if command == "man": man(argument)
-        elif command == "manual": manual(argument)
-        else: print("Bad command, or wrong number of arguments for command. See help() or man(command) for help.")
+        twoWordCommands = ["man", "manual"]
+        if command in twoWordCommands: globals()[command](argument)
+        else: print("Unknown command or bad syntax.")
     elif len(argsInCommand) == 1:
-        if rawCommand == "score": score()
-        elif rawCommand == "turn": turn()
-        elif rawCommand == "quit": quitGame()
-        elif rawCommand == "help": helpText()
-        elif rawCommand == "attack": attackDefend()
-        elif rawCommand == "details": details()
-        else: print("Bad command, or wrong number of arguments for command. See help() or man(command) for help.")
+        oneWordCommands = ["score", "turn", "quit", "help", "attack", "details"]
+        if rawCommand in oneWordCommands: globals()[rawCommand]()
+        else: print("Unknown command or bad syntax.")
     else:
         print("A command requires 1 to 3 words.")
 
