@@ -8,6 +8,7 @@ v2.0 - Naval battle release (5/12/21)
     v2.0.5 - moved manpages.py variables to text files
     v2.0.6 - moved files around
     v2.0.7 - made manpages.py work for Linux and macOS
+    v2.0.8 - man() now fully portable
 
 v1.2 - Polished release (5/7/21)
 v1.1 - Cleared artifacts (5/6/21)

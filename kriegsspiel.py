@@ -1,4 +1,5 @@
 import random
+import os
 from manpages import * 
 from brandywine import * # Gamefile import
 
@@ -243,8 +244,14 @@ def depthcharge(unit, unitType):
 
 # Universal functions
 def man(argument):
+    global warPhase
     manpage = str(argument)
-    path = "manpages/" + manpage
+    if os.name == "nt": path = "manpages\\" + manpage
+    elif os.name == "posix": path = "manpages/" + manpage
+    else: 
+        print("Unknown operating system.")
+        warPhase = True
+        return
     file = open(path, "r")
     for line in file:
         print(file.read())
