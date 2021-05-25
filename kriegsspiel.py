@@ -81,7 +81,7 @@ def attack(unit, unitType):
     global secondDamage
     if not unitType in attackable:
         print("Cannot attack.")
-        return
+        return 0
     if unit in hiddenUnits:
         print("Unit revealed.")
         reveal(unit, unitType)
@@ -92,38 +92,9 @@ def attack(unit, unitType):
     elif unitType in attack16: maximum = 17
     elif unitType in attack20: maximum = 21
     damageDealt = random.randrange(1,maximum)
-    owner = input(ownerPrompt)
-    if owner == "a": 
-        firstDamage = firstDamage + damageDealt
-        print(firstTeam, "deal", damageDealt, "damage.")
-    else: 
-        secondDamage = secondDamage + damageDealt
-        print(secondTeam, "deal", damageDealt, "damage.")
-    print("Manually enter any dead units using the manual(kill) command.")
-    print("Call defend() function if relevant.")
     usedUnits.append(unit)
     immobileUnits.append(unit)
-
-def defend(unit, unitType):
-    global firstDamage
-    global secondDamage
-    if not unitType in attackable:
-        print("Cannot defend.")
-        return
-    if unitType in attack4: maximum = 5
-    elif unitType in attack6: maximum = 7
-    elif unitType in attack8: maximum = 9
-    elif unitType in attack12: maximum = 13
-    elif unitType in attack16: maximum = 17
-    elif unitType in attack20: maximum = 21
-    damageDealt = random.randrange(1,maximum)
-    owner = input(ownerPrompt)
-    if owner == "a":
-        secondDamage = secondDamage - damageDealt
-        print(firstTeam, "defends for", damageDealt, "damage.")
-    else:
-        firstDamage = firstDamage - damageDealt
-        print(secondTeam, "defends for", damageDealt, "damage.")
+    return damageDealt
 
 def fire(unit, unitType):
     global immobileUnits
@@ -256,6 +227,68 @@ def man(argument):
     for line in file:
         print(file.read())
 
+def attackDefend():
+    global immobileUnits
+    global usedUnits
+    global deadUnits
+    global hiddenUnits
+    global firstDamage
+    global secondDamage
+    attackPhase = True
+    defensePhase = False
+    totalAttackDamage = 0
+    totalDefenseDamage = 0
+    willQuit = False
+    while attackPhase == True:
+        prompt = "[attack]% "
+        attackCommand = input(prompt)
+        argsInAttackCommand = attackCommand.split()
+        if len(argsInAttackCommand) == 1:
+            if attackCommand == "help":
+                print("Syntax: [unit] [unitType]")
+                print("'quit' to exit without saving, 'defend' to proceed to defense phase.")
+            elif attackCommand == "quit": 
+                attackPhase = False
+                willQuit = True
+            elif attackCommand == "defend":
+                attackPhase = False
+                defensePhase = True
+        elif len(argsInAttackCommand) == 2:
+            unit, unitType = attackCommand.split()
+            attackDamage = attack(unit, unitType)
+            totalAttackDamage = totalAttackDamage + attackDamage
+            print("Total damage dealt: ", totalAttackDamage)
+        else: print("Too many arguments.")
+    while defensePhase == True:
+        prompt = "[defend]% "
+        defenseCommand = input(prompt)
+        argsInDefendCommand = defenseCommand.split()
+        if len(argsInDefendCommand) == 1:
+            if defenseCommand == "help":
+                print("Syntax: [unit] [unitType]")
+                print("'quit' to exit without saving, 'save' to save to gamestate.")
+            elif defenseCommand == "quit":
+                defensePhase = False
+                willQuit = True
+            elif defenseCommand == "save": defensePhase = False
+        elif len(argsInDefendCommand) == 2:
+            unit, unitType = defenseCommand.split()
+            defenseDamage = attack(unit, unitType)
+            totalDefenseDamage = totalDefenseDamage + defenseDamage
+            print("Total defense damage dealt: ", totalDefenseDamage)
+        else: print("Too many arguments.")
+    if willQuit == True: return
+    owner = input(ownerPrompt)
+    if totalAttackDamage > totalDefenseDamage: damageDealt = totalAttackDamage - totalDefenseDamage
+    else: damageDealt = 0
+    if owner == "a":
+        firstDamage = firstDamage + damageDealt
+        print(firstTeam, "deal", damageDealt, "damage.")
+    else: 
+        secondDamage = secondDamage + damageDealt
+        print(secondTeam, "deal", damageDealt, "damage.")
+    print("If any units were killed in the exchange, call manual(kill).")
+
 def getCommand(rawCommand):
     argsInCommand = rawCommand.split()
     if len(argsInCommand) == 3:
@@ -268,13 +301,11 @@ def getCommand(rawCommand):
                 print("Used.")
                 return
             if command == "move": move(unit, unitType)
-            elif command == "attack": attack(unit, unitType)
             elif command == "fire": fire(unit, unitType)
             elif command == "build": build(unit, unitType)
             elif command == "hide": hide(unit, unitType)
             elif command == "reveal": reveal(unit, unitType)
             elif command == "spy": spy(unit, unitType)
-            elif command == "defend": defend(unit, unitType)
             elif command == "heading": heading(unit, unitType)
             elif command == "torpedo": torpedo(unit, unitType)
             elif command == "sortie": sortie(unit, unitType)
@@ -296,6 +327,7 @@ def getCommand(rawCommand):
         elif rawCommand == "turn": turn()
         elif rawCommand == "quit": quitGame()
         elif rawCommand == "help": helpText()
+        elif rawCommand == "attack": attackDefend()
         elif rawCommand == "details": details()
         else: print("Bad command, or wrong number of arguments for command. See help() or man(command) for help.")
     else:

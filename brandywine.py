@@ -4,7 +4,7 @@ import random
 # Variables
 firstTeam = "Rebel"
 secondTeam = "British"
-validCommands = ["move", "attack", "fire", "build", "defend", "hide", "spy", "info", "manual", "reveal"]
+validCommands = ["move", "attack", "fire", "build", "hide", "spy", "info", "manual", "reveal"]
 allUnitTypes = ["infantry", "sapper", "fusilier", "grenadier", "bombadier", "hussar", "dragoon", "spy", "special", "command"] # Never used, only kept here for redundancy's sake
 manualHelpPrompt = "Alter Rebel(a) or British health(b)? [a/b]: "
 ownerPrompt = "Rebel(a) or British(b) unit? [a/b]: "
