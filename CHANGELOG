@@ -13,6 +13,7 @@ v2.0 - Naval battle release (5/12/21)
     v2.0.10 - attack manpage updated
     v2.0.11 - changelog fully fleshed out
     v2.0.12 - removed temporary files
+    v2.0.13 - added to the readme
 
 v1.2 - Polished release (5/7/21)
     v1.2.1 - removed search function(), added man() function
