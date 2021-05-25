@@ -244,7 +244,7 @@ def depthcharge(unit, unitType):
 # Universal functions
 def man(argument):
     manpage = str(argument)
-    path = "manpages\\" + manpage
+    path = "manpages/" + manpage
     file = open(path, "r")
     for line in file:
         print(file.read())
