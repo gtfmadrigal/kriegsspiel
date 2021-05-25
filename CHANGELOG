@@ -1,5 +1,10 @@
 Releases
 
+Release naming conventions:
+- First digit: signifies a major release, seriously updating the game mechanics or changing the program entirely
+- Second digit: signifies a minor release. MUST be polished and fully functional
+- Third digit: signifies a commit build
+
 v2.0 - Naval battle release (5/12/21)
     v2.0.1 - game loop reduced to 4LOC, functionality moved to getCommand()
     v2.0.2 - attack() command reintegrated
@@ -15,6 +20,7 @@ v2.0 - Naval battle release (5/12/21)
     v2.0.12 - removed temporary files
     v2.0.13 - added to the readme
     v2.0.14 - cleaned up commit history
+    v2.0.15 - added a naming convention scheme to the changelog
 
 v1.2 - Polished release (5/7/21)
     v1.2.1 - removed search function(), added man() function
