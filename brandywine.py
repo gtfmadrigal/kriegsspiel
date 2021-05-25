@@ -11,7 +11,8 @@ ownerPrompt = "Rebel(a) or British(b) unit? [a/b]: "
 firstDamage = 0
 secondDamage = 0
 firstHealth = 276
-secondHealth = 334 
+secondHealth = 334
+testVariable = 0
 
 # Unit types
 # Health
