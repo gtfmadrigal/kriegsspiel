@@ -1,0 +1,2 @@
+def details():
+    print(secrets)

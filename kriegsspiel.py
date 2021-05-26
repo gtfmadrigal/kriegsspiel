@@ -341,7 +341,7 @@ def score():
 
 def details():
     print(secrets)
-
+    
 def turn():
     global round
     usedUnits.clear()
