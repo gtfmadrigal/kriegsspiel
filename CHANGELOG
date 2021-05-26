@@ -5,51 +5,18 @@ Release naming conventions:
 - Second digit: signifies a minor release. MUST be polished and fully functional
 - Third digit: signifies a commit build
 
-v2.1 - Naval battle polished release (5/25/21)
-    v2.1.1 - attack(), fire(), and build() now work with dictionaries
-    v2.1.2 - gamefile now uses dictionaries
-    v2.1.3 - sortie() now works with dictionaries, coralsea.py updated with dictionaries
-    v2.1.4 - scenariotemplate.py updated for dictionary method
-
-v2.0 - Naval battle release (5/12/21)
-    v2.0.1 - game loop reduced to 4LOC, functionality moved to getCommand()
-    v2.0.2 - attack() command reintegrated
-    v2.0.3 - attack() and defend() commands fixed, bug closed
-    v2.0.4 - fixed scenariotemplate.py
-    v2.0.5 - moved manpages.py variables to text files
-    v2.0.6 - moved files around
-    v2.0.7 - made manpages.py work for Linux and macOS
-    v2.0.8 - man() now fully portable
-    v2.0.9 - attack() function fully portable, attackDefend() added, defend() removed
-    v2.0.10 - attack manpage updated
-    v2.0.11 - changelog fully fleshed out
-    v2.0.12 - removed temporary files
-    v2.0.13 - added to the readme
-    v2.0.14 - cleaned up commit history
-    v2.0.15 - added a naming convention scheme to the changelog
-    v2.0.16 - updated attackDefend() function
-    v2.0.17 - fixed typo
-    v2.0.18 - functions now callable through globals(), reducing LOC
-
-v1.2 - Polished release (5/7/21)
-    v1.2.1 - removed search function(), added man() function
-    v1.2.2 - started work on naval battle framework
-    v1.2.3 - heading() function implemented
-    v1.2.4 - unnecessary whitespace removed
-    v1.2.5 - torpedo() function implemented
-    v1.2.6 - sortie() function implemented
-    v1.2.7 - depthcharge() function implemented
-    v1.2.8 - fixed randomness engine
-    v1.2.9 - man() moved to manpages.py
-    v1.2.10 - depthcharge() function implemented
-    v1.2.11 - added exception to getCommand() function
-    v1.2.12 - core game loop rewritten
-    v1.2.13 - added quitGame() and helpText() function
-    v1.2.14 - improved gamefile template
-    v1.2.15 - Agincourt gamefile created
-
-v1.1 - Cleared artifacts (5/6/21)
-    v1.1.1 - artifacts cleared up, gamefile.py improved
+v0.1 - Initial Release (5/4/21)
+    v0.1.1 - initial commit
+    v0.1.2 - created readme
+    v0.1.3 - .docx guide added
+    v0.1.4 - first full draft
+    v0.1.5 - branch merge
+    v0.1.6 - updated setup.py
+    v0.1.7 - fixed whitespace errors
+    v0.1.8 - moved unitless functions from getCommand to game loop
+    v0.1.9 - fixed endGame function
+    v0.1.10 - moved endGame function to gamefile
+    v0.1.11 - license added
 
 v1.0 - Full release for land battles (5/6/21)
     v1.0.1 - moved info() command to gamefile()
@@ -72,16 +39,48 @@ v1.0 - Full release for land battles (5/6/21)
     v1.0.18 - added framework for defend() function
     v1.0.19 - defend() function implemented
 
+v1.1 - Cleared artifacts (5/6/21)
+    v1.1.1 - artifacts cleared up, gamefile.py improved
 
-v0.1 - Initial Release (5/4/21)
-    v0.1.1 - initial commit
-    v0.1.2 - created readme
-    v0.1.3 - .docx guide added
-    v0.1.4 - first full draft
-    v0.1.5 - branch merge
-    v0.1.6 - updated setup.py
-    v0.1.7 - fixed whitespace errors
-    v0.1.8 - moved unitless functions from getCommand to game loop
-    v0.1.9 - fixed endGame function
-    v0.1.10 - moved endGame function to gamefile
-    v0.1.11 - license added
+v1.2 - Polished release (5/7/21)
+    v1.2.1 - removed search function(), added man() function
+    v1.2.2 - started work on naval battle framework
+    v1.2.3 - heading() function implemented
+    v1.2.4 - unnecessary whitespace removed
+    v1.2.5 - torpedo() function implemented
+    v1.2.6 - sortie() function implemented
+    v1.2.7 - depthcharge() function implemented
+    v1.2.8 - fixed randomness engine
+    v1.2.9 - man() moved to manpages.py
+    v1.2.10 - depthcharge() function implemented
+    v1.2.11 - added exception to getCommand() function
+    v1.2.12 - core game loop rewritten
+    v1.2.13 - added quitGame() and helpText() function
+    v1.2.14 - improved gamefile template
+    v1.2.15 - Agincourt gamefile created
+
+v2.0 - Naval battle release (5/12/21)
+    v2.0.1 - game loop reduced to 4LOC, functionality moved to getCommand()
+    v2.0.2 - attack() command reintegrated
+    v2.0.3 - attack() and defend() commands fixed, bug closed
+    v2.0.4 - fixed scenariotemplate.py
+    v2.0.5 - moved manpages.py variables to text files
+    v2.0.6 - moved files around
+    v2.0.7 - made manpages.py work for Linux and macOS
+    v2.0.8 - man() now fully portable
+    v2.0.9 - attack() function fully portable, attackDefend() added, defend() removed
+    v2.0.10 - attack manpage updated
+    v2.0.11 - changelog fully fleshed out
+    v2.0.12 - removed temporary files
+    v2.0.13 - added to the readme
+    v2.0.14 - cleaned up commit history
+    v2.0.15 - added a naming convention scheme to the changelog
+    v2.0.16 - updated attackDefend() function
+    v2.0.17 - fixed typo
+    v2.0.18 - functions now callable through globals(), reducing LOC
+
+v2.1 - Naval battle polished release (5/25/21)
+    v2.1.1 - attack(), fire(), and build() now work with dictionaries
+    v2.1.2 - gamefile now uses dictionaries
+    v2.1.3 - sortie() now works with dictionaries, coralsea.py updated with dictionaries
+    v2.1.4 - scenariotemplate.py updated with dictionaries
