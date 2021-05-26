@@ -1,20 +1,21 @@
 # kriegsspiel
 
 This is a Python script for use by the Umpire in managing a game of Kriegsspiel.
-It is as yet incomplete.
-
-For more information on the game rules themselves, see the .docx document.
 
 Effectively, the script works by importing a gamefile, which creates the particular scenario.
 
-A game loop cycles, asking for commands from the user. Based on this input, kriegsspiel.py calls various functions based on the game commands. These functions will then do math on the variables imported by the gamefile, and adjusts their attribute lists as such.
+Kriegsspiel is based around a shell, from which the user inputs various commands, like move, search, hide, fire, attack, or torpedo. The shell interprets these commands and alters the gamestate accordingly based on the information provided by the gamefile and the user's input.
 
-Structure:
-README.md - this file, the readme itself
-CHANGELOG - contains a history of commit versions and their numbers
-LICENSE - GNU General Public License version 3
-Kriegspiel Third Edition.docx - the whitepaper from which this game was derived
-kriegsspiel.py - core file, contains most of the principal functions and the game loop
-gamefiles/ - contains various scenarios that can be played
-gamefiles/scenariotemplate.py - template for creating a new gamefile
-manpages/ - contains textfile explanations of various commands
+The principal game code is held in kriegsspiel.py, and this is where the import statements can be modified when the gamefile is to be changed.
+
+The gamefiles are stored in their own directory, gamefiles/. Every gamefile is named according to the format battle.py, hence "brandywine".py, after the Battle of the Brandywine River, and "coralsea".py, after the Battle of the Coral Sea. Within the gamefiles/ directory, a file called scenariotemplate.py is included as an example so that the user can make his own gamefile.
+
+Manual pages explaining the various commands within kriegsspiel.py are contained as plaintext inside the directory manpages/. They can be viewed with an ordinary text editor, or by using the command man (command) within the Kriegsspiel shell.
+
+Kriegsspiel is highly documented. Rules for the game itself are contained within Kriegspiel Third Edition.docx (pardon the misspelling). A Fourth Edition is in the works to be supplied once this program reaches a working completion stage, with land, sea, air, space, and technological warfare all integrated together.
+
+This introduction can be found in the file README.md.
+
+A changelog is provided in the file CHANGELOG, which contains a list of every commit and a brief summary of it.
+
+For major and minor releases, the release notes cna be found in plain text in the file RELEASENOTES.

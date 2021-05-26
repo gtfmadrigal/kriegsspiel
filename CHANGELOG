@@ -1,9 +1,9 @@
 Changelog
 
-Release naming conventions:
-- First digit: signifies a major release, seriously updating the game mechanics or changing the program entirely
-- Second digit: signifies a minor release. MUST be polished and fully functional
-- Third digit: signifies a commit build
+Release naming conventions: (vX.Y.Z)
+- First digit (X) signifies a major release, seriously updating the game mechanics or changing the program entirely
+- Second digit (Y) signifies a minor release. MUST be polished and fully functional
+- Third digit (Z) signifies a commit build. Ideally, changes should not be implemented into a commit build and pushed to the main branch until all bugs have been ironed out and everything is fully functional, but polishing is not required. Sometimes, things may be broken in commit builds.
 
 v0.1 - Initial Release (5/4/21)
     v0.1.1 - initial commit
@@ -89,3 +89,4 @@ v2.1 - Naval battle polished release (5/25/21)
  v2.2 - Naval battles made simplified (5/26/21)
     v2.2.1 - releasenotes file added
     v2.2.2 - warPhase variable deprecated and removed
+    v2.2.3 - readme updated
