@@ -1,9 +1,8 @@
 import random
 import os
 from manpages import * 
-from coralsea import * # Gamefile import
+from coralsea import *
 
-# Global variables and lists
 round = 1
 usedUnits = []
 immobileUnits = []
@@ -13,7 +12,6 @@ secrets = ""
 hiddenUnits = []
 alreadyDropped = []
 
-# Functions
 def move(unit, unitType, team):
     global immobileUnits
     global usedUnits
@@ -184,7 +182,6 @@ def depthcharge(unit, unitType, team):
         usedUnits.append(disabled)
     immobileUnits.append(unit)
 
-# Universal functions
 def man(argument):
     manpage = str(argument)
     if os.name == "nt": path = "manpages\\" + manpage
@@ -362,7 +359,6 @@ def helpText():
     print(*validCommands, sep = ", ")
     print(*allUnitTypes, sep = ", ")
 
-# Game loop
 while True:
     while (round % 2) != 0:
         prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + firstTeam + "]% "
