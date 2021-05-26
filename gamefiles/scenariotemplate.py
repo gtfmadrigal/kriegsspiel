@@ -16,50 +16,32 @@ secondDamage = 0
 firstHealth = 100 # first and secondHealth are standardized values that never change in the course of the game. Their values should be the total health points of each team's units prior to the game.
 secondHealth = 100
 
-# Attributes of the various units
-# Health
-health4HP = [] # These lists contain the unit types as strings. The example healths are the various D&D dice, since that is what paper Kriegsspiel is played with, but the values can be anything.
-health6HP = []
-health8HP = []
-health10HP = []
-health12HP = []
-health20HP = []
-# Movement
-movement5cm = [] # These lists give the distance different unit types can move in a single turn.
-movement10cm = []
-movement15cm = []
-headingChange = [] # This list is required to make the move() function work, but it may be empty. unitTypes included in this list (mostly ships) cannot change heading more than a given amount of degrees in a move() command. If an included unit needs to change heading more than that, the heading() command must be called.
-# Attack
-attack4 = [] # The example attack damages refer to the *maximum* damage dealt in an attack() command. Again, they can be anything, these are only suggestions.
-attack6 = []
-attack8 = []
-attack10 = []
-attack12 = []
-attack20 = []
-attack24 = [] # all required
-attackable = [] # This list contains all types of units contained within the preceding lists. The attack function checks to see if the given unitType is within this list.
-# Move and Fire
-moveAndFire = [] # This list includes all unit types that can move and fire in the same turn. Not optional.
-# Using the above format, you can include various attributes in lists. Just make sure to include them in the info() function. The format should be as follows: "[command][maximum] = []" for all maximum values, followed by "[command]able = []".
+# Unit type attributes
+# Unit dictionaries. In every dictionary, the key is the unitType ("infantry", "carrier", "longbowmen", etc.), and the value is the relevant attribute it has.
+healthTable = {} # values are health points
+movementTable = {} # values are range of motion per turn in centimeters
+attackTable = {} # values are maximum amount of damage can be dealt per turn
+sortieTable = {} # values are maximum sortie damage
+fireTable = {} # values are maximum long-range (artillery, archers, etc.) damage
 
-# global functions
-# info()
+# Unit lists
+searchable = [] # unit types in this list are able to execute the search() command
+torpedoable = [] # unit types in this list can launch torpedoes (i.e., are submarines)
+hideable = [] # unit types in this list can hide
+moveAndFire = [] # unit types in this list can move and fire/attack in the same turn
+headingChange = [] # unit types in this list cannot move and change heading in the same turn
+depthchargeable = [] # unit types in this list can drop depth charges
+
+# info() function
 def info(unitType): # info() calls only the unitType argument, as the name is irrelevant.
-    # Health attribute
-    if unitType in health4HP: 
-        print("Health:      4")
-    # ... continued for each possible health value.
-    # Movement attribute
-    if unitType in movement5cm:
-        print("Movement:    5")
-    # ... continued for each possible movement value.
-    # Attack attribute
-    if unitType in attack4:
-        print("Attack:      D4")
-    # ... continued for each possible attack value.
-    # ... continued for each attribute and attribute value.
-    if unitType in headingChange:
-        print("Must change heading to alter course.")
-    if unitType in moveAndFire: # final required attribute, listed at the very end.
-        print("Can move and fire in the same turn.")
-    
+    print("Health: "), healthTable.get(unitType)
+    print("Movement: ", movementTable.get(unitType))
+    print("Attack: ", attackTable.get(unitType))
+    print("Sortie: ", sortieTable.get(unitType))
+    print("Fire: ", fireTable.get(unitType))
+    if unitType in searchable: print("Can search.")
+    if unitType in torpedoable: print("Can fire torpedoes.")
+    if unitType in hideable: print("Can hide.")
+    if unitType in moveAndFire: print("Can move and fire in the same turn.")
+    if unitType in headingChange: print("Must change heading to alter course.")
+    if unitType in depthchargeable: print("Can drop depth charges.")

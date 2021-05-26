@@ -35,7 +35,7 @@ def info(unitType):
     print("Sortie: ", sortieTable.get(unitType))
     print("Fire: ", fireTable.get(unitType))
     if unitType in searchable: print("Can search.")
-    if unitType in torpedoable: print("Torpedo:     D6")
+    if unitType in torpedoable: print("Can fire torpedoes.")
     if unitType in hideable: print("Can hide.")
     if unitType in moveAndFire: print("Can move and fire in the same turn.")
     if unitType in headingChange: print("Must change heading to alter course.")
