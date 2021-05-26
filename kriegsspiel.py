@@ -1,7 +1,7 @@
 import random
 import os
 from manpages import * 
-from brandywine import * # Gamefile import
+from coralsea import * # Gamefile import
 
 # Global variables and lists
 warPhase = True
@@ -159,13 +159,13 @@ def sortie(unit, unitType):
     global immobileUnits
     global firstDamage
     global secondDamage
-    if not unitType in sortieable:
+    if not unitType in sortieTable:
         print("Cannot launch sorties.")
         return
     if unit in hiddenUnits:
         print("Unit revealed.")
         reveal(unit, unitType)
-    if unitType in sortie8: maximum = 9
+    maximum = sortieTable.get(unitType) + 1
     damageDealt = random.randrange(1,maximum)
     owner = input(ownerPrompt)
     if owner == "a": 
