@@ -5,6 +5,9 @@ Release naming conventions:
 - Second digit: signifies a minor release. MUST be polished and fully functional
 - Third digit: signifies a commit build
 
+v2.1 - Naval battle polished release (5/25/21)
+    v2.1.1 - attack(), fire(), and build() now work with dictionaries
+
 v2.0 - Naval battle release (5/12/21)
     v2.0.1 - game loop reduced to 4LOC, functionality moved to getCommand()
     v2.0.2 - attack() command reintegrated

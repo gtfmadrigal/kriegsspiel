@@ -79,18 +79,13 @@ def attackMeta(unit, unitType):
     global hiddenUnits
     global firstDamage
     global secondDamage
-    if not unitType in attackable:
+    if not unitType in attackTable:
         print("Cannot attack.")
         return 0
     if unit in hiddenUnits:
         print("Unit revealed.")
         reveal(unit, unitType)
-    if unitType in attack4: maximum = 5
-    elif unitType in attack6: maximum = 7
-    elif unitType in attack8: maximum = 9
-    elif unitType in attack12: maximum = 13
-    elif unitType in attack16: maximum = 17
-    elif unitType in attack20: maximum = 21
+    maximum = attackTable.get(unitType) + 1
     damageDealt = random.randrange(1,maximum)
     usedUnits.append(unit)
     immobileUnits.append(unit)
@@ -103,17 +98,13 @@ def fire(unit, unitType):
     global hiddenUnits
     global firstDamage
     global secondDamage
-    if not unitType in fireable:
+    if not unitType in fireTable:
         print("Cannot attack.")
         return
     if unit in hiddenUnits:
         print("Unit revealed.")
         reveal(unit, unitType)
-    if unitType in fire8: maximum = 9
-    elif unitType in fire10: maximum = 11
-    elif unitType in fire12: maximum = 13
-    elif unitType in fire16: maximum = 17
-    elif unitType in fire20: maximum = 21
+    maximum = fireTable.get(unitType) + 1
     damageDealt = random.randrange(1,maximum)
     owner = input(ownerPrompt)
     if owner == "a": 
@@ -129,11 +120,12 @@ def fire(unit, unitType):
 def build(unit, unitType):
     global immobileUnits
     global usedUnits
-    if not unitType in buildable:
+    if not unitType in buildTable:
         print("Cannot build.")
         return
-    if unitType in build4: print("Fortification of strength", random.randrange(1,5), "built.")
-    elif unitType in build8: print("Fortification of strength", random.randrange(1,9), "built.")
+    maximum = buildTable.get(unitType) + 1
+    fortification = random.randrange(1,maximum)
+    print("Fortification of strength", fortification, "built.")
     immobileUnits.append(unit)
     usedUnits.append(unit)
 
@@ -310,7 +302,7 @@ def getCommand(rawCommand):
                 if unit in immobileUnits: print("Immovable this turn.")
                 if unit in usedUnits: print("Unusable this turn.")
                 if unit in hiddenUnits: print("Hidden.")
-            globals()[command](unit, unitType)
+            else: globals()[command](unit, unitType)
         else: print("Unknown command or bad syntax.")
     elif len(argsInCommand) == 2:
         command, argument = rawCommand.split()
@@ -319,7 +311,10 @@ def getCommand(rawCommand):
         else: print("Unknown command or bad syntax.")
     elif len(argsInCommand) == 1:
         oneWordCommands = ["score", "turn", "quit", "help", "attack", "details"]
-        if rawCommand in oneWordCommands: globals()[rawCommand]()
+        if rawCommand in oneWordCommands:
+            if rawCommand == "quit": quitGame()
+            elif rawCommand == "help": helpText()
+            else: globals()[rawCommand]()
         else: print("Unknown command or bad syntax.")
     else:
         print("A command requires 1 to 3 words.")
