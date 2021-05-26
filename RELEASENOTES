@@ -1,0 +1,72 @@
+Release notes for the major and minor releases:
+
+v0.1: Initial release
+
+Initial release of the kriegsspiel program. As of right now, it only works for land battles. Naval and air games may be added later. (Naval support would be added in v2.0).
+
+v1.0: Full release for land battles
+
+Changes in v1.0:
+- Framework and functions fully fleshed out for land battles.
+- Game functions fully implemented: move(), attack(), defend(), fire(), build(), hide(), reveal(), search(), spy(), all taking arguments (unit, unitType)
+- Meta-functions fully implemented: getCommand(command, unit, unitType), manual(argument), and score()
+- Pseudo-functions implemented within warPhase loop: turn(), quit(), help(), and details()
+- Fully portable for various battle scenarios, using different gamefiles
+- Framework for naval battle game functions added, though not implemented: torpedo(), sortie(), missile(), and dropcharge()
+
+To do in next release:
+- Clear any remaining v0.1 artifacts (v1.1)
+- Update scenariotemplate.py (v1.2.14)
+- Add support for naval battles and flesh out the relevant game functions (v2.0)
+
+v1.1: Cleared artifiacts
+
+- Artifacts from the v0.1 release have been removed
+- gamefiletemplate.py improved
+
+v1.2: Polished release
+
+- man() function added and fully implemented
+
+v2.0: Naval battle release
+
+New features in v2.0:
+- Naval battle functions added: heading(), torpedo(), sortie(), depthcharge()
+- Increased portability
+- Man pages for every command and function within the game, held in manpages.py
+- man() function added
+- Internal shell can parse commands
+- Game loop improved
+- getCommand() function reduced in importance
+- details(), turn(), quitGame(), and helpText() removed from game loop and separated into self-contained functions
+
+Features to be added in next release:
+- Purge getCommand() function entirely, reincorporating it back into game loop (possible, not sure if this is necessary, but it may improve speed of execution) (problem was addressed in a different way, see v2.0.1)
+- Clean up manpages.py (v2.0.5, v2.0.7, and v2.0.8)
+- Simplify command-calling using dictionaries instead of if-elif-else statements (v2.1.4)
+- Collapse defend() and attack() functions into a single function, eliminating the negative-damage bug (v2.0.9)
+- Simplify man() function (v2.0.5)
+- Use dictionaries instead of lists to ascribe attributes to units and unit types (v2.1.4, v2.1.5, still being worked on)
+
+v2.2 - Naval battles simplified
+
+New features in this release:
+- Game loop reduced for better speed, functionality moved to getCommand() function.
+- attack() and defend() commands combined into a single function.
+- Negative damage bug fixed.
+- Turn now implies which team is active, and that team is passed to various functions, eliminating the need for the owner prompt in attack(), fire(), sortie(), torpedo(), etc.
+- Man pages are now stored in text files in a separate directory.
+- Changelog file for every release and commit, detailing changes.
+- Lists collapsed to dictionaries for commands which require attributes like health, movement, and attack damage. These dictionaries are then looked up by various commands, improving reliability and portability between various gamefiles.
+- Gamefiles are much shorter, reduced from ~150 lines of code to ~30.
+
+Features to be added in a later release:
+- Support for air warfare, completing the land-sea-air trifecta, including takeoff(), land(), pulse(), airlift(), survey(), drop(), bomb().
+- Transportation of units, including disembark() and load().
+- Ability to convert artillery or cavalry units into infantry ones.
+- Unit-by-unit damage tracking, instead of team-wide.
+- Eliminate need to call unit types. This can be done by adding dictionaries full of individual unit names as keys, where the values are the unit type. When a function is called, the unit type is looked up in the dictionary.
+- Eliminate use of the globals() Python function with dictionaries full of functions. Call functions based on lookups of this dictionary.
+- Rewrite entire codebase to be faster and more portable. Separate functions into individual files instead of all being lumped into kriegsspiel.py.
+- Package kriegsspiel files into binaries, to be offered with the releases.
+- Choose which gamefile is imported by hand, instead of setting it in the source code.
