@@ -215,6 +215,7 @@ def attack(team):
                 print("'quit' to exit without saving, 'defend' to proceed to defense phase.")
             elif attackCommand == "quit": 
                 attackPhase = False
+                defensePhase = False
                 willQuit = True
             elif attackCommand == "defend":
                 attackPhase = False
@@ -223,7 +224,7 @@ def attack(team):
         elif len(argsInAttackCommand) == 2:
             unit, unitType = attackCommand.split()
             try:
-                if unit in hiddenUnits: print("Unit revealed.")
+                if unit in hiddenUnits: reveal(unit, unitType, team)
                 maximum = attackTable.get(unitType) + 1
                 attackDamage = random.randrange(1, maximum)
                 totalAttackDamage = totalAttackDamage + attackDamage
@@ -249,7 +250,7 @@ def attack(team):
         elif len(argsInDefendCommand) == 2:
             unit, unitType = defenseCommand.split()
             try:
-                if unit in hiddenUnits: print("Unit revealed.")
+                if unit in hiddenUnits: reveal(unit, unitType, team)
                 maximum = attackTable.get(unitType) + 1
                 defenseDamage = random.randrange(1, maximum)
                 totalDefenseDamage = totalDefenseDamage + defenseDamage
