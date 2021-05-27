@@ -1,5 +1,5 @@
 # At 75 lines of code, the attack(team) function is the longest function in Kriegsspiel. It is a re-write of the previous attack() and defend() functions, which were separate. The separation of offensive and defensive small-arms combat created a negative-damage bug that was not solved until the v2.2 release, with the attack() function.
-# This function is callable using the command "attack".
+# This function is callable from the shell using the command "attack," with no qualifiers.
 
 def attack(team): # While the attack command itself takes no arguments, the team whose turn it is is passed to the *function* under the argument "team". Here, "team" is the name of the team (either firstTeam or secondTeam) that is defending.
 
