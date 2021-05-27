@@ -181,6 +181,7 @@ def depthcharge(unit, unitType, team):
         immobileUnits.append(disabled)
         usedUnits.append(disabled)
     immobileUnits.append(unit)
+    alreadyDropped.append(unit)
 
 def man(argument):
     manpage = str(argument)
@@ -347,6 +348,7 @@ def turn():
     global round
     usedUnits.clear()
     immobileUnits.clear()
+    alreadyDropped.clear()
     round = round + 1
 
 def quitGame():
