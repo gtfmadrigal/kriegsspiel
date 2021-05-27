@@ -42,17 +42,19 @@ def attack(team): # While the attack command itself takes no arguments, the team
         elif len(argsInAttackCommand) == 2: # The block of code within this elif statement executies if the command is two words.
             unit, unitType = attackCommand.split() # The user input stored in attackCommand is split into two string variables: unit and unitType, because that is the format required.
             try: # The remainder of this elif block is contained within a try-except statement, since if the user has typed an invalud unitType, Python will throw a valueError and the entire Kriegsspiel program crashes.
-                if unit in hiddenUnits: reveal(unit, unitType, team) # If the unit is in the hiddenUnits
-                maximum = attackTable.get(unitType) + 1
-                attackDamage = random.randrange(1, maximum)
-                totalAttackDamage = totalAttackDamage + attackDamage
-                print("Damage dealt:", attackDamage)
-                print("Total damage dealt:", totalAttackDamage)
-                usedUnits.append(unit)
-                immobileUnits.append(unit)
+                if unit in hiddenUnits: reveal(unit, unitType, team) # If the unit is in the hiddenUnits list, the reveal() function is called.
+                maximum = attackTable.get(unitType) + 1 # The maximum value for the attack of this particular unit is calculated by looking up the unitType within the attackTable dictionary provided by the gamefile, which returns the value, and adding one to this value. The increment of 1 is necessary since Python's random.randrange() function uses an exclusive upper bound; e.g. random.randrange(1,6) will never evaluate to 6.
+                attackDamage = random.randrange(1, maximum) # The attack damage for that unit is a random value from 1 to the maximum previously defined.
+                totalAttackDamage = totalAttackDamage + attackDamage # attackDamage is added to the totalAttackDamage.
+                print("Damage dealt:", attackDamage) # The attack damage done by that unit is displayed.
+                print("Total damage dealt:", totalAttackDamage) # The total attack damage up to that point is displayed.
+                usedUnits.append(unit) # The unit is appended to the list usedUnits, so that it cannot attack again in the current turn.
+                immobileUnits.append(unit) # The unit is appended to the list immobileUnits, so that it cannot move later in the current turn.
             except: print("No such unit or unit type.") # Instead of crashing Kriegsspiel, this statement catches the thrown error, displays a simple message, and returns the user to the attack() subshell.
-        else: print("Too many arguments.")
 
+        else: print("Too many arguments.") # If the user inputs more than two words into the attack() subshell, a error is thrown and the user is returned to the subshell.
+
+    # The second loop within the attack() function is mostly the same. Comments will only be added where there is a difference in functionality between the defense phase loop and the attack phase loop
     while defensePhase == True:
         prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][defense]% "
         defenseCommand = input(prompt)
@@ -62,9 +64,9 @@ def attack(team): # While the attack command itself takes no arguments, the team
                 print("Syntax: [unit] [unitType]")
                 print("'quit' to exit without saving, 'save' to save to gamestate.")
             elif defenseCommand == "quit":
-                defensePhase = False
+                defensePhase = False 
                 willQuit = True
-            elif defenseCommand == "save": defensePhase = False
+            elif defenseCommand == "save": defensePhase = False # The attack() function can only be saved after the defense phase, by typing the function "save". If the user does this, defensePhase is set to False, the loop quits, and the final portion of the function is executed.
             else: print("Unknown command.")
         elif len(argsInDefendCommand) == 2:
             unit, unitType = defenseCommand.split()
@@ -79,13 +81,15 @@ def attack(team): # While the attack command itself takes no arguments, the team
                 immobileUnits.append(unit)
             except: print("No such unit or unit type.")
         else: print("Too many arguments.")
-    if willQuit == True: return
-    if totalAttackDamage > totalDefenseDamage: damageDealt = totalAttackDamage - totalDefenseDamage
-    else: damageDealt = 0
-    if team == firstTeam:
-        firstDamage = firstDamage + damageDealt
-        print(firstTeam, "deal", damageDealt, "damage.")
-    elif team == secondTeam:
+
+    # The last part of the function is executed after either the quit() or save() commands are executed, breaking out of the loops.
+    if willQuit == True: return # If the user at any time typed "quit", willQuit would have been set to True. At this point, if willQuit is true, the function returns a null value and nothing in the gamestate will be altered. Otherwise, the remainder of this block of code will be executed.
+    if totalAttackDamage > totalDefenseDamage: damageDealt = totalAttackDamage - totalDefenseDamage # If the total attack damage inflicting during the course of the attack() function being called exceeds the total defense damage, the damage dealt is their difference.
+    else: damageDealt = 0 # If the total attack damage is equal to or less than the total defense damage, the damage dealt is 0.
+    if team == firstTeam: # If the team passed to the attack() function is the first team as defined in the gamefile ... 
+        firstDamage = firstDamage + damageDealt # ... the damage is adjusted accordingly. It should be noted that firstDamage, an integer variable, contains the amount of damage done BY the first team, rather than the amount of damage done TO the first team.
+        print(firstTeam, "deal", damageDealt, "damage.") # The team and damage is displayed.
+    elif team == secondTeam: # A similar block of code is executed if the team is the second team.
         secondDamage = secondDamage + damageDealt
         print(secondTeam, "deal", damageDealt, "damage.")
-    print("If any units were killed in the exchange, call manual(kill).")
+    print("If any units were killed in the exchange, call manual(kill).") # Finally, just before the function returns to the main shell, attack() implores the user to enter the command "manual kill" if needed. 
