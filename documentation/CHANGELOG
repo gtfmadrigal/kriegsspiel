@@ -97,3 +97,4 @@ v2.1 - Naval battle polished release (5/25/21)
     v2.2.8 - documentation added for build() function
     v2.2.9 - depthcharge() fixed to work with alreadyDropped[] list
     v2.2.10 - documentation added for depthcharge() function
+    v2.2.11 - documentation added for details() function
