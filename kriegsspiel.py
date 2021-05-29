@@ -1,7 +1,7 @@
 import random
 import os
 from manpages import * 
-from coralsea import *
+from brandywine import *
 
 round = 1
 usedUnits = []
@@ -274,7 +274,7 @@ def attack(team):
 
 def getCommand(rawCommand, team):
     argsInCommand = rawCommand.split()
-    if len(argsInCommand) == 4:
+    if len(argsInCommand) == 3:
         command, unit, unitType = rawCommand.split()
         if command in validCommands:
             if unit in deadUnits:
@@ -283,12 +283,6 @@ def getCommand(rawCommand, team):
             elif unit in usedUnits:
                 print("Used.")
                 return
-            if command == "info": 
-                info(unitType)
-                if unit in deadUnits: print("Dead.")
-                if unit in immobileUnits: print("Immovable this turn.")
-                if unit in usedUnits: print("Unusable this turn.")
-                if unit in hiddenUnits: print("Hidden.")
             else: globals()[command](unit, unitType, team)
         else: print("Unknown command or bad syntax.")
     elif len(argsInCommand) == 2:
@@ -361,6 +355,19 @@ def helpText():
     print("turn, quit, man, help, details, score")
     print(*validCommands, sep = ", ")
     print(*allUnitTypes, sep = ", ")
+
+def info(unit, unitType, team):
+    print("Health: ", healthTable.get(unitType))
+    print("Movement: ", movementTable.get(unitType))
+    print("Attack: ", attackTable.get(unitType))
+    print("Build: ", buildTable.get(unitType))
+    if unitType in searchable: print("Can search.")
+    if unitType in hideable: print("Can hide.")
+    if unitType in moveAndFire: print("Can move and fire in the same turn.")
+    if unit in deadUnits: print("Dead.")
+    if unit in immobileUnits: print("Immovable this turn.")
+    if unit in usedUnits: print("Unusable this turn.")
+    if unit in hiddenUnits: print("Hidden.")
 
 while True:
     while (round % 2) != 0:

@@ -1,3 +1,0 @@
-def quitGame():
-    score()
-    quit()

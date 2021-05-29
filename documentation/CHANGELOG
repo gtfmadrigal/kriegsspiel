@@ -98,3 +98,4 @@ v2.1 - Naval battle polished release (5/25/21)
     v2.2.9 - depthcharge() fixed to work with alreadyDropped[] list
     v2.2.10 - documentation added for depthcharge() function
     v2.2.11 - documentation added for details() function
+    v2.2.12 - moved info() to kriegsspiel.py, removed documentation in preparation for v2.3 rewrite
