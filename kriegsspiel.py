@@ -1,6 +1,5 @@
 import random
 import os
-from manpages import * 
 from brandywine import *
 
 round = 1
@@ -274,23 +273,13 @@ def attack(team):
 
 def getCommand(rawCommand, team):
     argsInCommand = rawCommand.split()
-    if len(argsInCommand) == 3:
-        command, unit, unitType = rawCommand.split()
-        if command in validCommands:
-            if unit in deadUnits:
-                print("Dead.")
-                return
-            elif unit in usedUnits:
-                print("Used.")
-                return
-            else: globals()[command](unit, unitType, team)
-        else: print("Unknown command or bad syntax.")
-    elif len(argsInCommand) == 2:
-        command, argument = rawCommand.split()
-        twoWordCommands = ["man", "manual"]
-        if command == "manual": manual(argument, team)
-        elif command in twoWordCommands: globals()[command](argument)
-        else: print("Unknown command or bad syntax.")
+    if len(argsInCommand) == 2:
+        command, unit = rawCommand.split()
+        if command == "manual": manual(unit, team)
+        else: 
+            unitType = unitTable.get(unit)
+            if command in validCommands: globals()[command](unit, unitType, team)
+            else: print("Unknown command or bad syntax.")
     elif len(argsInCommand) == 1:
         oneWordCommands = ["score", "turn", "quit", "help", "attack", "details"]
         if rawCommand in oneWordCommands:
