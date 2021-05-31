@@ -59,6 +59,13 @@ def freeze(unit, unitType, team):
     global immobileUnits
     immobileUnits.append(unit)
 
+def turn():
+    global round
+    usedUnits.clear()
+    immobileUnits.clear()
+    alreadyDropped.clear()
+    round = round + 1
+
 def move(unit, unitType, team):
     pass
 
@@ -84,13 +91,46 @@ def torpedo(unit, unitType, team):
     pass
 
 def sortie(unit, unitType, team):
-    pass
-
-def depthcharge(unit, unitType, team):
     global usedUnits
-    global alreadyDropped
+    global immobileUnits
+    global firstHealth
+    global secondHealth
     global firstTeamTable
     global secondTeamTable
+    if team == firstTeam: 
+        targetTeam = secondTeam
+        targetTeamTable = secondTeamTable
+    else: 
+        targetTeam = firstTeam
+        targetTeamTable = firstTeamTable
+    if not unitType in sortieTable:
+        throwError("function")
+        return
+    prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][sortie]% "
+    target = input(prompt)
+    targetUnitType = unitTable.get(target)
+    attackDamage = calculateDamage(unit, unitType, team, sortieTable)
+    defenseDamage = calculateDamage(target, targetUnitType, targetTeam, sortieDefenseTable)
+    if defenseDamage <= attackDamage:
+        netDamage = attackDamage - defenseDamage
+        oldHealth = targetTeamTable[target]
+        if oldHealth - netDamage < 0: kill(target, targetUnitType, targetTeam)
+        else: 
+            newHealth = oldHealth - netDamage
+            print(target, "new health:", newHealth)
+            targetTeamTable[target] = newHealth
+    else: print("Attack repelled by:", target)
+    usedUnits.append(unit)
+    immobileUnits.append(unit)
+    firstHealth = sum(firstTeamTable.values())
+    secondHealth = sum(secondTeamTable.values())
+    score()
+
+def depthcharge(unit, unitType, team):
+    global alreadyDropped
+    global immobileUnits
+    if team == firstTeam: targetTeam = secondTeam
+    else: targetTeam = firstTeam
     if not unitType in depthchargeTable:
         throwError("function")
         return
@@ -101,12 +141,6 @@ def depthcharge(unit, unitType, team):
     target = input(prompt)
     targetUnitType = unitTable.get(target)
     effectiveness = calculateDamage(unit, unitType, team, depthchargeTable)
-    if team == firstTeam: 
-        teamTable = firstTeamTable
-        targetTeam = secondTeam
-    else: 
-        teamTable = secondTeamTable
-        targetTeam = firstTeam
     if effectiveness == 6: 
         kill(target, targetUnitType, targetTeam)
         print(target, "sunk.")
@@ -204,6 +238,7 @@ def attack(team):
         firstHealth = sum(firstTeamTable.values())
         secondHealth = sum(secondTeamTable.values())
         score()
+        turn()
 
 def health(unit, unitType, team):
     global firstHealth
@@ -223,13 +258,6 @@ def health(unit, unitType, team):
 
 def details():
     print(secrets)
-
-def turn():
-    global round
-    usedUnits.clear()
-    immobileUnits.clear()
-    alreadyDropped.clear()
-    round = round + 1
 
 def info(unit, unitType, team):
     print("Unit type: ", unitTable.get(unit))
