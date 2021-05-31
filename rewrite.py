@@ -54,7 +54,11 @@ def kill(unit, unitType, team):
     pass
 
 def freeze(unit, unitType, team):
-    pass
+    global firstHealth
+    global secondHealth
+    global immobileUnits
+    global usedUnits
+    immobileUnits.append(unit)
 
 def score():
     firstPercent = firstHealth / firstHealthTotal * 100
