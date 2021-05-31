@@ -51,13 +51,19 @@ def health(unit, unitType, team):
     pass
 
 def kill(unit, unitType, team):
-    pass
-
-def freeze(unit, unitType, team):
     global firstHealth
     global secondHealth
+    global firstTeamTable
+    global secondTeamTable
+    if team == firstTeam: 
+        firstTeamTable[unit] = 0
+        firstHealth = sum(firstTeamTable.values())
+    else: 
+        secondTeamTable[unit] = 0
+        secondHealth = sum(secondTeamTable.values())
+
+def freeze(unit, unitType, team):
     global immobileUnits
-    global usedUnits
     immobileUnits.append(unit)
 
 def score():
