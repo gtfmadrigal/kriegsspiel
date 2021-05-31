@@ -48,7 +48,20 @@ def attack():
     pass
 
 def health(unit, unitType, team):
-    pass
+    global firstHealth
+    global secondHealth
+    global firstTeamTable
+    global secondTeamTable
+    if unit in firstTeamTable:
+        print("Current health:", firstTeamTable.get(unit))
+        newHealth = input("New health: ")
+        firstTeamTable[unit] = int(newHealth)
+        firstHealth = sum(firstTeamTable.values())
+    else:
+        print("Current health:", secondTeamTable.get(unit))
+        newHealth = input("New health: ")
+        secondTeamTable[unit] = int(newHealth)
+        secondHealth = sum(secondTeamTable.values())
 
 def kill(unit, unitType, team):
     global firstHealth
