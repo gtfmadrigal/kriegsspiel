@@ -102,6 +102,9 @@ v2.1 - Naval battle polished release (5/25/21)
     v2.2.13 - added .gitignore
     v2.2.14 - unitType no longer required in shell command
     v2.2.15 - structure of rewrite completed
-    v2.2.16 - shell() and turn() functions implemented
-    v2.2.17 - helpText() and quitGame() functions implemented
-    v2.2.18 - details() function implemented
+    v2.2.16 - shell() function implemented
+    v2.2.17 - turn() function implemented
+    v2.2.18 - helpText() function implemented
+    v2.2.19 - quitGame() funciton implemented
+    v2.2.20 - details() function implemented
+    v2.2.21 - score() function implemented

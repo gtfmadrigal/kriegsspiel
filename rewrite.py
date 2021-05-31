@@ -57,7 +57,10 @@ def freeze(unit, unitType, team):
     pass
 
 def score():
-    pass
+    firstPercent = firstHealth / firstHealthTotal * 100
+    secondPercent = secondHealth / secondHealthTotal * 100
+    print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
+    print(secondTeam, "total health:", secondHealth, "or", secondPercent, "%")
 
 def details():
     print(secrets)

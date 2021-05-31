@@ -342,7 +342,7 @@ def helpText():
     global validCommands
     global allUnitTypes
     print("turn, quit, man, help, details, score")
-    print(*validCommands, sep = ", ")
+    print(*vfalidCommands, sep = ", ")
     print(*allUnitTypes, sep = ", ")
 
 def info(unit, unitType, team):
