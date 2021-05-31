@@ -73,10 +73,16 @@ def info(unit, unitType, team):
     pass
 
 def quitGame():
-    pass
+    score()
+    quit()
 
 def helpText():
-    pass
+    global validCommands
+    global allUnitTypes
+    print("turn, quit, man, help, details, score")
+    print(*validCommands, sep = ", ")
+    print(*allUnitTypes, sep = ", ")
+    print("To learn more about any command, type 'man [command]'.")
 
 def throwError(function):
     if function == "arguments": errorMessage = "Too many arguments for command."
