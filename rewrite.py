@@ -60,7 +60,7 @@ def score():
     pass
 
 def details():
-    pass
+    print(secrets)
 
 def turn():
     global round
@@ -70,7 +70,25 @@ def turn():
     round = round + 1
 
 def info(unit, unitType, team):
-    pass
+    print("Unit type: ", unitTable.get(unit))
+    print("Maximum health: ", healthTable.get(unitType))
+    if unit in firstTeamTable: 
+        owner = firstTeam
+        print("Current health: ", firstTeamTable.get(unit))
+        print("Owner: ", firstTeam)
+    else: 
+        owner = secondTeam
+        print("Current health: ", secondTeamTable.get(unit))
+        print("Owner: ", secondTeam)
+    print("Movement: ", movementTable.get(unitType))
+    print("Attack: ", attackTable.get(unitType))
+    print("Build: ", buildTable.get(unitType))
+    if unitType in searchable: print("Can search.")
+    if unitType in hideable: print("Can hide.")
+    if unitType in moveAndFire: print("Can move and fire in the same turn.")
+    if unit in immobileUnits: print("Immovable this turn.")
+    if unit in usedUnits: print("Unusable this turn.")
+    if unit in hiddenUnits: print("Hidden.")
 
 def quitGame():
     score()
