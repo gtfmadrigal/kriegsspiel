@@ -9,6 +9,7 @@ hiddenUnits = []
 alreadyDropped = []
 commandNumber = 1
 secrets = ""
+oneWordCommands = {"score":"score", "turn":"turn", "quit":"quitGame", "help":"helpText", "attack":"attack", "details":"details"}
 
 def move(unit, unitType, team):
     pass
@@ -43,7 +44,7 @@ def depthcharge(unit, unitType, team):
 def man(command, arg2, arg3):
     pass
 
-def attack(team, arg2, arg3):
+def attack():
     pass
 
 def health(unit, unitType, team):
@@ -55,33 +56,36 @@ def kill(unit, unitType, team):
 def freeze(unit, unitType, team):
     pass
 
-def score(unit, unitType, team):
+def score():
     pass
 
-def details(unit, unitType, team):
+def details():
     pass
 
-def turn(unit, unitType, team):
+def turn():
     global round
-    round += 1
-    pass
+    usedUnits.clear()
+    immobileUnits.clear()
+    alreadyDropped.clear()
+    round = round + 1
 
 def info(unit, unitType, team):
     pass
 
-def quitGame(unit, unitType, team):
+def quitGame():
     pass
 
-def helpText(unit, unitType, team):
+def helpText():
     pass
 
 def throwError(function):
-    if function == "arguments": return
-    elif function == "bad": return
-    pass
+    if function == "arguments": errorMessage = "Too many arguments for command."
+    elif function == "bad": errorMessage = "Bad command."
+    print(errorMessage)
 
-def shell(team, prompt):
+def shell(team):
     global commandNumber
+    prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "]% "
     rawCommand = input(prompt)
     if len(rawCommand.split()) > 2: 
         throwError("arguments")
@@ -90,22 +94,16 @@ def shell(team, prompt):
         command, unit = rawCommand.split()
         unitType = unitTable.get(unit)
         if command in validCommands: globals()[command](unit, unitType, team)
-    else:
-        oneWordCommands = {"score":"score", "turn":"turn", "quit":"quitGame", "help":"helpText", "attack":"attack", "details":"details"}
-        actualFunction = oneWordCommands.get(rawCommand, "None")
-        if actualFunction == "None": 
+        else: 
             throwError("bad")
             return
-        globals()[actualFunction](0,0,0)
-    commandNumber += 1
-
+    else: 
+        try: globals()[oneWordCommands.get(rawCommand)]()
+        except: 
+            throwError("bad")
+            return
+    commandNumber = commandNumber + 1
 
 while True:
-    while (round % 2) != 0:
-        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + str(firstTeam) + "]% "
-        team = firstTeam
-        shell(team, prompt)
-    while (round % 2) != 0:
-        prompt = "[Rd." + str(round) + "][" + str(commandNumber) = "][" + str(secondTeam) + "]% "
-        team = secondTeam
-        shell(team, prompt)
+    while (round % 2) != 0: shell(firstTeam)
+    while (round % 2) == 0: shell(secondTeam)
