@@ -18,6 +18,7 @@ def throwError(function):
     elif function == "os": errorMessage = "Unknown operating system."
     elif function == "team": errorMessage = "That unit does not belong to you."
     elif function == "available": errorMessage = "That unit is currently unavailable."
+    elif function == "function": errorMessage = "That function is unavailable to this unit."
     print(errorMessage)
 
 def score():
@@ -25,6 +26,34 @@ def score():
     secondPercent = secondHealth / secondHealthTotal * 100
     print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
     print(secondTeam, "total health:", secondHealth, "or", secondPercent, "%")
+
+def calculateDamage(unit, unitType, team, table):
+    global firstTeamTable
+    global secondTeamTable
+    if team == firstTeam: teamTable = firstTeamTable
+    if team == secondTeam: teamTable = secondTeamTable
+    if not unit in teamTable:
+        throwError("team")
+        return
+    if unit in immobileUnits or unit in usedUnits:
+        throwError("available")
+        return
+    if unit in hiddenUnits: reveal(unit, unitType, team)
+    maximum = table.get(unitType) + 1
+    damage = random.randrange(1, maximum)
+    return damage
+
+def kill(unit, unitType, team):
+    global firstHealth
+    global secondHealth
+    global firstTeamTable
+    global secondTeamTable
+    if team == firstTeam: 
+        firstTeamTable[unit] = 0
+        firstHealth = sum(firstTeamTable.values())
+    else: 
+        secondTeamTable[unit] = 0
+        secondHealth = sum(secondTeamTable.values())
 
 def freeze(unit, unitType, team):
     global immobileUnits
@@ -58,7 +87,35 @@ def sortie(unit, unitType, team):
     pass
 
 def depthcharge(unit, unitType, team):
-    pass
+    global usedUnits
+    global alreadyDropped
+    global firstTeamTable
+    global secondTeamTable
+    if not unitType in depthchargeTable:
+        throwError("function")
+        return
+    if unit in alreadyDropped:
+        throwError("available")
+        return
+    prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][depthcharge]% "
+    target = input(prompt)
+    targetUnitType = unitTable.get(target)
+    effectiveness = calculateDamage(unit, unitType, team, depthchargeTable)
+    if team == firstTeam: 
+        teamTable = firstTeamTable
+        targetTeam = secondTeam
+    else: 
+        teamTable = secondTeamTable
+        targetTeam = firstTeam
+    if effectiveness == 6: 
+        kill(target, targetUnitType, targetTeam)
+        print(target, "sunk.")
+    elif effectiveness == 5: 
+        freeze(target, targetUnitType, targetTeam)
+        print(target, "frozen.")
+    else: print("Missed.")
+    immobileUnits.append(unit)
+    alreadyDropped.append(unit)
 
 def man(command, arg2, arg3):
     if os.name == "nt": path = "manpage\\" + str(command)
@@ -66,22 +123,6 @@ def man(command, arg2, arg3):
     else: throwError("os")
     file = open(path, "r")
     for line in file: print(file.read())
-
-def calculateDamage(unit, unitType, team):
-    global firstTeamTable
-    global secondTeamTable
-    if team == firstTeam: teamTable = firstTeamTable
-    if team == secondTeam: teamTable = secondTeamTable
-    if not unit in teamTable:
-        throwError("team")
-        return
-    if unit in immobileUnits or unit in usedUnits:
-        throwError("available")
-        return
-    if unit in hiddenUnits: reveal(unit, unitType, team)
-    maximum = attackTable.get(unitType) + 1
-    damage = random.randrange(1, maximum)
-    return damage
 
 def attack(team):
     global firstHealth
@@ -114,7 +155,7 @@ def attack(team):
             defensePhase = True
         elif command in unitTable:
             unitType = unitTable.get(command)
-            attackDamage = calculateDamage(command, unitType, team)
+            attackDamage = calculateDamage(command, unitType, team, attackTable)
             try: 
                 totalAttackDamage = totalAttackDamage + attackDamage
                 usedUnits.append(command)
@@ -133,7 +174,7 @@ def attack(team):
         elif command == "save": defensePhase = False
         elif command in unitTable:
             unitType = unitTable.get(command)
-            defenseDamage = calculateDamage(command, unitType, defendingTeam)
+            defenseDamage = calculateDamage(command, unitType, defendingTeam, attackTable)
             try: 
                 totalDefenseDamage = totalDefenseDamage + defenseDamage
                 defendingUnits.append(command)
@@ -178,18 +219,6 @@ def health(unit, unitType, team):
         print("Current health:", secondTeamTable.get(unit))
         newHealth = input("New health: ")
         secondTeamTable[unit] = int(newHealth)
-        secondHealth = sum(secondTeamTable.values())
-
-def kill(unit, unitType, team):
-    global firstHealth
-    global secondHealth
-    global firstTeamTable
-    global secondTeamTable
-    if team == firstTeam: 
-        firstTeamTable[unit] = 0
-        firstHealth = sum(firstTeamTable.values())
-    else: 
-        secondTeamTable[unit] = 0
         secondHealth = sum(secondTeamTable.values())
 
 def details():
