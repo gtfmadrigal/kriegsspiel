@@ -10,6 +10,25 @@ alreadyDropped = []
 commandNumber = 1
 secrets = ""
 oneWordCommands = {"score":"score", "turn":"turn", "quit":"quitGame", "help":"helpText", "attack":"attack", "details":"details"}
+defendingUnits = []
+
+def throwError(function):
+    if function == "arguments": errorMessage = "Too many arguments for command. Type 'man' [command] for information."
+    elif function == "bad": errorMessage = "Bad command. Type 'help' for assistance."
+    elif function == "os": errorMessage = "Unknown operating system."
+    elif function == "team": errorMessage = "That unit does not belong to you."
+    elif function == "available": errorMessage = "That unit is currently unavailable."
+    print(errorMessage)
+
+def score():
+    firstPercent = firstHealth / firstHealthTotal * 100
+    secondPercent = secondHealth / secondHealthTotal * 100
+    print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
+    print(secondTeam, "total health:", secondHealth, "or", secondPercent, "%")
+
+def freeze(unit, unitType, team):
+    global immobileUnits
+    immobileUnits.append(unit)
 
 def move(unit, unitType, team):
     pass
@@ -42,10 +61,108 @@ def depthcharge(unit, unitType, team):
     pass
 
 def man(command, arg2, arg3):
-    pass
+    if os.name == "nt": path = "manpage\\" + str(command)
+    elif os.name == "posix": path = "manpages/" + str(command)
+    else: throwError("os")
+    file = open(path, "r")
+    for line in file: print(file.read())
 
-def attack():
-    pass
+def calculateDamage(unit, unitType, team):
+    global firstTeamTable
+    global secondTeamTable
+    if team == firstTeam: teamTable = firstTeamTable
+    if team == secondTeam: teamTable = secondTeamTable
+    if not unit in teamTable:
+        throwError("team")
+        return
+    if unit in immobileUnits or unit in usedUnits:
+        throwError("available")
+        return
+    if unit in hiddenUnits: reveal(unit, unitType, team)
+    maximum = attackTable.get(unitType) + 1
+    damage = random.randrange(1, maximum)
+    return damage
+
+def attack(team):
+    global firstHealth
+    global secondHealth
+    global firstTeamTable
+    global secondTeamTable
+    global defendingUnits
+    global usedUnits
+    attackPhase = True
+    defensePhase = False
+    willQuit = False
+    totalAttackDamage = 0
+    totalDefenseDamage = 0
+    if team == firstTeam: 
+        defendingTeam = secondTeam
+        defenseTable = secondTeamTable
+    else: 
+        defendingTeam = firstTeam
+        defenseTable = firstTeamTable
+    while attackPhase == True:
+        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][attack]% "
+        command = input(prompt)
+        if command == "help": print("Enter a named unit to attack, 'defend' to change to the defense phase, or 'quit' to exit without saving.")
+        elif command == "quit":
+            attackPhase = False
+            defensePhase = False
+            willQuit = True
+        elif command == "defend":
+            attackPhase = False
+            defensePhase = True
+        elif command in unitTable:
+            unitType = unitTable.get(command)
+            attackDamage = calculateDamage(command, unitType, team)
+            try: 
+                totalAttackDamage = totalAttackDamage + attackDamage
+                usedUnits.append(command)
+                if not command in moveAndFire: freeze(command)
+            except: pass
+            print("Damage dealt:", attackDamage)
+            print("Total damage dealt:", totalAttackDamage)
+        else: throwError("bad")
+    while defensePhase == True:
+        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + defendingTeam + "][defend]% "
+        command = input(prompt)
+        if command == "help": print("Enter a named unit to defend, 'save' to save changes to gamestate, or 'quit' to exit without saving.")
+        elif command == "quit":
+            defensePhase = False
+            willQuit = True
+        elif command == "save": defensePhase = False
+        elif command in unitTable:
+            unitType = unitTable.get(command)
+            defenseDamage = calculateDamage(command, unitType, defendingTeam)
+            try: 
+                totalDefenseDamage = totalDefenseDamage + defenseDamage
+                defendingUnits.append(command)
+            except: pass
+            print("Defense dealt:", defenseDamage)
+            print("Total defense dealt:", totalDefenseDamage)
+            if totalDefenseDamage >= totalAttackDamage: defensePhase = False
+        else: throwError("bad")
+    if willQuit == True: return
+    if totalDefenseDamage >= totalAttackDamage:
+        print("Attack repelled by", defendingTeam)
+        return
+    else:
+        netDamage = totalAttackDamage - totalDefenseDamage
+        print("Net damage:", netDamage)
+        perUnitDamage = netDamage / len(defendingUnits)
+        print("Damage per unit:", perUnitDamage)
+        for x in defendingUnits:
+            oldHealth = defenseTable.get(x)
+            if oldHealth - perUnitDamage < 0: 
+                newHealth = 0
+                print(x, "killed.")
+            else: 
+                newHealth = oldHealth - perUnitDamage
+                print(x, "new health:", newHealth)
+            defenseTable[x] = newHealth
+        firstHealth = sum(firstTeamTable.values())
+        secondHealth = sum(secondTeamTable.values())
+        score()
 
 def health(unit, unitType, team):
     global firstHealth
@@ -74,16 +191,6 @@ def kill(unit, unitType, team):
     else: 
         secondTeamTable[unit] = 0
         secondHealth = sum(secondTeamTable.values())
-
-def freeze(unit, unitType, team):
-    global immobileUnits
-    immobileUnits.append(unit)
-
-def score():
-    firstPercent = firstHealth / firstHealthTotal * 100
-    secondPercent = secondHealth / secondHealthTotal * 100
-    print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
-    print(secondTeam, "total health:", secondHealth, "or", secondPercent, "%")
 
 def details():
     print(secrets)
@@ -128,11 +235,6 @@ def helpText():
     print(*allUnitTypes, sep = ", ")
     print("To learn more about any command, type 'man [command]'.")
 
-def throwError(function):
-    if function == "arguments": errorMessage = "Too many arguments for command."
-    elif function == "bad": errorMessage = "Bad command."
-    print(errorMessage)
-
 def shell(team):
     global commandNumber
     prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "]% "
@@ -147,11 +249,13 @@ def shell(team):
         else: 
             throwError("bad")
             return
-    else: 
-        try: globals()[oneWordCommands.get(rawCommand)]()
-        except: 
-            throwError("bad")
-            return
+    else:
+        if rawCommand == "attack": attack(team) 
+        else:
+            try: globals()[oneWordCommands.get(rawCommand)]()
+            except: 
+                throwError("bad")
+                return
     commandNumber = commandNumber + 1
 
 while True:
