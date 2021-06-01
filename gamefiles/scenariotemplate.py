@@ -1,47 +1,36 @@
-# This is a template file for a gamefile
-# When creating a gamefile, give it a unique name.
-# Good practice is to list all your gamefiles in your copy of kriegsspiel.py, just under "import random", with the command "from [gamefile] import *" leaving them all commented out. When you want to start a new game, uncomment the line with the gamefile you want. Ordinarily, universal imports are discouraged because of security problems. Since kriegsspiel.py is only importing variables, lists, and a locally defined function, the security issues are nonexistent.
+# This template can be used to creata a new gamefile.
 
-# A gamefile consists of three portions: a section defining the global variables, a section defining the attributes of various unit types, and the info() function. Each will be discussed in turn.
+# Definition of teams
+firstTeam = "" # Name of the first team. Should be capitalized.
+secondTeam = "" # Name of the second team
 
-# Global variables defined
-firstTeam = "" # Name your first team here in the singular demonymic, e.g. "Rebel", "French", "Soviet", etc.
-secondTeam = "" # Name your second team here
-validCommands = ["move", "defend", "attack", "info", "manual"] # All valid commands are contained here as strings in a list. move, attack, info, and manual are universal. Others can be added, like "fire", "build", "hide", "search", "spy", "bomb", "torpedo", "launch", and so on, depending on the scenario.
-allUnitTypes = [] # All unit types are contained here as strings in a list. This list is never referenced, but it's good practice to keep them here so as not to be confused later. Unit types should be singular.
-manualHelpPrompt = ""
-ownerPrompt = "" # These prompts are given to the user when calling certain commands. See brandywine.py for more details and an example.
-firstDamage = 0 # firstDamage and secondDamage are set to zero initially. These variables store the amount of damage each team has *inflicted* on the other.
-secondDamage = 0
-firstHealth = 100 # first and secondHealth are standardized values that never change in the course of the game. Their values should be the total health points of each team's units prior to the game.
-secondHealth = 100
+# Basic lists
+validCommands = ["move", "info", "kill", "man", "health"] # Include all valid commands you want to allow units to call. These five are mandatory. All valid commands possible are: fire, build, hide, spy, reveal, heading, depthcharge, sortie, and torpedo. Decide which should be included in your game.
+allUnitTypes = [] # List all possible unit types here.
 
-# Unit type attributes
-# Unit dictionaries. In every dictionary, the key is the unitType ("infantry", "carrier", "longbowmen", etc.), and the value is the relevant attribute it has.
-healthTable = {} # values are health points
-movementTable = {} # values are range of motion per turn in centimeters
-attackTable = {} # values are maximum amount of damage can be dealt per turn
-sortieTable = {} # values are maximum sortie damage
-fireTable = {} # values are maximum long-range (artillery, archers, etc.) damage
+# Universal dictionary
+unitTable = {} # Make a massive dictionary here of all units and unit types. The keys should be the names of the units (with each one being unique), and the values should be the unit types. Make sure all keys and values are strings, and that all values here are also included in allUnitTypes.
 
-# Unit lists
-searchable = [] # unit types in this list are able to execute the search() command
-torpedoable = [] # unit types in this list can launch torpedoes (i.e., are submarines)
-hideable = [] # unit types in this list can hide
-moveAndFire = [] # unit types in this list can move and fire/attack in the same turn
-headingChange = [] # unit types in this list cannot move and change heading in the same turn
-depthchargeable = [] # unit types in this list can drop depth charges
+# Team data
+firstTeamTable = {} # This dictionary should include all of the units that belong to the first team as keys, where their values are the health they have at the beginning of the game, stored as integers
+secondTeamTable = {} # Same thing for the second team.
+firstHealthTotal = 100 # Calculate this manually
+secondHealthTotal = 100 # Same here
+firstHealth = sum(firstTeamTable.values()) # Current health is developed by summing all of the values in the team tables. As such, health modification is done by changing the value associated with a particular unit in a table.
+secondHealth = sum(secondTeamTable.values())
 
-# info() function
-def info(unitType): # info() calls only the unitType argument, as the name is irrelevant.
-    print("Health: "), healthTable.get(unitType)
-    print("Movement: ", movementTable.get(unitType))
-    print("Attack: ", attackTable.get(unitType))
-    print("Sortie: ", sortieTable.get(unitType))
-    print("Fire: ", fireTable.get(unitType))
-    if unitType in searchable: print("Can search.")
-    if unitType in torpedoable: print("Can fire torpedoes.")
-    if unitType in hideable: print("Can hide.")
-    if unitType in moveAndFire: print("Can move and fire in the same turn.")
-    if unitType in headingChange: print("Must change heading to alter course.")
-    if unitType in depthchargeable: print("Can drop depth charges.")
+# Command tables and lists
+# For each of these dictionaries, the keys should be unit types and the values should be the maximum value for that unit type for that relevant command.
+healthTable = {} # Value is the initial health
+movementTable = {} # Value is the maximum range (not used in kriegsspiel except for info())
+attackTable = {} # Value is the maximum damage dealt per turn in small-arms
+sortieTable = {} # Value is the maximum damage a sortie can deal in a turn
+sortieDefenseTable = {} # Value is the maximum defense against a sortie
+fireTable = {} # Value is the maximum artillery damage
+headingTable = {} # Value is always 1 for a given key
+spyTable = {} # Value is always 6 for a given key
+torpedoTable = {} # Value is always 6 for a given key
+hideTable = {} # Value is always 1 for a given key
+buildTable = {} # Value is maximum fortification strength
+depthchargeTable = {} # Value i always 6 for a given key
+moveAndFire = [] # This list contains the unit types which can move and fire in the same turn.
