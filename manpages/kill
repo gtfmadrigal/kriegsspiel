@@ -1,0 +1,10 @@
+kill()
+Callable game function
+
+Kills a unit.
+
+1. Requests the name of the unit to kill.
+2. Requests the current health value of the unit.
+3. Places the unit in the deadUnits[] list.
+4. Requests the unit's parent team.
+5. Alters the overall health of the team accordingly.
