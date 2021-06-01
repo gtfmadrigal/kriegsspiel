@@ -66,6 +66,10 @@ def turn():
     alreadyDropped.clear()
     round = round + 1
 
+def details():
+    print(secrets)
+    print(*hiddenUnits, sep = ", ")
+
 def move(unit, unitType, team):
     pass
 
@@ -73,13 +77,33 @@ def heading(unit, unitType, team):
     pass
 
 def hide(unit, unitType, team):
-    pass
+    global hiddenUnits
+    global secrets
+    hideValue = calculateDamage(unit, unitType, team, hideTable)
+    if hideValue == 1:
+        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][hide]% "
+        newSecret = input(prompt)
+        secrets = secrets + ", " + newSecret
+        hiddenUnits.append(unit)
+        
 
 def reveal(unit, unitType, team):
-    pass
+    global hiddenUnits
+    global secrets
+    if not unit in hiddenUnits:
+        throwError("function")
+        return
+    hiddenUnits.remove(unit)
+    secrets = secrets + ", ", unit, "no longer hidden."
 
 def spy(unit, unitType, team):
-    pass
+    global usedUnits
+    effectiveness = calculateDamage(unit, unitType, team, spyTable)
+    if effectiveness == 6: print("Good information.")
+    elif effectiveness == 1: print("Bad information.")
+    else: print("No information.")
+    details()
+    usedUnits.append(unit)
 
 def fire(unit, unitType, team):
     global firstHealth
@@ -335,9 +359,6 @@ def health(unit, unitType, team):
         newHealth = input("New health: ")
         secondTeamTable[unit] = int(newHealth)
         secondHealth = sum(secondTeamTable.values())
-
-def details():
-    print(secrets)
 
 def info(unit, unitType, team):
     print("Unit type: ", unitTable.get(unit))
