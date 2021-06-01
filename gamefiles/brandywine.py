@@ -1,7 +1,8 @@
-import random
-
 firstTeam = "Rebel"
 secondTeam = "British"
+landTheater = True
+navalTheater = False
+airTheater = False
 validCommands = ["move", "fire", "build", "hide", "spy", "info", "kill", "health", "freeze", "reveal", "man"]
 allUnitTypes = ["infantry", "sapper", "fusilier", "grenadier", "bombadier", "hussar", "dragoon", "spy", "guard", "special", "command"] # Never used, only kept here for redundancy's sake
 unitTable = {"va1":"infantry", "va2":"infantry", "va3":"infantry", "va5":"infantry", "va6":"infantry", "va7":"infantry", "va9":"infantry", "va12":"infantry", "pa1":"infantry", "pa4":"infantry", "pa6":"infantry", "pa7":"infantry", "pa8":"infantry", "nc1":"infantry", "nc3":"infantry", "md1":"infantry", "md2":"infantry", "nj2":"infantry", "nj4":"infantry", "sap1":"sapper", "sap2":"sapper", "pa1f":"fusilier", "pa2f":"fusilier", "pa3f":"fusilier", "pa4f":"fusilier", "nj1f":"fusilier", "nj2f":"fusilier", "nj3f":"fusilier", "mx1":"hussar", "mx2":"hussar", "pl":"dragoon", "mc":"dragoon", "6":"fusilier", "knphyn":"spy", "rebel-guards1":"guard", "rebel-guards2":"guard", "rebel-guards3":"guard", "crnwl":"command", "4":"infantry", "5":"infantry", "10":"infantry", "15":"infantry", "17":"infantry", "23":"infantry", "28":"infantry", "33":"infantry", "38":"infantry", "40":"infantry", "44":"infantry", "64":"infantry", "71":"infantry", "72":"infantry", "73":"infantry", "gd1":"sapper", "gd2":"sapper", "lrg":"sapper", "eb":"fusilier", "lg":"fusilier", "dp":"fusilier", "wb":"fusilier", "mg":"fusilier", "ls":"fusilier", "st":"fusilier", "mb":"fusilier", "lt1":"hussar", "lt2":"hussar", "lt3":"hussar", "gr1":"hussar", "gr2":"hussar", "gr3":"hussar", "16":"dragoon", "17":"dragoon", "jag":"dragoon", "6-1":"grenadier", "6-2":"grenadier", "12-1":"bombadier", "12-2":"bombadier", "howe":"spy", "british-guards1":"guard", "british-guards2":"guard", "greene":"command"}

@@ -1,6 +1,6 @@
 import random
 import os
-from brandywine import *
+from nile import *
 
 round = 1
 usedUnits = []
@@ -22,12 +22,6 @@ def throwError(function):
     elif function == "heading": errorMessage = "Unit cannot exceed its maximum heading change."
     print(errorMessage)
 
-def score():
-    firstPercent = firstHealth / firstHealthTotal * 100
-    secondPercent = secondHealth / secondHealthTotal * 100
-    print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
-    print(secondTeam, "total health:", secondHealth, "or", secondPercent, "%")
-
 def update():
     global firstHealth
     global secondHealth
@@ -35,6 +29,13 @@ def update():
     global secondTeamTable
     firstHealth = sum(firstTeamTable.values())
     secondHealth = sum(secondTeamTable.values())
+
+def score():
+    update()
+    firstPercent = firstHealth / firstHealthTotal * 100
+    secondPercent = secondHealth / secondHealthTotal * 100
+    print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
+    print(secondTeam, "total health:", secondHealth, "or", secondPercent, "%")
 
 def changeList(unit, list, command):
     global usedUnits
@@ -235,7 +236,7 @@ def depthcharge(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
         kill(target, targetUnitType, targetTeam, targetTeam, targetTeamTable, targetTeamTable)
         print(target, "sunk.")
     elif effectiveness == 5: 
-        freeze(target, targetUnitType, targetTeam, targetTeam, targetTeamTable, targetTeamTable)
+        immobileUnits.append(target)
         print(target, "frozen.")
     else: print("Missed.")
     changeList(unit, immobileUnits, "append")
@@ -337,20 +338,25 @@ def info(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
         owner = firstTeam
         print("Current health:", firstTeamTable.get(unit))
         print("Owner:", firstTeam)
-    else: 
+    else:
         owner = secondTeam
         print("Current health:", secondTeamTable.get(unit))
         print("Owner:", secondTeam)
     print("Movement:", movementTable.get(unitType))
     print("Attack:", attackTable.get(unitType))
     print("Build:", buildTable.get(unitType))
+    print("Sortie:", sortieTable.get(unitType))
+    print("Sortie defense:", sortieDefenseTable.get(unitType))
+    print("Depth charge:", depthchargeTable.get(unitType))
     if unitType in spyTable: print("Can search.")
     if unitType in hideTable: print("Can hide.")
     if unitType in moveAndFire: print("Can move and fire in the same turn.")
+    if unitType in torpedoTable: print("Can fire torpedoes.")
+    if unitType in headingTable: print("Heading change required.")
     if unit in immobileUnits: print("Immovable this turn.")
     if unit in usedUnits: print("Unusable this turn.")
     if unit in hiddenUnits: print("Hidden.")
-
+    
 def quitGame():
     score()
     quit()
