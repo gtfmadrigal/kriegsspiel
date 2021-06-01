@@ -55,7 +55,9 @@ def evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, table
     if unit in immobileUnits or unit in usedUnits:
         throwError("available")
         return
-    if unit in hiddenUnits: reveal(unit, unitType, team, targetTeam, targetTeamTable, teamTable)
+    if unit in hiddenUnits: 
+        try: reveal(unit, unitType, team, targetTeam, targetTeamTable, teamTable)
+        except: pass
     maximum = table.get(unitType) + 1
     damage = random.randrange(1, maximum)
     return damage
@@ -98,25 +100,24 @@ def heading(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
 
 def hide(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global secrets
-    hideValue = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, hideTable)
-    if hideValue == 1:
+    if unitType in hideTable:
         prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][hide]% "
         location = input(prompt)
         newSecret = unit + " " + location
         secrets = secrets + ", " + newSecret
         changeList(unit, hiddenUnits, "append")
-    else: return
+    else: 
+        throwError("function")
+        return
 
 def reveal(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global secrets
+    global hiddenUnits
     if not unit in hiddenUnits:
         throwError("function")
         return
-    revealValue = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, hideTable)
-    if revealValue == 1:
-        secrets = secrets + ", ", unit, "no longer hidden."
-        changeList(unit, hiddenUnits, "remove")
-    else: return
+    if unitType in hideTable: hiddenUnits.remove(unit)
+    else: throwError("function")
 
 def spy(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     effectiveness = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, spyTable)
