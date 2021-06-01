@@ -75,7 +75,6 @@ def kill(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global secondTeamTable
     teamTable[unit] = 0
     changeList(unit, deadUnits, "append")
-
     update()
 
 def turn():
@@ -174,7 +173,6 @@ def fire(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
             newHealth = oldHealth - perUnitDamage
             print(x, "new health:", newHealth)
         targetTeamTable[x] = newHealth
-    update()
     score()
     turn()
 
@@ -205,7 +203,6 @@ def torpedo(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
         targetTeamTable[target] = newHealth
     changeList(unit, usedUnits, "append")
     changeList(unit, immobileUnits, "append")
-    update()
     score()
 
 def sortie(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
@@ -234,7 +231,6 @@ def sortie(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     else: print("Attack repelled by:", target)
     changeList(unit, usedUnits, "append")
     changeList(unit, immobileUnits, "append")
-    update()
     score()
 
 def depthcharge(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
@@ -332,7 +328,6 @@ def attack(team, targetTeam, targetTeamTable, teamTable):
             newHealth = oldHealth - perUnitDamage
             print(x, "new health:", newHealth)
         targetTeamTable[x] = newHealth
-    update()
     score()
 
 def health(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
