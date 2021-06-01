@@ -76,7 +76,13 @@ def move(unit, unitType, team):
     pass
 
 def heading(unit, unitType, team):
-    pass
+    global immobileUnits
+    global usedUnits
+    headingValue = calculateDamage(unit, unitType, team, headingTable)
+    if headingValue == 1: 
+        immobileUnits.append(unit)
+        if not unitType in moveAndFire: usedUnits.append(unit)
+    else: return
 
 def hide(unit, unitType, team):
     global hiddenUnits
