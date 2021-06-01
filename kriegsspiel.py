@@ -169,7 +169,7 @@ def build(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable
     global secondTeamTable
     fortification = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, buildTable)
-    if int(fortification) == fortification:
+    if type(fortification) is int:
         print("Fortification of strength", fortification, "built.")
         changeList(unit, usedUnits, "append")
         changeList(unit, immobileUnits, "append")
