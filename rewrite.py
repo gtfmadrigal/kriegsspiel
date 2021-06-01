@@ -19,6 +19,7 @@ def throwError(function):
     elif function == "team": errorMessage = "That unit does not belong to you."
     elif function == "available": errorMessage = "That unit is currently unavailable."
     elif function == "function": errorMessage = "That function is unavailable to this unit."
+    elif function == "heading": errorMessage = "Unit cannot exceed its maximum heading change."
     print(errorMessage)
 
 def score():
@@ -73,7 +74,14 @@ def details():
     print(*hiddenUnits, sep = ", ")
 
 def move(unit, unitType, team):
-    pass
+    global immobileUnits
+    global usedUnits
+    if unit in immobileUnits:
+        throwError("function")
+        return
+    if unitType in headingTable: throwError("heading")
+    if not unitType in moveAndFire: usedUnits.append(unit)
+    immobileUnits.append(unit)
 
 def heading(unit, unitType, team):
     global immobileUnits
