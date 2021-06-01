@@ -82,10 +82,62 @@ def spy(unit, unitType, team):
     pass
 
 def fire(unit, unitType, team):
-    pass
+    global firstHealth
+    global secondHealth
+    global firstTeamTable
+    global secondTeamTable
+    global defendingUnits
+    global usedUnits
+    defensePhase = True
+    willQuit = False
+    if team == firstTeam:
+        targetTeam = secondTeam
+        targetTeamTable = secondTeamTable
+    else:
+        targetTeam = firstTeam
+        targetTeamTable = firstTeamTable
+    while defensePhase == True:
+        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][fire]% "
+        command = input(prompt)
+        if command == "help": print("Enter a named unit, 'save' to save changes to gamestate, or 'quit' to exit without saving.")
+        elif command == "quit":
+            defensePhase = False
+            willQuit = True
+        elif command == "save": defensePhase = False
+        elif command in unitTable:
+            try: defendingUnits.append(command)
+            except: pass
+        else: throwError("bad")
+    if willQuit == True: return
+    damage = calculateDamage(unit, unitType, team, fireTable)
+    print("Damage:", damage)
+    perUnitDamage = damage / len(defendingUnits)
+    print("Damage per unit:", perUnitDamage)
+    for x in defendingUnits:
+        oldHealth = targetTeamTable.get(x)
+        if oldHealth - perUnitDamage < 0: 
+            newHealth = 0
+            print(x, "killed.")
+        else: 
+            newHealth = oldHealth - perUnitDamage
+            print(x, "new health:", newHealth)
+        targetTeamTable[x] = newHealth
+    firstHealth = sum(firstTeamTable.values())
+    secondHealth = sum(secondTeamTable.values())
+    score()
+    turn()
 
 def build(unit, unitType, team):
-    pass
+    global immobileUnits
+    global usedUnits
+    global firstTeamTable
+    global secondTeamTable
+    fortification = calculateDamage(unit, unitType, team, buildTable)
+    if int(fortification) == fortification:
+        print("Fortification of strength", fortification, "built.")
+        usedUnits.append(unit)
+        immobileUnits.append(unit)
+    else: return
 
 def torpedo(unit, unitType, team):
     global usedUnits
