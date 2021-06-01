@@ -67,7 +67,9 @@ def turn():
     round = round + 1
 
 def details():
+    print("Secrets:")
     print(secrets)
+    print("Hidden units:")
     print(*hiddenUnits, sep = ", ")
 
 def move(unit, unitType, team):
@@ -82,10 +84,11 @@ def hide(unit, unitType, team):
     hideValue = calculateDamage(unit, unitType, team, hideTable)
     if hideValue == 1:
         prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][hide]% "
-        newSecret = input(prompt)
+        location = input(prompt)
+        newSecret = unit + " " + location
         secrets = secrets + ", " + newSecret
         hiddenUnits.append(unit)
-        
+    else: return
 
 def reveal(unit, unitType, team):
     global hiddenUnits
@@ -93,8 +96,11 @@ def reveal(unit, unitType, team):
     if not unit in hiddenUnits:
         throwError("function")
         return
-    hiddenUnits.remove(unit)
-    secrets = secrets + ", ", unit, "no longer hidden."
+    revealValue = calculateDamage(unit, unitType, team, hideTable)
+    if revealValue == 1:
+        secrets = secrets + ", ", unit, "no longer hidden."
+        hiddenUnits.remove(unit)
+    else: return
 
 def spy(unit, unitType, team):
     global usedUnits
@@ -120,6 +126,9 @@ def fire(unit, unitType, team):
     else:
         targetTeam = firstTeam
         targetTeamTable = firstTeamTable
+    if not unit in fireTable:
+        throwError("function")
+        return
     while defensePhase == True:
         prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][fire]% "
         command = input(prompt)
