@@ -248,7 +248,7 @@ def man(command, unitType, team, targetTeam, targetTeamTable, teamTable):
     file = open(path, "r")
     for line in file: print(file.read())
 
-def attack(team, targetTeam, targetTeamTable):
+def attack(team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable
     global secondTeamTable
     attackPhase = True
@@ -269,7 +269,7 @@ def attack(team, targetTeam, targetTeamTable):
             defensePhase = True
         elif command in unitTable:
             unitType = unitTable.get(command)
-            attackDamage = evaluate(command, unitType, team, targetTeam, targetTeamTable, targetTeamTable, attackTable)
+            attackDamage = evaluate(command, unitType, team, targetTeam, targetTeamTable, teamTable, attackTable)
             try: 
                 totalAttackDamage = totalAttackDamage + attackDamage
                 changeList(command, usedUnits, "append")
@@ -288,7 +288,7 @@ def attack(team, targetTeam, targetTeamTable):
         elif command == "save": defensePhase = False
         elif command in unitTable:
             unitType = unitTable.get(command)
-            defenseDamage = evaluate(command, unitType, targetTeam, targetTeamTable, targetTeamTable, attackTable)
+            defenseDamage = evaluate(command, unitType, targetTeam, targetTeam, targetTeamTable, targetTeamTable, attackTable)
             try: 
                 totalDefenseDamage = totalDefenseDamage + defenseDamage
                 changeList(command, defendingUnits, "append")
@@ -379,7 +379,7 @@ def shell(team, targetTeam, targetTeamTable, teamTable):
             throwError("bad")
             return
     else:
-        if rawCommand == "attack": attack(team, targetTeam, targetTeamTable) 
+        if rawCommand == "attack": attack(team, targetTeam, targetTeamTable, teamTable) 
         else:
             try: globals()[oneWordCommands.get(rawCommand)]()
             except: 
