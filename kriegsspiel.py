@@ -8,6 +8,7 @@ immobileUnits = []
 hiddenUnits = []
 alreadyDropped = []
 defendingUnits = []
+deadUnits = []
 commandNumber = 1
 secrets = ""
 oneWordCommands = {"score":"score", "turn":"turn", "quit":"quitGame", "help":"helpText", "attack":"attack", "details":"details"}
@@ -20,6 +21,7 @@ def throwError(function):
     elif function == "available": errorMessage = "That unit is currently unavailable."
     elif function == "function": errorMessage = "That function is unavailable to this unit."
     elif function == "heading": errorMessage = "Unit cannot exceed its maximum heading change."
+    elif function == "dead": errorMessage = "Unit is dead."
     print(errorMessage)
 
 def update():
@@ -43,6 +45,7 @@ def changeList(unit, list, command):
     global hiddenUnits
     global alreadyDropped
     global defendingUnits
+    global deadUnits
     if command == "append": list.append(unit)
     elif command == "clear": list.clear()
     elif command == "remove": list.remove(unit)
@@ -56,6 +59,9 @@ def evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, table
     if unit in immobileUnits or unit in usedUnits:
         throwError("available")
         return
+    if unit in deadUnits:
+        throwError("dead")
+        return
     if unit in hiddenUnits: 
         try: reveal(unit, unitType, team, targetTeam, targetTeamTable, teamTable)
         except: pass
@@ -67,6 +73,8 @@ def kill(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable
     global secondTeamTable
     teamTable[unit] = 0
+    changeList(unit, deadUnits, "append")
+
     update()
 
 def turn():
@@ -87,6 +95,9 @@ def details():
 def move(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     if unit in immobileUnits:
         throwError("function")
+        return
+    if unit in deadUnits:
+        throwError("dead")
         return
     if unitType in headingTable: throwError("heading")
     if not unitType in moveAndFire: changeList(unit, usedUnits, "append")
