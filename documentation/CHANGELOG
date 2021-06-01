@@ -132,3 +132,4 @@ v2.1 - Naval battle polished release (5/25/21)
     v2.2.42 - v2.3 rewrite fully functional for land battles
     v2.2.43 - naval battle gamefile updated for v2.3 rewrite, not yet fully functional
     v2.2.44 - kill() bugs fixed
+    v2.2.45 - sortie() bugs fixed
