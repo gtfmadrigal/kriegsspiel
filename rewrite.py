@@ -88,7 +88,35 @@ def build(unit, unitType, team):
     pass
 
 def torpedo(unit, unitType, team):
-    pass
+    global usedUnits
+    global immobileUnits
+    global firstHealth
+    global secondHealth
+    global firstTeamTable
+    global secondTeamTable
+    if team == firstTeam:
+        targetTeam = secondTeam
+        targetTeamTable = secondTeamTable
+    else:
+        targetTeam = firstTeam
+        targetTeamTable = firstTeamTable
+    prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][torpedo]% "
+    target = input(prompt)
+    targetUnitType = unitTable.get(target)
+    damage = calculateDamage(unit, unitType, team, torpedoTable)
+    oldHealth = targetTeamTable.get(target)
+    if damage == 6 or oldHealth - damage <= 0:
+        print(target, "sunk.")
+        kill(target)
+    else:
+        newHealth = oldHealth - damage
+        print(target, "new health:", newHealth)
+        targetTeamTable[target] = newHealth
+    usedUnits.append(unit)
+    immobileUnits.append(unit)
+    firstHealth = sum(firstTeamTable.values())
+    secondHealth = sum(secondTeamTable.values())
+    score()
 
 def sortie(unit, unitType, team):
     global usedUnits

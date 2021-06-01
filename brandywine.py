@@ -19,6 +19,7 @@ buildTable = {"infantry":4, "sapper":8}
 depthchargeTable = {}
 sortieTable = {}
 sortieDefenseTable = {}
+torpedoTable = {}
 searchable = ["infantry", "sapper", "fusilier"]
 hideable = ["infantry", "sapper", "fusilier", "grenadier", "spy", "special"]
 moveAndFire = ["infantry", "sapper", "fusilier", "hussar", "dragoon", "special"]
