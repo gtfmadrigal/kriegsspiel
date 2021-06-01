@@ -254,6 +254,7 @@ def depthcharge(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     elif effectiveness == 5: 
         immobileUnits.append(target)
         print(target, "frozen.")
+    elif effectiveness == None: return
     else: print("Missed.")
     changeList(unit, immobileUnits, "append")
     changeList(unit, alreadyDropped, "append")
