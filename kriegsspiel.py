@@ -331,19 +331,19 @@ def health(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     update()
 
 def info(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
-    print("Unit type: ", unitTable.get(unit))
-    print("Maximum health: ", healthTable.get(unitType))
+    print("Unit type:", unitTable.get(unit))
+    print("Maximum health:", healthTable.get(unitType))
     if unit in firstTeamTable: 
         owner = firstTeam
-        print("Current health: ", firstTeamTable.get(unit))
-        print("Owner: ", firstTeam)
+        print("Current health:", firstTeamTable.get(unit))
+        print("Owner:", firstTeam)
     else: 
         owner = secondTeam
-        print("Current health: ", secondTeamTable.get(unit))
-        print("Owner: ", secondTeam)
-    print("Movement: ", movementTable.get(unitType))
-    print("Attack: ", attackTable.get(unitType))
-    print("Build: ", buildTable.get(unitType))
+        print("Current health:", secondTeamTable.get(unit))
+        print("Owner:", secondTeam)
+    print("Movement:", movementTable.get(unitType))
+    print("Attack:", attackTable.get(unitType))
+    print("Build:", buildTable.get(unitType))
     if unitType in spyTable: print("Can search.")
     if unitType in hideTable: print("Can hide.")
     if unitType in moveAndFire: print("Can move and fire in the same turn.")
