@@ -132,7 +132,7 @@ def fire(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global secondTeamTable
     defensePhase = True
     willQuit = False
-    if not unit in fireTable:
+    if not unitType in fireTable:
         throwError("function")
         return
     while defensePhase == True:
