@@ -313,10 +313,9 @@ def attack(team, targetTeam, targetTeamTable, teamTable):
         else: 
             newHealth = oldHealth - perUnitDamage
             print(x, "new health:", newHealth)
-    targetTeamTable[x] = newHealth
+        targetTeamTable[x] = newHealth
     update()
     score()
-    turn()
 
 def health(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable
