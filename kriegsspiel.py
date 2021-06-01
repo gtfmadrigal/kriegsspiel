@@ -65,6 +65,7 @@ def evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, table
     if unit in hiddenUnits: 
         try: reveal(unit, unitType, team, targetTeam, targetTeamTable, teamTable)
         except: pass
+    if table.get(unitType) == None: return
     maximum = table.get(unitType) + 1
     damage = random.randrange(1, maximum)
     return damage
@@ -213,11 +214,15 @@ def sortie(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     if not unitType in sortieTable:
         throwError("function")
         return
+    attackDamage = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, sortieTable)
+    if attackDamage == None:
+        throwError("function")
+        return
     prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][sortie]% "
     target = input(prompt)
     targetUnitType = unitTable.get(target)
-    attackDamage = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, sortieTable)
-    if targetUnitType in sortieDefenseTable: defenseDamage = evaluate(target, targetUnitType, targetTeam, targetTeam, targetTeamTable, teamTable, sortieTable)
+    defenseDamage = evaluate(target, targetUnitType, targetTeam, targetTeam, targetTeamTable, targetTeamTable, sortieTable)
+    if defenseDamage == None: defenseDamage = 0
     if defenseDamage <= attackDamage:
         netDamage = attackDamage - defenseDamage
         oldHealth = targetTeamTable[target]
