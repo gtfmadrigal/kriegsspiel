@@ -5,334 +5,404 @@ from brandywine import *
 round = 1
 usedUnits = []
 immobileUnits = []
-deadUnits = []
-commandNumber = 1
-secrets = ""
 hiddenUnits = []
 alreadyDropped = []
+commandNumber = 1
+secrets = ""
+oneWordCommands = {"score":"score", "turn":"turn", "quit":"quitGame", "help":"helpText", "attack":"attack", "details":"details"}
+defendingUnits = []
 
-def move(unit, unitType, team):
-    global immobileUnits
-    global usedUnits
-    if unit in immobileUnits:
-        print("Immovable.")
-        return
-    if unitType in headingChange: print("Unit cannot exceed its maximum heading change.")
-    if not unitType in moveAndFire: usedUnits.append(unit)
-    immobileUnits.append(unit)
-
-def heading(unit, unitType, team):
-    global immobileUnits
-    global usedUnits
-    if not unitType in headingChange:
-        print("Heading change not required.")
-        return
-    if unit in immobileUnits:
-        print("Immovable.")
-        return
-    if not unitType in moveAndFire: usedUnits.append(unit)
-    immobileUnits.append(unit)
-
-def hide(unit, unitType, team):
-    global hiddenUnits
-    global secrets
-    if not unitType in hideable:
-        print("Cannot hide.")
-        return
-    if unit in hiddenUnits:
-        print("Already hidden.")
-        return
-    hiddenUnits.append(unit)
-    newSecret = input("Describe information about this command: ")
-    secrets = secrets + ", " + newSecret
-
-def reveal(unit, unitType, team):
-    global hiddenUnits
-    if not unit in hiddenUnits:
-        print("Not hidden.")
-        return
-    hiddenUnits.remove(unit)
-
-def spy(unit, unitType, team):
-    global usedUnits
-    if not unitType in searchable:
-        print("Cannot search.")
-        return
-    searchEffectiveness = random.randrange(1,7)
-    if searchEffectiveness == 6:
-        print("Good information.")
-        details()
-    elif searchEffectiveness == 1:
-        print("Bad information.")
-        details()
-    else: print("No information.")
-    usedUnits.append(unit)
-
-def fire(unit, unitType, team):
-    global immobileUnits
-    global usedUnits
-    global deadUnits
-    global hiddenUnits
-    global firstDamage
-    global secondDamage
-    if not unitType in fireTable:
-        print("Cannot attack.")
-        return
-    if unit in hiddenUnits:
-        print("Unit revealed.")
-        reveal(unit, unitType)
-    maximum = fireTable.get(unitType) + 1
-    damageDealt = random.randrange(1,maximum)
-    if team == firstTeam: 
-        firstDamage = firstDamage + damageDealt
-        print(firstTeam, "deal", damageDealt, "damage.")
-    elif team == secondTeam:
-        secondDamage = secondDamage + damageDealt
-        print(secondTeam, "deal", damageDealt, "damage.")
-    print("Manually enter any dead units using the manual(kill) command.")
-    usedUnits.append(unit)
-    immobileUnits.append(unit)
-
-def build(unit, unitType, team):
-    global immobileUnits
-    global usedUnits
-    if not unitType in buildTable:
-        print("Cannot build.")
-        return
-    maximum = buildTable.get(unitType) + 1
-    fortification = random.randrange(1,maximum)
-    print("Fortification of strength", fortification, "built.")
-    immobileUnits.append(unit)
-    usedUnits.append(unit)
-
-def torpedo(unit, unitType, team):
-    global usedUnits
-    global immobileUnits
-    global firstDamage
-    global secondDamage
-    if team != firstTeam and team != secondTeam:
-        print("No such team.")
-        return
-    if not unitType in torpedoable:
-        print("Cannot launch torpedoes.")
-        return
-    torpedoEffectiveness = random.randrange(1,7)
-    if torpedoEffectiveness == 6:
-        print("Ship sunk.")
-        manual("kill")
-    else:
-        if team == firstTeam: 
-            firstDamage = firstDamage + torpedoEffectiveness
-            print(firstTeam, "deal", torpedoEffectiveness, "damage.")
-        elif team == secondTeam:
-            secondDamage = secondDamage + torpedoEffectiveness
-            print(secondTeam, "deal", torpedoEffectiveness, "damage.")
-        print("Manually enter any dead units using the manual(kill) command.")
-        print("Call defend() function if relevant.")
-    usedUnits.append(unit)
-    immobileUnits.append(unit)
-
-def sortie(unit, unitType, team):
-    global usedUnits
-    global immobileUnits
-    global firstDamage
-    global secondDamage
-    if not unitType in sortieTable:
-        print("Cannot launch sorties.")
-        return
-    if unit in hiddenUnits:
-        print("Unit revealed.")
-        reveal(unit, unitType)
-    maximum = sortieTable.get(unitType) + 1
-    damageDealt = random.randrange(1,maximum)
-    if team == firstTeam: 
-        firstDamage = firstDamage + damageDealt
-        print(firstTeam, "deal", damageDealt, "damage.")
-    elif team == secondTeam:
-        secondDamage = secondDamage + damageDealt
-        print(secondTeam, "deal", damageDealt, "damage.")
-    print("Manually enter any dead units using the manual(kill) command.")
-    print("Sorties can be defended against with the defend() command.")
-    usedUnits.append(unit)
-    immobileUnits.append(unit)
-
-def depthcharge(unit, unitType, team):
-    global immobileUnits
-    global usedUnits
-    global alreadyDropped
-    global firstDamage
-    global secondDamage
-    if not unitType in depthchargeable:
-        print("Cannot drop depth charges.")
-        return
-    if unit in alreadyDropped:
-        print("Already dropped depth charges.")
-        return
-    chargeEffectiveness = random.randrange(1,7)
-    if chargeEffectiveness == 6:
-        print("Submarine sunk.")
-        if team == firstTeam: firstDamage = firstDamage + 1
-        elif team == secondTeam: secondDamage = secondDamage + 1
-        manual("kill")
-    elif chargeEffectiveness == 5:
-        print("Submarine disabled.")
-        disabled = input("Submarine unit disabled: ")
-        immobileUnits.append(disabled)
-        usedUnits.append(disabled)
-    immobileUnits.append(unit)
-    alreadyDropped.append(unit)
-
-def man(argument):
-    manpage = str(argument)
-    if os.name == "nt": path = "manpages\\" + manpage
-    elif os.name == "posix": path = "manpages/" + manpage
-    else: 
-        print("Unknown operating system.")
-        return
-    file = open(path, "r")
-    for line in file:
-        print(file.read())
-
-def attack(team):
-    global immobileUnits
-    global usedUnits
-    global deadUnits
-    global hiddenUnits
-    global firstDamage
-    global secondDamage
-    attackPhase = True
-    defensePhase = False
-    totalAttackDamage = 0
-    totalDefenseDamage = 0
-    willQuit = False
-    while attackPhase == True:
-        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][attack]% "
-        attackCommand = input(prompt)
-        argsInAttackCommand = attackCommand.split()
-        if len(argsInAttackCommand) == 1:
-            if attackCommand == "help":
-                print("Syntax: [unit] [unitType]")
-                print("'quit' to exit without saving, 'defend' to proceed to defense phase.")
-            elif attackCommand == "quit": 
-                attackPhase = False
-                defensePhase = False
-                willQuit = True
-            elif attackCommand == "defend":
-                attackPhase = False
-                defensePhase = True
-            else: print("Unknown command.")
-        elif len(argsInAttackCommand) == 2:
-            unit, unitType = attackCommand.split()
-            try:
-                if unit in hiddenUnits: reveal(unit, unitType, team)
-                maximum = attackTable.get(unitType) + 1
-                attackDamage = random.randrange(1, maximum)
-                totalAttackDamage = totalAttackDamage + attackDamage
-                print("Damage dealt:", attackDamage)
-                print("Total damage dealt:", totalAttackDamage)
-                usedUnits.append(unit)
-                immobileUnits.append(unit)
-            except: print("No such unit or unit type.")
-        else: print("Too many arguments.")
-    while defensePhase == True:
-        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][defense]% "
-        defenseCommand = input(prompt)
-        argsInDefendCommand = defenseCommand.split()
-        if len(argsInDefendCommand) == 1:
-            if defenseCommand == "help":
-                print("Syntax: [unit] [unitType]")
-                print("'quit' to exit without saving, 'save' to save to gamestate.")
-            elif defenseCommand == "quit":
-                defensePhase = False
-                willQuit = True
-            elif defenseCommand == "save": defensePhase = False
-            else: print("Unknown command.")
-        elif len(argsInDefendCommand) == 2:
-            unit, unitType = defenseCommand.split()
-            try:
-                if unit in hiddenUnits: reveal(unit, unitType, team)
-                maximum = attackTable.get(unitType) + 1
-                defenseDamage = random.randrange(1, maximum)
-                totalDefenseDamage = totalDefenseDamage + defenseDamage
-                print("Defense damage dealt: ", defenseDamage)
-                print("Total defense damage dealt: ", totalDefenseDamage)
-                usedUnits.append(unit)
-                immobileUnits.append(unit)
-            except: print("No such unit or unit type.")
-        else: print("Too many arguments.")
-    if willQuit == True: return
-    if totalAttackDamage > totalDefenseDamage: damageDealt = totalAttackDamage - totalDefenseDamage
-    else: damageDealt = 0
-    if team == firstTeam:
-        firstDamage = firstDamage + damageDealt
-        print(firstTeam, "deal", damageDealt, "damage.")
-    elif team == secondTeam:
-        secondDamage = secondDamage + damageDealt
-        print(secondTeam, "deal", damageDealt, "damage.")
-    print("If any units were killed in the exchange, call manual(kill).")
-
-def getCommand(rawCommand, team):
-    argsInCommand = rawCommand.split()
-    if len(argsInCommand) == 2:
-        command, unit = rawCommand.split()
-        if command == "manual": manual(unit, team)
-        else: 
-            unitType = unitTable.get(unit)
-            if command in validCommands: globals()[command](unit, unitType, team)
-            else: print("Unknown command or bad syntax.")
-    elif len(argsInCommand) == 1:
-        oneWordCommands = ["score", "turn", "quit", "help", "attack", "details"]
-        if rawCommand in oneWordCommands:
-            if rawCommand == "quit": quitGame()
-            elif rawCommand == "help": helpText()
-            elif rawCommand == "attack": attack(team)
-            else: globals()[rawCommand]()
-        else: print("Unknown command or bad syntax.")
-    else:
-        print("A command requires 1 to 3 words.")
-
-def manual(argument, team):
-    global firstDamage
-    global secondDamage
-    global deadUnits
-    global immobileUnits
-    if argument == "help": print("Arguments for manual() function: health, kill, freeze.")
-    elif argument == "health":
-        score()
-        teamToChange = input(manualHelpPrompt)
-        newValue = int(input("New health value: "))
-        if teamToChange == "b": firstDamage = secondHealth - newValue
-        else: secondDamage = firstHealth - newValue
-    elif argument == "kill":
-        namedUnit = input("Name of unit: ")
-        currentValue = int(input("Current value of unit: "))
-        deadUnits.append(namedUnit)
-        if team == secondDamage: firstDamage = firstDamage + currentValue
-        elif team == firstDamage: secondDamage = secondDamage + currentValue
-    elif argument == "freeze":
-        namedUnit = input("Name of unit: ")
-        immobileUnits.append(namedUnit)
-    else:
-        print("Bad argument for manual function.")
-        return
+def throwError(function):
+    if function == "arguments": errorMessage = "Too many arguments for command. Type 'man' [command] for information."
+    elif function == "bad": errorMessage = "Bad command. Type 'help' for assistance."
+    elif function == "os": errorMessage = "Unknown operating system."
+    elif function == "team": errorMessage = "That unit does not belong to you."
+    elif function == "available": errorMessage = "That unit is currently unavailable."
+    elif function == "function": errorMessage = "That function is unavailable to this unit."
+    elif function == "heading": errorMessage = "Unit cannot exceed its maximum heading change."
+    print(errorMessage)
 
 def score():
-    print(firstTeam, "damage dealt:", firstDamage)
-    print(secondTeam, "damage dealt:", secondDamage)
-    firstPercent = (firstHealth - secondDamage) / firstHealth * 100
-    secondPercent = (secondHealth - firstDamage) / secondHealth * 100
-    print(firstTeam, "percent remaining:", firstPercent)
-    print(secondTeam, "percent remaining:", secondPercent)
+    firstPercent = firstHealth / firstHealthTotal * 100
+    secondPercent = secondHealth / secondHealthTotal * 100
+    print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
+    print(secondTeam, "total health:", secondHealth, "or", secondPercent, "%")
 
-def details():
-    print(secrets)
-    
+def calculateDamage(unit, unitType, team, table):
+    global firstTeamTable
+    global secondTeamTable
+    if team == firstTeam: teamTable = firstTeamTable
+    if team == secondTeam: teamTable = secondTeamTable
+    if not unit in teamTable:
+        throwError("team")
+        return
+    if unit in immobileUnits or unit in usedUnits:
+        throwError("available")
+        return
+    if unit in hiddenUnits: reveal(unit, unitType, team)
+    maximum = table.get(unitType) + 1
+    damage = random.randrange(1, maximum)
+    return damage
+
+def kill(unit, unitType, team):
+    global firstHealth
+    global secondHealth
+    global firstTeamTable
+    global secondTeamTable
+    if team == firstTeam: 
+        firstTeamTable[unit] = 0
+        firstHealth = sum(firstTeamTable.values())
+    else: 
+        secondTeamTable[unit] = 0
+        secondHealth = sum(secondTeamTable.values())
+
+def freeze(unit, unitType, team):
+    global immobileUnits
+    immobileUnits.append(unit)
+
 def turn():
     global round
     usedUnits.clear()
     immobileUnits.clear()
     alreadyDropped.clear()
     round = round + 1
+
+def details():
+    print("Secrets:")
+    print(secrets)
+    print("Hidden units:")
+    print(*hiddenUnits, sep = ", ")
+
+def move(unit, unitType, team):
+    global immobileUnits
+    global usedUnits
+    if unit in immobileUnits:
+        throwError("function")
+        return
+    if unitType in headingTable: throwError("heading")
+    if not unitType in moveAndFire: usedUnits.append(unit)
+    immobileUnits.append(unit)
+
+def heading(unit, unitType, team):
+    global immobileUnits
+    global usedUnits
+    headingValue = calculateDamage(unit, unitType, team, headingTable)
+    if headingValue == 1: 
+        immobileUnits.append(unit)
+        if not unitType in moveAndFire: usedUnits.append(unit)
+    else: return
+
+def hide(unit, unitType, team):
+    global hiddenUnits
+    global secrets
+    hideValue = calculateDamage(unit, unitType, team, hideTable)
+    if hideValue == 1:
+        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][hide]% "
+        location = input(prompt)
+        newSecret = unit + " " + location
+        secrets = secrets + ", " + newSecret
+        hiddenUnits.append(unit)
+    else: return
+
+def reveal(unit, unitType, team):
+    global hiddenUnits
+    global secrets
+    if not unit in hiddenUnits:
+        throwError("function")
+        return
+    revealValue = calculateDamage(unit, unitType, team, hideTable)
+    if revealValue == 1:
+        secrets = secrets + ", ", unit, "no longer hidden."
+        hiddenUnits.remove(unit)
+    else: return
+
+def spy(unit, unitType, team):
+    global usedUnits
+    effectiveness = calculateDamage(unit, unitType, team, spyTable)
+    if effectiveness == 6: print("Good information.")
+    elif effectiveness == 1: print("Bad information.")
+    else: print("No information.")
+    details()
+    usedUnits.append(unit)
+
+def fire(unit, unitType, team):
+    global firstHealth
+    global secondHealth
+    global firstTeamTable
+    global secondTeamTable
+    global defendingUnits
+    global usedUnits
+    defensePhase = True
+    willQuit = False
+    if team == firstTeam:
+        targetTeam = secondTeam
+        targetTeamTable = secondTeamTable
+    else:
+        targetTeam = firstTeam
+        targetTeamTable = firstTeamTable
+    if not unit in fireTable:
+        throwError("function")
+        return
+    while defensePhase == True:
+        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][fire]% "
+        command = input(prompt)
+        if command == "help": print("Enter a named unit, 'save' to save changes to gamestate, or 'quit' to exit without saving.")
+        elif command == "quit":
+            defensePhase = False
+            willQuit = True
+        elif command == "save": defensePhase = False
+        elif command in unitTable:
+            try: defendingUnits.append(command)
+            except: pass
+        else: throwError("bad")
+    if willQuit == True: return
+    damage = calculateDamage(unit, unitType, team, fireTable)
+    print("Damage:", damage)
+    perUnitDamage = damage / len(defendingUnits)
+    print("Damage per unit:", perUnitDamage)
+    for x in defendingUnits:
+        oldHealth = targetTeamTable.get(x)
+        if oldHealth - perUnitDamage < 0: 
+            newHealth = 0
+            print(x, "killed.")
+        else: 
+            newHealth = oldHealth - perUnitDamage
+            print(x, "new health:", newHealth)
+        targetTeamTable[x] = newHealth
+    firstHealth = sum(firstTeamTable.values())
+    secondHealth = sum(secondTeamTable.values())
+    score()
+    turn()
+
+def build(unit, unitType, team):
+    global immobileUnits
+    global usedUnits
+    global firstTeamTable
+    global secondTeamTable
+    fortification = calculateDamage(unit, unitType, team, buildTable)
+    if int(fortification) == fortification:
+        print("Fortification of strength", fortification, "built.")
+        usedUnits.append(unit)
+        immobileUnits.append(unit)
+    else: return
+
+def torpedo(unit, unitType, team):
+    global usedUnits
+    global immobileUnits
+    global firstHealth
+    global secondHealth
+    global firstTeamTable
+    global secondTeamTable
+    if team == firstTeam:
+        targetTeam = secondTeam
+        targetTeamTable = secondTeamTable
+    else:
+        targetTeam = firstTeam
+        targetTeamTable = firstTeamTable
+    prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][torpedo]% "
+    target = input(prompt)
+    targetUnitType = unitTable.get(target)
+    damage = calculateDamage(unit, unitType, team, torpedoTable)
+    oldHealth = targetTeamTable.get(target)
+    if damage == 6 or oldHealth - damage <= 0:
+        print(target, "sunk.")
+        kill(target)
+    else:
+        newHealth = oldHealth - damage
+        print(target, "new health:", newHealth)
+        targetTeamTable[target] = newHealth
+    usedUnits.append(unit)
+    immobileUnits.append(unit)
+    firstHealth = sum(firstTeamTable.values())
+    secondHealth = sum(secondTeamTable.values())
+    score()
+
+def sortie(unit, unitType, team):
+    global usedUnits
+    global immobileUnits
+    global firstHealth
+    global secondHealth
+    global firstTeamTable
+    global secondTeamTable
+    if team == firstTeam: 
+        targetTeam = secondTeam
+        targetTeamTable = secondTeamTable
+    else: 
+        targetTeam = firstTeam
+        targetTeamTable = firstTeamTable
+    if not unitType in sortieTable:
+        throwError("function")
+        return
+    prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][sortie]% "
+    target = input(prompt)
+    targetUnitType = unitTable.get(target)
+    attackDamage = calculateDamage(unit, unitType, team, sortieTable)
+    defenseDamage = calculateDamage(target, targetUnitType, targetTeam, sortieDefenseTable)
+    if defenseDamage <= attackDamage:
+        netDamage = attackDamage - defenseDamage
+        oldHealth = targetTeamTable[target]
+        if oldHealth - netDamage < 0: kill(target, targetUnitType, targetTeam)
+        else: 
+            newHealth = oldHealth - netDamage
+            print(target, "new health:", newHealth)
+            targetTeamTable[target] = newHealth
+    else: print("Attack repelled by:", target)
+    usedUnits.append(unit)
+    immobileUnits.append(unit)
+    firstHealth = sum(firstTeamTable.values())
+    secondHealth = sum(secondTeamTable.values())
+    score()
+
+def depthcharge(unit, unitType, team):
+    global alreadyDropped
+    global immobileUnits
+    if team == firstTeam: targetTeam = secondTeam
+    else: targetTeam = firstTeam
+    if not unitType in depthchargeTable:
+        throwError("function")
+        return
+    if unit in alreadyDropped:
+        throwError("available")
+        return
+    prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][depthcharge]% "
+    target = input(prompt)
+    targetUnitType = unitTable.get(target)
+    effectiveness = calculateDamage(unit, unitType, team, depthchargeTable)
+    if effectiveness == 6: 
+        kill(target, targetUnitType, targetTeam)
+        print(target, "sunk.")
+    elif effectiveness == 5: 
+        freeze(target, targetUnitType, targetTeam)
+        print(target, "frozen.")
+    else: print("Missed.")
+    immobileUnits.append(unit)
+    alreadyDropped.append(unit)
+
+def man(command, arg2, arg3):
+    if os.name == "nt": path = "manpage\\" + str(command)
+    elif os.name == "posix": path = "manpages/" + str(command)
+    else: throwError("os")
+    file = open(path, "r")
+    for line in file: print(file.read())
+
+def attack(team):
+    global firstHealth
+    global secondHealth
+    global firstTeamTable
+    global secondTeamTable
+    global defendingUnits
+    global usedUnits
+    attackPhase = True
+    defensePhase = False
+    willQuit = False
+    totalAttackDamage = 0
+    totalDefenseDamage = 0
+    if team == firstTeam: 
+        defendingTeam = secondTeam
+        defenseTable = secondTeamTable
+    else: 
+        defendingTeam = firstTeam
+        defenseTable = firstTeamTable
+    while attackPhase == True:
+        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][attack]% "
+        command = input(prompt)
+        if command == "help": print("Enter a named unit to attack, 'defend' to change to the defense phase, or 'quit' to exit without saving.")
+        elif command == "quit":
+            attackPhase = False
+            defensePhase = False
+            willQuit = True
+        elif command == "defend":
+            attackPhase = False
+            defensePhase = True
+        elif command in unitTable:
+            unitType = unitTable.get(command)
+            attackDamage = calculateDamage(command, unitType, team, attackTable)
+            try: 
+                totalAttackDamage = totalAttackDamage + attackDamage
+                usedUnits.append(command)
+                if not command in moveAndFire: freeze(command)
+            except: pass
+            print("Damage dealt:", attackDamage)
+            print("Total damage dealt:", totalAttackDamage)
+        else: throwError("bad")
+    while defensePhase == True:
+        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + defendingTeam + "][defend]% "
+        command = input(prompt)
+        if command == "help": print("Enter a named unit to defend, 'save' to save changes to gamestate, or 'quit' to exit without saving.")
+        elif command == "quit":
+            defensePhase = False
+            willQuit = True
+        elif command == "save": defensePhase = False
+        elif command in unitTable:
+            unitType = unitTable.get(command)
+            defenseDamage = calculateDamage(command, unitType, defendingTeam, attackTable)
+            try: 
+                totalDefenseDamage = totalDefenseDamage + defenseDamage
+                defendingUnits.append(command)
+            except: pass
+            print("Defense dealt:", defenseDamage)
+            print("Total defense dealt:", totalDefenseDamage)
+            if totalDefenseDamage >= totalAttackDamage: defensePhase = False
+        else: throwError("bad")
+    if willQuit == True: return
+    if totalDefenseDamage >= totalAttackDamage:
+        print("Attack repelled by", defendingTeam)
+        return
+    else:
+        netDamage = totalAttackDamage - totalDefenseDamage
+        print("Net damage:", netDamage)
+        perUnitDamage = netDamage / len(defendingUnits)
+        print("Damage per unit:", perUnitDamage)
+        for x in defendingUnits:
+            oldHealth = defenseTable.get(x)
+            if oldHealth - perUnitDamage < 0: 
+                newHealth = 0
+                print(x, "killed.")
+            else: 
+                newHealth = oldHealth - perUnitDamage
+                print(x, "new health:", newHealth)
+            defenseTable[x] = newHealth
+        firstHealth = sum(firstTeamTable.values())
+        secondHealth = sum(secondTeamTable.values())
+        score()
+        turn()
+
+def health(unit, unitType, team):
+    global firstHealth
+    global secondHealth
+    global firstTeamTable
+    global secondTeamTable
+    if unit in firstTeamTable:
+        print("Current health:", firstTeamTable.get(unit))
+        newHealth = input("New health: ")
+        firstTeamTable[unit] = int(newHealth)
+        firstHealth = sum(firstTeamTable.values())
+    else:
+        print("Current health:", secondTeamTable.get(unit))
+        newHealth = input("New health: ")
+        secondTeamTable[unit] = int(newHealth)
+        secondHealth = sum(secondTeamTable.values())
+
+def info(unit, unitType, team):
+    print("Unit type: ", unitTable.get(unit))
+    print("Maximum health: ", healthTable.get(unitType))
+    if unit in firstTeamTable: 
+        owner = firstTeam
+        print("Current health: ", firstTeamTable.get(unit))
+        print("Owner: ", firstTeam)
+    else: 
+        owner = secondTeam
+        print("Current health: ", secondTeamTable.get(unit))
+        print("Owner: ", secondTeam)
+    print("Movement: ", movementTable.get(unitType))
+    print("Attack: ", attackTable.get(unitType))
+    print("Build: ", buildTable.get(unitType))
+    if unitType in searchable: print("Can search.")
+    if unitType in hideable: print("Can hide.")
+    if unitType in moveAndFire: print("Can move and fire in the same turn.")
+    if unit in immobileUnits: print("Immovable this turn.")
+    if unit in usedUnits: print("Unusable this turn.")
+    if unit in hiddenUnits: print("Hidden.")
 
 def quitGame():
     score()
@@ -342,30 +412,33 @@ def helpText():
     global validCommands
     global allUnitTypes
     print("turn, quit, man, help, details, score")
-    print(*vfalidCommands, sep = ", ")
+    print(*validCommands, sep = ", ")
     print(*allUnitTypes, sep = ", ")
+    print("To learn more about any command, type 'man [command]'.")
 
-def info(unit, unitType, team):
-    print("Health: ", healthTable.get(unitType))
-    print("Movement: ", movementTable.get(unitType))
-    print("Attack: ", attackTable.get(unitType))
-    print("Build: ", buildTable.get(unitType))
-    if unitType in searchable: print("Can search.")
-    if unitType in hideable: print("Can hide.")
-    if unitType in moveAndFire: print("Can move and fire in the same turn.")
-    if unit in deadUnits: print("Dead.")
-    if unit in immobileUnits: print("Immovable this turn.")
-    if unit in usedUnits: print("Unusable this turn.")
-    if unit in hiddenUnits: print("Hidden.")
+def shell(team):
+    global commandNumber
+    prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "]% "
+    rawCommand = input(prompt)
+    if len(rawCommand.split()) > 2: 
+        throwError("arguments")
+        return
+    elif len(rawCommand.split()) == 2:
+        command, unit = rawCommand.split()
+        unitType = unitTable.get(unit)
+        if command in validCommands: globals()[command](unit, unitType, team)
+        else: 
+            throwError("bad")
+            return
+    else:
+        if rawCommand == "attack": attack(team) 
+        else:
+            try: globals()[oneWordCommands.get(rawCommand)]()
+            except: 
+                throwError("bad")
+                return
+    commandNumber = commandNumber + 1
 
 while True:
-    while (round % 2) != 0:
-        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + firstTeam + "]% "
-        rawCommand = input(prompt)
-        getCommand(rawCommand, firstTeam)
-        commandNumber = commandNumber + 1
-    while (round % 2) == 0:
-        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + secondTeam + "]% "
-        rawCommand = input(prompt)
-        getCommand(rawCommand, secondTeam)
-        commandNumber = commandNumber + 1
+    while (round % 2) != 0: shell(firstTeam)
+    while (round % 2) == 0: shell(secondTeam)
