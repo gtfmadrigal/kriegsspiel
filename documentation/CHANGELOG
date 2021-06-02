@@ -145,3 +145,4 @@ v2.1 - Naval battle polished release (5/25/21)
     v2.2.55 - documentation/annotations/callables/ and documentation/annotations/metafunctions/ directories created, and annotation files made
     v2.2.56 - evaluate(..., helpTable) fixed so that the reveal() function works
     v2.2.57 - throwError() function deprecated, replaced by a simple dictionary call
+    v2.2.58 - callables divided between game-functions/ and oneword/
