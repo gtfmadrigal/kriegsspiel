@@ -48,7 +48,6 @@ def changeList(unit, list, command):
     global defendingUnits
     global doubleImmobileUnits
     global deadUnits
-    global doubleImmobileUnits
     if command == "append": list.append(unit)
     elif command == "clear": list.clear()
     elif command == "remove": list.remove(unit)
@@ -68,9 +67,11 @@ def evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, table
     if unit in deadUnits:
         throwError("dead")
         return
-    if unit in hiddenUnits: 
-        try: reveal(unit, unitType, team, targetTeam, targetTeamTable, teamTable)
-        except: pass
+    if unit in hiddenUnits:
+        if table == hideTable: pass
+        else:
+            try: reveal(unit, unitType, team, targetTeam, targetTeamTable, teamTable)
+            except: pass
     if table.get(unitType) == None: return
     try: maximum = table.get(unitType) + 1
     except:

@@ -1,6 +1,7 @@
 # This is an annotated version of kriegsspiel.py. I removed all of the comments from the original and converted them here, since the comments were becoming long and burdensome.
 # This version is NON-RUNNABLE. If you are opening this with Visual Studio or some other Python IDE, running it will not work. It is meant for research and documentation purposes only. Primarily, the reason that this is the case is because the functions are juggled around in order to make documentation easier. 
 # Essentially, this program is divided into four sections: definitions and imports, the game loop and shell, meta-functions, and callable functions.
+# Every function is given its own Python file in either documentation/annotations/metafunctions/ or documentation/annotations/callables/. These Python files do not include the function verbatim, but rather an altered version to make understanding it easier.
 
 # Part I: Definitions and Imports
 
