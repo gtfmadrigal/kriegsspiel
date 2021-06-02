@@ -13,17 +13,7 @@ deadUnits = []
 commandNumber = 1
 secrets = ""
 oneWordCommands = {"score":"score", "turn":"turn", "quit":"quitGame", "help":"helpText", "attack":"attack", "details":"details"}
-
-def throwError(function):
-    if function == "arguments": errorMessage = "Too many arguments for command. Type 'man' [command] for information."
-    elif function == "bad": errorMessage = "Bad command. Type 'help' for assistance."
-    elif function == "os": errorMessage = "Unknown operating system."
-    elif function == "team": errorMessage = "That unit does not belong to you, or it does not exist."
-    elif function == "available": errorMessage = "That unit is currently unavailable."
-    elif function == "function": errorMessage = "That function is unavailable to this unit."
-    elif function == "heading": errorMessage = "Unit cannot exceed its maximum heading change."
-    elif function == "dead": errorMessage = "Unit is dead."
-    print(errorMessage)
+errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit does not belong to you, or it does not exist.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead."}
 
 def update():
     global firstHealth
@@ -59,23 +49,21 @@ def evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, table
     global firstTeamTable
     global secondTeamTable
     if not unit in teamTable:
-        throwError("team")
+        print(errorMessages.get("team"))
         return
     if unit in immobileUnits or unit in usedUnits:
-        throwError("available")
+        print(errorMessages.get("available"))
         return
     if unit in deadUnits:
-        throwError("dead")
+        print(errorMessages.get("dead"))
         return
     if unit in hiddenUnits:
-        if table == hideTable: pass
-        else:
-            try: reveal(unit, unitType, team, targetTeam, targetTeamTable, teamTable)
-            except: pass
+        try: reveal(unit, unitType, team, targetTeam, targetTeamTable, teamTable)
+        except: pass
     if table.get(unitType) == None: return
     try: maximum = table.get(unitType) + 1
     except:
-        throwError("team")
+        print(errorMessages.get("team"))
         return
     damage = random.randrange(1, maximum)
     return damage
@@ -85,7 +73,7 @@ def kill(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global secondTeamTable
     try: teamTable[unit] = 0
     except:
-        throwError("team")
+        print(errorMessages.get("team"))
         return
     changeList(unit, deadUnits, "append")
     update()
@@ -110,12 +98,12 @@ def details():
 
 def move(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     if unit in immobileUnits:
-        throwError("function")
+        print(errorMessages.get("function"))
         return
     if unit in deadUnits:
-        throwError("dead")
+        print(errorMessages.get("dead"))
         return
-    if unitType in headingTable: throwError("heading")
+    if unitType in headingTable: print(errorMessages.get("heading"))
     if not unitType in moveAndFire: changeList(unit, usedUnits, "append")
     changeList(unit, immobileUnits, "append")
 
@@ -135,17 +123,17 @@ def hide(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
         secrets = secrets + ", " + newSecret
         changeList(unit, hiddenUnits, "append")
     else: 
-        throwError("function")
+        print(errorMessages.get("function"))
         return
 
 def reveal(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global secrets
     global hiddenUnits
     if not unit in hiddenUnits:
-        throwError("function")
+        print(errorMessages.get("function"))
         return
     if unitType in hideTable: hiddenUnits.remove(unit)
-    else: throwError("function")
+    else: print(errorMessages.get("function"))
 
 def spy(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     effectiveness = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, spyTable)
@@ -162,7 +150,7 @@ def fire(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     defensePhase = True
     willQuit = False
     if not unitType in fireTable:
-        throwError("function")
+        print(errorMessages.get("function"))
         return
     while defensePhase == True:
         prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][fire]% "
@@ -175,7 +163,7 @@ def fire(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
         elif command in unitTable:
             try: changeList(command, defendingUnits, "append")
             except: pass
-        else: throwError("bad")
+        else: print(errorMessages.get("bad"))
     if willQuit == True: return
     damage = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, fireTable)
     print("Damage:", damage)
@@ -212,7 +200,7 @@ def torpedo(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     damage = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, torpedoTable)
     try: oldHealth = targetTeamTable.get(target)
     except:
-        throwError("team")
+        print(errorMessages.get("team"))
         return
     if damage == 6 or oldHealth - damage <= 0:
         print(target, "sunk.")
@@ -229,11 +217,11 @@ def sortie(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable
     global secondTeamTable
     if not unitType in sortieTable:
-        throwError("function")
+        print(errorMessages.get("function"))
         return
     attackDamage = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, sortieTable)
     if attackDamage == None:
-        throwError("function")
+        print(errorMessages.get("function"))
         return
     prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][sortie]% "
     target = input(prompt)
@@ -244,7 +232,7 @@ def sortie(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
         netDamage = attackDamage - defenseDamage
         try: oldHealth = targetTeamTable[target]
         except:
-            throwError("team")
+            print(errorMessages.get("team"))
             return
         if oldHealth - netDamage < 0: kill(target, targetUnitType, targetTeam, targetTeam, targetTeamTable, targetTeamTable)
         else: 
@@ -258,10 +246,10 @@ def sortie(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
 
 def depthcharge(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     if not unitType in depthchargeTable:
-        throwError("function")
+        print(errorMessages.get("function"))
         return
     if unit in alreadyDropped:
-        throwError("available")
+        print(errorMessages.get("available"))
         return
     prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][depthcharge]% "
     target = input(prompt)
@@ -282,12 +270,12 @@ def depthcharge(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
 def man(command, unitType, team, targetTeam, targetTeamTable, teamTable):
     if os.name == "nt": path = "manpage\\" + str(command)
     elif os.name == "posix": path = "manpages/" + str(command)
-    else: throwError("os")
+    else: print(errorMessages.get("os"))
     try: 
         file = open(path, "r")
         for line in file: print(file.read())
     except:
-        throwError("bad")
+        print(errorMessages.get("bad"))
         return
 
 def attack(team, targetTeam, targetTeamTable, teamTable):
@@ -319,7 +307,7 @@ def attack(team, targetTeam, targetTeamTable, teamTable):
             except: pass
             print("Damage dealt:", attackDamage)
             print("Total damage dealt:", totalAttackDamage)
-        else: throwError("bad")
+        else: print(errorMessages.get("bad"))
     while defensePhase == True:
         prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + targetTeam + "][defend]% "
         command = input(prompt)
@@ -338,7 +326,7 @@ def attack(team, targetTeam, targetTeamTable, teamTable):
             print("Defense dealt:", defenseDamage)
             print("Total defense dealt:", totalDefenseDamage)
             if totalDefenseDamage >= totalAttackDamage: defensePhase = False
-        else: throwError("bad")
+        else: print(errorMessages.get("bad"))
     if willQuit == True: return
     if totalDefenseDamage >= totalAttackDamage:
         print("Attack repelled by", targetTeam)
@@ -366,20 +354,20 @@ def health(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
         newHealth = input("New health: ")
         try: firstTeamTable[unit] = int(newHealth)
         except:
-            throwError("team")
+            print(errorMessages.get("team"))
             return
     else:
         print("Current health:", secondTeamTable.get(unit))
         newHealth = input("New health: ")
         try: secondTeamTable[unit] = int(newHealth)
         except:
-            throwError("team")
+            print(errorMessages.get("team"))
             return
     update()
 
 def info(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     if not unit in unitTable:
-        throwError("team")
+        print(errorMessages.get("team"))
         return
     print("Unit type:", unitTable.get(unit))
     print("Maximum health:", healthTable.get(unitType))
@@ -423,21 +411,21 @@ def shell(team, targetTeam, targetTeamTable, teamTable):
     prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "]% "
     rawCommand = input(prompt)
     if len(rawCommand.split()) > 2: 
-        throwError("arguments")
+        print(errorMessages.get("arguments"))
         return
     elif len(rawCommand.split()) == 2:
         command, unit = rawCommand.split()
         unitType = unitTable.get(unit)
         if command in validCommands: globals()[command](unit, unitType, team, targetTeam, targetTeamTable, teamTable)
         else: 
-            throwError("bad")
+            print(errorMessages.get("bad"))
             return
     else:
         if rawCommand == "attack": attack(team, targetTeam, targetTeamTable, teamTable) 
         else:
             try: globals()[oneWordCommands.get(rawCommand)]()
             except: 
-                throwError("bad")
+                print(errorMessages.get("bad"))
                 return
     commandNumber = commandNumber + 1
 

@@ -22,6 +22,7 @@ deadUnits = [] # While not strictly required, the deadUnits list is included for
 commandNumber = 1 # Sets the commandNumber to 1 intially, so that the shell has a number to work with at the beginning of the game
 secrets = "" # Empty string originally, added to when hide() is called, so that the umpire can keep track of the secret locations.
 oneWordCommands = {"score":"score", "turn":"turn", "quit":"quitGame", "help":"helpText", "attack":"attack", "details":"details"} # One word commands are dealt with specially by the shell, and some in-game commands are reserved Python keywords (namely, "quit" and "help"). Since the functions "quit" and "attack" cannot exist, they are mapped to quitGame() and helpText(). Therefore, the shell will recognize a one-word command and instead of calling the command itself, will call the value that the command-as-key is mapped to in this dictionary.
+errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit does not belong to you, or it does not exist.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead."} # Error messages are contained in this dictionary.
 
 # Part II: Game Loop and Shell
 
