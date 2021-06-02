@@ -142,3 +142,4 @@ v2.1 - Naval battle polished release (5/25/21)
     v2.2.52 - freeze() command re-added
     v2.2.53 - error messages fixed, game no longer crashes because of nonexistent units being entered
     v2.2.54 - annotations added for the Kriegsspiel shell, game loop, and basic definitions, in the annotations/ directory
+    v2.2.55 - documentation/annotations/callables/ and documentation/annotations/metafunctions/ directories created, and annotation files made
