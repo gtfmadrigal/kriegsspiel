@@ -72,14 +72,20 @@ def evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, table
         try: reveal(unit, unitType, team, targetTeam, targetTeamTable, teamTable)
         except: pass
     if table.get(unitType) == None: return
-    maximum = table.get(unitType) + 1
+    try: maximum = table.get(unitType) + 1
+    except:
+        throwError("team")
+        return
     damage = random.randrange(1, maximum)
     return damage
 
 def kill(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable
     global secondTeamTable
-    teamTable[unit] = 0
+    try: teamTable[unit] = 0
+    except:
+        throwError("team")
+        return
     changeList(unit, deadUnits, "append")
     update()
 
@@ -144,6 +150,7 @@ def spy(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     effectiveness = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, spyTable)
     if effectiveness == 6: print("Good information.")
     elif effectiveness == 1: print("Bad information.")
+    elif effectiveness == None: return
     else: print("No information.")
     details()
     changeList(unit, usedUnits, "append")
@@ -202,7 +209,10 @@ def torpedo(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     target = input(prompt)
     targetUnitType = unitTable.get(target)
     damage = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, torpedoTable)
-    oldHealth = targetTeamTable.get(target)
+    try: oldHealth = targetTeamTable.get(target)
+    except:
+        throwError("team")
+        return
     if damage == 6 or oldHealth - damage <= 0:
         print(target, "sunk.")
         kill(target, targetUnitType, targetTeam, team, targetTeamTable, targetTeamTable)
@@ -231,7 +241,10 @@ def sortie(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     if defenseDamage == None: defenseDamage = 0
     if defenseDamage <= attackDamage:
         netDamage = attackDamage - defenseDamage
-        oldHealth = targetTeamTable[target]
+        try: oldHealth = targetTeamTable[target]
+        except:
+            throwError("team")
+            return
         if oldHealth - netDamage < 0: kill(target, targetUnitType, targetTeam, targetTeam, targetTeamTable, targetTeamTable)
         else: 
             newHealth = oldHealth - netDamage
@@ -269,8 +282,12 @@ def man(command, unitType, team, targetTeam, targetTeamTable, teamTable):
     if os.name == "nt": path = "manpage\\" + str(command)
     elif os.name == "posix": path = "manpages/" + str(command)
     else: throwError("os")
-    file = open(path, "r")
-    for line in file: print(file.read())
+    try: 
+        file = open(path, "r")
+        for line in file: print(file.read())
+    except:
+        throwError("bad")
+        return
 
 def attack(team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable
@@ -346,14 +363,23 @@ def health(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     if unit in firstTeamTable:
         print("Current health:", firstTeamTable.get(unit))
         newHealth = input("New health: ")
-        firstTeamTable[unit] = int(newHealth)
+        try: firstTeamTable[unit] = int(newHealth)
+        except:
+            throwError("team")
+            return
     else:
         print("Current health:", secondTeamTable.get(unit))
         newHealth = input("New health: ")
-        secondTeamTable[unit] = int(newHealth)
+        try: secondTeamTable[unit] = int(newHealth)
+        except:
+            throwError("team")
+            return
     update()
 
 def info(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
+    if not unit in unitTable:
+        throwError("team")
+        return
     print("Unit type:", unitTable.get(unit))
     print("Maximum health:", healthTable.get(unitType))
     if unit in firstTeamTable: 

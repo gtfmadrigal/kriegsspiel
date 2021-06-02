@@ -13,12 +13,13 @@ from nile import * # Most important import statement. Replace "nile" with the na
 round = 1 # Sets the round equal to 1 initially, so that the shell has a number to work with before turn() is called.
 usedUnits = [] # All lists defined in this list are to contain strings, containing the names of various units. This list contains units that have already been used in the current turn. It is cleared every turn.
 immobileUnits = [] # Units that have already moved or taken an action which prevents it from moving are contained in this list, which is again cleared at the end of every turn.
-hiddenUnits = []
-alreadyDropped = []
-defendingUnits = []
-deadUnits = []
-commandNumber = 1
-secrets = ""
+hiddenUnits = [] # Units that are hidden are stored here. hide() appends units to this list, reveal() removes them from it.
+alreadyDropped = [] # depthcharge() cannot only be called once per unit, but a unit that drops depth charges can also perform other commands, so another list needs to be added exclusively for the depthcharge() function to use. Cleared every turn.
+defendingUnits = [] # In fire() and attack(), a list of units defending needs to be looped through to ensure clean attribution of damages.
+doubleImmobileUnits = [] # depthcharge() can immobilize a submarine during the next turn. As such, another list needs to exist to ensure that units are re-added to the immobileUnits list.
+deadUnits = [] # While not strictly required, the deadUnits list is included for ease of searching
+commandNumber = 1 # Sets the commandNumber to 1 intially, so that the shell has a number to work with at the beginning of the game
+secrets = "" # Empty string originally, added to when hide() is called, so that the umpire can keep track of the secret locations.
 oneWordCommands = {"score":"score", "turn":"turn", "quit":"quitGame", "help":"helpText", "attack":"attack", "details":"details"}
 
 # Part II: Game Loop and Shell
