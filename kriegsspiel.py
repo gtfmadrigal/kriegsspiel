@@ -61,20 +61,14 @@ def evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, table
         try: reveal(unit, unitType, team, targetTeam, targetTeamTable, teamTable)
         except: pass
     if table.get(unitType) == None: return
-    try: maximum = table.get(unitType) + 1
-    except:
-        print(errorMessages.get("team"))
-        return
+    maximum = table.get(unitType) + 1
     damage = random.randrange(1, maximum)
     return damage
 
 def kill(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable
     global secondTeamTable
-    try: teamTable[unit] = 0
-    except:
-        print(errorMessages.get("team"))
-        return
+    teamTable[unit] = 0
     changeList(unit, deadUnits, "append")
     update()
 
@@ -352,17 +346,11 @@ def health(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     if unit in firstTeamTable:
         print("Current health:", firstTeamTable.get(unit))
         newHealth = input("New health: ")
-        try: firstTeamTable[unit] = int(newHealth)
-        except:
-            print(errorMessages.get("team"))
-            return
+        firstTeamTable[unit] = int(newHealth)
     else:
         print("Current health:", secondTeamTable.get(unit))
         newHealth = input("New health: ")
-        try: secondTeamTable[unit] = int(newHealth)
-        except:
-            print(errorMessages.get("team"))
-            return
+        secondTeamTable[unit] = int(newHealth)
     update()
 
 def info(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
@@ -416,7 +404,13 @@ def shell(team, targetTeam, targetTeamTable, teamTable):
     elif len(rawCommand.split()) == 2:
         command, unit = rawCommand.split()
         unitType = unitTable.get(unit)
-        if command in validCommands: globals()[command](unit, unitType, team, targetTeam, targetTeamTable, teamTable)
+        if command in validCommands: 
+            globals()[command](unit, unitType, team, targetTeam, targetTeamTable, teamTable)
+            if command == "man": pass
+            else:
+                if unitTable.get(unit) == None:
+                    print(errorMessages.get("team"))
+                    return
         else: 
             print(errorMessages.get("bad"))
             return
