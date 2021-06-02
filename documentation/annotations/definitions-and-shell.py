@@ -32,21 +32,27 @@ def shell(team, targetTeam, targetTeamTable, teamTable): # All arguments are rec
     prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "]% " # The prompt contains the round, command number and the team when used by the shell. Later on, when another command requires user input, the command will also be included in the prompt.
     rawCommand = input(prompt) # The unparsed command is called rawCommand.
     if len(rawCommand.split()) > 2: # If the length of the unparsed command is greater than 2, an error is thrown, because no command needs more than a single argument.
-        throwError("arguments")
+        print(errorMessages.get("arguments"))
         return
     elif len(rawCommand.split()) == 2: # If the command is exactly two words long, it must be a regular game function.
         command, unit = rawCommand.split() # The rawCommand is spliced into the command and the unit.
         unitType = unitTable.get(unit) # The unitType is retrieved from the unitTable dictionary. If the unit does not exist, unitType will have a value of None, but this is not a problem until a command is actually called.
-        if command in validCommands: globals()[command](unit, unitType, team, targetTeam, targetTeamTable, teamTable) # If the command is valid (i.e. if it is in the validCommands list), a function with the same name as the command variable is called, and the various relevant arguments are passed. 
+        if command in validCommands: 
+            globals()[command](unit, unitType, team, targetTeam, targetTeamTable, teamTable) # If the command is valid (i.e. if it is in the validCommands list), a function with the same name as the command variable is called, and the various relevant arguments are passed.
+            if command == "man": pass # This next block of code is only required to be executed if the command is not "man", i.e. if the unit following the command is meant to refer to an actual unit in the gamespace
+            else:
+                if unitTable.get(unit) == None: # The shell checks if the unit exists. If it does not, an error message is thrown and the shell returns.
+                    print(errorMessages.get("team"))
+                    return
         else: # If a command is not valid, an error is thrown and the function is returned to the game loop.
-            throwError("bad")
+            print(errorMessages.get("bad"))
             return
     else: # If the command is one word long, a one-word-command is called
         if rawCommand == "attack": attack(team, targetTeam, targetTeamTable, teamTable) # If the raw command is attack (which is a regular game function), various arguments are passed
         else: # Otherwise, the command must be a meta-function
             try: globals()[oneWordCommands.get(rawCommand)]() # The calling of a one-word function is held within a try-except statement, becuase if the function does not exist, an error would otherwise by thrown and the whole program would crash. Hence, the globals() function is only tried.
             except: # If the function is bad, and an error would ordinarily be called, an error is thrown and the program returns to the game loop.
-                throwError("bad")
+                print(errorMessages.get("bad"))
                 return
     commandNumber = commandNumber + 1 # The command number is incremented before returning the game loop.
 

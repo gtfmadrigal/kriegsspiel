@@ -74,13 +74,11 @@ def kill(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
 
 def turn():
     global round
-    global doubleImmobileUnits
     changeList(True, usedUnits, "clear")
     changeList(True, immobileUnits, "clear")
     changeList(True, alreadyDropped, "clear")
-    changeList(True, defendingUnits, "clear")
     for x in doubleImmobileUnits: changeList(x, immobileUnits, "append")
-    changeList(True, immobileUnits, "clear")
+    changeList(True, doubleImmobileUnits, "clear")
     round = round + 1
 
 def details():
@@ -172,6 +170,7 @@ def fire(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
             newHealth = oldHealth - perUnitDamage
             print(x, "new health:", newHealth)
         targetTeamTable[x] = newHealth
+    changeList(True, defendingUnits, "clear")
     score()
     turn()
 
@@ -260,6 +259,7 @@ def depthcharge(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     else: print("Missed.")
     changeList(unit, immobileUnits, "append")
     changeList(unit, alreadyDropped, "append")
+    score()
 
 def man(command, unitType, team, targetTeam, targetTeamTable, teamTable):
     if os.name == "nt": path = "manpage\\" + str(command)
@@ -338,6 +338,7 @@ def attack(team, targetTeam, targetTeamTable, teamTable):
             newHealth = oldHealth - perUnitDamage
             print(x, "new health:", newHealth)
         targetTeamTable[x] = newHealth
+    changeList(True, defendingUnits, "clear")
     score()
 
 def health(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
@@ -387,9 +388,7 @@ def quitGame():
     quit()
 
 def helpText():
-    global validCommands
-    global allUnitTypes
-    print("turn, quit, man, help, details, score")
+    print("turn, quit, help, details, attack, score")
     print(*validCommands, sep = ", ")
     print(*allUnitTypes, sep = ", ")
     print("To learn more about any command, type 'man [command]'.")
