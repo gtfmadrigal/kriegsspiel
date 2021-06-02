@@ -1,10 +1,18 @@
-import random
-import os
-from nile import *
+# This is an annotated version of kriegsspiel.py. I removed all of the comments from the original and converted them here, since the comments were becoming long and burdensome.
+# This version is NON-RUNNABLE. If you are opening this with Visual Studio or some other Python IDE, running it will not work. It is meant for research and documentation purposes only. Primarily, the reason that this is the case is because the functions are juggled around in order to make documentation easier. 
+# Essentially, this program is divided into four sections: definitions and imports, the game loop and shell, meta-functions, and callable functions.
 
-round = 1
-usedUnits = []
-immobileUnits = []
+# Part I: Definitions and Imports
+
+# I-a. Imports
+import random # random.randrange() sed only by the evaluate() meta function to simulate rolling dice with a computer.
+import os # os.name() used only by the man() callable function. See man() for more.
+from nile import * # Most important import statement. Replace "nile" with the name of whatever gamefile you want to use. When doing this, move the gamefile from the gamefiles/ directory to the main one, alongside kriegsspiel.py. Notice that the ordinary "import module" statement is not used here like it is for the random and os modules. "from module import *" is generally not recommened, since it is a security flaw, but in this case, we are only importing a single Python file, full of definitions, created by the user. However, since this is a security hole, I recommend that anyone using this program check a gamefile downloaded from another user.
+
+# I-b. Definitions
+round = 1 # Sets the round equal to 1 initially, so that the shell has a number to work with before turn() is called.
+usedUnits = [] # All lists defined in this list are to contain strings, containing the names of various units. This list contains units that have already been used in the current turn. It is cleared every turn.
+immobileUnits = [] # Units that have already moved or taken an action which prevents it from moving are contained in this list, which is again cleared at the end of every turn.
 hiddenUnits = []
 alreadyDropped = []
 defendingUnits = []
@@ -12,6 +20,38 @@ deadUnits = []
 commandNumber = 1
 secrets = ""
 oneWordCommands = {"score":"score", "turn":"turn", "quit":"quitGame", "help":"helpText", "attack":"attack", "details":"details"}
+
+# Part II: Game Loop and Shell
+
+# II-a. Main game loop
+while True: # Loop runs permanently, until the quitGame() function is called
+   while (round % 2) != 0: shell(firstTeam, secondTeam, secondTeamTable, firstTeamTable)
+   while (round % 2) == 0: shell(secondTeam, firstTeam, firstTeamTable, secondTeamTable)
+
+def shell(team, targetTeam, targetTeamTable, teamTable):
+    global commandNumber
+    prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "]% "
+    rawCommand = input(prompt)
+    if len(rawCommand.split()) > 2: 
+        throwError("arguments")
+        return
+    elif len(rawCommand.split()) == 2:
+        command, unit = rawCommand.split()
+        unitType = unitTable.get(unit)
+        if command in validCommands: globals()[command](unit, unitType, team, targetTeam, targetTeamTable, teamTable)
+        else: 
+            throwError("bad")
+            return
+    else:
+        if rawCommand == "attack": attack(team, targetTeam, targetTeamTable, teamTable) 
+        else:
+            try: globals()[oneWordCommands.get(rawCommand)]()
+            except: 
+                throwError("bad")
+                return
+    commandNumber = commandNumber + 1
+
+# Part III: Meta-functions
 
 def throwError(function):
     if function == "arguments": errorMessage = "Too many arguments for command. Type 'man' [command] for information."
@@ -70,12 +110,13 @@ def evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, table
     damage = random.randrange(1, maximum)
     return damage
 
+# Part IV: Callable Functions
+
 def kill(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable
     global secondTeamTable
     teamTable[unit] = 0
     changeList(unit, deadUnits, "append")
-
     update()
 
 def turn():
@@ -174,7 +215,6 @@ def fire(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
             newHealth = oldHealth - perUnitDamage
             print(x, "new health:", newHealth)
         targetTeamTable[x] = newHealth
-    update()
     score()
     turn()
 
@@ -205,7 +245,6 @@ def torpedo(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
         targetTeamTable[target] = newHealth
     changeList(unit, usedUnits, "append")
     changeList(unit, immobileUnits, "append")
-    update()
     score()
 
 def sortie(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
@@ -234,7 +273,6 @@ def sortie(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     else: print("Attack repelled by:", target)
     changeList(unit, usedUnits, "append")
     changeList(unit, immobileUnits, "append")
-    update()
     score()
 
 def depthcharge(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
@@ -332,7 +370,6 @@ def attack(team, targetTeam, targetTeamTable, teamTable):
             newHealth = oldHealth - perUnitDamage
             print(x, "new health:", newHealth)
         targetTeamTable[x] = newHealth
-    update()
     score()
 
 def health(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
@@ -385,30 +422,3 @@ def helpText():
     print(*validCommands, sep = ", ")
     print(*allUnitTypes, sep = ", ")
     print("To learn more about any command, type 'man [command]'.")
-
-def shell(team, targetTeam, targetTeamTable, teamTable):
-    global commandNumber
-    prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "]% "
-    rawCommand = input(prompt)
-    if len(rawCommand.split()) > 2: 
-        throwError("arguments")
-        return
-    elif len(rawCommand.split()) == 2:
-        command, unit = rawCommand.split()
-        unitType = unitTable.get(unit)
-        if command in validCommands: globals()[command](unit, unitType, team, targetTeam, targetTeamTable, teamTable)
-        else: 
-            throwError("bad")
-            return
-    else:
-        if rawCommand == "attack": attack(team, targetTeam, targetTeamTable, teamTable) 
-        else:
-            try: globals()[oneWordCommands.get(rawCommand)]()
-            except: 
-                throwError("bad")
-                return
-    commandNumber = commandNumber + 1
-
-while True:
-    while (round % 2) != 0: shell(firstTeam, secondTeam, secondTeamTable, firstTeamTable)
-    while (round % 2) == 0: shell(secondTeam, firstTeam, firstTeamTable, secondTeamTable)

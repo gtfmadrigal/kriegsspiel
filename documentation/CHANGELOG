@@ -139,5 +139,6 @@ v2.1 - Naval battle polished release (5/25/21)
     v2.2.49 - scenariotemplate.py updated
     v2.2.50 - manpages updated for rewrite
     v2.2.51 - redundant update() calls removed
-    v2.2.52 - annotated version of kriegsspiel.py added.
-    v2.2.53 - RELEASENOTES updated for v2.3
+    v2.2.52 - freeze() command re-added
+    v2.2.53 - annotated version of kriegsspiel.py added.
+    v2.2.54 - RELEASENOTES updated for v2.3

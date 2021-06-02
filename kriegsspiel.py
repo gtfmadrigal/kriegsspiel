@@ -8,6 +8,7 @@ immobileUnits = []
 hiddenUnits = []
 alreadyDropped = []
 defendingUnits = []
+doubleImmobileUnits = []
 deadUnits = []
 commandNumber = 1
 secrets = ""
@@ -45,10 +46,15 @@ def changeList(unit, list, command):
     global hiddenUnits
     global alreadyDropped
     global defendingUnits
+    global doubleImmobileUnits
     global deadUnits
+    global doubleImmobileUnits
     if command == "append": list.append(unit)
     elif command == "clear": list.clear()
     elif command == "remove": list.remove(unit)
+
+def freeze(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
+    changeList(unit, immobileUnits, "append")
 
 def evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, table):
     global firstTeamTable
@@ -79,10 +85,13 @@ def kill(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
 
 def turn():
     global round
+    global doubleImmobileUnits
     changeList(True, usedUnits, "clear")
     changeList(True, immobileUnits, "clear")
     changeList(True, alreadyDropped, "clear")
     changeList(True, defendingUnits, "clear")
+    for x in doubleImmobileUnits: changeList(x, immobileUnits, "append")
+    changeList(True, immobileUnits, "clear")
     round = round + 1
 
 def details():
@@ -247,8 +256,9 @@ def depthcharge(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     if effectiveness == 6: 
         kill(target, targetUnitType, targetTeam, targetTeam, targetTeamTable, targetTeamTable)
         print(target, "sunk.")
-    elif effectiveness == 5: 
-        immobileUnits.append(target)
+    elif effectiveness == 5:
+        changeList(target, immobileUnits, "append")
+        changeList(target, doubleImmobileUnits, "append")
         print(target, "frozen.")
     elif effectiveness == None: return
     else: print("Missed.")
