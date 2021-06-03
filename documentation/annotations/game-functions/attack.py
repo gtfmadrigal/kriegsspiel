@@ -24,13 +24,13 @@ def attack(team, targetTeam, targetTeamTable, teamTable): # attack() takes most 
     print("Damage per unit:", perUnitDamage)
     for x in defendingUnits: # This save-phase loop is performed for every unit in the defendingUnits list, but only if attackPhase exceeds the defense phase
         oldHealth = targetTeamTable.get(x) # The pre-attack() health for each unit is retrieved
-        if oldHealth - perUnitDamage < 0: # If the per-unit damage for each unit is 
+        if oldHealth - perUnitDamage <= 0: # If the per-unit damage for each unit is less than or equal to zero, the unit is effectively killed, but kill() is not called.
             newHealth = 0
             print(x, "killed.")
-        else: 
+        else: # Otherwise, the unit's new health is equal to its old health minus the damage-per-unit. Notably, the unit health is now a float type, rather than the original integer type, but Python is able to manage this under-the-hood without any problems.
             newHealth = oldHealth - perUnitDamage
             print(x, "new health:", newHealth)
-        targetTeamTable[x] = newHealth#
+        targetTeamTable[x] = newHealth # The new health is pushed to the target team table.
     changeList(True, defendingUnits, "clear") # defendingUnits is cleared
     score() # the score is displayed
 

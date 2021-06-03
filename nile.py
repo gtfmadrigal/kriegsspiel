@@ -1,6 +1,6 @@
 firstTeam = "British"
 secondTeam = "French"
-validCommands = ["move", "heading", "depthcharge", "sortie", "fire", "torpedo", "spy", "hide", "reveal", "info", "kill", "health", "man", "freeze"]
+validCommands = ["move", "heading", "depthcharge", "sortie", "fire", "torpedo", "spy", "hide", "reveal", "info", "kill", "health", "man", "freeze", "convert"]
 allUnitTypes = ["carrier", "battleship", "cruiser", "destroyer", "corvette", "amphibious", "patrol", "attack-submarine", "missile-submarine"]
 unitTable = {"culloden":"carrier", "leander":"carrier", "swiftsure":"battleship", "alexander":"battleship", "majestic":"cruiser", "bellerophon":"cruiser", "defence":"destroyer", "minotaur":"destroyer", "vanguard":"corvette", "orion":"corvette", "audacious":"amphibious", "zealous":"amphibious", "goliath":"patrol", "theseus":"patrol", "leviathan":"attack-submarine", "victory":"missile-submarine", "guerrier":"carrier", "conquerant":"carrier", "sparta":"battleship", "aquilon":"battleship", "souverain":"cruiser", "franklin":"cruiser", "orient":"destroyer", "tonnant":"destroyer", "heureux":"corvette", "artemise":"corvette", "mercure":"amphibious", "guillame":"amphibious", "diane":"patrol", "justice":"patrol", "timoleon":"attack-submarine", "genereux":"missile-submarine"}
 firstTeamTable = {"culloden":16, "leander":16, "swiftsure":12, "alexander":12, "majestic":10, "bellerophon":10, "defence":8, "minotaur":8, "vanguard":4, "orion":4, "audacious":4, "zealous":4, "goliath":2, "theseus":2, "leviathan":1, "victory":1}
