@@ -5,7 +5,7 @@ firstTeam = "" # Name of the first team. Should be capitalized.
 secondTeam = "" # Name of the second team
 
 # Basic lists
-validCommands = ["move", "info", "kill", "man", "health", "freeze"] # Include all valid commands you want to allow units to call. These six are mandatory. All valid commands possible are: fire, build, hide, spy, reveal, heading, depthcharge, sortie, and torpedo. Decide which should be included in your game.
+validCommands = ["move", "info", "kill", "man", "health", "freeze", "convert"] # Include all valid commands you want to allow units to call. These seven are mandatory. All valid commands possible are: fire, build, hide, spy, reveal, heading, depthcharge, sortie, and torpedo. Decide which should be included in your game.
 allUnitTypes = [] # List all possible unit types here.
 
 # Universal dictionary

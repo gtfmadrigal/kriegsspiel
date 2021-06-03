@@ -175,14 +175,14 @@ def fire(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     turn()
 
 def build(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
-    global firstTeamTable
-    global secondTeamTable
     fortification = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, buildTable)
     if type(fortification) is int:
         print("Fortification of strength", fortification, "built.")
         changeList(unit, usedUnits, "append")
         changeList(unit, immobileUnits, "append")
-    else: return
+    else: 
+        print(errorMessages.get("function"))
+        return
 
 def torpedo(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable
