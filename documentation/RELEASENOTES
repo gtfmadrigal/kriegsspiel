@@ -70,3 +70,19 @@ Features to be added in a later release:
 - Rewrite entire codebase to be faster and more portable. Separate functions into individual files instead of all being lumped into kriegsspiel.py.
 - Package kriegsspiel files into binaries, to be offered with the releases.
 - Choose which gamefile is imported by hand, instead of setting it in the source code.
+
+v2.3 - Final naval battles release:
+
+New features in this release:
+- Ability to convert units from one type to another
+- Unit-by-unit damage tracking
+- Damage can be assigned to multiple units much more efficiently
+- Unit types no longer need to be given to the shell directly
+- globals calls are now largely deprecated by the use of internal meta-functions, speeding up code execution considerably
+- Codebase rewritten
+- Fire function now allows multi-unit damage distribution
+
+Features to be added in a later release:
+- takeoff(), land(), pulse(), airlift(), survey(), drop(), bomb(), pulse(), disembark(), and load() functions for air combat
+- Integration of land, sea, air, and space units in a single gamespace
+- Fourth Edition of the Kriegsspiel Guide
