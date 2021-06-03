@@ -151,3 +151,4 @@ v2.1 - Naval battle polished release (5/25/21)
     v2.2.61 - health() function made more portable, fixed negative-damage bug
     v2.2.62 - convert() function added
     v2.2.63 - build() function globals removed, as they are rendered irrelevant by the changeList() function
+    v2.2.64 - .vscode/ added to .gitignore
