@@ -359,7 +359,8 @@ def convert(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable
     global secondTeamTable
     global unitTable
-    if unit in firstTeamTable: relevantTable = firstTeamTable
+    if unit in firstTeamTable: 
+        relevantTable = firstTeamTable
     elif unit in secondTeamTable: relevantTable = secondTeamTable
     else:
         print(errorMessages.get("team"))

@@ -1,0 +1,4 @@
+convert()
+Game function
+
+Convert changes a given unit's unitType from one thing to another. The new health cannot exceed the current.

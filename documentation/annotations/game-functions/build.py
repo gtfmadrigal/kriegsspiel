@@ -5,7 +5,7 @@ def build(unit, unitType, team, targetTeam, targetTeamTable, teamTable): # build
     if type(fortification) is int: # If the fortification variable is of integer type (which only happens if the unit is contained within the buildTable dictionary)
         print("Fortification of strength", fortification, "built.")
         changeList(unit, usedUnits, "append")
-        changeList(unit, immobileUnits, "append")
+        changeList(unit, immobileUnits, "append") # Lists are altered for the relevant unit
     else: 
-        print(errorMessages.get("function"))
+        print(errorMessages.get("function")) # If the fortification variable is not of type in (i.e., evaluate() returned a None value), build() returns an error message
         return
