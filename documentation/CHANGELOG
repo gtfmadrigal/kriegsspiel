@@ -148,3 +148,4 @@ v2.1 - Naval battle polished release (5/25/21)
     v2.2.58 - callables divided between game-functions/ and oneword/
     v2.2.59 - concatenated "team" error messages into shell; game-functions will now only ever receive valid units
     v2.2.60 - all one-word command functions are now documented, minor changes to kriegsspiel.py
+    v2.2.61 - health() command made more portable, fixed negative-damage bug

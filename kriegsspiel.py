@@ -344,14 +344,15 @@ def attack(team, targetTeam, targetTeamTable, teamTable):
 def health(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable
     global secondTeamTable
-    if unit in firstTeamTable:
-        print("Current health:", firstTeamTable.get(unit))
-        newHealth = input("New health: ")
-        firstTeamTable[unit] = int(newHealth)
+    if unit in firstTeamTable: relevantTable = firstTeamTable
+    elif unit in secondTeamTable: relevantTable = secondTeamTable
     else:
-        print("Current health:", secondTeamTable.get(unit))
-        newHealth = input("New health: ")
-        secondTeamTable[unit] = int(newHealth)
+        print(errorMessages.get("team"))
+        return
+    print("Current health: ", relevantTable.get(unit))
+    newHealth = input("New health: ")
+    if newHealth <= 0: kill(unit, unitType, team, targetTeam, targetTeamTable, relevantTable)
+    else: relevantTable[unit] = int(newHealth)
     update()
 
 def info(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
