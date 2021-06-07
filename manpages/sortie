@@ -1,9 +1,0 @@
-sortie(unit, unitType)
-Game function
-
-Causes a unit to launch a sortie.
-
-1. Checks if the unitType has the ability to launch sorties. If not, the function throws an error and quits.
-2. Checks if the unit has already been used that turn, in which case the function throws an error and quits.
-3. Deals damage equal to a random number between 1 and the maximum dictated by the unitType.
-4. Adds the unit to the usedUnits[] and immobileUnits[] lists.

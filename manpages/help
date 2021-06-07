@@ -1,7 +1,0 @@
-help()
-Pseudo-function
-
-Displays all valid commands
-
-1. Displays the universal commands.
-2. Displays the commands specified as available in the validCommands[] list.

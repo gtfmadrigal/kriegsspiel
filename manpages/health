@@ -1,9 +1,0 @@
-health()
-Callable game function
-
-Changes the health of a particular unit.
-
-1. Displays the score by calling the score() function.
-2. Requests which team's health to alter.
-3. Requests the new health value as an integer.
-4. Alters the health value.
