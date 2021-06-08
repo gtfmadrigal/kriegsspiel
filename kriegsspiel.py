@@ -44,7 +44,6 @@ def meta_evaluate(unit, unitType, table):
     if unit in deadUnits:
         print(errorMessages.get("dead"))
         return
-    if table.get(unitType) == None: return
     return random.randrange(1, table.get(unitType) + 1)
 
 # One-word command functions
@@ -123,6 +122,9 @@ def reveal(unit, unitType):
     secrets = secrets + append
 
 def spy(unit, unitType):
+    if not unitType in spyTable:
+        print(errorMessages.get("function"))
+        return
     effectiveness = meta_evaluate(unit, unitType, spyTable)
     if effectiveness == 6: print("Good information.")
     elif effectiveness == 1: print("Bad information.")
@@ -187,10 +189,9 @@ def torpedo(unit, unitType, team, targetTeamTable):
     if not unitType in torpedoTable:
         print(errorMessages.get("function"))
         return
+    damage = meta_evaluate(unit, unitType, torpedoTable)
     prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > torpedo % "
     target = input(prompt)
-    targetUnitType = unitTable.get(target)
-    damage = meta_evaluate(unit, unitType, torpedoTable)
     if not target in targetTeamTable:
         print(errorMessages.get("team"))
     oldHealth = targetTeamTable.get(target)
@@ -236,8 +237,28 @@ def sortie(unit, unitType, team, targetTeamTable):
     meta_changeList(unit, immobileUnits, "append")
     score()
 
-def depthcharge():
-    pass
+def depthcharge(unit, unitType, team, targetTeamTable):
+    if not unitType in depthchargeTable:
+        print(errorMessages.get("function"))
+        return
+    if unit in alreadyDropped:
+        print(errorMessages.get("available"))
+        return
+    prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > sortie % "
+    target = input(prompt)
+    effectiveness = meta_evaluate(unit, unitType, depthchargeTable)
+    if effectiveness == 6: 
+        kill(target, targetTeamTable)
+        print(target, "sunk.")
+    elif effectiveness == 5:
+        meta_changeList(target, immobileUnits, "append")
+        meta_changeList(target, doubleImmobileUnits, "append")
+        print(target, "frozen.")
+    elif effectiveness == None: return
+    else: print("Missed.")
+    meta_changeList(unit, immobileUnits, "append")
+    meta_changeList(unit, alreadyDropped, "append")
+    score()
 
 def load():
     pass
@@ -292,7 +313,7 @@ def navyShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
     if command == "heading": heading(unit, unitType)
     elif command == "torpedo": torpedo(unit, unitType, team, targetTeamTable)
     elif command == "sortie": sortie(unit, unitType, team, targetTeamTable)
-    elif command == "depthcharge": pass
+    elif command == "depthcharge": depthcharge(unit, unitType, team, targetTeamTable)
     elif command == "load": pass
     elif command == "disembark": pass
 

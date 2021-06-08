@@ -77,43 +77,6 @@ def build(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
         print(errorMessages.get("function"))
         return
 
-
-
-def depthcharge(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
-    if not unitType in depthchargeTable:
-        print(errorMessages.get("function"))
-        return
-    if unit in alreadyDropped:
-        print(errorMessages.get("available"))
-        return
-    prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][depthcharge]% "
-    target = input(prompt)
-    targetUnitType = unitTable.get(target)
-    effectiveness = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, depthchargeTable)
-    if effectiveness == 6: 
-        kill(target, targetUnitType, targetTeam, targetTeam, targetTeamTable, targetTeamTable)
-        print(target, "sunk.")
-    elif effectiveness == 5:
-        changeList(target, immobileUnits, "append")
-        changeList(target, doubleImmobileUnits, "append")
-        print(target, "frozen.")
-    elif effectiveness == None: return
-    else: print("Missed.")
-    changeList(unit, immobileUnits, "append")
-    changeList(unit, alreadyDropped, "append")
-    score()
-
-def man(command, unitType, team, targetTeam, targetTeamTable, teamTable):
-    if os.name == "nt": path = "manpage\\" + str(command)
-    elif os.name == "posix": path = "manpages/" + str(command)
-    else: print(errorMessages.get("os"))
-    try: 
-        file = open(path, "r")
-        for line in file: print(file.read())
-    except:
-        print(errorMessages.get("bad"))
-        return
-
 def attack(team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable
     global secondTeamTable
