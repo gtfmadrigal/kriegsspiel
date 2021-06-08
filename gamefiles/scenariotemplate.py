@@ -7,6 +7,7 @@ secondTeam = "" # Name of the second team
 # Basic lists
 validCommands = ["move", "info", "kill", "man", "health", "freeze", "convert"] # Include all valid commands you want to allow units to call. These seven are mandatory. All valid commands possible are: fire, build, hide, spy, reveal, heading, depthcharge, sortie, and torpedo. Decide which should be included in your game.
 allUnitTypes = [] # List all possible unit types here.
+airTheater = False
 
 # Universal dictionary
 unitTable = {} # Make a massive dictionary here of all units and unit types. The keys should be the names of the units (with each one being unique), and the values should be the unit types. Make sure all keys and values are strings, and that all values here are also included in allUnitTypes.

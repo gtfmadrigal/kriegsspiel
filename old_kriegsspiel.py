@@ -15,6 +15,12 @@ secrets = ""
 oneWordCommands = {"score":"score", "turn":"turn", "quit":"quitGame", "help":"helpText", "attack":"attack", "details":"details"}
 errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit does not belong to you, or it does not exist.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type."}
 
+# umpire functions: health, kill, freeze, disable, merge, split
+# agnostic: move, hide, reveal, spy, fire, convert
+# navy: heading, torpedo, sortie, depthcharge, load, disembark
+# amry: build
+# air: takeoff, land, pulse, airlift, survey, bomb
+
 def update():
     global firstHealth
     global secondHealth
@@ -87,17 +93,6 @@ def details():
     print("Hidden units:")
     print(*hiddenUnits, sep = ", ")
     score()
-
-def move(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
-    if unit in immobileUnits:
-        print(errorMessages.get("function"))
-        return
-    if unit in deadUnits:
-        print(errorMessages.get("dead"))
-        return
-    if unitType in headingTable: print(errorMessages.get("heading"))
-    if not unitType in moveAndFire: changeList(unit, usedUnits, "append")
-    changeList(unit, immobileUnits, "append")
 
 def heading(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     headingValue = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, headingTable)
