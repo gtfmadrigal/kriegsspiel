@@ -184,7 +184,7 @@ def heading(unit, unitType):
 def torpedo(unit, unitType, team, targetTeamTable):
     global firstTeamTable
     global secondTeamTable
-    if not unit in torpedoTable:
+    if not unitType in torpedoTable:
         print(errorMessages.get("function"))
         return
     prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > torpedo % "
@@ -205,8 +205,36 @@ def torpedo(unit, unitType, team, targetTeamTable):
     meta_changeList(unit, immobileUnits, "append")
     score()
 
-def sortie():
-    pass
+def sortie(unit, unitType, team, targetTeamTable):
+    global firstTeamTable
+    global secondTeamTable
+    if not unitType in sortieTable:
+        print(errorMessages.get("function"))
+        return
+    attackDamage = meta_evaluate(unit, unitType, sortieTable)
+    if attackDamage == None:
+        print(errorMessages.get("function"))
+        return
+    prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > sortie % "
+    target = input(prompt)
+    if not target in targetTeamTable:
+        print(errorMessages.get("team"))
+        return
+    targetUnitType = unitTable.get(target)
+    defenseDamage = meta_evaluate(target, targetUnitType, sortieTable)
+    if defenseDamage == None: defenseDamage = 0
+    if defenseDamage <= attackDamage:
+        netDamage = attackDamage - defenseDamage
+        oldHealth = targetTeamTable[target]
+        if oldHealth - netDamage < 0: kill(target, targetTeamTable)
+        else: 
+            newHealth = oldHealth - netDamage
+            print(target, "new health:", newHealth)
+            targetTeamTable[target] = newHealth
+    else: print("Attack repelled by:", target)
+    meta_changeList(unit, usedUnits, "append")
+    meta_changeList(unit, immobileUnits, "append")
+    score()
 
 def depthcharge():
     pass
@@ -263,7 +291,7 @@ def navyShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
     unitType = unitTable.get(unit)
     if command == "heading": heading(unit, unitType)
     elif command == "torpedo": torpedo(unit, unitType, team, targetTeamTable)
-    elif command == "sortie": pass
+    elif command == "sortie": sortie(unit, unitType, team, targetTeamTable)
     elif command == "depthcharge": pass
     elif command == "load": pass
     elif command == "disembark": pass

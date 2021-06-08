@@ -16,3 +16,4 @@ hideTable = {"infantry":1, "airborne":1}
 spyTable = {"infantry":6, "airborne":6, "mechanized":6}
 fireTable = {"cavalry":12, "battleship":8}
 torpedoTable = {}
+sortieTable = {"carrier":8}

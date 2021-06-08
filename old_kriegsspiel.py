@@ -77,36 +77,7 @@ def build(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
         print(errorMessages.get("function"))
         return
 
-def sortie(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
-    global firstTeamTable
-    global secondTeamTable
-    if not unitType in sortieTable:
-        print(errorMessages.get("function"))
-        return
-    attackDamage = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, sortieTable)
-    if attackDamage == None:
-        print(errorMessages.get("function"))
-        return
-    prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][sortie]% "
-    target = input(prompt)
-    targetUnitType = unitTable.get(target)
-    defenseDamage = evaluate(target, targetUnitType, targetTeam, targetTeam, targetTeamTable, targetTeamTable, sortieTable)
-    if defenseDamage == None: defenseDamage = 0
-    if defenseDamage <= attackDamage:
-        netDamage = attackDamage - defenseDamage
-        try: oldHealth = targetTeamTable[target]
-        except:
-            print(errorMessages.get("team"))
-            return
-        if oldHealth - netDamage < 0: kill(target, targetUnitType, targetTeam, targetTeam, targetTeamTable, targetTeamTable)
-        else: 
-            newHealth = oldHealth - netDamage
-            print(target, "new health:", newHealth)
-            targetTeamTable[target] = newHealth
-    else: print("Attack repelled by:", target)
-    changeList(unit, usedUnits, "append")
-    changeList(unit, immobileUnits, "append")
-    score()
+
 
 def depthcharge(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     if not unitType in depthchargeTable:
