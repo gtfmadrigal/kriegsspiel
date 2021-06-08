@@ -21,32 +21,12 @@ errorMessages = {"arguments":"Too many arguments for command. Type 'man' [comman
 # amry: build
 # air: takeoff, land, pulse, airlift, survey, bomb
 
-def update():
-    global firstHealth
-    global secondHealth
-    global firstTeamTable
-    global secondTeamTable
-    firstHealth = sum(firstTeamTable.values())
-    secondHealth = sum(secondTeamTable.values())
-
 def score():
     update()
     firstPercent = firstHealth / firstHealthTotal * 100
     secondPercent = secondHealth / secondHealthTotal * 100
     print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
     print(secondTeam, "total health:", secondHealth, "or", secondPercent, "%")
-
-def changeList(unit, list, command):
-    global usedUnits
-    global immobileUnits
-    global hiddenUnits
-    global alreadyDropped
-    global defendingUnits
-    global doubleImmobileUnits
-    global deadUnits
-    if command == "append": list.append(unit)
-    elif command == "clear": list.clear()
-    elif command == "remove": list.remove(unit)
 
 def freeze(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     changeList(unit, immobileUnits, "append")
@@ -100,15 +80,6 @@ def heading(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
         changeList(unit, immobileUnits, "append")
         if not unitType in moveAndFire: changeList(unit, usedUnits, "append")
     else: return
-
-def spy(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
-    effectiveness = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, spyTable)
-    if effectiveness == 6: print("Good information.")
-    elif effectiveness == 1: print("Bad information.")
-    elif effectiveness == None: return
-    else: print("No information.")
-    details()
-    changeList(unit, usedUnits, "append")
 
 def fire(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable

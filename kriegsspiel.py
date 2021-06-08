@@ -22,7 +22,12 @@ airPhase = True
 
 # Meta-functions
 def meta_update():
-    pass
+    global firstHealth
+    global secondHealth
+    global firstTeamTable
+    global secondTeamTable
+    firstHealth = sum(firstTeamTable.values())
+    secondHealth = sum(secondTeamTable.values())
 
 def meta_changeList(unit, list, command):
     global usedUnits
@@ -32,8 +37,15 @@ def meta_changeList(unit, list, command):
     elif command == "clear": list.clear()
     elif command == "remove": list.remove(unit)
 
-def meta_evaluate():
-    pass
+def meta_evaluate(unit, unitType, table):
+    if unit in immobileUnits or unit in usedUnits:
+        print(errorMessages.get("available"))
+        return
+    if unit in deadUnits:
+        print(errorMessages.get("dead"))
+        return
+    if table.get(unitType) == None: return
+    return random.randrange(1, table.get(unitType) + 1)
 
 # One-word command functions
 def score():
@@ -106,11 +118,14 @@ def reveal(unit, unitType):
     append = unit + "is no longer hidden."
     secrets = secrets + append
 
-def spy():
-    pass
-
-def fire():
-    pass
+def spy(unit, unitType):
+    effectiveness = meta_evaluate(unit, unitType, spyTable)
+    if effectiveness == 6: print("Good information.")
+    elif effectiveness == 1: print("Bad information.")
+    elif effectiveness == None: return
+    else: print("No information.")
+    details()
+    meta_changeList(unit, usedUnits, "append")
 
 def convert():
     pass
@@ -169,7 +184,7 @@ def agnosticShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
     if command == "move": move(unit, unitType)
     elif command == "hide": hide(unit, unitType, team)
     elif command == "reveal": reveal(unit, unitType)
-    elif command == "spy": pass
+    elif command == "spy": spy(unit, unitType)
     elif command == "fire": pass
     elif command == "convert": pass
 

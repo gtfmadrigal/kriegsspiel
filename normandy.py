@@ -13,3 +13,4 @@ healthTable = {"infantry":4, "airborne":4, "carrier":16, "battleship":12, "mecha
 headingTable = {"carrier":1}
 moveFireTable = {"infantry":1, "airborne":1, "carrier":1, "battleship":1, "mechanized":1, "cavalry":1}
 hideTable = {"infantry":1, "airborne":1}
+spyTable = {"infantry":6, "airborne":6, "mechanized":6}
