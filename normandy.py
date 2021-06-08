@@ -12,3 +12,4 @@ secondHealth = sum(secondTeamTable.values())
 healthTable = {"infantry":4, "airborne":4, "carrier":16, "battleship":12, "mechanized":6, "cavalry":16}
 headingTable = {"carrier":1}
 moveFireTable = {"infantry":1, "airborne":1, "carrier":1, "battleship":1, "mechanized":1, "cavalry":1}
+hideTable = {"infantry":1, "airborne":1}

@@ -101,18 +101,6 @@ def heading(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
         if not unitType in moveAndFire: changeList(unit, usedUnits, "append")
     else: return
 
-def hide(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
-    global secrets
-    if unitType in hideTable:
-        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][hide]% "
-        location = input(prompt)
-        newSecret = unit + " " + location
-        secrets = secrets + ", " + newSecret
-        changeList(unit, hiddenUnits, "append")
-    else: 
-        print(errorMessages.get("function"))
-        return
-
 def reveal(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global secrets
     global hiddenUnits

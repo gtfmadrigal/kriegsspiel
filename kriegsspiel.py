@@ -74,19 +74,24 @@ def split():
     pass
 
 # Theater-agnostic functions
-def move(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
+def move(unit, unitType):
     if unit in immobileUnits:
         print(errorMessages.get("function"))
-        return
-    if unit in deadUnits:
-        print(errorMessages.get("dead"))
         return
     if unitType in headingTable: print(errorMessages.get("heading"))
     if not unitType in moveFireTable: meta_changeList(unit, usedUnits, "append")
     meta_changeList(unit, immobileUnits, "append")
 
-def hide():
-    pass
+def hide(unit, unitType, team):
+    global secrets
+    if not unitType in hideTable:
+        print(errorMessages.get("function"))
+        return
+    prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > hide % "
+    location = input(prompt)
+    newSecret = unit + " " + location
+    secrets = secrets + ", " + newSecret
+    meta_changeList(unit, hiddenUnits, "append")
 
 def reveal():
     pass
@@ -152,7 +157,7 @@ def agnosticShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
         return
     unitType = unitTable.get(unit)
     if command == "move": move(unit, unitType)
-    elif command == "hide": pass
+    elif command == "hide": hide(unit, unitType, team)
     elif command == "reveal": pass
     elif command == "spy": pass
     elif command == "fire": pass
@@ -180,7 +185,7 @@ def umpireShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
 def airShell(team, targetTeam, teamTable, targetTeamTable):
     global commandNumber
     global airPhase
-    prompt = str(round) + " ~ " + str(commandNumber) + str(team) + "-air" + " % "
+    prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + "-air" + " % "
     rawCommand = input(prompt)
     if len(rawCommand.split()) == 2:
         command, unit = rawCommand.split()
@@ -201,12 +206,15 @@ def airShell(team, targetTeam, teamTable, targetTeamTable):
         elif rawCommand == "score": score()
         elif rawCommand == "help": helpText()
         elif rawCommand == "details": details()
-        else: print(errorMessages.get("bad"))
+        elif rawCommand == "quit": quitGame()
+        else: 
+            print(errorMessages.get("bad"))
+            return
     else: 
         print(errorMessages.get("bad"))
         return
     commandNumber = commandNumber + 1
-    airShell()
+    airShell(team, targetTeam, teamTable, targetTeamTable)
 
 def shell(team, targetTeam, teamTable, targetTeamTable):
     global airPhase
@@ -214,12 +222,15 @@ def shell(team, targetTeam, teamTable, targetTeamTable):
     if airPhase == True and airTheater == True: 
         airShell(team, targetTeam, teamTable, targetTeamTable)
         return
-    prompt = str(round) + " ~ " + str(commandNumber) + str(team) + " % "
+    prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " % "
     rawCommand = input(prompt)
     if len(rawCommand.split()) == 2:
         command, unit = rawCommand.split()
         if not unit in unitTable:
             print(errorMessages.get("unit"))
+            return
+        if unit in deadUnits and not command == "health":
+            print(errorMessages.get("dead"))
             return
         if command in umpireCommands: umpireShell(command, unit, team, targetTeam, teamTable, targetTeamTable)
         elif command in agnosticCommands: agnosticShell(command, unit, team, targetTeam, teamTable, targetTeamTable)
@@ -228,10 +239,11 @@ def shell(team, targetTeam, teamTable, targetTeamTable):
         else:
             print(errorMessages.get("bad"))
             return
-    elif len(rawCommand).split() == 1:
+    elif len(rawCommand.split()) == 1:
         if rawCommand == "attack": pass
         elif rawCommand == "score": score()
         elif rawCommand == "turn": turn()
+        elif rawCommand == "quit": quitGame()
         elif rawCommand == "help": helpText()
         elif rawCommand == "details": details()
         else: print(errorMessages.get("bad"))
@@ -242,6 +254,6 @@ def shell(team, targetTeam, teamTable, targetTeamTable):
 
 while True:
     while (round % 2) != 0: 
-        shell(firstTeam, secondTeam, secondTeamTable, firstTeamTable)
+        shell(firstTeam, secondTeam, firstTeamTable, secondTeamTable)
     while (round % 2) == 0:  
-        shell(secondTeam, firstTeam, firstTeamTable, secondTeamTable)
+        shell(secondTeam, firstTeam, secondTeamTable, firstTeamTable)
