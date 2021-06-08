@@ -67,16 +67,6 @@ def details():
     print(*hiddenUnits, sep = ", ")
     score()
 
-def build(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
-    fortification = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, buildTable)
-    if type(fortification) is int:
-        print("Fortification of strength", fortification, "built.")
-        changeList(unit, usedUnits, "append")
-        changeList(unit, immobileUnits, "append")
-    else: 
-        print(errorMessages.get("function"))
-        return
-
 def attack(team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable
     global secondTeamTable

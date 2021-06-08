@@ -267,8 +267,14 @@ def disembark():
     pass
 
 # Army functions
-def build():
-    pass
+def build(unit, unitType):
+    if not unitType in buildTable:
+        print(errorMessages.get("function"))
+        return
+    fortification = meta_evaluate(unit, unitType, buildTable)
+    print("Fortification of strength", fortification, "built.")
+    meta_changeList(unit, usedUnits, "append")
+    meta_changeList(unit, immobileUnits, "append")
 
 # Air functions
 def takeoff():
@@ -318,7 +324,11 @@ def navyShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
     elif command == "disembark": pass
 
 def armyShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
-    if command == "build": pass
+    if not unit in teamTable:
+        print(errorMessages.get("team"))
+        return
+    unitType = unitTable.get(unit)
+    if command == "build": build(unit, unitType)
 
 def umpireShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
     if command == "health": health()
@@ -381,7 +391,7 @@ def shell(team, targetTeam, teamTable, targetTeamTable):
         if command in umpireCommands: umpireShell(command, unit, team, targetTeam, teamTable, targetTeamTable)
         elif command in agnosticCommands: agnosticShell(command, unit, team, targetTeam, teamTable, targetTeamTable)
         elif command in navyCommands: navyShell(command, unit, team, targetTeam, teamTable, targetTeamTable)
-        elif command in armyCommands: airShell(command, unit, team, targetTeam, teamTable, targetTeamTable)
+        elif command in armyCommands: armyShell(command, unit, team, targetTeam, teamTable, targetTeamTable)
         else:
             print(errorMessages.get("bad"))
             return
