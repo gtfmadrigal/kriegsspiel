@@ -12,7 +12,7 @@ doubleImmobileUnits = []
 deadUnits = []
 commandNumber = 1
 secrets = ""
-errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit does not belong to you.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden."}
+errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit does not belong to you.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit."}
 agnosticCommands = ["move", "hide", "reveal", "spy", "fire", "convert"]
 navyCommands = ["heading", "torpedo", "sortie", "depthcharge", "load", "disembark"]
 armyCommands = ["build"]
@@ -169,8 +169,13 @@ def convert():
     pass
 
 # Naval functions
-def heading():
-    pass
+def heading(unit, unitType):
+    if meta_evaluate(unit, unitType, headingTable) == 1:
+        meta_changeList(unit, immobileUnits, "append")
+        if not unitType in moveFireTable: meta_changeList(unit, usedUnits, "append")
+    else:
+        print(errorMessages.get("required"))
+        return
 
 def torpedo():
     pass
@@ -227,7 +232,11 @@ def agnosticShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
     elif command == "convert": pass
 
 def navyShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
-    if command == "heading": pass
+    if not unit in teamTable:
+        print(errorMessages.get("team"))
+        return
+    unitType = unitTable.get(unit)
+    if command == "heading": heading(unit, unitType)
     elif command == "torpedo": pass
     elif command == "sortie": pass
     elif command == "depthcharge": pass
