@@ -51,13 +51,6 @@ def evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, table
     damage = random.randrange(1, maximum)
     return damage
 
-def kill(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
-    global firstTeamTable
-    global secondTeamTable
-    teamTable[unit] = 0
-    changeList(unit, deadUnits, "append")
-    update()
-
 def turn():
     global round
     changeList(True, usedUnits, "clear")
@@ -74,13 +67,6 @@ def details():
     print(*hiddenUnits, sep = ", ")
     score()
 
-def heading(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
-    headingValue = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, headingTable)
-    if headingValue == 1: 
-        changeList(unit, immobileUnits, "append")
-        if not unitType in moveAndFire: changeList(unit, usedUnits, "append")
-    else: return
-
 def build(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     fortification = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, buildTable)
     if type(fortification) is int:
@@ -90,28 +76,6 @@ def build(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     else: 
         print(errorMessages.get("function"))
         return
-
-def torpedo(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
-    global firstTeamTable
-    global secondTeamTable
-    prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][torpedo]% "
-    target = input(prompt)
-    targetUnitType = unitTable.get(target)
-    damage = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, torpedoTable)
-    try: oldHealth = targetTeamTable.get(target)
-    except:
-        print(errorMessages.get("team"))
-        return
-    if damage == 6 or oldHealth - damage <= 0:
-        print(target, "sunk.")
-        kill(target, targetUnitType, targetTeam, team, targetTeamTable, targetTeamTable)
-    else:
-        newHealth = oldHealth - damage
-        print(target, "new health:", newHealth)
-        targetTeamTable[target] = newHealth
-    changeList(unit, usedUnits, "append")
-    changeList(unit, immobileUnits, "append")
-    score()
 
 def sortie(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable

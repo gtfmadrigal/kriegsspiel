@@ -71,8 +71,12 @@ def attack():
 def health():
     pass
 
-def kill():
-    pass
+def kill(unit, teamTable):
+    global firstTeamTable
+    global secondTeamTable
+    teamTable[unit] = 0
+    meta_changeList(unit, deadUnits, "append")
+    meta_update()
 
 def freeze():
     pass
@@ -177,8 +181,29 @@ def heading(unit, unitType):
         print(errorMessages.get("required"))
         return
 
-def torpedo():
-    pass
+def torpedo(unit, unitType, team, targetTeamTable):
+    global firstTeamTable
+    global secondTeamTable
+    if not unit in torpedoTable:
+        print(errorMessages.get("function"))
+        return
+    prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > torpedo % "
+    target = input(prompt)
+    targetUnitType = unitTable.get(target)
+    damage = meta_evaluate(unit, unitType, torpedoTable)
+    if not target in targetTeamTable:
+        print(errorMessages.get("team"))
+    oldHealth = targetTeamTable.get(target)
+    if damage == 6 or oldHealth - damage <= 0:
+        print(target, "sunk.")
+        kill(target, targetTeamTable)
+    else:
+        newHealth = oldHealth - damage
+        print(target, "new health:", newHealth)
+        targetTeamTable[target] = newHealth
+    meta_changeList(unit, usedUnits, "append")
+    meta_changeList(unit, immobileUnits, "append")
+    score()
 
 def sortie():
     pass
@@ -237,7 +262,7 @@ def navyShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
         return
     unitType = unitTable.get(unit)
     if command == "heading": heading(unit, unitType)
-    elif command == "torpedo": pass
+    elif command == "torpedo": torpedo(unit, unitType, team, targetTeamTable)
     elif command == "sortie": pass
     elif command == "depthcharge": pass
     elif command == "load": pass
@@ -248,7 +273,7 @@ def armyShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
 
 def umpireShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
     if command == "health": health()
-    elif command == "kill": kill()
+    elif command == "kill": kill(unit, teamTable)
     elif command == "freeze": freeze()
     elif command == "disable": disable()
     elif command == "merge": merge()
