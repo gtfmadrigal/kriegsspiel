@@ -101,15 +101,6 @@ def heading(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
         if not unitType in moveAndFire: changeList(unit, usedUnits, "append")
     else: return
 
-def reveal(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
-    global secrets
-    global hiddenUnits
-    if not unit in hiddenUnits:
-        print(errorMessages.get("function"))
-        return
-    if unitType in hideTable: hiddenUnits.remove(unit)
-    else: print(errorMessages.get("function"))
-
 def spy(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     effectiveness = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, spyTable)
     if effectiveness == 6: print("Good information.")

@@ -12,7 +12,7 @@ doubleImmobileUnits = []
 deadUnits = []
 commandNumber = 1
 secrets = ""
-errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit does not belong to you.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit."}
+errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit does not belong to you.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden."}
 agnosticCommands = ["move", "hide", "reveal", "spy", "fire", "convert"]
 navyCommands = ["heading", "torpedo", "sortie", "depthcharge", "load", "disembark"]
 armyCommands = ["build"]
@@ -27,6 +27,7 @@ def meta_update():
 def meta_changeList(unit, list, command):
     global usedUnits
     global immobileUnits
+    global hiddenUnits
     if command == "append": list.append(unit)
     elif command == "clear": list.clear()
     elif command == "remove": list.remove(unit)
@@ -87,14 +88,23 @@ def hide(unit, unitType, team):
     if not unitType in hideTable:
         print(errorMessages.get("function"))
         return
+    if unit in hiddenUnits:
+        print(errorMessages.get("hidden"))
+        return
     prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > hide % "
     location = input(prompt)
     newSecret = unit + " " + location
     secrets = secrets + ", " + newSecret
     meta_changeList(unit, hiddenUnits, "append")
 
-def reveal():
-    pass
+def reveal(unit, unitType):
+    global secrets
+    if not unit in hiddenUnits or not unitType in hideTable:
+        print(errorMessages.get("function"))
+        return
+    meta_changeList(unit, hiddenUnits, "remove")
+    append = unit + "is no longer hidden."
+    secrets = secrets + append
 
 def spy():
     pass
@@ -158,7 +168,7 @@ def agnosticShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
     unitType = unitTable.get(unit)
     if command == "move": move(unit, unitType)
     elif command == "hide": hide(unit, unitType, team)
-    elif command == "reveal": pass
+    elif command == "reveal": reveal(unit, unitType)
     elif command == "spy": pass
     elif command == "fire": pass
     elif command == "convert": pass
