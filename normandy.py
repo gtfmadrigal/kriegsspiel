@@ -14,3 +14,4 @@ headingTable = {"carrier":1}
 moveFireTable = {"infantry":1, "airborne":1, "carrier":1, "battleship":1, "mechanized":1, "cavalry":1}
 hideTable = {"infantry":1, "airborne":1}
 spyTable = {"infantry":6, "airborne":6, "mechanized":6}
+fireTable = {"cavalry":12, "battleship":8}

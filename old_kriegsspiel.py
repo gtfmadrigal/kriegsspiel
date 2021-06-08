@@ -81,44 +81,6 @@ def heading(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
         if not unitType in moveAndFire: changeList(unit, usedUnits, "append")
     else: return
 
-def fire(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
-    global firstTeamTable
-    global secondTeamTable
-    defensePhase = True
-    willQuit = False
-    if not unitType in fireTable:
-        print(errorMessages.get("function"))
-        return
-    while defensePhase == True:
-        prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][fire]% "
-        command = input(prompt)
-        if command == "help": print("Enter a named unit, 'save' to save changes to gamestate, or 'quit' to exit without saving.")
-        elif command == "quit":
-            defensePhase = False
-            willQuit = True
-        elif command == "save": defensePhase = False
-        elif command in unitTable:
-            try: changeList(command, defendingUnits, "append")
-            except: pass
-        else: print(errorMessages.get("bad"))
-    if willQuit == True: return
-    damage = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, fireTable)
-    print("Damage:", damage)
-    perUnitDamage = damage / len(defendingUnits)
-    print("Damage per unit:", perUnitDamage)
-    for x in defendingUnits:
-        oldHealth = targetTeamTable.get(x)
-        if oldHealth - perUnitDamage < 0: 
-            newHealth = 0
-            print(x, "killed.")
-        else: 
-            newHealth = oldHealth - perUnitDamage
-            print(x, "new health:", newHealth)
-        targetTeamTable[x] = newHealth
-    changeList(True, defendingUnits, "clear")
-    score()
-    turn()
-
 def build(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     fortification = evaluate(unit, unitType, team, targetTeam, targetTeamTable, teamTable, buildTable)
     if type(fortification) is int:
