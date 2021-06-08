@@ -19,3 +19,4 @@ torpedoTable = {}
 sortieTable = {"carrier":8}
 depthchargeTable = {}
 buildTable = {"infantry":4, "mechanized":6, "airborne":6}
+attackTable = {"carrier":12, "battleship":24, "infantry":4, "airborne":6, "mechanized":6, "cavalry":20}

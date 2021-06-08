@@ -33,6 +33,10 @@ def meta_changeList(unit, list, command):
     global usedUnits
     global immobileUnits
     global hiddenUnits
+    global doubleImmobileUnits
+    global alreadyDropped
+    global defendingUnits
+    global deadUnits
     if command == "append": list.append(unit)
     elif command == "clear": list.clear()
     elif command == "remove": list.remove(unit)
@@ -48,25 +52,115 @@ def meta_evaluate(unit, unitType, table):
 
 # One-word command functions
 def score():
-    pass
+    meta_update()
+    firstPercent = firstHealth / firstHealthTotal * 100
+    secondPercent = secondHealth / secondHealthTotal * 100
+    print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
+    print(secondTeam, "total health:", secondHealth, "or", secondPercent, "%")
 
 def turn():
-    pass
+    global round
+    score()
+    meta_changeList(True, usedUnits, "clear")
+    meta_changeList(True, immobileUnits, "clear")
+    meta_changeList(True, alreadyDropped, "clear")
+    for x in doubleImmobileUnits: meta_changeList(x, immobileUnits, "append")
+    meta_changeList(True, doubleImmobileUnits, "clear")
+    round = round + 1
 
 def details():
-    pass
+    print("Secrets:")
+    print(secrets)
+    print("Hidden units:")
+    print(*hiddenUnits, sep = ", ")
+    score()
 
 def quitGame():
-    pass
+    score()
+    quit()
 
 def helpText():
-    pass
+    print("Commands: ")
+    print("turn, quit, help, details, attack, score")
+    print(*agnosticCommands, sep = ", ")
+    print(*navyCommands, sep = ", ")
+    print(*armyCommands, sep = ", ")
+    print(*airCommands, sep = ", ")
+    print(*umpireCommands, sep = ", ")
+    print("attack, score, details, quit, help, turn")
+    print("Unit types:")
+    print(*allUnitTypes, sep = ", ")
 
-def attack():
-    pass
+def attack(team, targetTeam, targetTeamTable):
+    global firstTeamTable
+    global secondTeamTable
+    attackPhase = True
+    defensePhase = False
+    willQuit = False
+    totalAttackDamage = 0
+    totalDefenseDamage = 0
+    while attackPhase == True:
+        prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > attack % "
+        command = input(prompt)
+        if command == "help": print("Enter a named unit to attack, 'defend' to change to the defense phase, or 'quit' to exit without saving.")
+        elif command == "quit":
+            attackPhase = False
+            defensePhase = False
+            willQuit = True
+        elif command == "defend":
+            attackPhase = False
+            defensePhase = True
+        elif command in unitTable:
+            unitType = unitTable.get(command)
+            attackDamage = meta_evaluate(command, unitType, attackTable)
+            try: 
+                totalAttackDamage = totalAttackDamage + attackDamage
+                meta_changeList(command, usedUnits, "append")
+                if not command in moveFireTable: meta_changeList(command, immobileUnits, "append")
+            except: pass
+            print("Damage dealt:", attackDamage)
+            print("Total damage dealt:", totalAttackDamage)
+        else: print(errorMessages.get("bad"))
+    while defensePhase == True:
+        prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > defend % "
+        command = input(prompt)
+        if command == "help": print("Enter a named unit to defend, 'save' to save changes to gamestate, or 'quit' to exit without saving.")
+        elif command == "quit":
+            defensePhase = False
+            willQuit = True
+        elif command == "save": defensePhase = False
+        elif command in unitTable:
+            unitType = unitTable.get(command)
+            defenseDamage = meta_evaluate(command, unitType, attackTable)
+            try: 
+                totalDefenseDamage = totalDefenseDamage + defenseDamage
+                meta_changeList(command, defendingUnits, "append")
+            except: pass
+            print("Defense dealt:", defenseDamage)
+            print("Total defense dealt:", totalDefenseDamage)
+            if totalDefenseDamage >= totalAttackDamage: defensePhase = False
+        else: print(errorMessages.get("bad"))
+    if willQuit == True: return
+    if totalDefenseDamage >= totalAttackDamage:
+        print("Attack repelled by", targetTeam)
+        return
+    netDamage = totalAttackDamage - totalDefenseDamage
+    print("Net damage:", netDamage)
+    perUnitDamage = netDamage / len(defendingUnits)
+    print("Damage per unit:", perUnitDamage)
+    for x in defendingUnits:
+        oldHealth = targetTeamTable.get(x)
+        if oldHealth - perUnitDamage <= 0: 
+            newHealth = 0
+            print(x, "killed.")
+        else: 
+            newHealth = oldHealth - perUnitDamage
+            print(x, "new health:", newHealth)
+        targetTeamTable[x] = newHealth
+    meta_changeList(True, defendingUnits, "clear")
+    score()
 
 # Umpire functions
-
 def health():
     pass
 
@@ -77,10 +171,12 @@ def kill(unit, teamTable):
     meta_changeList(unit, deadUnits, "append")
     meta_update()
 
-def freeze():
-    pass
+def freeze(unit):
+    meta_changeList(unit, immobileUnits, "append")
 
-def disable():
+def disable(unit):
+    freeze(unit)
+    meta_changeList(unit, doubleImmobileUnits, "append")
     pass
 
 def merge():
@@ -333,7 +429,7 @@ def armyShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
 def umpireShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
     if command == "health": health()
     elif command == "kill": kill(unit, teamTable)
-    elif command == "freeze": freeze()
+    elif command == "freeze": freeze(unit)
     elif command == "disable": disable()
     elif command == "merge": merge()
     elif command == "split": split()
@@ -396,7 +492,7 @@ def shell(team, targetTeam, teamTable, targetTeamTable):
             print(errorMessages.get("bad"))
             return
     elif len(rawCommand.split()) == 1:
-        if rawCommand == "attack": pass
+        if rawCommand == "attack": attack(team, targetTeam, targetTeamTable)
         elif rawCommand == "score": score()
         elif rawCommand == "turn": turn()
         elif rawCommand == "quit": quitGame()
