@@ -20,3 +20,5 @@ sortieTable = {"carrier":8}
 depthchargeTable = {}
 buildTable = {"infantry":4, "mechanized":6, "airborne":6}
 attackTable = {"carrier":12, "battleship":24, "infantry":4, "airborne":6, "mechanized":6, "cavalry":20}
+sortieDefenseTable = {"carrier":8, "cavalry":12, "battleship":8}
+movementTable = {"infantry":10, "mechanized":15, "airborne":10, "cavalry":10, "carrier":5, "battleship":5}

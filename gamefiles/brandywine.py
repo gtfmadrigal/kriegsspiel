@@ -21,4 +21,3 @@ torpedoTable = {}
 spyTable = {"infantry":6, "sapper":6, "fusilier":6}
 hideTable = {"infantry":1, "sapper":1, "fusilier":1, "grenadier":1, "spy":1, "special":1}
 moveAndFire = ["infantry", "sapper", "fusilier", "hussar", "dragoon", "special"]
-headingTable = {}
