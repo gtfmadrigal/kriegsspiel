@@ -1,5 +1,4 @@
 import random
-import os
 from normandy import *
 
 round = 1
@@ -8,24 +7,28 @@ immobileUnits = []
 hiddenUnits = []
 alreadyDropped = []
 defendingUnits = []
-doubleImmobileUnits = []
+disabledUnits = []
 deadUnits = []
 commandNumber = 1
 secrets = ""
 errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit does not belong to you.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit."}
 agnosticCommands = ["move", "hide", "reveal", "spy", "fire", "convert"]
 navyCommands = ["heading", "torpedo", "sortie", "depthcharge"]
-armyCommands = ["build", "load", "disembark"]
-airCommands = ["takeoff", "land", "pulse", "airlift", "survey", "bomb"]
+armyCommands = ["build"]
+airCommands = ["takeoff", "land", "pulse", "airlift", "survey", "bomb", "kamikaze", "dogfight"]
 umpireCommands = ["health", "kill", "freeze", "disable", "convert"]
 airPhase = True
 helpTextBlock = """
 Umpire commands: score, turn, details, quit, help, health, kill, freeze, convert, disable, merge, split, info
 Theater-agnostic commands: attack, move, hide, reveal, spy, fire
 Naval commands: heading, torpedo, sortie, depthcharge
-Army commands: build, load, disembark
-Air commands: takeoff, land, pulse, airlift, survey, bomb
+Army commands: build
+Air commands: takeoff, land, pulse, airlift, survey, bomb, kamikaze, dogfight
 """
+firstTeamFlying = []
+secondTeamFlying = []
+firstHealth = sum(firstTeamTable.values())
+secondHealth = sum(secondTeamTable.values())
 
 # Meta-functions
 def update():
@@ -40,10 +43,12 @@ def changeList(unit, list, command):
     global usedUnits
     global immobileUnits
     global hiddenUnits
-    global doubleImmobileUnits
+    global disabledUnits
     global alreadyDropped
     global defendingUnits
     global deadUnits
+    global firstTeamFlying
+    global secondTeamFlying
     if command == "append": list.append(unit)
     elif command == "clear": list.clear()
     elif command == "remove": list.remove(unit)
@@ -82,8 +87,8 @@ def turn():
     changeList(True, usedUnits, "clear")
     changeList(True, immobileUnits, "clear")
     changeList(True, alreadyDropped, "clear")
-    for x in doubleImmobileUnits: changeList(x, immobileUnits, "append")
-    changeList(True, doubleImmobileUnits, "clear")
+    for x in disabledUnits: changeList(x, immobileUnits, "append")
+    changeList(True, disabledUnits, "clear")
     round = round + 1
     airPhase = True
 
@@ -229,7 +234,7 @@ def convert(unit, unitType):
 
 def disable(unit):
     freeze(unit)
-    changeList(unit, doubleImmobileUnits, "append")
+    changeList(unit, disabledUnits, "append")
     pass
 
 def merge():
@@ -394,7 +399,7 @@ def depthcharge(unit, unitType, team, targetTeamTable):
         print(target, "sunk.")
     elif effectiveness == 5:
         changeList(target, immobileUnits, "append")
-        changeList(target, doubleImmobileUnits, "append")
+        changeList(target, disabledUnits, "append")
         print(target, "frozen.")
     elif effectiveness == None: return
     else: print("Missed.")
@@ -412,17 +417,17 @@ def build(unit, unitType):
     changeList(unit, usedUnits, "append")
     changeList(unit, immobileUnits, "append")
 
-def load():
-    pass
-
-def disembark():
-    pass
-
 # Air functions
-def takeoff():
-    pass
+def takeoff(unit, teamFlyingTable):
+    if unit in teamFlyingTable:
+        print(unit, " already airborne.")
+        return
+    if unit in disabledUnits:
+        print(errorMessages.get("available"))
+        return
+    changeList(unit, teamFlyingTable, "append")
 
-def land():
+def land(unit, teamFlyingTable):
     pass
 
 def pulse():
@@ -435,6 +440,12 @@ def survey():
     pass
 
 def bomb():
+    pass
+
+def kamikaze():
+    pass
+
+def dogfight():
     pass
 
 # Shell
@@ -479,23 +490,38 @@ def umpireShell(command, unit, unitType):
     elif command == "merge": merge()
     elif command == "split": split()
 
-def airShell(team, targetTeam, teamTable, targetTeamTable):
+def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
     global commandNumber
     global airPhase
     rawCommand = prompt(team, True, None, "player")
     if len(rawCommand.split()) == 2:
         command, unit = rawCommand.split()
-        if command == "takeoff": pass
-        elif command == "land": pass
-        elif command == "pulse": pass
-        elif command == "airlift": pass
-        elif command == "survey": pass
-        elif command == "bomb": pass
-        elif command == "health": pass
-        elif command == "kill": pass
+        unitType = unitTable.get(unit)
+        if not unit in unitTable:
+            print(errorMessages.get("unit"))
+            return
+        if unit in deadUnits and not command == "health":
+            print(errorMessages.get("dead"))
+            return
+        if not unit in flyTable:
+            print(errorMessages.get("function"))
+            return
+        if command in umpireCommands: umpireShell(command, unit, unitType)
+        elif command in airCommands:
+            if not unit in teamTable:
+                print(errorMessages.get("team"))
+                return
+            unitType = unitTable.get(unit)
+            if command == "takeoff": takeoff(unit, teamFlyingTable)
+            elif command == "land": land(unit, teamFlyingTable)
+            elif command == "pulse": pass
+            elif command == "airlift": pass
+            elif command == "survey": pass
+            elif command == "bomb": pass
+            elif command == "kamikaze": pass
         else: print(errorMessages.get("bad"))
     elif len(rawCommand.split()) == 1:
-        if rawCommand == "attack": pass
+        if rawCommand == "dogfight": pass
         elif rawCommand == "next":
             airPhase = False
             return
@@ -512,11 +538,11 @@ def airShell(team, targetTeam, teamTable, targetTeamTable):
     commandNumber = commandNumber + 1
     airShell(team, targetTeam, teamTable, targetTeamTable)
 
-def shell(team, targetTeam, teamTable, targetTeamTable):
+def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
     global airPhase
     global commandNumber
     if airPhase == True and airTheater == True: 
-        airShell(team, targetTeam, teamTable, targetTeamTable)
+        airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
         return
     rawCommand = prompt(team, False, None, "player")
     if len(rawCommand.split()) == 2:
@@ -564,6 +590,6 @@ def shell(team, targetTeam, teamTable, targetTeamTable):
 
 while True:
     while (round % 2) != 0: 
-        shell(firstTeam, secondTeam, firstTeamTable, secondTeamTable)
+        shell(firstTeam, secondTeam, firstTeamTable, secondTeamTable, firstTeamFlying, secondTeamFlying)
     while (round % 2) == 0:  
-        shell(secondTeam, firstTeam, secondTeamTable, firstTeamTable)
+        shell(secondTeam, firstTeam, secondTeamTable, firstTeamTable, secondTeamFlying, firstTeamFlying)
