@@ -15,29 +15,6 @@ secrets = ""
 oneWordCommands = {"score":"score", "turn":"turn", "quit":"quitGame", "help":"helpText", "attack":"attack", "details":"details"}
 errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit does not belong to you, or it does not exist.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type."}
 
-def convert(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
-    global firstTeamTable
-    global secondTeamTable
-    global unitTable
-    if unit in firstTeamTable: 
-        relevantTable = firstTeamTable
-    elif unit in secondTeamTable: relevantTable = secondTeamTable
-    else:
-        print(errorMessages.get("team"))
-        return
-    prompt = "[Rd." + str(round) + "][" + str(commandNumber) + "][" + team + "][convert]% "
-    newUnitType = input(prompt)
-    if not newUnitType in allUnitTypes:
-        print(errorMessages.get("type"))
-        return
-    currentHealth = relevantTable.get(unit)
-    maximumHealth = healthTable.get(newUnitType)
-    if maximumHealth < currentHealth: newHealth = maximumHealth
-    else: newHealth = currentHealth
-    relevantTable[unit] = currentHealth
-    unitTable[unit] = newUnitType
-    if unit in hiddenUnits and not newUnitType in hideTable: reveal(unit, unitType, team, targetTeam, targetTeamTable, teamTable)
-
 def info(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     if not unit in unitTable:
         print(errorMessages.get("team"))

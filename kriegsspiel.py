@@ -17,7 +17,7 @@ agnosticCommands = ["move", "hide", "reveal", "spy", "fire", "convert"]
 navyCommands = ["heading", "torpedo", "sortie", "depthcharge", "load", "disembark"]
 armyCommands = ["build"]
 airCommands = ["takeoff", "land", "pulse", "airlift", "survey", "bomb"]
-umpireCommands = ["health", "kill", "freeze", "disable"]
+umpireCommands = ["health", "kill", "freeze", "disable", "convert"]
 airPhase = True
 
 # Meta-functions
@@ -70,6 +70,7 @@ def score():
 
 def turn():
     global round
+    global airPhase
     score()
     changeList(True, usedUnits, "clear")
     changeList(True, immobileUnits, "clear")
@@ -77,6 +78,7 @@ def turn():
     for x in doubleImmobileUnits: changeList(x, immobileUnits, "append")
     changeList(True, doubleImmobileUnits, "clear")
     round = round + 1
+    airPhase = True
 
 def details():
     print("Secrets:")
@@ -124,6 +126,7 @@ def attack(team, targetTeam, targetTeamTable):
             unitType = unitTable.get(command)
             attackDamage = evaluate(command, unitType, attackTable)
             if attackDamage == None: continue
+            if command in hiddenUnits: reveal(command, unitType)
             totalAttackDamage = totalAttackDamage + attackDamage
             changeList(command, usedUnits, "append")
             if not command in moveFireTable: changeList(command, immobileUnits, "append")
@@ -141,6 +144,7 @@ def attack(team, targetTeam, targetTeamTable):
             unitType = unitTable.get(command)
             defenseDamage = evaluate(command, unitType, attackTable)
             if defenseDamage == None: continue
+            if command in hiddenUnits: reveal(command, unitType)
             totalDefenseDamage = totalDefenseDamage + defenseDamage
             changeList(command, defendingUnits, "append")
             print("Defense dealt:", defenseDamage)
@@ -165,7 +169,7 @@ def attack(team, targetTeam, targetTeamTable):
             print(x, "new health:", newHealth)
         targetTeamTable[x] = newHealth
     changeList(True, defendingUnits, "clear")
-    turn()
+    score()
 
 # Umpire functions
 def health(unit):
@@ -195,6 +199,31 @@ def kill(unit, teamTable):
 
 def freeze(unit):
     changeList(unit, immobileUnits, "append")
+
+def convert(unit, unitType):
+    global firstTeamTable
+    global secondTeamTable
+    global unitTable
+    if unit in firstTeamTable:
+        relevantTeam = firstTeam 
+        relevantTable = firstTeamTable
+    elif unit in secondTeamTable:
+        relevantTeam = secondTeam
+        relevantTable = secondTeamTable
+    else:
+        print(errorMessages.get("team"))
+        return
+    newUnitType = prompt(relevantTeam, False, "convert", "umpire")
+    if not newUnitType in allUnitTypes:
+        print(errorMessages.get("type"))
+        return
+    currentHealth = relevantTable.get(unit)
+    maximumHealth = healthTable.get(newUnitType)
+    if maximumHealth < currentHealth: newHealth = maximumHealth
+    else: newHealth = currentHealth
+    relevantTable[unit] = currentHealth
+    unitTable[unit] = newUnitType
+    if unit in hiddenUnits and not newUnitType in hideTable: reveal(unit, unitType)
 
 def disable(unit):
     freeze(unit)
@@ -258,6 +287,7 @@ def fire(unit, unitType, team, targetTeamTable):
     if not unitType in fireTable:
         print(errorMessages.get("function"))
         return
+    if unit in hiddenUnits: reveal(unit, unitType)
     while defensePhase == True:
         command = prompt(team, False, "fire", "player")
         if command == "help": print("Enter a named unit, 'save' to save changes to gamestate, or 'quit' to exit without saving.")
@@ -286,9 +316,6 @@ def fire(unit, unitType, team, targetTeamTable):
     changeList(True, defendingUnits, "clear")
     score()
     turn()
-
-def convert():
-    pass
 
 # Naval functions
 def heading(unit, unitType):
@@ -412,11 +439,12 @@ def bomb():
 def info():
     pass
 
-def umpireShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
+def umpireShell(command, unit, unitType, team, targetTeam, teamTable, targetTeamTable):
     if command == "health": health(unit)
     elif command == "kill": kill(unit, teamTable)
     elif command == "freeze": freeze(unit)
     elif command == "disable": disable()
+    elif command == "convert": convert(unit, unitType)
     elif command == "merge": merge()
     elif command == "split": split()
 
@@ -468,12 +496,12 @@ def shell(team, targetTeam, teamTable, targetTeamTable):
         if unit in deadUnits and not command == "health":
             print(errorMessages.get("dead"))
             return
-        if command in umpireCommands: umpireShell(command, unit, team, targetTeam, teamTable, targetTeamTable)
+        unitType = unitTable.get(unit)
+        if command in umpireCommands: umpireShell(command, unit, unitType, team, targetTeam, teamTable, targetTeamTable)
         elif command in navyCommands or command in armyCommands or command in agnosticCommands:
             if not unit in teamTable:
                 print(errorMessages.get("team"))
                 return
-            unitType = unitTable.get(unit)
             if command == "heading": heading(unit, unitType)
             elif command == "torpedo": torpedo(unit, unitType, team, targetTeamTable)
             elif command == "sortie": sortie(unit, unitType, team, targetTeamTable)
@@ -486,7 +514,6 @@ def shell(team, targetTeam, teamTable, targetTeamTable):
             elif command == "reveal": reveal(unit, unitType)
             elif command == "spy": spy(unit, unitType)
             elif command == "fire": fire(unit, unitType, team, targetTeamTable)
-            elif command == "convert": pass
             else:
                 print(errorMessages.get("bad"))
                 return
