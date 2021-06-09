@@ -15,20 +15,6 @@ secrets = ""
 oneWordCommands = {"score":"score", "turn":"turn", "quit":"quitGame", "help":"helpText", "attack":"attack", "details":"details"}
 errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit does not belong to you, or it does not exist.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type."}
 
-def health(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
-    global firstTeamTable
-    global secondTeamTable
-    if unit in firstTeamTable: relevantTable = firstTeamTable
-    elif unit in secondTeamTable: relevantTable = secondTeamTable
-    else:
-        print(errorMessages.get("team"))
-        return
-    print("Current health: ", relevantTable.get(unit))
-    newHealth = input("New health: ")
-    if newHealth <= 0: kill(unit, unitType, team, targetTeam, targetTeamTable, relevantTable)
-    else: relevantTable[unit] = int(newHealth)
-    update()
-
 def convert(unit, unitType, team, targetTeam, targetTeamTable, teamTable):
     global firstTeamTable
     global secondTeamTable

@@ -21,7 +21,7 @@ umpireCommands = ["health", "kill", "freeze", "disable"]
 airPhase = True
 
 # Meta-functions
-def meta_update():
+def update():
     global firstHealth
     global secondHealth
     global firstTeamTable
@@ -29,7 +29,7 @@ def meta_update():
     firstHealth = sum(firstTeamTable.values())
     secondHealth = sum(secondTeamTable.values())
 
-def meta_changeList(unit, list, command):
+def changeList(unit, list, command):
     global usedUnits
     global immobileUnits
     global hiddenUnits
@@ -41,7 +41,7 @@ def meta_changeList(unit, list, command):
     elif command == "clear": list.clear()
     elif command == "remove": list.remove(unit)
 
-def meta_evaluate(unit, unitType, table):
+def evaluate(unit, unitType, table):
     if unit in immobileUnits or unit in usedUnits:
         print(errorMessages.get("available"))
         return
@@ -50,9 +50,19 @@ def meta_evaluate(unit, unitType, table):
         return
     return random.randrange(1, table.get(unitType) + 1)
 
+def prompt(team, airShell, function, level):
+    if level == "player": promptChar = "% "
+    elif level == "umpire": promptChar = "# "
+    if function == None: intermediate = ""
+    else: intermediate = str(function) + " "
+    if airShell == True: shellPrompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + "-air" + intermediate + " " + promptChar
+    else: shellPrompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " " + intermediate + promptChar
+    command = input(shellPrompt)
+    return command 
+
 # One-word command functions
 def score():
-    meta_update()
+    update()
     firstPercent = firstHealth / firstHealthTotal * 100
     secondPercent = secondHealth / secondHealthTotal * 100
     print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
@@ -61,11 +71,11 @@ def score():
 def turn():
     global round
     score()
-    meta_changeList(True, usedUnits, "clear")
-    meta_changeList(True, immobileUnits, "clear")
-    meta_changeList(True, alreadyDropped, "clear")
-    for x in doubleImmobileUnits: meta_changeList(x, immobileUnits, "append")
-    meta_changeList(True, doubleImmobileUnits, "clear")
+    changeList(True, usedUnits, "clear")
+    changeList(True, immobileUnits, "clear")
+    changeList(True, alreadyDropped, "clear")
+    for x in doubleImmobileUnits: changeList(x, immobileUnits, "append")
+    changeList(True, doubleImmobileUnits, "clear")
     round = round + 1
 
 def details():
@@ -76,12 +86,13 @@ def details():
     score()
 
 def quitGame():
-    score()
-    quit()
+    areYouSure = input("Are you sure you want to quit? [Yes/no]: ")
+    if areYouSure == "yes" or areYouSure == "y":
+        score()
+        quit()
 
 def helpText():
     print("Commands: ")
-    print("turn, quit, help, details, attack, score")
     print(*agnosticCommands, sep = ", ")
     print(*navyCommands, sep = ", ")
     print(*armyCommands, sep = ", ")
@@ -100,8 +111,7 @@ def attack(team, targetTeam, targetTeamTable):
     totalAttackDamage = 0
     totalDefenseDamage = 0
     while attackPhase == True:
-        prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > attack % "
-        command = input(prompt)
+        command = prompt(team, False, "attack", "player")
         if command == "help": print("Enter a named unit to attack, 'defend' to change to the defense phase, or 'quit' to exit without saving.")
         elif command == "quit":
             attackPhase = False
@@ -112,18 +122,16 @@ def attack(team, targetTeam, targetTeamTable):
             defensePhase = True
         elif command in unitTable:
             unitType = unitTable.get(command)
-            attackDamage = meta_evaluate(command, unitType, attackTable)
-            try: 
-                totalAttackDamage = totalAttackDamage + attackDamage
-                meta_changeList(command, usedUnits, "append")
-                if not command in moveFireTable: meta_changeList(command, immobileUnits, "append")
-            except: pass
+            attackDamage = evaluate(command, unitType, attackTable)
+            if attackDamage == None: continue
+            totalAttackDamage = totalAttackDamage + attackDamage
+            changeList(command, usedUnits, "append")
+            if not command in moveFireTable: changeList(command, immobileUnits, "append")
             print("Damage dealt:", attackDamage)
             print("Total damage dealt:", totalAttackDamage)
         else: print(errorMessages.get("bad"))
     while defensePhase == True:
-        prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > defend % "
-        command = input(prompt)
+        command = prompt(targetTeam, False, "defend", "player")
         if command == "help": print("Enter a named unit to defend, 'save' to save changes to gamestate, or 'quit' to exit without saving.")
         elif command == "quit":
             defensePhase = False
@@ -131,11 +139,10 @@ def attack(team, targetTeam, targetTeamTable):
         elif command == "save": defensePhase = False
         elif command in unitTable:
             unitType = unitTable.get(command)
-            defenseDamage = meta_evaluate(command, unitType, attackTable)
-            try: 
-                totalDefenseDamage = totalDefenseDamage + defenseDamage
-                meta_changeList(command, defendingUnits, "append")
-            except: pass
+            defenseDamage = evaluate(command, unitType, attackTable)
+            if defenseDamage == None: continue
+            totalDefenseDamage = totalDefenseDamage + defenseDamage
+            changeList(command, defendingUnits, "append")
             print("Defense dealt:", defenseDamage)
             print("Total defense dealt:", totalDefenseDamage)
             if totalDefenseDamage >= totalAttackDamage: defensePhase = False
@@ -157,26 +164,41 @@ def attack(team, targetTeam, targetTeamTable):
             newHealth = oldHealth - perUnitDamage
             print(x, "new health:", newHealth)
         targetTeamTable[x] = newHealth
-    meta_changeList(True, defendingUnits, "clear")
-    score()
+    changeList(True, defendingUnits, "clear")
+    turn()
 
 # Umpire functions
-def health():
-    pass
+def health(unit):
+    global firstTeamTable
+    global secondTeamTable
+    if unit in firstTeamTable: 
+        relevantTeam = firstTeam
+        relevantTable = firstTeamTable
+    elif unit in secondTeamTable:
+        relevantTeam = secondTeam
+        relevantTable = secondTeamTable
+    else:
+        print(errorMessages.get("team"))
+        return
+    print("Current health: ", relevantTable.get(unit))
+    newHealth = prompt(relevantTeam, False, "health", "umpire")
+    if int(newHealth) <= 0: kill(unit, relevantTable)
+    else: relevantTable[unit] = int(newHealth)
+    update()
 
 def kill(unit, teamTable):
     global firstTeamTable
     global secondTeamTable
     teamTable[unit] = 0
-    meta_changeList(unit, deadUnits, "append")
-    meta_update()
+    changeList(unit, deadUnits, "append")
+    update()
 
 def freeze(unit):
-    meta_changeList(unit, immobileUnits, "append")
+    changeList(unit, immobileUnits, "append")
 
 def disable(unit):
     freeze(unit)
-    meta_changeList(unit, doubleImmobileUnits, "append")
+    changeList(unit, doubleImmobileUnits, "append")
     pass
 
 def merge():
@@ -191,8 +213,8 @@ def move(unit, unitType):
         print(errorMessages.get("function"))
         return
     if unitType in headingTable: print(errorMessages.get("heading"))
-    if not unitType in moveFireTable: meta_changeList(unit, usedUnits, "append")
-    meta_changeList(unit, immobileUnits, "append")
+    if not unitType in moveFireTable: changeList(unit, usedUnits, "append")
+    changeList(unit, immobileUnits, "append")
 
 def hide(unit, unitType, team):
     global secrets
@@ -202,18 +224,17 @@ def hide(unit, unitType, team):
     if unit in hiddenUnits:
         print(errorMessages.get("hidden"))
         return
-    prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > hide % "
-    location = input(prompt)
+    location = prompt(team, False, "hide", "player")
     newSecret = unit + " " + location
     secrets = secrets + ", " + newSecret
-    meta_changeList(unit, hiddenUnits, "append")
+    changeList(unit, hiddenUnits, "append")
 
 def reveal(unit, unitType):
     global secrets
     if not unit in hiddenUnits or not unitType in hideTable:
         print(errorMessages.get("function"))
         return
-    meta_changeList(unit, hiddenUnits, "remove")
+    changeList(unit, hiddenUnits, "remove")
     append = unit + "is no longer hidden."
     secrets = secrets + append
 
@@ -221,13 +242,13 @@ def spy(unit, unitType):
     if not unitType in spyTable:
         print(errorMessages.get("function"))
         return
-    effectiveness = meta_evaluate(unit, unitType, spyTable)
+    effectiveness = evaluate(unit, unitType, spyTable)
     if effectiveness == 6: print("Good information.")
     elif effectiveness == 1: print("Bad information.")
     elif effectiveness == None: return
     else: print("No information.")
     details()
-    meta_changeList(unit, usedUnits, "append")
+    changeList(unit, usedUnits, "append")
 
 def fire(unit, unitType, team, targetTeamTable):
     global firstTeamTable
@@ -238,19 +259,18 @@ def fire(unit, unitType, team, targetTeamTable):
         print(errorMessages.get("function"))
         return
     while defensePhase == True:
-        prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > fire % "
-        command = input(prompt)
+        command = prompt(team, False, "fire", "player")
         if command == "help": print("Enter a named unit, 'save' to save changes to gamestate, or 'quit' to exit without saving.")
         elif command == "quit":
             defensePhase = False
             willQuit = True
         elif command == "save": defensePhase = False
         elif command in unitTable:
-            try: meta_changeList(command, defendingUnits, "append")
+            try: changeList(command, defendingUnits, "append")
             except: pass
         else: print(errorMessages.get("bad"))
     if willQuit == True: return
-    damage = meta_evaluate(unit, unitType, fireTable)
+    damage = evaluate(unit, unitType, fireTable)
     print("Damage:", damage)
     perUnitDamage = damage / len(defendingUnits)
     print("Damage per unit:", perUnitDamage)
@@ -263,7 +283,7 @@ def fire(unit, unitType, team, targetTeamTable):
             newHealth = oldHealth - perUnitDamage
             print(x, "new health:", newHealth)
         targetTeamTable[x] = newHealth
-    meta_changeList(True, defendingUnits, "clear")
+    changeList(True, defendingUnits, "clear")
     score()
     turn()
 
@@ -272,9 +292,9 @@ def convert():
 
 # Naval functions
 def heading(unit, unitType):
-    if meta_evaluate(unit, unitType, headingTable) == 1:
-        meta_changeList(unit, immobileUnits, "append")
-        if not unitType in moveFireTable: meta_changeList(unit, usedUnits, "append")
+    if evaluate(unit, unitType, headingTable) == 1:
+        changeList(unit, immobileUnits, "append")
+        if not unitType in moveFireTable: changeList(unit, usedUnits, "append")
     else:
         print(errorMessages.get("required"))
         return
@@ -285,9 +305,8 @@ def torpedo(unit, unitType, team, targetTeamTable):
     if not unitType in torpedoTable:
         print(errorMessages.get("function"))
         return
-    damage = meta_evaluate(unit, unitType, torpedoTable)
-    prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > torpedo % "
-    target = input(prompt)
+    damage = evaluate(unit, unitType, torpedoTable)
+    target = prompt(team, False, "torpedo", "player")
     if not target in targetTeamTable:
         print(errorMessages.get("team"))
     oldHealth = targetTeamTable.get(target)
@@ -298,8 +317,8 @@ def torpedo(unit, unitType, team, targetTeamTable):
         newHealth = oldHealth - damage
         print(target, "new health:", newHealth)
         targetTeamTable[target] = newHealth
-    meta_changeList(unit, usedUnits, "append")
-    meta_changeList(unit, immobileUnits, "append")
+    changeList(unit, usedUnits, "append")
+    changeList(unit, immobileUnits, "append")
     score()
 
 def sortie(unit, unitType, team, targetTeamTable):
@@ -308,17 +327,16 @@ def sortie(unit, unitType, team, targetTeamTable):
     if not unitType in sortieTable:
         print(errorMessages.get("function"))
         return
-    attackDamage = meta_evaluate(unit, unitType, sortieTable)
+    attackDamage = evaluate(unit, unitType, sortieTable)
     if attackDamage == None:
         print(errorMessages.get("function"))
         return
-    prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > sortie % "
-    target = input(prompt)
+    target = prompt(team, False, "sortie", "player")
     if not target in targetTeamTable:
         print(errorMessages.get("team"))
         return
     targetUnitType = unitTable.get(target)
-    defenseDamage = meta_evaluate(target, targetUnitType, sortieTable)
+    defenseDamage = evaluate(target, targetUnitType, sortieTable)
     if defenseDamage == None: defenseDamage = 0
     if defenseDamage <= attackDamage:
         netDamage = attackDamage - defenseDamage
@@ -329,8 +347,8 @@ def sortie(unit, unitType, team, targetTeamTable):
             print(target, "new health:", newHealth)
             targetTeamTable[target] = newHealth
     else: print("Attack repelled by:", target)
-    meta_changeList(unit, usedUnits, "append")
-    meta_changeList(unit, immobileUnits, "append")
+    changeList(unit, usedUnits, "append")
+    changeList(unit, immobileUnits, "append")
     score()
 
 def depthcharge(unit, unitType, team, targetTeamTable):
@@ -340,20 +358,19 @@ def depthcharge(unit, unitType, team, targetTeamTable):
     if unit in alreadyDropped:
         print(errorMessages.get("available"))
         return
-    prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " > sortie % "
-    target = input(prompt)
-    effectiveness = meta_evaluate(unit, unitType, depthchargeTable)
+    target = prompt(team, False, "depthcharge", "player")
+    effectiveness = evaluate(unit, unitType, depthchargeTable)
     if effectiveness == 6: 
         kill(target, targetTeamTable)
         print(target, "sunk.")
     elif effectiveness == 5:
-        meta_changeList(target, immobileUnits, "append")
-        meta_changeList(target, doubleImmobileUnits, "append")
+        changeList(target, immobileUnits, "append")
+        changeList(target, doubleImmobileUnits, "append")
         print(target, "frozen.")
     elif effectiveness == None: return
     else: print("Missed.")
-    meta_changeList(unit, immobileUnits, "append")
-    meta_changeList(unit, alreadyDropped, "append")
+    changeList(unit, immobileUnits, "append")
+    changeList(unit, alreadyDropped, "append")
     score()
 
 def load():
@@ -367,10 +384,10 @@ def build(unit, unitType):
     if not unitType in buildTable:
         print(errorMessages.get("function"))
         return
-    fortification = meta_evaluate(unit, unitType, buildTable)
+    fortification = evaluate(unit, unitType, buildTable)
     print("Fortification of strength", fortification, "built.")
-    meta_changeList(unit, usedUnits, "append")
-    meta_changeList(unit, immobileUnits, "append")
+    changeList(unit, usedUnits, "append")
+    changeList(unit, immobileUnits, "append")
 
 # Air functions
 def takeoff():
@@ -395,39 +412,8 @@ def bomb():
 def info():
     pass
 
-def agnosticShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
-    if not unit in teamTable:
-        print(errorMessages.get("team"))
-        return
-    unitType = unitTable.get(unit)
-    if command == "move": move(unit, unitType)
-    elif command == "hide": hide(unit, unitType, team)
-    elif command == "reveal": reveal(unit, unitType)
-    elif command == "spy": spy(unit, unitType)
-    elif command == "fire": fire(unit, unitType, team, targetTeamTable)
-    elif command == "convert": pass
-
-def navyShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
-    if not unit in teamTable:
-        print(errorMessages.get("team"))
-        return
-    unitType = unitTable.get(unit)
-    if command == "heading": heading(unit, unitType)
-    elif command == "torpedo": torpedo(unit, unitType, team, targetTeamTable)
-    elif command == "sortie": sortie(unit, unitType, team, targetTeamTable)
-    elif command == "depthcharge": depthcharge(unit, unitType, team, targetTeamTable)
-    elif command == "load": pass
-    elif command == "disembark": pass
-
-def armyShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
-    if not unit in teamTable:
-        print(errorMessages.get("team"))
-        return
-    unitType = unitTable.get(unit)
-    if command == "build": build(unit, unitType)
-
 def umpireShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
-    if command == "health": health()
+    if command == "health": health(unit)
     elif command == "kill": kill(unit, teamTable)
     elif command == "freeze": freeze(unit)
     elif command == "disable": disable()
@@ -437,8 +423,7 @@ def umpireShell(command, unit, team, targetTeam, teamTable, targetTeamTable):
 def airShell(team, targetTeam, teamTable, targetTeamTable):
     global commandNumber
     global airPhase
-    prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + "-air" + " % "
-    rawCommand = input(prompt)
+    rawCommand = prompt(team, True, None, "player")
     if len(rawCommand.split()) == 2:
         command, unit = rawCommand.split()
         if command == "takeoff": pass
@@ -474,8 +459,7 @@ def shell(team, targetTeam, teamTable, targetTeamTable):
     if airPhase == True and airTheater == True: 
         airShell(team, targetTeam, teamTable, targetTeamTable)
         return
-    prompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " % "
-    rawCommand = input(prompt)
+    rawCommand = prompt(team, False, None, "player")
     if len(rawCommand.split()) == 2:
         command, unit = rawCommand.split()
         if not unit in unitTable:
@@ -485,12 +469,27 @@ def shell(team, targetTeam, teamTable, targetTeamTable):
             print(errorMessages.get("dead"))
             return
         if command in umpireCommands: umpireShell(command, unit, team, targetTeam, teamTable, targetTeamTable)
-        elif command in agnosticCommands: agnosticShell(command, unit, team, targetTeam, teamTable, targetTeamTable)
-        elif command in navyCommands: navyShell(command, unit, team, targetTeam, teamTable, targetTeamTable)
-        elif command in armyCommands: armyShell(command, unit, team, targetTeam, teamTable, targetTeamTable)
-        else:
-            print(errorMessages.get("bad"))
-            return
+        elif command in navyCommands or command in armyCommands or command in agnosticCommands:
+            if not unit in teamTable:
+                print(errorMessages.get("team"))
+                return
+            unitType = unitTable.get(unit)
+            if command == "heading": heading(unit, unitType)
+            elif command == "torpedo": torpedo(unit, unitType, team, targetTeamTable)
+            elif command == "sortie": sortie(unit, unitType, team, targetTeamTable)
+            elif command == "depthcharge": depthcharge(unit, unitType, team, targetTeamTable)
+            elif command == "load": pass
+            elif command == "disembark": pass
+            elif command == "build": build(unit, unitType)
+            elif command == "move": move(unit, unitType)
+            elif command == "hide": hide(unit, unitType, team)
+            elif command == "reveal": reveal(unit, unitType)
+            elif command == "spy": spy(unit, unitType)
+            elif command == "fire": fire(unit, unitType, team, targetTeamTable)
+            elif command == "convert": pass
+            else:
+                print(errorMessages.get("bad"))
+                return
     elif len(rawCommand.split()) == 1:
         if rawCommand == "attack": attack(team, targetTeam, targetTeamTable)
         elif rawCommand == "score": score()
