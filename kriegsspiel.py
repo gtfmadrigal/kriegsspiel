@@ -65,10 +65,10 @@ def evaluate(unit, unitType, table):
 def prompt(team, airShell, function, level):
     if level == "player": promptChar = "% "
     elif level == "umpire": promptChar = "# "
-    if function == None: intermediate = ""
-    else: intermediate = str(function) + " "
-    if airShell == True: shellPrompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + "-air" + intermediate + " " + promptChar
-    else: shellPrompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + " " + intermediate + promptChar
+    if function == None: intermediate = " "
+    else: intermediate = " " + str(function) + " "
+    if airShell == True: shellPrompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + "-air" + intermediate + promptChar
+    else: shellPrompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + intermediate + promptChar
     command = input(shellPrompt)
     return command 
 
@@ -453,11 +453,15 @@ def pulse(unit, unitType, team, targetTeamTable):
         else: print(errorMessages.get("unit"))
     use(unit)
 
-def airlift():
-    pass
-
-def survey():
-    pass
+def airlift(unit, unitType, team, teamTable):
+    if not unitType in transportTable:
+        print(errorMessages.get("function"))
+        return
+    liftedUnit = prompt(team, True, "airlift", "player")
+    if not liftedUnit in teamTable:
+        print(errorMessages.get("team"))
+        return
+    use(unit)
 
 def bomb():
     pass
@@ -543,8 +547,8 @@ def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targ
             if command == "takeoff": takeoff(unit, teamFlyingTable)
             elif command == "land": land(unit, teamFlyingTable)
             elif command == "pulse": pulse(unit, unitType, team, targetTeamTable)
-            elif command == "airlift": pass
-            elif command == "survey": pass
+            elif command == "airlift": airlift(unit, unitType, team, teamTable)
+            elif command == "survey":spy(unit, unitType)
             elif command == "bomb": pass
             elif command == "kamikaze": pass
         else: print(errorMessages.get("bad"))
