@@ -420,15 +420,16 @@ def build(unit, unitType):
 # Air functions
 def takeoff(unit, teamFlyingTable):
     if unit in teamFlyingTable:
-        print(unit, " already airborne.")
-        return
-    if unit in disabledUnits:
-        print(errorMessages.get("available"))
+        print("Already airborne.")
         return
     changeList(unit, teamFlyingTable, "append")
 
 def land(unit, teamFlyingTable):
-    pass
+    if not unit in teamFlyingTable:
+        print("Not airborne.")
+        return
+    changeList(unit, teamFlyingTable, "remove")
+    changeList(unit, usedUnits, "append")
 
 def pulse():
     pass
@@ -503,7 +504,7 @@ def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targ
         if unit in deadUnits and not command == "health":
             print(errorMessages.get("dead"))
             return
-        if not unit in flyTable:
+        if not unitType in flyTable:
             print(errorMessages.get("function"))
             return
         if command in umpireCommands: umpireShell(command, unit, unitType)
@@ -511,7 +512,12 @@ def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targ
             if not unit in teamTable:
                 print(errorMessages.get("team"))
                 return
-            unitType = unitTable.get(unit)
+            if unit in deadUnits:
+                print(errorMessages.get("dead"))
+                return
+            if unit in usedUnits:
+                print(errorMessages.get("available"))
+                return
             if command == "takeoff": takeoff(unit, teamFlyingTable)
             elif command == "land": land(unit, teamFlyingTable)
             elif command == "pulse": pass
@@ -536,7 +542,7 @@ def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targ
         print(errorMessages.get("bad"))
         return
     commandNumber = commandNumber + 1
-    airShell(team, targetTeam, teamTable, targetTeamTable)
+    airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
 
 def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
     global airPhase
@@ -550,14 +556,17 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
         if not unit in unitTable:
             print(errorMessages.get("unit"))
             return
-        if unit in deadUnits and not command == "health":
-            print(errorMessages.get("dead"))
-            return
         unitType = unitTable.get(unit)
         if command in umpireCommands: umpireShell(command, unit, unitType)
         elif command in navyCommands or command in armyCommands or command in agnosticCommands:
             if not unit in teamTable:
                 print(errorMessages.get("team"))
+                return
+            if unit in deadUnits:
+                print(errorMessages.get("dead"))
+                return
+            if unit in usedUnits:
+                print(errorMessages.get("available"))
                 return
             if command == "heading": heading(unit, unitType)
             elif command == "torpedo": torpedo(unit, unitType, team, targetTeamTable)
