@@ -484,9 +484,6 @@ def kamikaze(unit, unitType, team, teamTable, targetTeamTable):
         targetTeamTable[target] = newHealth
     kill(unit, teamTable)
 
-def dogfight():
-    pass
-
 # Shell
 def info(unit, unitType):
     if not unit in unitTable:
@@ -613,8 +610,6 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
             elif command == "torpedo": torpedo(unit, unitType, team, targetTeamTable)
             elif command == "sortie": sortie(unit, unitType, team, targetTeamTable)
             elif command == "depthcharge": depthcharge(unit, unitType, team, targetTeamTable)
-            elif command == "load": pass
-            elif command == "disembark": pass
             elif command == "build": build(unit, unitType)
             elif command == "move": move(unit, unitType)
             elif command == "hide": hide(unit, unitType, team)
