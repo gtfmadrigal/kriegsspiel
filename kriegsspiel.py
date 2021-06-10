@@ -11,7 +11,7 @@ disabledUnits = []
 deadUnits = []
 commandNumber = 1
 secrets = ""
-errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit does not belong to you.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit."}
+errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit does not belong to you.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit.", "airborne":"Unit is not airborne."}
 agnosticCommands = ["move", "hide", "reveal", "spy", "fire", "convert"]
 navyCommands = ["heading", "torpedo", "sortie", "depthcharge"]
 armyCommands = ["build"]
@@ -235,7 +235,9 @@ def convert(unit, unitType):
 def disable(unit):
     freeze(unit)
     changeList(unit, disabledUnits, "append")
-    pass
+
+def use(unit):
+    changeList(unit, usedUnits, "append")
 
 def merge():
     pass
@@ -249,7 +251,7 @@ def move(unit, unitType):
         print(errorMessages.get("function"))
         return
     if unitType in headingTable: print(errorMessages.get("heading"))
-    if not unitType in moveFireTable: changeList(unit, usedUnits, "append")
+    if not unitType in moveFireTable: use(unit)
     changeList(unit, immobileUnits, "append")
 
 def hide(unit, unitType, team):
@@ -284,7 +286,7 @@ def spy(unit, unitType):
     elif effectiveness == None: return
     else: print("No information.")
     details()
-    changeList(unit, usedUnits, "append")
+    use(unit)
 
 def fire(unit, unitType, team, targetTeamTable):
     global firstTeamTable
@@ -328,7 +330,7 @@ def fire(unit, unitType, team, targetTeamTable):
 def heading(unit, unitType):
     if evaluate(unit, unitType, headingTable) == 1:
         changeList(unit, immobileUnits, "append")
-        if not unitType in moveFireTable: changeList(unit, usedUnits, "append")
+        if not unitType in moveFireTable: use(unit)
     else:
         print(errorMessages.get("required"))
         return
@@ -351,7 +353,7 @@ def torpedo(unit, unitType, team, targetTeamTable):
         newHealth = oldHealth - damage
         print(target, "new health:", newHealth)
         targetTeamTable[target] = newHealth
-    changeList(unit, usedUnits, "append")
+    use(unit)
     changeList(unit, immobileUnits, "append")
     score()
 
@@ -381,7 +383,7 @@ def sortie(unit, unitType, team, targetTeamTable):
             print(target, "new health:", newHealth)
             targetTeamTable[target] = newHealth
     else: print("Attack repelled by:", target)
-    changeList(unit, usedUnits, "append")
+    use(unit)
     changeList(unit, immobileUnits, "append")
     score()
 
@@ -414,7 +416,7 @@ def build(unit, unitType):
         return
     fortification = evaluate(unit, unitType, buildTable)
     print("Fortification of strength", fortification, "built.")
-    changeList(unit, usedUnits, "append")
+    use(unit)
     changeList(unit, immobileUnits, "append")
 
 # Air functions
@@ -425,14 +427,31 @@ def takeoff(unit, teamFlyingTable):
     changeList(unit, teamFlyingTable, "append")
 
 def land(unit, teamFlyingTable):
-    if not unit in teamFlyingTable:
-        print("Not airborne.")
-        return
     changeList(unit, teamFlyingTable, "remove")
-    changeList(unit, usedUnits, "append")
+    use(unit)
 
-def pulse():
-    pass
+def pulse(unit, unitType, team, targetTeamTable):
+    effectiveness = evaluate(unit, unitType, pulseTable)
+    if effectiveness == 6:
+        print("Pulse effective.")
+        pulsePhase = True
+        pulsedUnits = []
+    elif effectiveness == None: 
+        print(errorMessages.get("function"))
+        return
+    else: 
+        print("Pulse ineffective.")
+        return
+    while pulsePhase == True:
+        command = prompt(team, True, "pulse", "player")
+        if command in targetTeamTable: pulsedUnits.append(command)
+        elif command == "help": print("Enter a unit that has been disabled, 'quit' to exit, or 'save' to exit and save.")
+        elif command == "quit": return
+        elif command == "save": 
+            for x in pulsedUnits: disable(x)
+            return
+        else: print(errorMessages.get("unit"))
+    use(unit)
 
 def airlift():
     pass
@@ -518,9 +537,12 @@ def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targ
             if unit in usedUnits:
                 print(errorMessages.get("available"))
                 return
+            if not unit in teamFlyingTable and not command == "takeoff":
+                print(errorMessages.get("airborne"))
+                return
             if command == "takeoff": takeoff(unit, teamFlyingTable)
             elif command == "land": land(unit, teamFlyingTable)
-            elif command == "pulse": pass
+            elif command == "pulse": pulse(unit, unitType, team, targetTeamTable)
             elif command == "airlift": pass
             elif command == "survey": pass
             elif command == "bomb": pass

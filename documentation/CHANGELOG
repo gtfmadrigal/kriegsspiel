@@ -173,3 +173,4 @@ v2.3 - Final naval battle release
     v2.3.15 - all umpire functions and v2.3 functions implemented, proceeding to new air warfare functions
     v2.3.16 - takeoff() function implemented
     v2.3.17 - land() function implemented
+    v2.3.18 - pulse() function implemented
