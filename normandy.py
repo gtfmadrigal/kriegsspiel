@@ -24,3 +24,4 @@ pulseTable = {"bomber":6}
 bombTable = {"bomber":8}
 transportTable = {"transport":4}
 flyTable = {"fighter":1, "bomber":1, "transport":1}
+kamikazeTable = {"fighter":6}

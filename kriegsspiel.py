@@ -11,7 +11,7 @@ disabledUnits = []
 deadUnits = []
 commandNumber = 1
 secrets = ""
-errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit does not belong to you.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit.", "airborne":"Unit is not airborne."}
+errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit belongs to the wrong team.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit.", "airborne":"Unit is not airborne."}
 agnosticCommands = ["move", "hide", "reveal", "spy", "fire", "convert"]
 navyCommands = ["heading", "torpedo", "sortie", "depthcharge"]
 armyCommands = ["build"]
@@ -177,6 +177,7 @@ def attack(team, targetTeam, targetTeamTable):
         targetTeamTable[x] = newHealth
     changeList(True, defendingUnits, "clear")
     score()
+    turn()
 
 # Umpire functions
 def health(unit):
@@ -288,17 +289,17 @@ def spy(unit, unitType):
     details()
     use(unit)
 
-def fire(unit, unitType, team, targetTeamTable):
+def fire(unit, unitType, team, targetTeamTable, version, table):
     global firstTeamTable
     global secondTeamTable
     defensePhase = True
     willQuit = False
-    if not unitType in fireTable:
+    if not unitType in table:
         print(errorMessages.get("function"))
         return
     if unit in hiddenUnits: reveal(unit, unitType)
     while defensePhase == True:
-        command = prompt(team, False, "fire", "player")
+        command = prompt(team, False, version, "player")
         if command == "help": print("Enter a named unit, 'save' to save changes to gamestate, or 'quit' to exit without saving.")
         elif command == "quit":
             defensePhase = False
@@ -309,7 +310,7 @@ def fire(unit, unitType, team, targetTeamTable):
             except: pass
         else: print(errorMessages.get("bad"))
     if willQuit == True: return
-    damage = evaluate(unit, unitType, fireTable)
+    damage = evaluate(unit, unitType, table)
     print("Damage:", damage)
     perUnitDamage = damage / len(defendingUnits)
     print("Damage per unit:", perUnitDamage)
@@ -324,7 +325,6 @@ def fire(unit, unitType, team, targetTeamTable):
         targetTeamTable[x] = newHealth
     changeList(True, defendingUnits, "clear")
     score()
-    turn()
 
 # Naval functions
 def heading(unit, unitType):
@@ -443,7 +443,7 @@ def pulse(unit, unitType, team, targetTeamTable):
         print("Pulse ineffective.")
         return
     while pulsePhase == True:
-        command = prompt(team, True, "pulse", "player")
+        command = prompt(team, False, "pulse", "player")
         if command in targetTeamTable: pulsedUnits.append(command)
         elif command == "help": print("Enter a unit that has been disabled, 'quit' to exit, or 'save' to exit and save.")
         elif command == "quit": return
@@ -457,17 +457,32 @@ def airlift(unit, unitType, team, teamTable):
     if not unitType in transportTable:
         print(errorMessages.get("function"))
         return
-    liftedUnit = prompt(team, True, "airlift", "player")
+    liftedUnit = prompt(team, False, "airlift", "player")
     if not liftedUnit in teamTable:
         print(errorMessages.get("team"))
         return
     use(unit)
 
-def bomb():
-    pass
-
-def kamikaze():
-    pass
+def kamikaze(unit, unitType, team, teamTable, targetTeamTable):
+    global firstTeamTable
+    global secondTeamTable
+    if not unitType in kamikazeTable:
+        print(errorMessages.get("function"))
+        return
+    target = prompt(team, False, "kamikaze", "player")
+    if not target in targetTeamTable:
+        print(errorMessages.get("team"))
+        return
+    effectiveness = evaluate(unit, unitType, kamikazeTable)
+    oldHealth = targetTeamTable.get(target)
+    if effectiveness == 6 or oldHealth - effectiveness <= 0:
+        print(target, "killed.")
+        kill(target, targetTeamTable)
+    else:
+        newHealth = oldHealth - effectiveness
+        print(target, "new health:", newHealth)
+        targetTeamTable[target] = newHealth
+    kill(unit, teamTable)
 
 def dogfight():
     pass
@@ -549,8 +564,8 @@ def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targ
             elif command == "pulse": pulse(unit, unitType, team, targetTeamTable)
             elif command == "airlift": airlift(unit, unitType, team, teamTable)
             elif command == "survey":spy(unit, unitType)
-            elif command == "bomb": pass
-            elif command == "kamikaze": pass
+            elif command == "bomb": fire(unit, unitType, team, targetTeamTable, "bomb", bombTable)
+            elif command == "kamikaze": kamikaze(unit, unitType, team, teamTable, targetTeamTable)
         else: print(errorMessages.get("bad"))
     elif len(rawCommand.split()) == 1:
         if rawCommand == "dogfight": pass
@@ -606,7 +621,7 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
             elif command == "info": info(unit, unitType)
             elif command == "reveal": reveal(unit, unitType)
             elif command == "spy": spy(unit, unitType)
-            elif command == "fire": fire(unit, unitType, team, targetTeamTable)
+            elif command == "fire": fire(unit, unitType, team, targetTeamTable, "fire", fireTable)
             else:
                 print(errorMessages.get("bad"))
                 return
