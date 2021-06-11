@@ -25,3 +25,5 @@ bombTable = {"bomber":8}
 transportTable = {"transport":4}
 flyTable = {"fighter":1, "bomber":1, "transport":1}
 kamikazeTable = {"fighter":6}
+missileTable = {"fighter":6, "bomber":8, "battleship":8}
+missileDefenseTable = {"fighter":8, "bomber":6, "battleship":8}

@@ -22,7 +22,7 @@ helpTextBlock = """
 Umpire commands: score, turn, details, quit, help, health, kill, freeze, convert, disable, merge, split, info
 Theater-agnostic commands: attack, move, hide, reveal, spy, fire
 Naval commands: heading, torpedo, sortie, depthcharge
-Army commands: build
+Army commands: build, missile
 Air commands: takeoff, land, pulse, airlift, survey, bomb, kamikaze, dogfight
 """
 firstTeamFlying = []
@@ -419,6 +419,35 @@ def build(unit, unitType):
     use(unit)
     changeList(unit, immobileUnits, "append")
 
+def missile(unit, unitType, team, targetTeamTable):
+    global firstTeamTable
+    global secondTeamTable
+    if not unitType in missileTable:
+        print(errorMessages.get("function"))
+        return
+    if unit in hiddenUnits: reveal(unit, unitType)
+    attackDamage = evaluate(unit, unitType, missileTable)
+    if attackDamage == None: return
+    command = prompt(team, False, "missile", "player")
+    if command not in targetTeamTable:
+        print(errorMessages.get("team"))
+        return
+    targetUnitType = unitTable.get(command)
+    defenseDamage = evaluate(command, targetUnitType, missileDefenseTable)
+    if defenseDamage == None: netDamage = attackDamage
+    else: netDamage = attackDamage - defenseDamage
+    currentHealth = targetTeamTable.get(command)
+    if netDamage >= currentHealth: kill(command, targetTeamTable)
+    elif netDamage >= 0:
+        print("Missile repelled.")
+        return
+    else:
+        newHealth = currentHealth - netDamage
+        targetTeamTable[command] = newHealth
+    changeList(unit, usedUnits, "append")
+    if not unit in moveFireTable: changeList(unit, immobileUnits, "append")
+    score()
+
 # Air functions
 def takeoff(unit, teamFlyingTable):
     if unit in teamFlyingTable:
@@ -463,7 +492,7 @@ def airlift(unit, unitType, team, teamTable):
         return
     use(unit)
 
-def kamikaze(unit, unitType, team, teamTable, targetTeamTable):
+def kamikaze(unit, unitType, team, targetTeamTable):
     global firstTeamTable
     global secondTeamTable
     if not unitType in kamikazeTable:
@@ -562,6 +591,7 @@ def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targ
             elif command == "airlift": airlift(unit, unitType, team, teamTable)
             elif command == "survey":spy(unit, unitType)
             elif command == "bomb": fire(unit, unitType, team, targetTeamTable, "bomb", bombTable)
+            elif command == "missile": missile(unit, unitType, team, targetTeamTable)
             elif command == "kamikaze": kamikaze(unit, unitType, team, teamTable, targetTeamTable)
         else: print(errorMessages.get("bad"))
     elif len(rawCommand.split()) == 1:
@@ -611,6 +641,7 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
             elif command == "sortie": sortie(unit, unitType, team, targetTeamTable)
             elif command == "depthcharge": depthcharge(unit, unitType, team, targetTeamTable)
             elif command == "build": build(unit, unitType)
+            elif command == "missile": missile(unit, unitType, team, targetTeamTable)
             elif command == "move": move(unit, unitType)
             elif command == "hide": hide(unit, unitType, team)
             elif command == "info": info(unit, unitType)
@@ -634,7 +665,5 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
     commandNumber = commandNumber + 1
 
 while True:
-    while (round % 2) != 0: 
-        shell(firstTeam, secondTeam, firstTeamTable, secondTeamTable, firstTeamFlying, secondTeamFlying)
-    while (round % 2) == 0:  
-        shell(secondTeam, firstTeam, secondTeamTable, firstTeamTable, secondTeamFlying, firstTeamFlying)
+    while (round % 2) != 0: shell(firstTeam, secondTeam, firstTeamTable, secondTeamTable, firstTeamFlying, secondTeamFlying)
+    while (round % 2) == 0: shell(secondTeam, firstTeam, secondTeamTable, firstTeamTable, secondTeamFlying, firstTeamFlying)
