@@ -14,9 +14,9 @@ secrets = ""
 errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit belongs to the wrong team.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit.", "airborne":"Unit is not airborne."}
 agnosticCommands = ["move", "hide", "reveal", "spy", "fire", "convert"]
 navyCommands = ["heading", "torpedo", "sortie", "depthcharge"]
-armyCommands = ["build"]
+armyCommands = ["build", "missile"]
 airCommands = ["takeoff", "land", "pulse", "airlift", "survey", "bomb", "kamikaze", "dogfight"]
-umpireCommands = ["health", "kill", "freeze", "disable", "convert"]
+umpireCommands = ["health", "kill", "freeze", "disable", "convert", "merge", "split"]
 airPhase = True
 helpTextBlock = """
 Umpire commands: score, turn, details, quit, help, health, kill, freeze, convert, disable, merge, split, info
@@ -60,7 +60,8 @@ def evaluate(unit, unitType, table):
     if unit in deadUnits:
         print(errorMessages.get("dead"))
         return
-    return random.randrange(1, table.get(unitType) + 1)
+    maximum = table.get(unitType) + 1
+    return random.randrange(1, maximum)
 
 def prompt(team, airShell, function, level):
     if level == "player": promptChar = "% "
@@ -70,7 +71,13 @@ def prompt(team, airShell, function, level):
     if airShell == True: shellPrompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + "-air" + intermediate + promptChar
     else: shellPrompt = str(round) + " ~ " + str(commandNumber) + " " + str(team) + intermediate + promptChar
     command = input(shellPrompt)
-    return command 
+    return command
+
+def modification():
+    pass
+
+def fog():
+    pass
 
 # One-word command functions
 def score():
@@ -409,6 +416,9 @@ def depthcharge(unit, unitType, team, targetTeamTable):
     changeList(unit, alreadyDropped, "append")
     score()
 
+def board():
+    pass
+
 # Army functions
 def build(unit, unitType):
     if not unitType in buildTable:
@@ -648,6 +658,7 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
             elif command == "reveal": reveal(unit, unitType)
             elif command == "spy": spy(unit, unitType)
             elif command == "fire": fire(unit, unitType, team, targetTeamTable, "fire", fireTable)
+            elif command == "board": pass
             else:
                 print(errorMessages.get("bad"))
                 return

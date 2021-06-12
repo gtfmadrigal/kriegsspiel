@@ -7,6 +7,7 @@ firstTeamTable = {"3rd":4, "51st":4, "50th":4, "47th":4, "1st":4, "29th":4, "4th
 secondTeamTable = {"201st":4, "202nd":4, "203rd":4, "204th":4, "205th":4, "206th":4, "207th":4, "208th":4, "209th":4, "210th":4, "211th":4, "212th":4, "213th":4, "214th":4, "215th":4, "216th":4, "217th":4, "221st":6, "222nd":6, "223rd":6, "224th":6, "231st":16, "242":16, "261st":16, "255th":16, "reds":6, "blues":6, "greens":6, "yellows":6, "gruppen-1":12, "gruppen-2":12, "gruppen-3":12, "gruppen-4":12}
 firstHealthTotal = 202
 secondHealthTotal = 228
+fogOfWar = 1
 healthTable = {"infantry":4, "airborne":4, "carrier":16, "battleship":12, "mechanized":6, "cavalry":16, "fighter":6, "bomber":12, "transport":12}
 headingTable = {"carrier":1, "battleship":1}
 moveFireTable = {"infantry":1, "airborne":1, "carrier":1, "battleship":1, "mechanized":1, "cavalry":1}
