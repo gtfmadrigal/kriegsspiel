@@ -13,15 +13,15 @@ commandNumber = 1
 secrets = ""
 errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit belongs to the wrong team.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit.", "airborne":"Unit is not airborne.", "board":"Unit is not a boardable ship"}
 agnosticCommands = ["move", "hide", "reveal", "spy", "fire", "convert"]
-navyCommands = ["heading", "torpedo", "sortie", "depthcharge"]
+navyCommands = ["heading", "torpedo", "sortie", "depthcharge", "board"]
 armyCommands = ["build", "missile"]
 airCommands = ["takeoff", "land", "pulse", "airlift", "survey", "bomb", "kamikaze", "dogfight"]
-umpireCommands = ["health", "kill", "freeze", "disable", "convert", "merge", "split"]
+umpireCommands = ["score", "turn", "details", "quit", "help", "health", "kill", "freeze", "convert", "disable", "merge", "split", "info", "use"]
 airPhase = True
 helpTextBlock = """
-Umpire commands: score, turn, details, quit, help, health, kill, freeze, convert, disable, merge, split, info
+Umpire commands: score, turn, details, quit, help, health, kill, freeze, convert, disable, merge, split, info, use
 Theater-agnostic commands: attack, move, hide, reveal, spy, fire
-Naval commands: heading, torpedo, sortie, depthcharge
+Naval commands: heading, torpedo, sortie, depthcharge, board
 Army commands: build, missile
 Air commands: takeoff, land, pulse, airlift, survey, bomb, kamikaze, dogfight
 """
@@ -60,7 +60,9 @@ def evaluate(unit, unitType, table):
     if unit in deadUnits:
         print(errorMessages.get("dead"))
         return
-    maximum = table.get(unitType) + 1
+    basicMaximum = table.get(unitType) + 1
+    modifier = modification(unit)
+    maximum = basicMaximum * modifier
     return random.randrange(1, maximum)
 
 def prompt(team, airShell, function, level):
@@ -73,11 +75,15 @@ def prompt(team, airShell, function, level):
     command = input(shellPrompt)
     return command
 
-def modification():
-    pass
+def modification(unit):
+    if dividedTable.get(unit) == None: return 1
+    else: return dividedTable.get(unit)
 
 def fog():
-    pass
+    if fogOfWar == 1: return False
+    returnable = random.randrange(1, fogOfWar + 1)
+    if returnable == 1: return True
+    return False
 
 # One-word command functions
 def score():
@@ -247,8 +253,46 @@ def disable(unit):
 def use(unit):
     changeList(unit, usedUnits, "append")
 
-def merge():
-    pass
+def merge(team, teamTable):
+    global firstTeamTable
+    global secondTeamTable
+    global unitTable
+    global dividedTable
+    mergePhase = True
+    willQuit = False
+    unitType = input("New unit type: ")
+    if not unitType in allUnitTypes:
+        print("No such unit type.")
+        return
+    unitHealth = 0
+    mergedUnits = []
+    usedTrue = False
+    immobileTrue = False
+    disabledTrue = False
+    while mergePhase == True:
+        command = prompt(team, False, "merge", "player")
+        if command == "save": mergePhase = False
+        elif command == "quit":
+            mergePhase = False
+            willQuit = False
+        elif command in teamTable:
+            commandUnitType = unitTable.get(command)
+            if commandUnitType == unitType: 
+                mergedUnits.append(command)
+                if command in usedUnits: usedTrue = True
+                if command in immobileUnits: immobileTrue = True
+                if command in disabledUnits: disabledTrue = True
+                unitHealth = unitHealth + teamTable.get(command)
+                del teamTable[command]
+            else: print("Wrong unit type.")
+        else: print(errorMessages.get("unit"))
+    if willQuit == True: return
+    newUnit = prompt(team, False, "unified", "player")
+    unitTable[newUnit] = unitType
+    teamTable[newUnit] = unitHealth
+    if usedTrue == True: use(newUnit)
+    if immobileUnits == True: freeze(newUnit)
+    if disabledUnits == True: disable(newUnit)
 
 def split():
     pass
@@ -417,16 +461,21 @@ def depthcharge(unit, unitType, team, targetTeamTable):
     score()
 
 def board(unit, unitType, team, teamTable, targetTeamTable):
+    global firstTeamTable
+    global secondTeamTable
     if not unitType in boardTable:
         print(errorMessages.get("function"))
         return
     target = prompt(team, False, "board", "player")
+    if not target in targetTeamTable:
+        print(errorMessages.get("unit"))
+        return
+    targetUnitType = unitTable.get(target)
+    if not targetUnitType in ships:
+        print("board")
+        return
     effectiveness = evaluate(unit, unitType, boardTable)
     currentHealth = teamTable.get(unit)
-    if target in ships and target in targetTeamTable: pass
-    else:
-        print(errorMessages.get("board"))
-        return
     if effectiveness >= 5:
         print(target, "seized.")
         targetHealth = targetTeamTable.get(target)
@@ -444,7 +493,6 @@ def board(unit, unitType, team, teamTable, targetTeamTable):
     changeList(unit, immobileUnits, "append")
     changeList(unit, alreadyDropped, "append")
     update()
-
 
 # Army functions
 def build(unit, unitType):
@@ -590,6 +638,7 @@ def umpireShell(command, unit, unitType):
     elif command == "disable": disable()
     elif command == "convert": convert(unit, unitType)
     elif command == "merge": merge()
+    elif command == "use": use(unit)
     elif command == "split": split()
 
 def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
@@ -630,6 +679,7 @@ def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targ
             elif command == "bomb": fire(unit, unitType, team, targetTeamTable, "bomb", bombTable)
             elif command == "missile": missile(unit, unitType, team, targetTeamTable)
             elif command == "kamikaze": kamikaze(unit, unitType, team, teamTable, targetTeamTable)
+            elif command == "split": pass
         else: print(errorMessages.get("bad"))
     elif len(rawCommand.split()) == 1:
         if rawCommand == "dogfight": pass
@@ -656,6 +706,10 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
         airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
         return
     rawCommand = prompt(team, False, None, "player")
+    commandFog = fog()
+    if commandFog == True:
+        print("This command fails.")
+        return
     if len(rawCommand.split()) == 2:
         command, unit = rawCommand.split()
         if not unit in unitTable:
@@ -685,7 +739,7 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
             elif command == "reveal": reveal(unit, unitType)
             elif command == "spy": spy(unit, unitType)
             elif command == "fire": fire(unit, unitType, team, targetTeamTable, "fire", fireTable)
-            elif command == "board": pass
+            elif command == "board": board(unit, unitType, team, teamTable, targetTeamTable)
             else:
                 print(errorMessages.get("bad"))
                 return
@@ -695,6 +749,7 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
         elif rawCommand == "turn": turn()
         elif rawCommand == "quit": quitGame()
         elif rawCommand == "help": helpText()
+        elif rawCommand == "merge": merge(team, teamTable)
         elif rawCommand == "details": details()
         else: print(errorMessages.get("bad"))
     else: 
