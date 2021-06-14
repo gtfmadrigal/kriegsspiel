@@ -269,12 +269,13 @@ def merge(team, teamTable):
     usedTrue = False
     immobileTrue = False
     disabledTrue = False
+    numberOfUnits = 0
     while mergePhase == True:
         command = prompt(team, False, "merge", "player")
         if command == "save": mergePhase = False
         elif command == "quit":
             mergePhase = False
-            willQuit = False
+            willQuit = True
         elif command in teamTable:
             commandUnitType = unitTable.get(command)
             if commandUnitType == unitType: 
@@ -284,18 +285,51 @@ def merge(team, teamTable):
                 if command in disabledUnits: disabledTrue = True
                 unitHealth = unitHealth + teamTable.get(command)
                 del teamTable[command]
+                numberOfUnits = numberOfUnits + 1
             else: print("Wrong unit type.")
         else: print(errorMessages.get("unit"))
     if willQuit == True: return
-    newUnit = prompt(team, False, "unified", "player")
+    newUnit = prompt(team, False, "unified", "umpire")
     unitTable[newUnit] = unitType
     teamTable[newUnit] = unitHealth
+    dividedTable[newUnit] = numberOfUnits
+    for x in mergedUnits: del teamTable[x]
     if usedTrue == True: use(newUnit)
     if immobileUnits == True: freeze(newUnit)
     if disabledUnits == True: disable(newUnit)
 
-def split():
-    pass
+def split(unit, unitType, team, teamTable):
+    global firstTeamTable
+    global secondTeamTable
+    global dividedTable
+    global unitTable
+    if not unit in dividedTable or not unitType in splitTable:
+        print(errorMessages.get("function"))
+        return
+    splitPhase = True
+    willQuit = False
+    numberOfUnits = 0
+    newUnits = []
+    currentHealth = teamTable.get(unit)
+    while splitPhase == True:
+        command = prompt(team, False, "split", "umpire")
+        if command == "save": splitPhase = False
+        elif command == "quit":
+            splitPhase = False
+            willQuit = True
+        elif command in unitTable: print("Unit already exists.")
+        elif len(command.split()) == 1:
+            numberOfUnits = numberOfUnits + 1
+            newUnits.append(command)
+        else: print(errorMessages.get("command"))
+    if willQuit == True: return
+    newHealth = currentHealth / numberOfUnits
+    del teamTable[unit]
+    del unitTable[unit]
+    if unit in dividedTable: del dividedTable[unit]
+    for x in newUnits:
+        teamTable[x] = newHealth
+        unitTable[x] = unitType
 
 # Theater-agnostic functions
 def move(unit, unitType):
