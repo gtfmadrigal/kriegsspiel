@@ -182,3 +182,4 @@ v2.3 - Final naval battle release
     v2.3.25 - board() function implemented
     v2.3.26 - merge() function implemented
     v2.3.27 - split() function implemented
+    v2.3.28 - use() and freeze() meta-functions used internally

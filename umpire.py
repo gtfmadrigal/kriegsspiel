@@ -100,7 +100,7 @@ def turn():
     changeList(True, usedUnits, "clear")
     changeList(True, immobileUnits, "clear")
     changeList(True, alreadyDropped, "clear")
-    for x in disabledUnits: changeList(x, immobileUnits, "append")
+    for x in disabledUnits: freeze(x)
     changeList(True, disabledUnits, "clear")
     round = round + 1
     airPhase = True
@@ -148,8 +148,8 @@ def attack(team, targetTeam, targetTeamTable):
             if attackDamage == None: continue
             if command in hiddenUnits: reveal(command, unitType)
             totalAttackDamage = totalAttackDamage + attackDamage
-            changeList(command, usedUnits, "append")
-            if not command in moveFireTable: changeList(command, immobileUnits, "append")
+            use(command)
+            if not command in moveFireTable: freeze(command)
             print("Damage dealt:", attackDamage)
             print("Total damage dealt:", totalAttackDamage)
         else: print(errorMessages.get("bad"))
@@ -225,6 +225,7 @@ def convert(unit, unitType):
     global firstTeamTable
     global secondTeamTable
     global unitTable
+    newHealth = 0
     if unit in firstTeamTable:
         relevantTeam = firstTeam 
         relevantTable = firstTeamTable
@@ -338,7 +339,7 @@ def move(unit, unitType):
         return
     if unitType in headingTable: print(errorMessages.get("heading"))
     if not unitType in moveFireTable: use(unit)
-    changeList(unit, immobileUnits, "append")
+    freeze(unit)
 
 def hide(unit, unitType, team):
     global secrets
@@ -414,7 +415,7 @@ def fire(unit, unitType, team, targetTeamTable, version, table):
 # Naval functions
 def heading(unit, unitType):
     if evaluate(unit, unitType, headingTable) == 1:
-        changeList(unit, immobileUnits, "append")
+        freeze(unit)
         if not unitType in moveFireTable: use(unit)
     else:
         print(errorMessages.get("required"))
@@ -439,7 +440,7 @@ def torpedo(unit, unitType, team, targetTeamTable):
         print(target, "new health:", newHealth)
         targetTeamTable[target] = newHealth
     use(unit)
-    changeList(unit, immobileUnits, "append")
+    freeze(unit)
     score()
 
 def sortie(unit, unitType, team, targetTeamTable):
@@ -469,7 +470,7 @@ def sortie(unit, unitType, team, targetTeamTable):
             targetTeamTable[target] = newHealth
     else: print("Attack repelled by:", target)
     use(unit)
-    changeList(unit, immobileUnits, "append")
+    freeze(unit)
     score()
 
 def depthcharge(unit, unitType, team, targetTeamTable):
@@ -490,7 +491,7 @@ def depthcharge(unit, unitType, team, targetTeamTable):
         print(target, "frozen.")
     elif effectiveness == None: return
     else: print("Missed.")
-    changeList(unit, immobileUnits, "append")
+    freeze(unit)
     changeList(unit, alreadyDropped, "append")
     score()
 
@@ -524,7 +525,7 @@ def board(unit, unitType, team, teamTable, targetTeamTable):
             kill(unit, "sunk.")
         else: 
             teamTable[unit] = newHealth
-    changeList(unit, immobileUnits, "append")
+    freeze(unit)
     changeList(unit, alreadyDropped, "append")
     update()
 
@@ -536,7 +537,7 @@ def build(unit, unitType):
     fortification = evaluate(unit, unitType, buildTable)
     print("Fortification of strength", fortification, "built.")
     use(unit)
-    changeList(unit, immobileUnits, "append")
+    freeze(unit)
 
 def missile(unit, unitType, team, targetTeamTable):
     global firstTeamTable
@@ -563,8 +564,8 @@ def missile(unit, unitType, team, targetTeamTable):
     else:
         newHealth = currentHealth - netDamage
         targetTeamTable[command] = newHealth
-    changeList(unit, usedUnits, "append")
-    if not unit in moveFireTable: changeList(unit, immobileUnits, "append")
+    use(unit)
+    if not unit in moveFireTable: freeze(unit)
     score()
 
 # Air functions
