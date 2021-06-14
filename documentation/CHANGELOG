@@ -179,3 +179,4 @@ v2.3 - Final naval battle release
     v2.3.21 - air functions implemented, bugs present and may need to be fixed
     v2.3.22 - missile() function implemented
     v2.3.24 - renamed repository to "umpire"
+    v2.3.25 - board() function implemented

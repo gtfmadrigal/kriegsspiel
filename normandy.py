@@ -28,3 +28,5 @@ flyTable = {"fighter":1, "bomber":1, "transport":1}
 kamikazeTable = {"fighter":6}
 missileTable = {"fighter":6, "bomber":8, "battleship":8}
 missileDefenseTable = {"fighter":8, "bomber":6, "battleship":8}
+boardTable = {"duke-of-cornwall":6, "prince-of-wales":6, "king-george":6}
+ships = ["sovereign", "lord-of-war", "duke-of-cornwall", "prince-of-wales", "king-george"]

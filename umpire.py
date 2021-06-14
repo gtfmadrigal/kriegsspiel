@@ -11,7 +11,7 @@ disabledUnits = []
 deadUnits = []
 commandNumber = 1
 secrets = ""
-errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit belongs to the wrong team.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit.", "airborne":"Unit is not airborne."}
+errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit belongs to the wrong team.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit.", "airborne":"Unit is not airborne.", "board":"Unit is not a boardable ship"}
 agnosticCommands = ["move", "hide", "reveal", "spy", "fire", "convert"]
 navyCommands = ["heading", "torpedo", "sortie", "depthcharge"]
 armyCommands = ["build", "missile"]
@@ -416,8 +416,35 @@ def depthcharge(unit, unitType, team, targetTeamTable):
     changeList(unit, alreadyDropped, "append")
     score()
 
-def board():
-    pass
+def board(unit, unitType, team, teamTable, targetTeamTable):
+    if not unitType in boardTable:
+        print(errorMessages.get("function"))
+        return
+    target = prompt(team, False, "board", "player")
+    effectiveness = evaluate(unit, unitType, boardTable)
+    currentHealth = teamTable.get(unit)
+    if target in ships and target in targetTeamTable: pass
+    else:
+        print(errorMessages.get("board"))
+        return
+    if effectiveness >= 5:
+        print(target, "seized.")
+        targetHealth = targetTeamTable.get(target)
+        del targetTeamTable[target]
+        teamTable[target] = targetHealth
+    else:
+        print("Boarding attempt failed.")
+        print(unit, "suffers", str(effectiveness), "damage.")
+        newHealth = currentHealth - effectiveness
+        if newHealth <= 0:
+            kill(unit, teamTable)
+            kill(unit, "sunk.")
+        else: 
+            teamTable[unit] = newHealth
+    changeList(unit, immobileUnits, "append")
+    changeList(unit, alreadyDropped, "append")
+    update()
+
 
 # Army functions
 def build(unit, unitType):
@@ -502,7 +529,7 @@ def airlift(unit, unitType, team, teamTable):
         return
     use(unit)
 
-def kamikaze(unit, unitType, team, targetTeamTable):
+def kamikaze(unit, unitType, team, teamTable, targetTeamTable):
     global firstTeamTable
     global secondTeamTable
     if not unitType in kamikazeTable:
