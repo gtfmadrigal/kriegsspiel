@@ -1,23 +1,13 @@
+# Definitions
 import random
 from normandy import *
 
 round = 1
-usedUnits = []
-immobileUnits = []
-hiddenUnits = []
-alreadyDropped = []
-defendingUnits = []
-disabledUnits = []
-deadUnits = []
 commandNumber = 1
 secrets = ""
-errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit belongs to the wrong team.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit.", "airborne":"Unit is not airborne.", "board":"Unit is not a boardable ship"}
-agnosticCommands = ["move", "hide", "reveal", "spy", "fire", "convert"]
-navyCommands = ["heading", "torpedo", "sortie", "depthcharge", "board"]
-armyCommands = ["build", "missile"]
-airCommands = ["takeoff", "land", "pulse", "airlift", "survey", "bomb", "kamikaze", "dogfight"]
-umpireCommands = ["score", "turn", "details", "quit", "help", "health", "kill", "freeze", "convert", "disable", "merge", "split", "info", "use"]
 airPhase = True
+firstHealth = sum(firstTeamTable.values())
+secondHealth = sum(secondTeamTable.values())
 helpTextBlock = """
 Umpire commands: score, turn, details, quit, help, health, kill, freeze, convert, disable, merge, split, info, use
 Theater-agnostic commands: attack, move, hide, reveal, spy, fire
@@ -25,11 +15,46 @@ Naval commands: heading, torpedo, sortie, depthcharge, board
 Army commands: build, missile
 Air commands: takeoff, land, pulse, airlift, survey, bomb, kamikaze, dogfight
 """
+
+usedUnits = []
+immobileUnits = []
+hiddenUnits = []
+alreadyDropped = []
+defendingUnits = []
+disabledUnits = []
+deadUnits = []
+agnosticCommands = ["move", "hide", "reveal", "spy", "fire", "convert"]
+navyCommands = ["heading", "torpedo", "sortie", "depthcharge", "board"]
+armyCommands = ["build", "missile"]
+airCommands = ["takeoff", "land", "pulse", "airlift", "survey", "bomb", "kamikaze", "dogfight"]
+umpireCommands = ["score", "turn", "details", "quit", "help", "health", "kill", "freeze", "convert", "disable", "merge", "split", "info", "use"]
 firstTeamFlying = []
 secondTeamFlying = []
-firstHealth = sum(firstTeamTable.values())
-secondHealth = sum(secondTeamTable.values())
+ships = []
+
+errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit belongs to the wrong team.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit.", "airborne":"Unit is not airborne.", "board":"Unit is not a boardable ship"}
 dividedTable = {}
+healthTable = {}
+movementTable = {}
+hideTable = {}
+spyTable = {}
+attackTable = {}
+splitTable = {}
+fireTable = {}
+headingTable = {}
+torpedoTable = {}
+sortieTable = {}
+sortieDefenseTable = {}
+depthchargeTable = {}
+boardTable = {}
+buildTable = {}
+missileTable = {}
+pulseTable = {}
+transportTable = {}
+kamikazeTable = {}
+moveFireTable = {}
+bombTable = {}
+flyTable = {}
 
 # Meta-functions
 def update():
@@ -554,7 +579,7 @@ def missile(unit, unitType, team, targetTeamTable):
         print(errorMessages.get("team"))
         return
     targetUnitType = unitTable.get(command)
-    defenseDamage = evaluate(command, targetUnitType, missileDefenseTable)
+    defenseDamage = evaluate(command, targetUnitType, missileTable)
     if defenseDamage == None: netDamage = attackDamage
     else: netDamage = attackDamage - defenseDamage
     currentHealth = targetTeamTable.get(command)
