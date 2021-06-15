@@ -1,5 +1,6 @@
 # Definitions
 import random
+from normandy import *
 
 round = 1
 commandNumber = 1
@@ -54,7 +55,8 @@ kamikazeTable = {"light-fighter":6, "heavy-fighter":8}
 moveFireTable = {"infantry":1, "engineers":1, "mechanized":1, "light-cavalry":1, "med-cavalry":1, "heavy-cavalry":1, "special":1, "corvette":1, "amphibious":1, "patrol":1, "cruiser":1, "destroyer":1, "battleship":1, "carrier":1, "light-fighter":1, "heavy-fighter":1, "bomber":1, "stealth-bomber":1, "recon":4, "transport":1, "drone":1}
 bombTable = {}
 flyTable = {}
-from normandy import *
+
+# Initialization work
 loadGame()
 
 # Meta-functions

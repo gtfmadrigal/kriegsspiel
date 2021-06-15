@@ -186,3 +186,4 @@ v2.3 - Final naval battle release
     v2.3.29 - dividedTable{} moved from gamefile to umpire.py
     v2.3.30 - tables moved from gamefile to umpire.py in anticipation of making unitTypes global
     v2.3.21 - unitTypes moved from gamefile to umpire, loadGame() function implemented
+    v2.3.22 - loadGame() function implemented
