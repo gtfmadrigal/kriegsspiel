@@ -31,4 +31,3 @@ missileDefenseTable = {"fighter":8, "bomber":6, "battleship":8}
 boardTable = {"battleship":6}
 ships = ["battleship", "carrier"]
 splitTable = {"infantry":1, "mechanized":1}
-dividedTable = {}

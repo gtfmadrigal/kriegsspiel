@@ -29,6 +29,7 @@ firstTeamFlying = []
 secondTeamFlying = []
 firstHealth = sum(firstTeamTable.values())
 secondHealth = sum(secondTeamTable.values())
+dividedTable = {}
 
 # Meta-functions
 def update():
