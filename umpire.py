@@ -25,9 +25,9 @@ disabledUnits = []
 deadUnits = []
 agnosticCommands = ["move", "hide", "reveal", "spy", "fire", "convert"]
 navyCommands = ["heading", "torpedo", "sortie", "depthcharge", "board"]
-armyCommands = ["build", "missile"]
+armyCommands = ["build", "missile", "convert"]
 airCommands = ["takeoff", "land", "pulse", "airlift", "survey", "bomb", "kamikaze", "dogfight"]
-umpireCommands = ["score", "turn", "details", "quit", "help", "health", "kill", "freeze", "convert", "disable", "merge", "split", "info", "use"]
+umpireCommands = ["score", "turn", "details", "quit", "help", "health", "kill", "freeze", "disable", "merge", "split", "info", "use"]
 firstTeamFlying = []
 secondTeamFlying = []
 ships = []
@@ -38,8 +38,9 @@ healthTable = {"infantry":4, "engineers":4, "mechanized":6, "light-artillery":8,
 movementTable = {"infantry":10, "engineers":10, "mechanized":15, "light-artillery":10, "med-artillery":7, "heavy-artillery":5, "light-cavalry":10, "med-cavalry":7, "heavy-cavalry":5, "special":15, "corvette":15, "amphibious":15, "patrol":15, "cruiser":7, "destroyer":10, "battleship":5, "carrier":5, "attack-submarine":15, "missile-submarine":15, "light-fighter":30, "heavy-fighter":15, "bomber":15, "stealth-bomber":10, "recon":20, "transport":30, "drone":30}
 hideTable = {"infantry":1, "engineers":1, "mechanized":1, "light-artillery":1, "med-artillery":1, "heavy-artillery":1, "special":1}
 spyTable = {"infantry":1, "engineers":1, "mechanized":1, "recon":1}
-attackTable = {"infantry":4, "engineers":4, "mechanized":4, "light-artillery":4, "med-artillery":4, "heavy-artillery":4, "light-cavalry":12, "med-cavalry":16, "heavy-cavalry":20, "special":20, "corvette":6, "amphibious":4, "patrol":4, "cruiser":16, "destroyer":8, "battleship":12, "carrier":12, "light-fighter":4, "heavy-fighter":6, "bomber":4, "stealth-bomber":4, "recon":4, "transport":4, "drone":4}
+attackTable = {"infantry":4, "engineers":4, "mechanized":4, "light-artillery":4, "med-artillery":4, "heavy-artillery":4, "light-cavalry":6, "med-cavalry":8, "heavy-cavalry":10, "special":20, "corvette":6, "amphibious":4, "patrol":4, "cruiser":16, "destroyer":8, "battleship":12, "carrier":12, "light-fighter":4, "heavy-fighter":6, "bomber":4, "stealth-bomber":4, "recon":4, "transport":4, "drone":4}
 splitTable = {"infantry":4, "engineers":4, "mechanized":6, "light-artillery":8, "med-artillery":9, "heavy-artillery":10, "light-cavalry":12, "med-cavalry":14, "heavy-cavalry":16, "special":20}
+convertTable = {"light-artillery":1, "med-artillery":1, "heavy-artillery":1, "light-cavalry":1, "med-cavalry":1, "heavy-cavalry":1}
 fireTable = {"light-artillery":8, "med-artillery":9, "heavy-artillery":10, "light-cavalry":12, "med-cavalry":16, "heavy-cavalry":20, "corvette":6, "cruiser":20, "destroyer":10, "battleship":16, "bomber":8, "stealth-bomber":6, "drone":4}
 headingTable = {"corvette":1, "cruiser":1, "destroyer":1, "battleship":1, "carrier":1}
 torpedoTable = {"attack-submarine":6, "missile-submarine":6}
@@ -47,7 +48,7 @@ sortieTable = {"carrier":8}
 sortieDefenseTable = {"corvette":12, "amphibious":4, "cruiser":12, "destroyer":12, "battleship":6, "carrier":8}
 depthchargeTable = {"corvette":6, "amphibious":6, "cruiser":6, "destroyer":6, "battleship":6, "carrier":6}
 boardTable = {"corvette":6, "amphibious":6, "patrol":6, "cruiser":8, "destroyer":10, "carrier":6}
-buildTable = {"infantry":4, "engineers":6, "mechanized":4, "special":6}
+buildTable = {"infantry":4, "engineers":8, "mechanized":4, "special":6}
 missileTable = {"destroyer":8, "missile-submarine":16, "light-fighter":6, "heavy-fighter":6, "bomber":8, "stealth-bomber":8}
 pulseTable = {"bomber":6, "stealth-bomber":6}
 transportTable = {"transport":1}
@@ -249,32 +250,6 @@ def kill(unit, teamTable):
 
 def freeze(unit):
     changeList(unit, immobileUnits, "append")
-
-def convert(unit, unitType):
-    global firstTeamTable
-    global secondTeamTable
-    global unitTable
-    newHealth = 0
-    if unit in firstTeamTable:
-        relevantTeam = firstTeam 
-        relevantTable = firstTeamTable
-    elif unit in secondTeamTable:
-        relevantTeam = secondTeam
-        relevantTable = secondTeamTable
-    else:
-        print(errorMessages.get("team"))
-        return
-    newUnitType = prompt(relevantTeam, False, "convert", "umpire")
-    if not newUnitType in allUnitTypes:
-        print(errorMessages.get("type"))
-        return
-    currentHealth = relevantTable.get(unit)
-    maximumHealth = healthTable.get(newUnitType)
-    if maximumHealth < currentHealth: newHealth = maximumHealth
-    else: newHealth = currentHealth
-    relevantTable[unit] = currentHealth
-    unitTable[unit] = newUnitType
-    if unit in hiddenUnits and not newUnitType in hideTable: reveal(unit, unitType)
 
 def disable(unit):
     freeze(unit)
@@ -597,6 +572,19 @@ def missile(unit, unitType, team, targetTeamTable):
     if not unit in moveFireTable: freeze(unit)
     score()
 
+def convert(unit, unitType, teamTable):
+    global firstTeamTable
+    global secondTeamTable
+    global unitTable
+    if not unitType in convertTable:
+        print(errorMessages.get("function"))
+        return
+    currentHealth = teamTable.get(unit)
+    unitTable[unit] = "infantry"
+    if currentHealth > 4: newHealth = 4
+    else: newHealth = currentHealth
+    teamTable[unit] = newHealth
+
 # Air functions
 def takeoff(unit, teamFlyingTable):
     if unit in teamFlyingTable:
@@ -692,7 +680,7 @@ def info(unit, unitType):
     if unit in usedUnits: print("Unusable this turn.")
     if unit in hiddenUnits: print("Hidden.")
 
-def umpireShell(command, unit, unitType):
+def umpireShell(command, unit):
     if command == "health": health(unit)
     elif command == "kill":
         if unit in firstTeamTable: teamTable = firstTeamTable
@@ -700,7 +688,6 @@ def umpireShell(command, unit, unitType):
         kill(unit, teamTable)
     elif command == "freeze": freeze(unit)
     elif command == "disable": disable()
-    elif command == "convert": convert(unit, unitType)
     elif command == "merge": merge()
     elif command == "use": use(unit)
     elif command == "split": split()
@@ -721,7 +708,7 @@ def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targ
         if not unitType in flyTable:
             print(errorMessages.get("function"))
             return
-        if command in umpireCommands: umpireShell(command, unit, unitType)
+        if command in umpireCommands: umpireShell(command, unit)
         elif command in airCommands:
             if not unit in teamTable:
                 print(errorMessages.get("team"))
@@ -799,6 +786,7 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
             elif command == "missile": missile(unit, unitType, team, targetTeamTable)
             elif command == "move": move(unit, unitType)
             elif command == "hide": hide(unit, unitType, team)
+            elif command == "convert": convert(unit, unitType, teamTable)
             elif command == "info": info(unit, unitType)
             elif command == "reveal": reveal(unit, unitType)
             elif command == "spy": spy(unit, unitType)
