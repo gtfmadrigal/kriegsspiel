@@ -202,22 +202,21 @@ def attack(team, targetTeam, targetTeamTable):
             if totalDefenseDamage >= totalAttackDamage: defensePhase = False
         else: print(errorMessages.get("bad"))
     if willQuit == True: return
-    if totalDefenseDamage >= totalAttackDamage:
-        print("Attack repelled by", targetTeam)
-        return
-    netDamage = totalAttackDamage - totalDefenseDamage
-    print("Net damage:", netDamage)
-    perUnitDamage = netDamage / len(defendingUnits)
-    print("Damage per unit:", perUnitDamage)
-    for x in defendingUnits:
-        oldHealth = targetTeamTable.get(x)
-        if oldHealth - perUnitDamage <= 0: 
-            newHealth = 0
-            print(x, "killed.")
-        else: 
-            newHealth = oldHealth - perUnitDamage
-            print(x, "new health:", newHealth)
-        targetTeamTable[x] = newHealth
+    if totalDefenseDamage >= totalAttackDamage: print("Attack repelled by", targetTeam)
+    else:
+        netDamage = totalAttackDamage - totalDefenseDamage
+        print("Net damage:", netDamage)
+        perUnitDamage = netDamage / len(defendingUnits)
+        print("Damage per unit:", perUnitDamage)
+        for x in defendingUnits:
+            oldHealth = targetTeamTable.get(x)
+            if oldHealth - perUnitDamage <= 0: 
+                newHealth = 0
+                print(x, "killed.")
+            else: 
+                newHealth = oldHealth - perUnitDamage
+                print(x, "new health:", newHealth)
+            targetTeamTable[x] = newHealth
     changeList(True, defendingUnits, "clear")
     score()
     turn()
@@ -233,12 +232,12 @@ def health(unit):
         relevantTeam = secondTeam
         relevantTable = secondTeamTable
     else:
-        print(errorMessages.get("team"))
+        print(errorMessages.get("unit"))
         return
     print("Current health: ", relevantTable.get(unit))
     newHealth = prompt(relevantTeam, False, "health", "umpire")
     if int(newHealth) <= 0: kill(unit, relevantTable)
-    else: relevantTable[unit] = int(newHealth)
+    else: relevantTable[unit] = float(newHealth)
     update()
 
 def kill(unit, teamTable):
