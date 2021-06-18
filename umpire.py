@@ -173,7 +173,8 @@ def attack(team, targetTeam, targetTeamTable):
             attackPhase = False
             defensePhase = True
         elif command in unitTable:
-            unitType = unitTable.get(command)
+            localUnitType = unitTable.get(command)
+            unitType = allUnitTypes.get(localUnitType)
             attackDamage = evaluate(command, unitType, attackTable)
             if attackDamage == None: continue
             if command in hiddenUnits: reveal(command, unitType)
@@ -191,7 +192,8 @@ def attack(team, targetTeam, targetTeamTable):
             willQuit = True
         elif command == "save": defensePhase = False
         elif command in unitTable:
-            unitType = unitTable.get(command)
+            localUnitType = unitTable.get(command)
+            unitType = allUnitTypes.get(localUnitType)
             defenseDamage = evaluate(command, unitType, attackTable)
             if defenseDamage == None: continue
             if command in hiddenUnits: reveal(command, unitType)
@@ -281,7 +283,8 @@ def merge(team, teamTable):
             mergePhase = False
             willQuit = True
         elif command in teamTable:
-            commandUnitType = unitTable.get(command)
+            commandLocalUnitType = unitTable.get(command)
+            commandUnitType = allUnitTypes.get(commandLocalUnitType)
             if commandUnitType == unitType: 
                 mergedUnits.append(command)
                 if command in usedUnits: usedTrue = True
@@ -460,7 +463,8 @@ def sortie(unit, unitType, team, targetTeamTable):
     if not target in targetTeamTable:
         print(errorMessages.get("team"))
         return
-    targetUnitType = unitTable.get(target)
+    targetLocalUnitType = unitTable.get(target)
+    targetUnitType = allUnitTypes.get(targetLocalUnitType)
     defenseDamage = evaluate(target, targetUnitType, sortieDefenseTable)
     if defenseDamage == None: defenseDamage = 0
     if defenseDamage <= attackDamage:
@@ -508,7 +512,8 @@ def board(unit, unitType, team, teamTable, targetTeamTable):
     if not target in targetTeamTable:
         print(errorMessages.get("unit"))
         return
-    targetUnitType = unitTable.get(target)
+    targetLocalUnitType = unitTable.get(target)
+    targetUnitType = allUnitTypes.get(targetLocalUnitType)
     if not targetUnitType in ships:
         print("board")
         return
@@ -555,7 +560,8 @@ def missile(unit, unitType, team, targetTeamTable):
     if command not in targetTeamTable:
         print(errorMessages.get("team"))
         return
-    targetUnitType = unitTable.get(command)
+    targetLocalUnitType = unitTable.get(command)
+    targetUnitType = allUnitTypes.get(targetLocalUnitType)
     defenseDamage = evaluate(command, targetUnitType, missileTable)
     if defenseDamage == None: netDamage = attackDamage
     else: netDamage = attackDamage - defenseDamage
@@ -697,7 +703,8 @@ def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targ
     rawCommand = prompt(team, True, None, "player")
     if len(rawCommand.split()) == 2:
         command, unit = rawCommand.split()
-        unitType = unitTable.get(unit)
+        localUnitType = unitTable.get(unit)
+        unitType = allUnitTypes.get(localUnitType)
         if not unit in unitTable:
             print(errorMessages.get("unit"))
             return
@@ -766,7 +773,8 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
         if not unit in unitTable:
             print(errorMessages.get("unit"))
             return
-        unitType = unitTable.get(unit)
+        localUnitType = unitTable.get(unit)
+        unitType = allUnitTypes.get(localUnitType)
         if command in umpireCommands: umpireShell(command, unit)
         elif command in navyCommands or command in armyCommands or command in agnosticCommands:
             if not unit in teamTable:

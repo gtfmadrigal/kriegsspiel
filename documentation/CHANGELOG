@@ -191,3 +191,4 @@ v2.3 - Final naval battle release
     v2.3.24 - Unit-Chart.xlsx completed
     v2.3.25 - attack() function updated
     v2.3.26 - bad umpireShell() call fixed
+    v2.3.27 - local-universal unit type distinction implemented

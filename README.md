@@ -1,4 +1,4 @@
-# kriegsspiel
+# umpire
 
 This is a Python script for use by the Umpire in managing a game of Kriegsspiel.
 
