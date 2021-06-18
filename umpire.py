@@ -767,7 +767,7 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
             print(errorMessages.get("unit"))
             return
         unitType = unitTable.get(unit)
-        if command in umpireCommands: umpireShell(command, unit, unitType)
+        if command in umpireCommands: umpireShell(command, unit)
         elif command in navyCommands or command in armyCommands or command in agnosticCommands:
             if not unit in teamTable:
                 print(errorMessages.get("team"))
