@@ -32,7 +32,7 @@ firstTeamFlying = []
 secondTeamFlying = []
 ships = []
 
-errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit belongs to the wrong team.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit.", "airborne":"Unit is not airborne.", "board":"Unit is not a boardable ship"}
+errorMessages = {"arguments":"Too many arguments for command. Type 'man' [command] for information.", "os":"Unknown operating system.", "bad":"Bad command. Type 'help' for assistance.", "team":"That unit belongs to the wrong team.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit.", "airborne":"Unit is not airborne.", "board":"Unit is not a boardable ship", "exists":"A unit with that name already exists."}
 dividedTable = {}
 healthTable = {"infantry":4, "engineers":4, "mechanized":6, "light-artillery":8, "med-artillery":9, "heavy-artillery":10, "light-cavalry":12, "med-cavalry":14, "heavy-cavalry":16, "special":20, "corvette":4, "amphibious":4, "patrol":2, "cruiser":10, "destroyer":8, "battleship":12, "carrier":16, "attack-submarine":1, "missile-submarine":1, "light-fighter":4, "heavy-fighter":8, "bomber":12, "stealth-bomber":10, "recon":4, "transport":12, "drone":4}
 movementTable = {"infantry":10, "engineers":10, "mechanized":15, "light-artillery":10, "med-artillery":7, "heavy-artillery":5, "light-cavalry":10, "med-cavalry":7, "heavy-cavalry":5, "special":15, "corvette":15, "amphibious":15, "patrol":15, "cruiser":7, "destroyer":10, "battleship":5, "carrier":5, "attack-submarine":15, "missile-submarine":15, "light-fighter":30, "heavy-fighter":15, "bomber":15, "stealth-bomber":10, "recon":20, "transport":30, "drone":30}
@@ -254,6 +254,7 @@ def freeze(unit):
 
 def disable(unit):
     freeze(unit)
+    use(unit)
     changeList(unit, disabledUnits, "append")
 
 def use(unit):
@@ -301,7 +302,7 @@ def merge(team, teamTable):
     while goodNewUnit == False:
         newUnit = prompt(team, False, "unified", "umpire")
         if newUnit in unitTable:
-            print("A unit with that name already exists.")
+            print(errorMessages.get("exists"))
             goodNewUnit = False
         else: goodNewUnit = True
     unitTable[newUnit] = unitType
@@ -331,19 +332,23 @@ def split(unit, unitType, team, teamTable):
         elif command == "quit":
             splitPhase = False
             willQuit = True
-        elif command in unitTable: print("Unit already exists.")
-        elif len(command.split()) == 1:
-            numberOfUnits = numberOfUnits + 1
-            newUnits.append(command)
+        elif command in unitTable: print(errorMessages.get("exists"))
+        elif len(command.split()) == 1: newUnits.append(command)
         else: print(errorMessages.get("command"))
     if willQuit == True: return
-    newHealth = currentHealth / numberOfUnits
+    newHealth = currentHealth / len(newUnits)
     del teamTable[unit]
     del unitTable[unit]
     if unit in dividedTable: del dividedTable[unit]
     for x in newUnits:
         teamTable[x] = newHealth
         unitTable[x] = unitType
+        if unit in hiddenUnits:
+            changeList(unit, hiddenUnits, "remove")
+            changeList(x, hiddenUnits, "append")
+        elif unit in immobileUnits:
+            changeList(unit, immobileUnits, "remove")
+            changeList(x, immobileUnits, "append")
 
 # Theater-agnostic functions
 def move(unit, unitType):

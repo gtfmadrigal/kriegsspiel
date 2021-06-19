@@ -193,3 +193,4 @@ v2.3 - Final naval battle release
     v2.3.36 - bad umpireShell() call fixed
     v2.3.37 - local-universal unit type distinction implemented
     v2.3.38 - merge() function save phase fixed
+    v2.3.39 - split() function save phase fixed
