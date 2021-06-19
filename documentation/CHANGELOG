@@ -185,10 +185,11 @@ v2.3 - Final naval battle release
     v2.3.28 - use() and freeze() meta-functions used internally
     v2.3.29 - dividedTable{} moved from gamefile to umpire.py
     v2.3.30 - tables moved from gamefile to umpire.py in anticipation of making unitTypes global
-    v2.3.21 - unitTypes moved from gamefile to umpire, loadGame() function implemented
-    v2.3.22 - loadGame() function implemented
-    v2.3.23 - convert() function updated
-    v2.3.24 - Unit-Chart.xlsx completed
-    v2.3.25 - attack() function updated
-    v2.3.26 - bad umpireShell() call fixed
-    v2.3.27 - local-universal unit type distinction implemented
+    v2.3.31 - unitTypes moved from gamefile to umpire, loadGame() function implemented
+    v2.3.32 - loadGame() function implemented
+    v2.3.33 - convert() function updated
+    v2.3.34 - Unit-Chart.xlsx completed
+    v2.3.35 - attack() function updated
+    v2.3.36 - bad umpireShell() call fixed
+    v2.3.37 - local-universal unit type distinction implemented
+    v2.3.38 - merge() function save phase fixed

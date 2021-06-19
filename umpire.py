@@ -152,7 +152,7 @@ def helpText():
     print("Commands: ")
     print(helpTextBlock)
     print("Unit types:")
-    print(*allUnitTypes, sep = ", ")
+    print(*allUnitTypes.keys(), sep = ", ")
 
 def attack(team, targetTeam, targetTeamTable):
     global firstTeamTable
@@ -266,10 +266,11 @@ def merge(team, teamTable):
     global dividedTable
     mergePhase = True
     willQuit = False
-    unitType = input("New unit type: ")
-    if not unitType in allUnitTypes:
+    localUnitType = input("New unit type: ")
+    if not localUnitType in allUnitTypes:
         print("No such unit type.")
         return
+    unitType = allUnitTypes.get(localUnitType)
     unitHealth = 0
     mergedUnits = []
     usedTrue = False
@@ -277,7 +278,7 @@ def merge(team, teamTable):
     disabledTrue = False
     numberOfUnits = 0
     while mergePhase == True:
-        command = prompt(team, False, "merge", "player")
+        command = prompt(team, False, "merge", "umpire")
         if command == "save": mergePhase = False
         elif command == "quit":
             mergePhase = False
@@ -296,7 +297,13 @@ def merge(team, teamTable):
             else: print("Wrong unit type.")
         else: print(errorMessages.get("unit"))
     if willQuit == True: return
-    newUnit = prompt(team, False, "unified", "umpire")
+    goodNewUnit = False
+    while goodNewUnit == False:
+        newUnit = prompt(team, False, "unified", "umpire")
+        if newUnit in unitTable:
+            print("A unit with that name already exists.")
+            goodNewUnit = False
+        else: goodNewUnit = True
     unitTable[newUnit] = unitType
     teamTable[newUnit] = unitHealth
     dividedTable[newUnit] = numberOfUnits
