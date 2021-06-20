@@ -86,3 +86,24 @@ Features to be added in a later release:
 - takeoff(), land(), pulse(), airlift(), survey(), drop(), bomb(), pulse(), disembark(), and load() functions for air combat
 - Integration of land, sea, air, and space units in a single gamespace
 - Fourth Edition of the Kriegsspiel Guide
+
+v3.0 - Land-Sea-Air unification release
+
+New features in this release:
+- Air combat and air combat phase added, including the takeoff, land, pulse, airlift, survey, bomb, kamikaze, and pulse commands
+- Ability to manage the size of units via merge and split commands
+- Shell reorganized
+- Full Fourth Edition of the Kriegsspiel Guide
+- Ability to commandeer ships
+- New theater-agnostic missile command, compare to fire and attack
+- Universal unit type tables added to the umpire.py file, gamefiles now much shorter
+- More meta-functions, incl. use() and freeze(), to make code execution more efficient and readable
+- loadGame() function added to the gamefile
+
+Features to be added in a later release:
+- Ability to enter multiple commands in a manner more like a proper shell
+- Simplification of the shell
+- Ability to save and return to a game, by writing data to a save file
+- Ability to launch nuclear weapons
+- Ability to reduce damage using fortifications
+- Terrain tracking

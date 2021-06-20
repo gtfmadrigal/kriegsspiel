@@ -254,7 +254,7 @@ def freeze(unit):
 
 def disable(unit):
     freeze(unit)
-    use(unit)
+    use()
     changeList(unit, disabledUnits, "append")
 
 def use(unit):
@@ -388,7 +388,6 @@ def spy(unit, unitType):
     effectiveness = evaluate(unit, unitType, spyTable)
     if effectiveness == 6: print("Good information.")
     elif effectiveness == 1: print("Bad information.")
-    elif effectiveness == None: return
     else: print("No information.")
     details()
     use(unit)
@@ -468,9 +467,6 @@ def sortie(unit, unitType, team, targetTeamTable):
         print(errorMessages.get("function"))
         return
     attackDamage = evaluate(unit, unitType, sortieTable)
-    if attackDamage == None:
-        print(errorMessages.get("function"))
-        return
     target = prompt(team, False, "sortie", "player")
     if not target in targetTeamTable:
         print(errorMessages.get("team"))
@@ -505,9 +501,8 @@ def depthcharge(unit, unitType, team, targetTeamTable):
         kill(target, targetTeamTable)
         print(target, "sunk.")
     elif effectiveness == 5:
-        changeList(target, immobileUnits, "append")
-        changeList(target, disabledUnits, "append")
-        print(target, "frozen.")
+        disable(target)
+        print(target, "disabled.")
     elif effectiveness == None: return
     else: print("Missed.")
     freeze(unit)
@@ -536,6 +531,7 @@ def board(unit, unitType, team, teamTable, targetTeamTable):
         targetHealth = targetTeamTable.get(target)
         del targetTeamTable[target]
         teamTable[target] = targetHealth
+        freeze(unit)
     else:
         print("Boarding attempt failed.")
         print(unit, "suffers", str(effectiveness), "damage.")
@@ -545,7 +541,7 @@ def board(unit, unitType, team, teamTable, targetTeamTable):
             kill(unit, "sunk.")
         else: 
             teamTable[unit] = newHealth
-    freeze(unit)
+        disable(unit)
     changeList(unit, alreadyDropped, "append")
     update()
 
@@ -754,6 +750,10 @@ def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targ
         if rawCommand == "dogfight": pass
         elif rawCommand == "next":
             changeList(True, usedUnits, "clear")
+            for x in teamFlyingTable:
+                print(x, "crashes.")
+                kill(x)
+            changeList(True, teamFlyingTable, "clear")
             airPhase = False
             return
         elif rawCommand == "score": score()
