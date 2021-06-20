@@ -90,6 +90,7 @@ def evaluate(unit, unitType, table):
     if unit in deadUnits:
         print(errorMessages.get("dead"))
         return
+    if not unitType in table: return
     basicMaximum = table.get(unitType) + 1
     modifier = modification(unit)
     maximum = basicMaximum * modifier
@@ -154,7 +155,7 @@ def helpText():
     print("Unit types:")
     print(*allUnitTypes.keys(), sep = ", ")
 
-def attack(team, targetTeam, targetTeamTable):
+def attack(team, targetTeam, targetTeamTable, airPhase):
     global firstTeamTable
     global secondTeamTable
     attackPhase = True
@@ -221,7 +222,7 @@ def attack(team, targetTeam, targetTeamTable):
             targetTeamTable[x] = newHealth
     changeList(True, defendingUnits, "clear")
     score()
-    turn()
+    if airPhase == False: turn()
 
 # Umpire functions
 def health(unit):
@@ -632,7 +633,7 @@ def pulse(unit, unitType, team, targetTeamTable):
         else: print(errorMessages.get("unit"))
     use(unit)
 
-def airlift(unit, unitType, team, teamTable):
+def airlift(unit, unitType, team, teamTable, teamFlyingTable):
     if not unitType in transportTable:
         print(errorMessages.get("function"))
         return
@@ -640,7 +641,7 @@ def airlift(unit, unitType, team, teamTable):
     if not liftedUnit in teamTable:
         print(errorMessages.get("team"))
         return
-    use(unit)
+    land(unit, teamFlyingTable)
 
 def kamikaze(unit, unitType, team, teamTable, targetTeamTable):
     global firstTeamTable
@@ -662,6 +663,7 @@ def kamikaze(unit, unitType, team, teamTable, targetTeamTable):
         print(target, "new health:", newHealth)
         targetTeamTable[target] = newHealth
     kill(unit, teamTable)
+    score()
 
 # Shell
 def info(unit, unitType):
@@ -739,7 +741,7 @@ def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targ
             if command == "takeoff": takeoff(unit, teamFlyingTable)
             elif command == "land": land(unit, teamFlyingTable)
             elif command == "pulse": pulse(unit, unitType, team, targetTeamTable)
-            elif command == "airlift": airlift(unit, unitType, team, teamTable)
+            elif command == "airlift": airlift(unit, unitType, team, teamTable, teamFlyingTable)
             elif command == "survey":spy(unit, unitType)
             elif command == "bomb": fire(unit, unitType, team, targetTeamTable, "bomb", bombTable)
             elif command == "missile": missile(unit, unitType, team, targetTeamTable)
@@ -747,7 +749,14 @@ def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targ
             elif command == "split": pass
         else: print(errorMessages.get("bad"))
     elif len(rawCommand.split()) == 1:
-        if rawCommand == "dogfight": pass
+        if rawCommand == "dogfight": 
+            attack(team, targetTeam, targetTeamFlyingTable, True)
+            changeList(True, usedUnits, "clear")
+            for x in teamFlyingTable:
+                print(x, "crashes.")
+                kill(x)
+            changeList(True, teamFlyingTable, "clear")
+            airPhase = False
         elif rawCommand == "next":
             changeList(True, usedUnits, "clear")
             for x in teamFlyingTable:
@@ -755,7 +764,6 @@ def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targ
                 kill(x)
             changeList(True, teamFlyingTable, "clear")
             airPhase = False
-            return
         elif rawCommand == "score": score()
         elif rawCommand == "help": helpText()
         elif rawCommand == "details": details()
@@ -816,7 +824,7 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
                 print(errorMessages.get("bad"))
                 return
     elif len(rawCommand.split()) == 1:
-        if rawCommand == "attack": attack(team, targetTeam, targetTeamTable)
+        if rawCommand == "attack": attack(team, targetTeam, targetTeamTable, False)
         elif rawCommand == "score": score()
         elif rawCommand == "turn": turn()
         elif rawCommand == "quit": quitGame()
