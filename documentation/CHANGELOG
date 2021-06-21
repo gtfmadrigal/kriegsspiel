@@ -199,3 +199,6 @@ v2.3 - Final naval battle release
     v2.3.42 - airShell fixed
     v2.3.43 - airlift fixed
     v2.3.44 - dogfight() function implemented
+
+v3.0 - Land-Sea-Air unification release
+    v3.0.1 - shell rewrite meta-functions implemented
