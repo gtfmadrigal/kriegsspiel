@@ -205,3 +205,4 @@ v3.0 - Land-Sea-Air unification release
     v3.0.2 - added "upcoming" section to RELEASENOTES, implemented score(), turn(), details(), quitGame(), and helpText()
     v3.0.3 - kill(), health(), and freeze() implemented
     v3.0.4 - convert() implemented, air shell temporarily disabled
+    v3.0.6 - disable() implemented

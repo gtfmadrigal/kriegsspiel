@@ -248,9 +248,13 @@ def convert(arguments, teamTable):
     if currentHealth > 4: newHealth = 4
     else: newHealth = currentHealth
     teamTable[unit] = newHealth
+    update()
 
-def disable():
-    pass
+def disable(arguments):
+    unit = arguments[2]
+    freeze(unit)
+    use(unit)
+    append(unit, disabledUnits)
 
 def merge():
     pass
