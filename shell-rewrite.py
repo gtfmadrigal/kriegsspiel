@@ -1,15 +1,12 @@
-# Definitions
-
-# Imports
 import random
 from normandy import *
-campaign = "normandy"
 
 # Strings
 round = 1
 commandNumber = 1
 secrets = ""
 airPhase = True
+campaign = "Normandy"
 firstHealth = sum(firstTeamTable.values())
 secondHealth = sum(secondTeamTable.values())
 helpTextBlock = """
@@ -31,6 +28,7 @@ deadUnits = []
 firstTeamFlying = []
 secondTeamFlying = []
 ships = []
+convertTable = ["light-artillery", "med-artillery", "heavy-artillery", "light-cavalry", "med-cavalry", "heavy-cavalry"]
 
 # Dictionaries
 errorMessages = {"argument":"Bad argument for command. Type 'man [command] for details.", "team":"That unit belongs to the wrong team.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit.", "airborne":"Unit is not airborne.", "board":"Unit is not a boardable ship", "exists":"A unit with that name already exists."}
@@ -41,7 +39,6 @@ hideTable = {"infantry":1, "engineers":1, "mechanized":1, "light-artillery":1, "
 spyTable = {"infantry":6, "engineers":6, "mechanized":6, "recon":6, "drone":6}
 attackTable = {"infantry":4, "engineers":4, "mechanized":4, "light-artillery":4, "med-artillery":4, "heavy-artillery":4, "light-cavalry":6, "med-cavalry":8, "heavy-cavalry":10, "special":20, "corvette":6, "amphibious":4, "patrol":4, "cruiser":16, "destroyer":8, "battleship":12, "carrier":12, "light-fighter":4, "heavy-fighter":6, "bomber":4, "stealth-bomber":4, "recon":4, "transport":4, "drone":4}
 splitTable = {"infantry":4, "engineers":4, "mechanized":6, "light-artillery":8, "med-artillery":9, "heavy-artillery":10, "light-cavalry":12, "med-cavalry":14, "heavy-cavalry":16, "special":20}
-convertTable = {"light-artillery":1, "med-artillery":1, "heavy-artillery":1, "light-cavalry":1, "med-cavalry":1, "heavy-cavalry":1}
 fireTable = {"light-artillery":8, "med-artillery":9, "heavy-artillery":10, "light-cavalry":12, "med-cavalry":16, "heavy-cavalry":20, "corvette":6, "cruiser":20, "destroyer":10, "battleship":16, "bomber":8, "stealth-bomber":6, "drone":4}
 headingTable = {"corvette":1, "cruiser":1, "destroyer":1, "battleship":1, "carrier":1}
 torpedoTable = {"attack-submarine":6, "missile-submarine":6}
@@ -235,8 +232,22 @@ def freeze(arguments):
     unit = arguments[2]
     append(unit, immobileUnits)
 
-def convert():
-    pass
+def convert(arguments, teamTable):
+    global firstTeamTable
+    global secondTeamTable
+    global unitTable
+    unit = arguments[2]
+    if not unit in teamTable:
+        error("team", "convert")
+        return
+    if not unit in convertTable:
+        error("function", "convert")
+        return
+    currentHealth = teamTable.get(unit)
+    unitTable[unit] = "infantry"
+    if currentHealth > 4: newHealth = 4
+    else: newHealth = currentHealth
+    teamTable[unit] = newHealth
 
 def disable():
     pass
@@ -318,15 +329,15 @@ def kamikaze():
 def info():
     pass
 
-def airShell():
+def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
     pass
 
 def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
     global airPhase
     global commandNumber
-    if airPhase == True and airTheater == True:
-        airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
-        return
+    #if airPhase == True and airTheater == True:
+        #airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
+        #return
     prompt = str(round) + " ~ " + str(commandNumber) + " " + str(campaign) + ":" + str(team) + " % "
     rawCommand = input(prompt)
     parsedCommand = rawCommand.split()
@@ -367,7 +378,6 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
         print("Unknown command. Type 'help' to see a list of commands, or 'man [command]' to see how to use a particular command.")
         return
     commandNumber = commandNumber + 1
-
 
 while True:
     while (round % 2) != 0: shell(firstTeam, secondTeam, firstTeamTable, secondTeamTable, firstTeamFlying, secondTeamFlying)
