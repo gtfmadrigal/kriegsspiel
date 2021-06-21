@@ -203,7 +203,8 @@ def helpText():
 def kill(arguments):
     global firstTeamTable
     global secondTeamTable
-    unit = arguments[2]
+    if len(arguments.split()) == 1: unit = arguments
+    else: unit = arguments[2]
     if unit in firstTeamTable: table = firstTeamTable
     elif unit in secondTeamTable: table = secondTeamTable
     else: 
@@ -229,7 +230,8 @@ def health(arguments):
     update()
 
 def freeze(arguments):
-    unit = arguments[2]
+    if len(arguments.split()) == 1: unit = arguments
+    else: unit = arguments[2]
     append(unit, immobileUnits)
 
 def convert(arguments, teamTable):
@@ -251,13 +253,55 @@ def convert(arguments, teamTable):
     update()
 
 def disable(arguments):
-    unit = arguments[2]
+    if len(arguments.split()) == 1: unit = arguments
+    else: unit = arguments[2]
     freeze(unit)
     use(unit)
     append(unit, disabledUnits)
 
-def merge():
-    pass
+def merge(arguments, teamTable):
+    global firstTeamTable
+    global secondTeamTable
+    global unitTable
+    global dividedTable
+    del arguments[1]
+    mergedUnitType = unitTable.get(arguments[1])
+    totalHealth = 0
+    numberOfUnits = 0
+    mergedUnits = []
+    finalUnit = ""
+    immobile = False
+    disabled = False
+    used = False
+    hidden = False
+    for x in arguments:
+        if x in teamTable:
+            if unitTable[x] == mergedUnitType:
+                numberOfUnits = numberOfUnits + 1
+                totalHealth = totalHealth + teamTable[x]
+                mergedUnits.append(x)
+                if x in immobileUnits: immobile = True
+                if x in disabledUnits: disabled = True
+                if x in usedUnits: disabled = True
+                if x in hiddenUnits: hidden = True
+            else:
+                print(x, "could not be merged.")
+        if x == ">": pass
+        else:
+            if x in unitTable:
+                error("exists", "merge")
+                return
+            finalUnit = x
+            break
+    teamTable[finalUnit] = totalHealth
+    unitTable[finalUnit] = mergedUnitType
+    for x in mergedUnits: 
+        del teamTable[x]
+        del unitTable[x]
+    if immobile == True: freeze(finalUnit)
+    if used == True: use(finalUnit)
+    if disabled == True: disable(finalUnit)
+    if hidden == True: hide(finalUnit)
 
 def split():
     pass

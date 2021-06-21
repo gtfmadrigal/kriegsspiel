@@ -206,3 +206,4 @@ v3.0 - Land-Sea-Air unification release
     v3.0.3 - kill(), health(), and freeze() implemented
     v3.0.4 - convert() implemented, air shell temporarily disabled
     v3.0.6 - disable() implemented
+    v3.0.7 - merge() implemented
