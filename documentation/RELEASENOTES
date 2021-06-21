@@ -108,12 +108,11 @@ Features to be added in a later release:
 - Ability to reduce damage using fortifications
 - Terrain tracking
 
-v3.1 - Updated shell release
+(UPCOMING) v3.1 - Updated shell release
 
 New features in this release:
 - Arguments can be passed to commands
 - Redirect symbol (">") used to specify a target unit
-- "sudo" prefix for umpire commands
 - In-function prompts no longer look like the shell
 - Shell can parse commands via lists, rather than having to input units individually
 - Terrain can reduce travel and damage

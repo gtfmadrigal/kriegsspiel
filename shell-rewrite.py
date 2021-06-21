@@ -165,19 +165,42 @@ def fog():
 
 # Umpire commands
 def score():
-    pass
+    update()
+    firstPercent = firstHealth / firstHealthTotal * 100
+    secondPercent = secondHealth / secondHealthTotal * 100
+    print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
+    print(secondTeam, "total health:", secondHealth, "or", secondPercent, "%")
 
 def turn():
-    pass
+    global round
+    global airPhase
+    score()
+    clear(usedUnits)
+    clear(immobileUnits)
+    clear(alreadyDropped)
+    for x in disabledUnits: freeze(x)
+    clear(disabledUnits)
+    round = round + 1
+    airPhase = True
 
 def details():
-    pass
+    print("Secrets:")
+    print(secrets)
+    print("Hidden units:")
+    print(*hiddenUnits, sep = ", ")
+    score()
 
 def quitGame():
-    pass
+    areYouSure = input("Are you sure you want to quit? [Yes/no]: ")
+    if areYouSure == "yes" or areYouSure == "y":
+        score()
+        quit()
 
 def helpText():
-    pass
+    print("Commands: ")
+    print(helpTextBlock)
+    print("Unit types:")
+    print(*allUnitTypes.keys(), sep = ", ")
 
 def health():
     pass
