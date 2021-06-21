@@ -234,6 +234,15 @@ def freeze(arguments):
     else: unit = arguments[2]
     append(unit, immobileUnits)
 
+def use():
+    pass
+
+def hide():
+    pass
+
+def reveal():
+    pass
+
 def convert(arguments, teamTable):
     global firstTeamTable
     global secondTeamTable
@@ -282,11 +291,11 @@ def merge(arguments, teamTable):
                 mergedUnits.append(x)
                 if x in immobileUnits: immobile = True
                 if x in disabledUnits: disabled = True
-                if x in usedUnits: disabled = True
+                if x in usedUnits: used = True
                 if x in hiddenUnits: hidden = True
             else:
                 print(x, "could not be merged.")
-        if x == ">": pass
+        elif x == ">": pass
         else:
             if x in unitTable:
                 error("exists", "merge")
@@ -295,6 +304,7 @@ def merge(arguments, teamTable):
             break
     teamTable[finalUnit] = totalHealth
     unitTable[finalUnit] = mergedUnitType
+    dividedTable[finalUnit] = numberOfUnits
     for x in mergedUnits: 
         del teamTable[x]
         del unitTable[x]
@@ -303,13 +313,49 @@ def merge(arguments, teamTable):
     if disabled == True: disable(finalUnit)
     if hidden == True: hide(finalUnit)
 
-def split():
-    pass
+def split(arguments, teamTable):
+    global firstTeamTable
+    global secondTeamTable
+    global dividedTable
+    global unitTable
+    del arguments[1]
+    originalUnit = arguments[1]
+    unitType = unitTable.get(originalUnit)
+    numberOfUnits = 0
+    newUnits = []
+    currentHealth = teamTable.get(originalUnit)
+    if not originalUnit in dividedTable or not unitType in splitTable:
+        error("function", "split")
+        return
+    for x in arguments:
+        if x in teamTable: pass
+        elif x == ">": pass
+        else:
+            if x in unitTable:
+                print(x, "could not be created.")
+            else:
+                numberOfUnits = numberOfUnits + 1
+                newUnits.append(x)
+    newHealth = currentHealth / numberOfUnits
+    for x in newUnits:
+        teamTable[x] = newHealth
+        unitTable[x] = unitType
+        if originalUnit in immobileUnits: freeze(x)
+        if originalUnit in disabledUnits: disable(x)
+        if originalUnit in usedUnits: use(x)
+        if originalUnit in hiddenUnits: hide(x)
+        dividedTable[x] = 1 / numberOfUnits
+    del teamTable[originalUnit]
+    del unitTable[originalUnit]
+    if originalUnit in dividedTable: del dividedTable[originalUnit] 
+    if originalUnit in immobileUnits: remove(originalUnit, immobileUnits)
+    if originalUnit in disabledUnits: 
+        remove(originalUnit, disabledUnits)
+        reveal(originalUnit)
+    if originalUnit in usedUnits: remove(originalUnit, usedUnits)
+    if originalUnit in hiddenUnits: reveal(originalUnit)       
 
 def info():
-    pass
-
-def use():
     pass
 
 def man():
@@ -320,12 +366,6 @@ def attack():
     pass
 
 def move():
-    pass
-
-def hide():
-    pass
-
-def reveal():
     pass
 
 def spy():
