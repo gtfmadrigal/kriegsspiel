@@ -218,6 +218,7 @@ def kill(arguments):
         error("unit", "kill")
         return
     del table[unit]
+    print(unit, "killed.")
     append(unit, deadUnits)
     update()
 
@@ -555,8 +556,34 @@ def heading(arguments):
     freeze(unit)
     if not unitType in moveFireTable: use(unit)
 
-def torpedo():
-    pass
+def torpedo(arguments, teamTable, targetTeamTable):
+    global firstTeamTable
+    global secondTeamTable
+    del arguments[1]
+    unit = arguments[1]
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    if unit in immobileUnits or unit in usedUnits:
+        error("available", "torpedo")
+        return
+    if not unitType in torpedoTable:
+        error("function", "torpedo")
+        return
+    effectiveness = 0
+    for x in arguments:
+        if x == ">": pass
+        elif x in teamTable: effectiveness = damage(x, torpedoTable)
+        elif x in targetTeamTable: target = x
+    oldHealth = targetTeamTable.get(target)
+    if effectiveness == 6 or oldHealth - effectiveness <= 0:   
+        kill(target)
+    else:
+        newHealth = oldHealth - effectiveness
+        targetTeamTable[target] = newHealth
+    use(unit)
+    freeze(unit)
+    if unit in hiddenUnits: reveal(unit)
+    score()
 
 def sortie():
     pass
