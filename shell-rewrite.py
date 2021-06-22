@@ -33,7 +33,7 @@ hideTable = ["infantry", "engineers", "mechanized", "light-artillery", "med-arti
 hideableTerrain = ["forest", "swamp", "ocean"]
 
 # Dictionaries
-errorMessages = {"argument":"Bad argument for command. Type 'man [command] for details.", "team":"That unit belongs to the wrong team.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot exceed its maximum heading change.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit.", "airborne":"Unit is not airborne.", "board":"Unit is not a boardable ship", "exists":"A unit with that name already exists.", "terrain":"The terrain does not allow for that function to be called.", "command":"Unknown command. Type 'help' to see a list of commands, or 'man [command]' to see how to use a particular command."}
+errorMessages = {"argument":"Bad argument for command. Type 'man [command] for details.", "team":"That unit belongs to the wrong team.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot change heading more than 45 degrees without calling the heading command.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit.", "airborne":"Unit is not airborne.", "board":"Unit is not a boardable ship", "exists":"A unit with that name already exists.", "terrain":"The terrain does not allow for that function to be called.", "command":"Unknown command. Type 'help' to see a list of commands, or 'man [command]' to see how to use a particular command."}
 dividedTable = {}
 healthTable = {"infantry":4, "engineers":4, "mechanized":6, "light-artillery":8, "med-artillery":9, "heavy-artillery":10, "light-cavalry":12, "med-cavalry":14, "heavy-cavalry":16, "special":20, "corvette":4, "amphibious":4, "patrol":2, "cruiser":10, "destroyer":8, "battleship":12, "carrier":16, "attack-submarine":1, "missile-submarine":1, "light-fighter":4, "heavy-fighter":8, "bomber":12, "stealth-bomber":10, "recon":4, "transport":12, "drone":4}
 movementTable = {"infantry":10, "engineers":10, "mechanized":15, "light-artillery":10, "med-artillery":7, "heavy-artillery":5, "light-cavalry":10, "med-cavalry":7, "heavy-cavalry":5, "special":15, "corvette":15, "amphibious":15, "patrol":15, "cruiser":7, "destroyer":10, "battleship":5, "carrier":5, "attack-submarine":15, "missile-submarine":15, "light-fighter":30, "heavy-fighter":15, "bomber":15, "stealth-bomber":10, "recon":20, "transport":30, "drone":30}
@@ -56,7 +56,7 @@ moveFireTable = {"infantry":1, "engineers":1, "mechanized":1, "light-cavalry":1,
 bombTable = {"bomber":8, "stealth-bomber":6, "drone":10}
 flyTable = {"light-fighter":1, "heavy-fighter":1, "bomber":1, "stealth-bomber":1, "recon":1, "transport":1, "drone":1}
 structureTable = {}
-manPages = {"score":"'score'", "turn":"'turn'", "details":"'details'", "quit":"'quit'", "help":"'help'", "health":"'health [unit]'", "kill":"'kill [unit]'", "convert":"'convert [unit]'", "disable":"'disable [unit]'", "merge":"'merge [unit1] [unit2] ... > [unit]'", "split":"'split [unit] > [unit1] [unit2] ...'", "info":"'info [unit]'", "use":"'use [unit]'", "man":"'man [command]'", "attack":"'attack [unit1] [unit2] ... > [unit3] [unit4] ...'", "hide":"'hide [unit]'", "reveal":"'reveal [unit]'", "fire":"'fire [unit1] [unit2] ... > [unit3] [unit4] ...'"}
+manPages = {"score":"'score'", "turn":"'turn'", "details":"'details'", "quit":"'quit'", "help":"'help'", "health":"'health [unit]'", "kill":"'kill [unit]'", "convert":"'convert [unit]'", "disable":"'disable [unit]'", "merge":"'merge [unit1] [unit2] ... > [unit]'", "split":"'split [unit] > [unit1] [unit2] ...'", "info":"'info [unit]'", "use":"'use [unit]'", "man":"'man [command]'", "attack":"'attack [unit1] [unit2] ... > [unit3] [unit4] ...'", "hide":"'hide [unit]'", "reveal":"'reveal [unit]'", "fire":"'fire [unit1] [unit2] ... > [unit3] [unit4] ...'", "heading":"'heading [unit]'"}
 
 # Initialization work
 loadGame()
@@ -427,6 +427,7 @@ def attack(arguments, teamTable, targetTeamTable, airPhase):
     for x in arguments:
         if x == ">": pass
         elif x in teamTable:
+            if x in usedUnits: continue
             initialDamage = damage(x, attackTable)
             if initialDamage == None: continue
             if type(reduce(x)) == None: pass
@@ -453,11 +454,15 @@ def attack(arguments, teamTable, targetTeamTable, airPhase):
     print("Damage per unit:", perUnitDamage)
     for x in defendingUnits:
         oldHealth = targetTeamTable.get(x)
-        if oldHealth - perUnitDamage <= 0:
+        location = locationTable.get(x)
+        if location in structureTable:
+            reducedDamage = fortificationReduce(location, perUnitDamage)
+        else: reducedDamage = perUnitDamage
+        if oldHealth - reducedDamage <= 0:
             print(x, "killed.")
             kill(x)
         else:
-            newHealth = oldHealth - perUnitDamage
+            newHealth = oldHealth - reducedDamage
             print(x, "new health:", newHealth)
             targetTeamTable[x] = newHealth
     defendingUnits.clear()
@@ -470,7 +475,7 @@ def move(arguments):
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if unit in immobileUnits:
-        error("funciton", "move")
+        error("available", "move")
         return
     if unitType in headingTable:
         error("heading", "move")
@@ -489,6 +494,9 @@ def spy(arguments):
     unit = arguments[2]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    if unit in usedUnits:
+        error("available", "spy")
+        return
     if not unitType in spyTable:
         error("function", "spy")
         return
@@ -508,6 +516,7 @@ def fire(arguments, teamTable, targetTeamTable, table):
     for x in arguments:
         if x == ">": pass
         elif x in teamTable:
+            if x in usedUnits: continue
             initialDamage = damage(x, table)
             if initialDamage == None: continue
             totalAttackDamage = initialDamage + totalAttackDamage
@@ -533,8 +542,18 @@ def fire(arguments, teamTable, targetTeamTable, table):
     score()
 
 # Naval functions
-def heading():
-    pass
+def heading(arguments):
+    unit = arguments[2]
+    if unit in usedUnits or unit in immobileUnits:
+        error("available", "heading")
+        return
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    if not unitType in headingTable:
+        error("required", "heading")
+        return
+    freeze(unit)
+    if not unitType in moveFireTable: use(unit)
 
 def torpedo():
     pass
@@ -612,7 +631,7 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
     elif parsedCommand[1] == "hide": hide(parsedCommand)
     elif parsedCommand[1] == "reveal": reveal(parsedCommand)
     elif parsedCommand[1] == "spy": spy(parsedCommand)
-    elif parsedCommand[1] == "fire": pass
+    elif parsedCommand[1] == "fire": fire(parsedCommand, teamTable, targetTeamTable, fireTable)
     elif parsedCommand[1] == "heading": pass
     elif parsedCommand[1] == "torpedo": pass
     elif parsedCommand[1] == "sortie": pass
