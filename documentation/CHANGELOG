@@ -210,3 +210,4 @@ v3.0 - Land-Sea-Air unification release
     v3.0.8 - split() implemented
     v3.0.9 - hide() implemented
     v3.0.10 - reveal() implemented
+    v3.0.11 - man() implemented and manpages added back from v2.2 
