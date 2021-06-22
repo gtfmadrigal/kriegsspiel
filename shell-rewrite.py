@@ -485,8 +485,19 @@ def move(arguments):
     locationTable[unit] = str(newLocation)
     freeze(unit)
 
-def spy():
-    pass
+def spy(arguments):
+    unit = arguments[2]
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    if not unitType in spyTable:
+        error("function", "spy")
+        return
+    effectiveness = damage(unit, spyTable)
+    if effectiveness >= 6: print("Good information.")
+    elif effectiveness == 1: print("Bad information.")
+    else: print("No information.")
+    details()
+    use(unit)
 
 def fire():
     pass
