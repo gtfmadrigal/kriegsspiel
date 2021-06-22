@@ -464,8 +464,26 @@ def attack(arguments, teamTable, targetTeamTable, airPhase):
     score()
     if airPhase == False: turn()
 
-def move():
-    pass
+def move(arguments):
+    global locationTable
+    unit = arguments[2]
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    if unit in immobileUnits:
+        error("funciton", "move")
+        return
+    if unitType in headingTable:
+        error("heading", "move")
+    if not unitType in moveFireTable:
+        use(unit)
+    currentLocation = locationTable.get(unit)
+    print("Current location or terrain: ", currentLocation)
+    newLocation = input("New location or terrain: ")
+    if unit in hiddenUnits:
+        if not newLocation in structureTable or not newLocation in hideableTerrain:
+            reveal(unit)
+    locationTable[unit] = str(newLocation)
+    freeze(unit)
 
 def spy():
     pass

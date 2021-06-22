@@ -214,3 +214,4 @@ v3.0 - Land-Sea-Air unification release
     v3.0.12 - shell encased in a try-except statement to prevent crashes 
     v3.0.13 - shell try-except statement removed temporarily, info() implemented
     v3.0.14 - attack() implemented
+    v3.0.15 - move() implemented
