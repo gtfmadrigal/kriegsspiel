@@ -219,3 +219,4 @@ v3.0 - Land-Sea-Air unification release
     v3.0.17 - fire() implemented
     v3.0.18 - heading() implemented
     v3.0.19 - freeze() implemented
+    v3.0.20 - sortie() implemented

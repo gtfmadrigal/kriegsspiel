@@ -585,8 +585,43 @@ def torpedo(arguments, teamTable, targetTeamTable):
     if unit in hiddenUnits: reveal(unit)
     score()
 
-def sortie():
-    pass
+def sortie(arguments, teamTable, targetTeamTable):
+    global firstTeamTable
+    global secondTeamTable
+    del arguments[1]
+    unit = arguments[1]
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    if unit in usedUnits:
+        error("available", "sortie")
+        return
+    if not unitType in sortieTable:
+        error("function", "sortie")
+        return
+    attackDamage = 0
+    defenseDamage = 0
+    defendingUnits = []
+    for x in arguments:
+        if x == ">": pass
+        elif x in teamTable: attackDamage = damage(x, sortieTable)
+        elif x in targetTeamTable: 
+            defenseDamage = damage(x, sortieDefenseTable)
+            defendingUnits.append(x)
+    if defenseDamage >= attackDamage: print("Sortie repelled.")
+    else:
+        netDamage = attackDamage - defenseDamage
+        perUnitDamage = netDamage / len(defendingUnits.split())
+        for x in defendingUnits:
+            if x in hiddenUnits:
+                reveal(x)
+            oldHealth = targetTeamTable.get(x)
+            if oldHealth - perUnitDamage <= 0: kill(x)
+            else:
+                newHealth = oldHealth - perUnitDamage
+                targetTeamTable[x] = newHealth
+                print(x, "new health:", newHealth)
+    use(unit)
+    score()
 
 def depthcharge():
     pass
