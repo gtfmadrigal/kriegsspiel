@@ -210,4 +210,7 @@ v3.0 - Land-Sea-Air unification release
     v3.0.8 - split() implemented
     v3.0.9 - hide() implemented
     v3.0.10 - reveal() implemented
-    v3.0.11 - man() implemented and manpages added back from v2.2 
+    v3.0.11 - man() implemented and manpages added back from v2.2
+    v3.0.12 - shell encased in a try-except statement to prevent crashes 
+    v3.0.13 - shell try-except statement removed temporarily, info() implemented
+    v3.0.14 - attack() implemented

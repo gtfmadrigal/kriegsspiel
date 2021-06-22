@@ -56,7 +56,7 @@ moveFireTable = {"infantry":1, "engineers":1, "mechanized":1, "light-cavalry":1,
 bombTable = {"bomber":8, "stealth-bomber":6, "drone":10}
 flyTable = {"light-fighter":1, "heavy-fighter":1, "bomber":1, "stealth-bomber":1, "recon":1, "transport":1, "drone":1}
 structureTable = {}
-manPages = {"score":"'score'", "turn":"'turn'", "details":"'details'", "quit":"'quit'", "help":"'help'", "health":"'health [unit]'", "kill":"'kill [unit]'", "convert":"'convert [unit]'", "disable":"'disable [unit]'", "merge":"'merge [unit1] [unit2] ... > [unit]'", "split":"'split [unit] > [unit1] [unit2] ...'", "info":"'info [unit]'", "use":"'use [unit]'", "man":"'man [command]'"}
+manPages = {"score":"'score'", "turn":"'turn'", "details":"'details'", "quit":"'quit'", "help":"'help'", "health":"'health [unit]'", "kill":"'kill [unit]'", "convert":"'convert [unit]'", "disable":"'disable [unit]'", "merge":"'merge [unit1] [unit2] ... > [unit]'", "split":"'split [unit] > [unit1] [unit2] ...'", "info":"'info [unit]'", "use":"'use [unit]'", "man":"'man [command]'", "attack":"'attack [unit1] [unit2] ... > [unit3] [unit4] ...'"}
 
 # Initialization work
 loadGame()
@@ -110,12 +110,16 @@ def clear(list):
     global secondTeamFlying
     list.clear()
 
-def check(item, table):
-    if item in table: return True
+def check(item, table, returnInteger):
+    if item in table: 
+        if returnInteger == True: return table.get(item)
+        else: return True
     elif not item in table: return False
 
-def reduce(unit, unitType):
+def reduce(unit):
     export = 0
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
     if locationTable.get(unit) == "hill": 
         if unitType == "mechanized": pass
         elif unitType == "special": pass
@@ -143,14 +147,16 @@ def fortificationReduce(structure, damage):
         finalNetDamage = abs(initialNetDamage)
         return finalNetDamage
 
-def damage(unit, unitType, table):
-    if check(unit, immobileUnits) == True or check(unit, usedUnits) == True:
+def damage(unit, table):
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    if check(unit, immobileUnits, False) == True or check(unit, usedUnits, False) == True:
         error("available", "damage")
         return
-    if check(unit, deadUnits) == True:
+    if check(unit, deadUnits, False) == True:
         error("dead", "damage")
         return
-    if check(unit, table) == False: return
+    if check(unit, table, False) == False: return
     basicMaximum = float(table.get(unitType)) + 1
     multiplier = dividedTable.get(unit, 1)
     maximum = basicMaximum * multiplier
@@ -245,7 +251,8 @@ def hide(arguments):
     global locationTable
     if len(arguments.split()) == 1: unit = arguments
     else: unit = arguments[2]
-    unitType = unitTable.get(unit)
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
     if not unitType in hideTable:
         error("function", "hide")
         return
@@ -274,7 +281,8 @@ def reveal(arguments):
     global locationTable
     if len(arguments.split()) == 1: unit = arguments
     else: unit = arguments[2]
-    unitType = unitTable.get(unit)
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
     if not unit in hiddenUnits or not unitType in hideTable:
         error("function", "reveal")
         return
@@ -289,10 +297,12 @@ def convert(arguments, teamTable):
     global secondTeamTable
     global unitTable
     unit = arguments[2]
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
     if not unit in teamTable:
         error("team", "convert")
         return
-    if not unit in convertTable:
+    if not unitType in convertTable:
         error("function", "convert")
         return
     currentHealth = teamTable.get(unit)
@@ -315,7 +325,8 @@ def merge(arguments, teamTable):
     global unitTable
     global dividedTable
     del arguments[1]
-    mergedUnitType = unitTable.get(arguments[1])
+    mergedLocalUnitType = unitTable.get(arguments[1])
+    mergedUnitType = allUnitTypes.get(mergedLocalUnitType)
     totalHealth = 0
     numberOfUnits = 0
     mergedUnits = []
@@ -361,7 +372,8 @@ def split(arguments, teamTable):
     global unitTable
     del arguments[1]
     originalUnit = arguments[1]
-    unitType = unitTable.get(originalUnit)
+    localUnitType = unitTable.get(originalUnit)
+    unitType = allUnitTypes.get(localUnitType)
     numberOfUnits = 0
     newUnits = []
     currentHealth = teamTable.get(originalUnit)
@@ -405,8 +417,52 @@ def man(arguments):
     print(manPages.get(command))
 
 # Theater-agnostic functions
-def attack():
-    pass
+def attack(arguments, teamTable, targetTeamTable, airPhase):
+    global firstTeamTable
+    global secondTeamTable
+    totalAttackDamage = 0
+    totalDefenseDamage = 0
+    defendingUnits = []
+    del arguments[1]
+    for x in arguments:
+        if x == ">": pass
+        elif x in teamTable:
+            initialDamage = damage(x, attackTable)
+            if initialDamage == None: continue
+            if type(reduce(x)) == None: pass
+            else: finalDamage = initialDamage - reduce(x)
+            totalAttackDamage = totalAttackDamage + finalDamage
+            if x in hiddenUnits: reveal(x)
+            use(x)
+            if not x in moveFireTable: freeze(x)
+        elif x in targetTeamTable:
+            initialDefense = damage(x, attackTable)
+            if initialDefense == None: continue
+            totalDefenseDamage = totalDefenseDamage + initialDefense
+            defendingUnits.append(x)
+            if x in hiddenUnits: reveal(x)
+            use(x)
+            if not x in moveFireTable: freeze(x)
+        else: print(x, " does not exist.")
+    if totalDefenseDamage >= totalAttackDamage:
+        print("Attack repelled.")
+        return
+    netDamage = totalAttackDamage - totalDefenseDamage
+    print("Net damage: ", netDamage)
+    perUnitDamage = netDamage / len(defendingUnits)
+    print("Damage per unit:", perUnitDamage)
+    for x in defendingUnits:
+        oldHealth = targetTeamTable.get(x)
+        if oldHealth - perUnitDamage <= 0:
+            print(x, "killed.")
+            kill(x)
+        else:
+            newHealth = oldHealth - perUnitDamage
+            print(x, "new health:", newHealth)
+            targetTeamTable[x] = newHealth
+    defendingUnits.clear()
+    score()
+    if airPhase == False: turn()
 
 def move():
     pass
@@ -457,7 +513,7 @@ def kamikaze():
     pass
 
 # Shell functions
-def info():
+def info(arguments):
     pass
 
 def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
@@ -486,13 +542,13 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
     elif parsedCommand[1] == "kill": kill(parsedCommand)
     elif parsedCommand[1] == "man": man(parsedCommand)
     elif parsedCommand[1] == "freeze": freeze(parsedCommand)
-    elif parsedCommand[1] == "convert": pass
-    elif parsedCommand[1] == "disable": pass
-    elif parsedCommand[1] == "merge": pass
-    elif parsedCommand[1] == "split": pass
+    elif parsedCommand[1] == "convert": convert(parsedCommand, teamTable)
+    elif parsedCommand[1] == "disable": disable(parsedCommand)
+    elif parsedCommand[1] == "merge": merge(parsedCommand, teamTable)
+    elif parsedCommand[1] == "split": split(parsedCommand, teamTable)
     elif parsedCommand[1] == "info": pass
-    elif parsedCommand[1] == "use": pass
-    elif parsedCommand[1] == "attack": pass
+    elif parsedCommand[1] == "use": use(parsedCommand)
+    elif parsedCommand[1] == "attack": attack(parsedCommand, teamTable, targetTeamTable, False)
     elif parsedCommand[1] == "move": pass
     elif parsedCommand[1] == "hide": pass
     elif parsedCommand[1] == "reveal": pass
