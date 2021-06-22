@@ -168,6 +168,34 @@ def fog():
     if export == 1: return True
     else: return False
 
+def kill(arguments):
+    global firstTeamTable
+    global secondTeamTable
+    if len(arguments.split()) == 1: unit = arguments
+    else: unit = arguments[2]
+    if unit in firstTeamTable: table = firstTeamTable
+    elif unit in secondTeamTable: table = secondTeamTable
+    else: 
+        error("unit", "kill")
+        return
+    del table[unit]
+    print(unit, "killed.")
+    append(unit, deadUnits)
+    update()
+
+def dealDamage(units, damage, teamTable):
+    global firstTeamTable
+    global secondTeamTable
+    for x in units:
+        oldHealth = teamTable[x]
+        if oldHealth - damage <= 0:
+            kill(x)
+        else:
+            newHealth = oldHealth - damage
+            teamTable[x] = newHealth
+            print(x, "new health:", newHealth)
+    update()
+
 # Umpire commands
 def score():
     update()
@@ -206,21 +234,6 @@ def helpText():
     print(helpTextBlock)
     print("Unit types:")
     print(*allUnitTypes.keys(), sep = ", ")
-
-def kill(arguments):
-    global firstTeamTable
-    global secondTeamTable
-    if len(arguments.split()) == 1: unit = arguments
-    else: unit = arguments[2]
-    if unit in firstTeamTable: table = firstTeamTable
-    elif unit in secondTeamTable: table = secondTeamTable
-    else: 
-        error("unit", "kill")
-        return
-    del table[unit]
-    print(unit, "killed.")
-    append(unit, deadUnits)
-    update()
 
 def health(arguments):
     global firstTeamTable
@@ -459,13 +472,7 @@ def attack(arguments, teamTable, targetTeamTable, airPhase):
         if location in structureTable:
             reducedDamage = fortificationReduce(location, perUnitDamage)
         else: reducedDamage = perUnitDamage
-        if oldHealth - reducedDamage <= 0:
-            print(x, "killed.")
-            kill(x)
-        else:
-            newHealth = oldHealth - reducedDamage
-            print(x, "new health:", newHealth)
-            targetTeamTable[x] = newHealth
+        dealDamage(defendingUnits, reducedDamage, targetTeamTable)
     defendingUnits.clear()
     score()
     if airPhase == False: turn()
@@ -532,13 +539,7 @@ def fire(arguments, teamTable, targetTeamTable, table):
         if location in structureTable:
             reducedDamage = fortificationReduce(location, perUnitDamage)
         else: reducedDamage = perUnitDamage
-        oldHealth = targetTeamTable.get(x)
-        if oldHealth - reducedDamage <= 0:
-            kill(x)
-        else:
-            newHealth = oldHealth - reducedDamage
-            targetTeamTable[x] = newHealth
-            print(x, "new health:", newHealth)
+        dealDamage(defendingUnits, reducedDamage, targetTeamTable)
     defendingUnits.clear()
     score()
 
@@ -612,19 +613,14 @@ def sortie(arguments, teamTable, targetTeamTable):
         netDamage = attackDamage - defenseDamage
         perUnitDamage = netDamage / len(defendingUnits.split())
         for x in defendingUnits:
-            if x in hiddenUnits:
-                reveal(x)
-            oldHealth = targetTeamTable.get(x)
-            if oldHealth - perUnitDamage <= 0: kill(x)
-            else:
-                newHealth = oldHealth - perUnitDamage
-                targetTeamTable[x] = newHealth
-                print(x, "new health:", newHealth)
+            if x in hiddenUnits: reveal(x)
+            dealDamage(defendingUnits, perUnitDamage, targetTeamTable)
     use(unit)
     score()
 
-def depthcharge():
-    pass
+def depthcharge(arguments, teamTable, targetTeamTable):
+    global firstTeamTable
+    global secondTeamTable
 
 def board():
     pass
