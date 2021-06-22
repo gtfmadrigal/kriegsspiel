@@ -216,3 +216,4 @@ v3.0 - Land-Sea-Air unification release
     v3.0.14 - attack() implemented
     v3.0.15 - move() implemented
     v3.0.16 - spy() implemented
+    v3.0.17 - fire() implemented

@@ -56,7 +56,7 @@ moveFireTable = {"infantry":1, "engineers":1, "mechanized":1, "light-cavalry":1,
 bombTable = {"bomber":8, "stealth-bomber":6, "drone":10}
 flyTable = {"light-fighter":1, "heavy-fighter":1, "bomber":1, "stealth-bomber":1, "recon":1, "transport":1, "drone":1}
 structureTable = {}
-manPages = {"score":"'score'", "turn":"'turn'", "details":"'details'", "quit":"'quit'", "help":"'help'", "health":"'health [unit]'", "kill":"'kill [unit]'", "convert":"'convert [unit]'", "disable":"'disable [unit]'", "merge":"'merge [unit1] [unit2] ... > [unit]'", "split":"'split [unit] > [unit1] [unit2] ...'", "info":"'info [unit]'", "use":"'use [unit]'", "man":"'man [command]'", "attack":"'attack [unit1] [unit2] ... > [unit3] [unit4] ...'"}
+manPages = {"score":"'score'", "turn":"'turn'", "details":"'details'", "quit":"'quit'", "help":"'help'", "health":"'health [unit]'", "kill":"'kill [unit]'", "convert":"'convert [unit]'", "disable":"'disable [unit]'", "merge":"'merge [unit1] [unit2] ... > [unit]'", "split":"'split [unit] > [unit1] [unit2] ...'", "info":"'info [unit]'", "use":"'use [unit]'", "man":"'man [command]'", "attack":"'attack [unit1] [unit2] ... > [unit3] [unit4] ...'", "hide":"'hide [unit]'", "reveal":"'reveal [unit]'", "fire":"'fire [unit1] [unit2] ... > [unit3] [unit4] ...'"}
 
 # Initialization work
 loadGame()
@@ -449,7 +449,7 @@ def attack(arguments, teamTable, targetTeamTable, airPhase):
         return
     netDamage = totalAttackDamage - totalDefenseDamage
     print("Net damage: ", netDamage)
-    perUnitDamage = netDamage / len(defendingUnits)
+    perUnitDamage = netDamage / len(defendingUnits.split())
     print("Damage per unit:", perUnitDamage)
     for x in defendingUnits:
         oldHealth = targetTeamTable.get(x)
@@ -499,8 +499,38 @@ def spy(arguments):
     details()
     use(unit)
 
-def fire():
-    pass
+def fire(arguments, teamTable, targetTeamTable, table):
+    global firstTeamTable
+    global secondTeamTable
+    del arguments[1]
+    totalAttackDamage = 0
+    defendingUnits = []
+    for x in arguments:
+        if x == ">": pass
+        elif x in teamTable:
+            initialDamage = damage(x, table)
+            if initialDamage == None: continue
+            totalAttackDamage = initialDamage + totalAttackDamage
+        elif x in targetTeamTable:
+            defendingUnits.append(x)
+        else: print(x, " does not exist.")
+    print("Damage:", totalAttackDamage)
+    perUnitDamage = totalAttackDamage / len(defendingUnits.split())
+    print("Damage per unit:", perUnitDamage)
+    for x in defendingUnits:
+        location = locationTable.get(x)
+        if location in structureTable:
+            reducedDamage = fortificationReduce(location, perUnitDamage)
+        else: reducedDamage = perUnitDamage
+        oldHealth = targetTeamTable.get(x)
+        if oldHealth - reducedDamage <= 0:
+            kill(x)
+        else:
+            newHealth = oldHealth - reducedDamage
+            targetTeamTable[x] = newHealth
+            print(x, "new health:", newHealth)
+    defendingUnits.clear()
+    score()
 
 # Naval functions
 def heading():
@@ -578,10 +608,10 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
     elif parsedCommand[1] == "info": pass
     elif parsedCommand[1] == "use": use(parsedCommand)
     elif parsedCommand[1] == "attack": attack(parsedCommand, teamTable, targetTeamTable, False)
-    elif parsedCommand[1] == "move": pass
-    elif parsedCommand[1] == "hide": pass
-    elif parsedCommand[1] == "reveal": pass
-    elif parsedCommand[1] == "spy": pass
+    elif parsedCommand[1] == "move": move(parsedCommand)
+    elif parsedCommand[1] == "hide": hide(parsedCommand)
+    elif parsedCommand[1] == "reveal": reveal(parsedCommand)
+    elif parsedCommand[1] == "spy": spy(parsedCommand)
     elif parsedCommand[1] == "fire": pass
     elif parsedCommand[1] == "heading": pass
     elif parsedCommand[1] == "torpedo": pass
