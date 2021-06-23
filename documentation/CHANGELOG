@@ -222,3 +222,4 @@ v3.0 - Land-Sea-Air unification release
     v3.0.20 - sortie() implemented
     v3.0.21 - dealDamage() implemented
     v3.0.22 - depthcharge() implemented
+    v3.0.23 - score() implemented

@@ -636,8 +636,41 @@ def depthcharge(arguments, teamTable, targetTeamTable):
     append(unit, alreadyDropped)
     score()
 
-def board():
-    pass
+def board(arguments, teamTable, targetTeamTable):
+    global firstTeamTable
+    global secondTeamTable
+    del arguments[1]
+    unit = arguments[1]
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    currentHealth = teamTable.get(unit)
+    if unit in usedUnits:
+        error("available", "board")
+        return
+    if not unitType in boardTable:
+        error("function", "board")
+        return
+    for x in arguments:
+        if x == ">": pass
+        elif x in teamTable: effectiveness = damage(x, boardTable)
+        elif x in targetTeamTable: target = x
+    if effectiveness >= 5:
+        print(target, "seized.")
+        targetHealth = targetTeamTable.get(target)
+        del targetTeamTable[target]
+        teamTable[target] = targetHealth
+        freeze(unit)
+    else:
+        print("Seizure failed.")
+        print(unit, "suffers", str(effectiveness), "damage.")
+        if currentHealth - effectiveness <= 0:
+            kill(unit)
+        else:
+            newHealth = currentHealth - effectiveness
+            teamTable[unit] = newHealth
+        disable(unit)
+    use(unit)
+    score()
 
 # Army functions
 def build():
