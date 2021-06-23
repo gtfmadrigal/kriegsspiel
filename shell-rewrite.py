@@ -432,8 +432,6 @@ def man(arguments):
 
 # Theater-agnostic functions
 def attack(arguments, teamTable, targetTeamTable, airPhase):
-    global firstTeamTable
-    global secondTeamTable
     totalAttackDamage = 0
     totalDefenseDamage = 0
     defendingUnits = []
@@ -516,8 +514,6 @@ def spy(arguments):
     use(unit)
 
 def fire(arguments, teamTable, targetTeamTable, table):
-    global firstTeamTable
-    global secondTeamTable
     del arguments[1]
     totalAttackDamage = 0
     defendingUnits = []
@@ -558,8 +554,6 @@ def heading(arguments):
     if not unitType in moveFireTable: use(unit)
 
 def torpedo(arguments, teamTable, targetTeamTable):
-    global firstTeamTable
-    global secondTeamTable
     del arguments[1]
     unit = arguments[1]
     localUnitType = unitTable.get(unit)
@@ -587,8 +581,6 @@ def torpedo(arguments, teamTable, targetTeamTable):
     score()
 
 def sortie(arguments, teamTable, targetTeamTable):
-    global firstTeamTable
-    global secondTeamTable
     del arguments[1]
     unit = arguments[1]
     localUnitType = unitTable.get(unit)
@@ -621,6 +613,28 @@ def sortie(arguments, teamTable, targetTeamTable):
 def depthcharge(arguments, teamTable, targetTeamTable):
     global firstTeamTable
     global secondTeamTable
+    del arguments[1]
+    unit = arguments [1]
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    if unit in alreadyDropped:
+        error("available", "depthcharge")
+        return
+    if not unitType in depthchargeTable:
+        error("function", "depthcharge")
+        return
+    for x in arguments:
+        if x == ">": pass
+        elif x in teamTable: effectiveness = damage(x, depthchargeTable)
+        elif x in targetTeamTable: target = x
+    if effectiveness == 6: kill(target)
+    elif effectiveness == 5:
+        print(target, "disabled.")
+        disable(target)
+    else: print("Missed.")
+    freeze(unit)
+    append(unit, alreadyDropped)
+    score()
 
 def board():
     pass
