@@ -229,3 +229,4 @@ v3.0 - Land-Sea-Air unification release
     v3.0.27 - takeoff() implemented
     v3.0.28 - land() implemented
     v3.0.29 - pulse() implemented
+    v3.0.30 - airlift() implemented
