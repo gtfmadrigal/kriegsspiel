@@ -426,7 +426,7 @@ def split(arguments, teamTable):
 
 def man(arguments):
     command = arguments[1]
-    if not command in manPages:
+    if not str(command) in manPages:
         error("command", "man")
         print("Type 'help' for a list of commands.")
         return
