@@ -168,7 +168,7 @@ def kill(arguments):
     global firstTeamFlying
     global secondTeamTable
     if len(arguments.split()) == 1: unit = arguments
-    else: unit = arguments[2]
+    else: unit = arguments[1]
     if unit in firstTeamTable: 
         table = firstTeamTable
         flyingTable = firstTeamFlying
@@ -239,8 +239,8 @@ def helpText():
 def health(arguments):
     global firstTeamTable
     global secondTeamTable
-    unit = arguments[2]
-    newHealth = float(arguments[3])
+    unit = arguments[1]
+    newHealth = float(arguments[2])
     if unit in firstTeamTable: table = firstTeamTable
     elif unit in secondTeamTable: table = secondTeamTable
     else:
@@ -253,19 +253,19 @@ def health(arguments):
 
 def freeze(arguments):
     if len(arguments.split()) == 1: unit = arguments
-    else: unit = arguments[2]
+    else: unit = arguments[1]
     append(unit, immobileUnits)
 
 def use(arguments):
     if len(arguments.split()) == 1: unit = arguments
-    else: unit = arguments[2]
+    else: unit = arguments[1]
     append(unit, usedUnits)
 
 def hide(arguments):
     global secrets
     global locationTable
     if len(arguments.split()) == 1: unit = arguments
-    else: unit = arguments[2]
+    else: unit = arguments[1]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unitType in hideTable:
@@ -295,7 +295,7 @@ def reveal(arguments):
     global secrets
     global locationTable
     if len(arguments.split()) == 1: unit = arguments
-    else: unit = arguments[2]
+    else: unit = arguments[1]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unit in hiddenUnits or not unitType in hideTable:
@@ -311,7 +311,7 @@ def convert(arguments, teamTable):
     global firstTeamTable
     global secondTeamTable
     global unitTable
-    unit = arguments[2]
+    unit = arguments[1]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unit in teamTable:
@@ -329,7 +329,7 @@ def convert(arguments, teamTable):
 
 def disable(arguments):
     if len(arguments.split()) == 1: unit = arguments
-    else: unit = arguments[2]
+    else: unit = arguments[1]
     freeze(unit)
     use(unit)
     append(unit, disabledUnits)
@@ -339,8 +339,8 @@ def merge(arguments, teamTable):
     global secondTeamTable
     global unitTable
     global dividedTable
-    del arguments[1]
-    mergedLocalUnitType = unitTable.get(arguments[1])
+    del arguments[0]
+    mergedLocalUnitType = unitTable.get(arguments[0])
     mergedUnitType = allUnitTypes.get(mergedLocalUnitType)
     totalHealth = 0
     numberOfUnits = 0
@@ -385,8 +385,8 @@ def split(arguments, teamTable):
     global secondTeamTable
     global dividedTable
     global unitTable
-    del arguments[1]
-    originalUnit = arguments[1]
+    del arguments[0]
+    originalUnit = arguments[0]
     localUnitType = unitTable.get(originalUnit)
     unitType = allUnitTypes.get(localUnitType)
     numberOfUnits = 0
@@ -424,7 +424,7 @@ def split(arguments, teamTable):
     if originalUnit in hiddenUnits: reveal(originalUnit)       
 
 def man(arguments):
-    command = arguments[2]
+    command = arguments[1]
     if not command in manPages:
         error("command", "man")
         print("Type 'help' for a list of commands.")
@@ -436,7 +436,7 @@ def attack(arguments, teamTable, targetTeamTable):
     totalAttackDamage = 0
     totalDefenseDamage = 0
     defendingUnits = []
-    del arguments[1]
+    del arguments[0]
     for x in arguments:
         if x == ">": pass
         elif x in teamTable:
@@ -477,7 +477,7 @@ def attack(arguments, teamTable, targetTeamTable):
 
 def move(arguments, teamTable):
     global locationTable
-    unit = arguments[2]
+    unit = arguments[1]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unit in teamTable:
@@ -500,7 +500,7 @@ def move(arguments, teamTable):
     freeze(unit)
 
 def spy(arguments, teamTable):
-    unit = arguments[2]
+    unit = arguments[1]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unit in teamTable:
@@ -520,7 +520,7 @@ def spy(arguments, teamTable):
     use(unit)
 
 def fire(arguments, teamTable, targetTeamTable):
-    del arguments[1]
+    del arguments[0]
     totalAttackDamage = 0
     defendingUnits = []
     for x in arguments:
@@ -550,7 +550,7 @@ def fire(arguments, teamTable, targetTeamTable):
 
 # Naval functions
 def heading(arguments, teamTable):
-    unit = arguments[2]
+    unit = arguments[1]
     if not unit in teamTable:
         error("team", "convert")
         return
@@ -566,8 +566,8 @@ def heading(arguments, teamTable):
     if not unitType in moveFireTable: use(unit)
 
 def torpedo(arguments, teamTable, targetTeamTable):
-    del arguments[1]
-    unit = arguments[1]
+    del arguments[0]
+    unit = arguments[0]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if unit in immobileUnits or unit in usedUnits:
@@ -594,8 +594,8 @@ def torpedo(arguments, teamTable, targetTeamTable):
     score()
 
 def sortie(arguments, teamTable, targetTeamTable):
-    del arguments[1]
-    unit = arguments[1]
+    del arguments[0]
+    unit = arguments[0]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if unit in usedUnits:
@@ -627,8 +627,8 @@ def sortie(arguments, teamTable, targetTeamTable):
 def depthcharge(arguments, teamTable, targetTeamTable):
     global firstTeamTable
     global secondTeamTable
-    del arguments[1]
-    unit = arguments [1]
+    del arguments[0]
+    unit = arguments [0]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if unit in alreadyDropped:
@@ -654,8 +654,8 @@ def depthcharge(arguments, teamTable, targetTeamTable):
 def board(arguments, teamTable, targetTeamTable):
     global firstTeamTable
     global secondTeamTable
-    del arguments[1]
-    unit = arguments[1]
+    del arguments[0]
+    unit = arguments[0]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     currentHealth = teamTable.get(unit)
@@ -691,7 +691,7 @@ def board(arguments, teamTable, targetTeamTable):
 # Army functions
 def build(arguments, teamTable):
     global structureTable
-    unit = arguments[2]
+    unit = arguments[1]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unit in teamTable:
@@ -716,7 +716,7 @@ def build(arguments, teamTable):
 def missile(arguments, teamTable, targetTeamTable):
     global firstTeamTable
     global secondTeamTable
-    del arguments[1]
+    del arguments[0]
     for x in arguments:
         if x == ">": pass
         elif x in teamTable: 
@@ -753,7 +753,7 @@ def missile(arguments, teamTable, targetTeamTable):
 
 # Air functions
 def takeoff(arguments):
-    unit = arguments[2]
+    unit = arguments[1]
     if unit in firstTeamTable: teamFlyingTable = firstTeamFlying
     elif unit in secondTeamTable: teamFlyingTable = secondTeamFlying
     else:
@@ -772,7 +772,7 @@ def takeoff(arguments):
         hide(unit)
 
 def land(arguments):
-    unit = arguments[2]
+    unit = arguments[1]
     if unit in firstTeamTable: teamFlyingTable = firstTeamFlying
     elif unit in secondTeamTable: teamFlyingTable = secondTeamFlying
     else:
@@ -790,7 +790,7 @@ def land(arguments):
     use(unit)
 
 def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable):
-    del arguments[1]
+    del arguments[0]
     defendingUnits = []
     for x in arguments:
         if x == ">": pass
@@ -819,7 +819,7 @@ def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable):
 
 def airlift(arguments, teamTable, teamFlyingTable):
     global locationTable
-    del arguments[1]
+    del arguments[0]
     liftedUnits = []
     for x in arguments:
         if x == ">": pass
@@ -853,7 +853,7 @@ def airlift(arguments, teamTable, teamFlyingTable):
     use(unit)
 
 def kamikaze(arguments, teamTable, targetTeamTable, teamFlyingTable):
-    del arguments[1]
+    del arguments[0]
     for x in arguments:
         if x == ">": pass
         elif x in teamTable:
@@ -883,7 +883,7 @@ def kamikaze(arguments, teamTable, targetTeamTable, teamFlyingTable):
 def air_missile(arguments, teamTable, targetTeamTable, teamFlyingTable):
     global firstTeamTable
     global secondTeamTable
-    del arguments[1]
+    del arguments[0]
     for x in arguments:
         if x == ">": pass
         elif x in teamTable:
@@ -925,7 +925,7 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
     totalAttackDamage = 0
     totalDefenseDamage = 0
     defendingUnits = []
-    del arguments[1]
+    del arguments[0]
     for x in arguments:
         if x == ">": pass
         elif x in teamTable:
@@ -967,7 +967,7 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
     turn()
 
 def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
-    del arguments[1]
+    del arguments[0]
     totalAttackDamage = 0
     defendingUnits = []
     for x in arguments:
@@ -999,7 +999,7 @@ def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
     score()
 
 def survey(arguments, teamTable, teamFlyingTable):
-    unit = arguments[2]
+    unit = arguments[1]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unit in teamTable:
@@ -1022,7 +1022,7 @@ def survey(arguments, teamTable, teamFlyingTable):
 
 # Shell functions
 def info(arguments):
-    unit = arguments[2]
+    unit = arguments[1]
     print(unit, "attributes:")
     if unit in firstTeamTable: 
         print("Affiliation:", firstTeam)
@@ -1083,41 +1083,41 @@ def airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlying
         print("This command fails.")
         commandNumber = commandNumber + 1
         return
-    if parsedCommand[1] == "score": score()
-    elif parsedCommand[1] == "turn": 
+    if parsedCommand[0] == "score": score()
+    elif parsedCommand[0] == "turn": 
         score()
         airPhase = False
-    elif parsedCommand[1] == "details": details()
-    elif parsedCommand[1] == "quit": quitGame()
-    elif parsedCommand[1] == "help": helpText()
-    elif parsedCommand[1] == "health": health(parsedCommand)
-    elif parsedCommand[1] == "kill": kill(parsedCommand)
-    elif parsedCommand[1] == "man": man(parsedCommand)
-    elif parsedCommand[1] == "info": info(parsedCommand)
-    elif parsedCommand[1] == "use": use(parsedCommand)
-    elif parsedCommand[1] == "dogfight": dogfight(parsedCommand, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
-    elif parsedCommand[1] == "survey": survey(parsedCommand, teamTable, teamFlyingTable)
-    elif parsedCommand[1] == "bomb": bomb(parsedCommand, teamTable, targetTeamTable, teamFlyingTable)
-    elif parsedCommand[1] == "heading": heading(parsedCommand)
-    elif parsedCommand[1] == "missile": air_missile(parsedCommand, teamTable, targetTeamTable, teamFlyingTable)
-    elif parsedCommand[1] == "use": use(parsedCommand)
-    elif parsedCommand[1] == "attack": attack(parsedCommand, teamTable, targetTeamTable)
-    elif parsedCommand[1] == "move": move(parsedCommand)
-    elif parsedCommand[1] == "hide": hide(parsedCommand)
-    elif parsedCommand[1] == "reveal": reveal(parsedCommand)
-    elif parsedCommand[1] == "spy": spy(parsedCommand)
-    elif parsedCommand[1] == "fire": fire(parsedCommand, teamTable, targetTeamTable)
-    elif parsedCommand[1] == "heading": heading(parsedCommand)
-    elif parsedCommand[1] == "torpedo": torpedo(parsedCommand, teamTable, targetTeamTable)
-    elif parsedCommand[1] == "sortie": sortie(parsedCommand, teamTable, targetTeamTable)
-    elif parsedCommand[1] == "depthcharge": depthcharge(parsedCommand, teamTable, targetTeamTable)
-    elif parsedCommand[1] == "board": board(parsedCommand, teamTable, targetTeamTable)
-    elif parsedCommand[1] == "build": build(parsedCommand)
-    elif parsedCommand[1] == "takeoff": takeoff(parsedCommand)
-    elif parsedCommand[1] == "land": land(parsedCommand)
-    elif parsedCommand[1] == "pulse": pulse(parsedCommand, teamTable, targetTeamTable, teamFlyingTable)
-    elif parsedCommand[1] == "airlift": airlift(parsedCommand, teamTable, teamFlyingTable)
-    elif parsedCommand[1] == "kamikaze": kamikaze(parsedCommand, teamTable, targetTeamTable, teamFlyingTable)
+    elif parsedCommand[0] == "details": details()
+    elif parsedCommand[0] == "quit": quitGame()
+    elif parsedCommand[0] == "help": helpText()
+    elif parsedCommand[0] == "health": health(parsedCommand)
+    elif parsedCommand[0] == "kill": kill(parsedCommand)
+    elif parsedCommand[0] == "man": man(parsedCommand)
+    elif parsedCommand[0] == "info": info(parsedCommand)
+    elif parsedCommand[0] == "use": use(parsedCommand)
+    elif parsedCommand[0] == "dogfight": dogfight(parsedCommand, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
+    elif parsedCommand[0] == "survey": survey(parsedCommand, teamTable, teamFlyingTable)
+    elif parsedCommand[0] == "bomb": bomb(parsedCommand, teamTable, targetTeamTable, teamFlyingTable)
+    elif parsedCommand[0] == "heading": heading(parsedCommand)
+    elif parsedCommand[0] == "missile": air_missile(parsedCommand, teamTable, targetTeamTable, teamFlyingTable)
+    elif parsedCommand[0] == "use": use(parsedCommand)
+    elif parsedCommand[0] == "attack": attack(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "move": move(parsedCommand)
+    elif parsedCommand[0] == "hide": hide(parsedCommand)
+    elif parsedCommand[0] == "reveal": reveal(parsedCommand)
+    elif parsedCommand[0] == "spy": spy(parsedCommand)
+    elif parsedCommand[0] == "fire": fire(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "heading": heading(parsedCommand)
+    elif parsedCommand[0] == "torpedo": torpedo(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "sortie": sortie(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "depthcharge": depthcharge(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "board": board(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "build": build(parsedCommand)
+    elif parsedCommand[0] == "takeoff": takeoff(parsedCommand)
+    elif parsedCommand[0] == "land": land(parsedCommand)
+    elif parsedCommand[0] == "pulse": pulse(parsedCommand, teamTable, targetTeamTable, teamFlyingTable)
+    elif parsedCommand[0] == "airlift": airlift(parsedCommand, teamTable, teamFlyingTable)
+    elif parsedCommand[0] == "kamikaze": kamikaze(parsedCommand, teamTable, targetTeamTable, teamFlyingTable)
     else:
         error("command", "air-shell")
         airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
@@ -1141,34 +1141,34 @@ def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTab
         print("This command fails.")
         commandNumber = commandNumber + 1
         return
-    if parsedCommand[1] == "score": score()
-    elif parsedCommand[1] == "turn": turn()
-    elif parsedCommand[1] == "details": details()
-    elif parsedCommand[1] == "quit": quitGame()
-    elif parsedCommand[1] == "help": helpText()
-    elif parsedCommand[1] == "health": health(parsedCommand)
-    elif parsedCommand[1] == "kill": kill(parsedCommand)
-    elif parsedCommand[1] == "man": man(parsedCommand)
-    elif parsedCommand[1] == "freeze": freeze(parsedCommand)
-    elif parsedCommand[1] == "convert": convert(parsedCommand, teamTable)
-    elif parsedCommand[1] == "disable": disable(parsedCommand)
-    elif parsedCommand[1] == "merge": merge(parsedCommand, teamTable)
-    elif parsedCommand[1] == "split": split(parsedCommand, teamTable)
-    elif parsedCommand[1] == "info": info(parsedCommand)
-    elif parsedCommand[1] == "use": use(parsedCommand)
-    elif parsedCommand[1] == "attack": attack(parsedCommand, teamTable, targetTeamTable)
-    elif parsedCommand[1] == "move": move(parsedCommand)
-    elif parsedCommand[1] == "hide": hide(parsedCommand)
-    elif parsedCommand[1] == "reveal": reveal(parsedCommand)
-    elif parsedCommand[1] == "spy": spy(parsedCommand)
-    elif parsedCommand[1] == "fire": fire(parsedCommand, teamTable, targetTeamTable)
-    elif parsedCommand[1] == "heading": heading(parsedCommand)
-    elif parsedCommand[1] == "torpedo": torpedo(parsedCommand, teamTable, targetTeamTable)
-    elif parsedCommand[1] == "sortie": sortie(parsedCommand, teamTable, targetTeamTable)
-    elif parsedCommand[1] == "depthcharge": depthcharge(parsedCommand, teamTable, targetTeamTable)
-    elif parsedCommand[1] == "board": board(parsedCommand, teamTable, targetTeamTable)
-    elif parsedCommand[1] == "build": build(parsedCommand)
-    elif parsedCommand[1] == "missile": missile(parsedCommand, teamTable, targetTeamTable)
+    if parsedCommand[0] == "score": score()
+    elif parsedCommand[0] == "turn": turn()
+    elif parsedCommand[0] == "details": details()
+    elif parsedCommand[0] == "quit": quitGame()
+    elif parsedCommand[0] == "help": helpText()
+    elif parsedCommand[0] == "health": health(parsedCommand)
+    elif parsedCommand[0] == "kill": kill(parsedCommand)
+    elif parsedCommand[0] == "man": man(parsedCommand)
+    elif parsedCommand[0] == "freeze": freeze(parsedCommand)
+    elif parsedCommand[0] == "convert": convert(parsedCommand, teamTable)
+    elif parsedCommand[0] == "disable": disable(parsedCommand)
+    elif parsedCommand[0] == "merge": merge(parsedCommand, teamTable)
+    elif parsedCommand[0] == "split": split(parsedCommand, teamTable)
+    elif parsedCommand[0] == "info": info(parsedCommand)
+    elif parsedCommand[0] == "use": use(parsedCommand)
+    elif parsedCommand[0] == "attack": attack(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "move": move(parsedCommand)
+    elif parsedCommand[0] == "hide": hide(parsedCommand)
+    elif parsedCommand[0] == "reveal": reveal(parsedCommand)
+    elif parsedCommand[0] == "spy": spy(parsedCommand)
+    elif parsedCommand[0] == "fire": fire(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "heading": heading(parsedCommand)
+    elif parsedCommand[0] == "torpedo": torpedo(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "sortie": sortie(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "depthcharge": depthcharge(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "board": board(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "build": build(parsedCommand)
+    elif parsedCommand[0] == "missile": missile(parsedCommand, teamTable, targetTeamTable)
     else:
         error("command", "shell")
         return
