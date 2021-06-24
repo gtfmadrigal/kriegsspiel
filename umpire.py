@@ -257,7 +257,7 @@ def freeze(arguments):
     else: unit = arguments[1]
     append(unit, immobileUnits)
 
-def use(arguments):
+def use(arguments): # DEBUGGED
     if len(arguments) == 1: unit = str(arguments)
     else: unit = str(arguments[1])
     if unit in usedUnits: return
@@ -754,7 +754,7 @@ def missile(arguments, teamTable, targetTeamTable):
     score()
 
 # Air functions
-def takeoff(arguments):
+def takeoff(arguments): # DEBUGGED
     unit = arguments[1]
     if unit in firstTeamTable: teamFlyingTable = firstTeamFlying
     elif unit in secondTeamTable: teamFlyingTable = secondTeamFlying
@@ -936,6 +936,7 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
                 continue
             if x in usedUnits: continue
             initialDamage = damage(x, attackTable)
+            print(initialDamage)
             if initialDamage == None: continue
             if type(reduce(x)) == None: pass
             else: finalDamage = initialDamage - reduce(x)
@@ -948,6 +949,7 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
                 print(x, "is not airborne.")
                 continue
             initialDefense = damage(x, attackTable)
+            print(initialDefense)
             if initialDefense == None: continue
             totalDefenseDamage = totalDefenseDamage + initialDefense
             defendingUnits.append(x)
@@ -955,6 +957,8 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
             use(x)
             if not x in moveFireTable: freeze(x)
         else: print(x, " does not exist.")
+    print(totalAttackDamage)
+    print(totalDefenseDamage)
     if totalDefenseDamage >= totalAttackDamage:
         print("Attack repelled.")
         return
