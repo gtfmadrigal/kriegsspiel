@@ -186,17 +186,16 @@ def kill(arguments): # DEBUGGED
     append(unit, deadUnits)
     update()
 
-def dealDamage(units, damage, teamTable):
+def dealDamage(unit, damage, teamTable):
     global firstTeamTable
     global secondTeamTable
-    for x in units:
-        oldHealth = teamTable[x]
-        if oldHealth - damage <= 0:
-            kill(x)
-        else:
-            newHealth = oldHealth - damage
-            teamTable[x] = newHealth
-            print(x, "new health:", newHealth)
+    oldHealth = teamTable[unit]
+    if oldHealth - damage <= 0:
+        kill(unit)
+    else:
+        newHealth = oldHealth - damage
+        teamTable[unit] = newHealth
+        print(unit, "new health:", newHealth)
     update()
 
 # Umpire commands
@@ -474,7 +473,7 @@ def attack(arguments, teamTable, targetTeamTable):
         if location in structureTable:
             reducedDamage = fortificationReduce(location, perUnitDamage)
         else: reducedDamage = perUnitDamage
-        dealDamage(defendingUnits, reducedDamage, targetTeamTable)
+        dealDamage(x, reducedDamage, targetTeamTable)
     defendingUnits.clear()
     score()
     turn()
@@ -548,7 +547,7 @@ def fire(arguments, teamTable, targetTeamTable):
         if location in structureTable:
             reducedDamage = fortificationReduce(location, perUnitDamage)
         else: reducedDamage = perUnitDamage
-        dealDamage(defendingUnits, reducedDamage, targetTeamTable)
+        dealDamage(x, reducedDamage, targetTeamTable)
     defendingUnits.clear()
     score()
 
@@ -887,28 +886,27 @@ def kamikaze(arguments, teamTable, targetTeamTable, teamFlyingTable):
     kill(unit)
     score()
 
-def air_missile(arguments, teamTable, targetTeamTable, teamFlyingTable):
+def air_missile(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
     global firstTeamTable
     global secondTeamTable
-    del arguments[0]
     for x in arguments:
-        if x == ">": pass
-        elif x in teamTable:
-            if not x in teamFlyingTable:
-                error("airborne", "air-missile")
+        if x in teamTable: unit = str(x)
+        elif x in targetTeamTable: target = str(x)
+        else:
+            if x == ">" or x == "missile": continue
+            if not x in unitTable:
+                error("unit", "air-missile")
                 return
-            unit = x
-            if x in hiddenUnits: reveal(x)
-            use(x)
-        elif x in targetTeamTable: target = x
-        else: print(x, "does not exist.")
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if unit in usedUnits:
-        error("available", "missile")
+        error("available", "air-missile")
         return
     if not unitType in missileTable:
-        error("function", "missile")
+        error("function", "air-missile")
+        return
+    if not unit in teamFlyingTable:
+        error("airborne", "air-missile")
         return
     attackDamage = damage(unit, missileTable)
     localTargetUnitType = unitTable.get(target)
