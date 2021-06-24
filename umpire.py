@@ -165,14 +165,21 @@ def fog():
 def kill(arguments):
     global firstTeamTable
     global secondTeamTable
+    global firstTeamFlying
+    global secondTeamTable
     if len(arguments.split()) == 1: unit = arguments
     else: unit = arguments[2]
-    if unit in firstTeamTable: table = firstTeamTable
-    elif unit in secondTeamTable: table = secondTeamTable
+    if unit in firstTeamTable: 
+        table = firstTeamTable
+        flyingTable = firstTeamFlying
+    elif unit in secondTeamTable: 
+        table = secondTeamTable
+        flyingTable = secondTeamFlying
     else: 
         error("unit", "kill")
         return
     del table[unit]
+    if unit in flyingTable: del flyingTable[unit]
     print(unit, "killed.")
     append(unit, deadUnits)
     update()
@@ -425,7 +432,7 @@ def man(arguments):
     print(manPages.get(command))
 
 # Theater-agnostic functions
-def attack(arguments, teamTable, targetTeamTable, airPhase):
+def attack(arguments, teamTable, targetTeamTable):
     totalAttackDamage = 0
     totalDefenseDamage = 0
     defendingUnits = []
@@ -466,7 +473,7 @@ def attack(arguments, teamTable, targetTeamTable, airPhase):
         dealDamage(defendingUnits, reducedDamage, targetTeamTable)
     defendingUnits.clear()
     score()
-    if airPhase == False: turn()
+    turn()
 
 def move(arguments, teamTable):
     global locationTable
@@ -913,8 +920,54 @@ def air_missile(arguments, teamTable, targetTeamTable, teamFlyingTable):
     use(unit)
     score()
 
-def dogfight():
-    pass
+def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
+    totalAttackDamage = 0
+    totalDefenseDamage = 0
+    defendingUnits = []
+    del arguments[1]
+    for x in arguments:
+        if x == ">": pass
+        elif x in teamTable:
+            if not x in teamFlyingTable:
+                print(x, "is not airborne.")
+                continue
+            if x in usedUnits: continue
+            initialDamage = damage(x, attackTable)
+            if initialDamage == None: continue
+            if type(reduce(x)) == None: pass
+            else: finalDamage = initialDamage - reduce(x)
+            totalAttackDamage = totalAttackDamage + finalDamage
+            if x in hiddenUnits: reveal(x)
+            use(x)
+            if not x in moveFireTable: freeze(x)
+        elif x in targetTeamTable:
+            if not x in targetTeamFlyingTable:
+                print(x, "is not airborne.")
+                continue
+            initialDefense = damage(x, attackTable)
+            if initialDefense == None: continue
+            totalDefenseDamage = totalDefenseDamage + initialDefense
+            defendingUnits.append(x)
+            if x in hiddenUnits: reveal(x)
+            use(x)
+            if not x in moveFireTable: freeze(x)
+        else: print(x, " does not exist.")
+    if totalDefenseDamage >= totalAttackDamage:
+        print("Attack repelled.")
+        return
+    netDamage = totalAttackDamage - totalDefenseDamage
+    print("Net damage: ", netDamage)
+    perUnitDamage = netDamage / len(defendingUnits.split())
+    print("Damage per unit:", perUnitDamage)
+    for x in defendingUnits:
+        location = locationTable.get(x)
+        if location in structureTable:
+            reducedDamage = fortificationReduce(location, perUnitDamage)
+        else: reducedDamage = perUnitDamage
+        dealDamage(defendingUnits, reducedDamage, targetTeamTable)
+    defendingUnits.clear()
+    score()
+    turn()
 
 def bomb():
     pass

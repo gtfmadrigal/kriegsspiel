@@ -233,3 +233,4 @@ v3.0 - Land-Sea-Air unification release
     v3.0.31 - kamikaze() re-implemented
     v3.0.31 - shell-rewrite.py moved to umpire.py, original umpire.py removed
     v3.0.32 - air-missile() implemented
+    v3.0.33 - dogfight() implemented
