@@ -741,6 +741,7 @@ def missile(arguments, teamTable, targetTeamTable):
         finalDamage = fortificationReduce(targetLocation, netDamage)
     else: finalDamage = netDamage
     dealDamage(target, finalDamage, targetTeamTable)
+    use(unit)
     score()
 
 # Air functions
@@ -871,8 +872,46 @@ def kamikaze(arguments, teamTable, targetTeamTable, teamFlyingTable):
     kill(unit)
     score()
 
-def air_missile():
-    pass
+def air_missile(arguments, teamTable, targetTeamTable, teamFlyingTable):
+    global firstTeamTable
+    global secondTeamTable
+    del arguments[1]
+    for x in arguments:
+        if x == ">": pass
+        elif x in teamTable:
+            if not x in teamFlyingTable:
+                error("airborne", "air-missile")
+                return
+            unit = x
+            if x in hiddenUnits: reveal(x)
+            use(x)
+        elif x in targetTeamTable: target = x
+        else: print(x, "does not exist.")
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    if unit in usedUnits:
+        error("available", "missile")
+        return
+    if not unitType in missileTable:
+        error("function", "missile")
+        return
+    attackDamage = damage(unit, missileTable)
+    localTargetUnitType = unitTable.get(target)
+    targetUnitType = allUnitTypes.get(localTargetUnitType)
+    targetLocation = locationTable.get(target)
+    if targetUnitType in missileTable:
+        defenseDamage = damage(target, missileTable)
+        if defenseDamage >= attackDamage:
+            print("Missile repelled.")
+            return
+        else: netDamage = attackDamage - defenseDamage
+    else: netDamage = attackDamage
+    if targetLocation in structureTable:
+        finalDamage = fortificationReduce(targetLocation, netDamage)
+    else: finalDamage = netDamage
+    dealDamage(target, finalDamage, targetTeamTable)
+    use(unit)
+    score()
 
 def dogfight():
     pass
