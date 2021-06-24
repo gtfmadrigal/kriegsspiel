@@ -72,7 +72,7 @@ def update():
 
 def error(code, function):
     print(errorMessages.get(code))
-    print("Error message called by", str(function))
+    print("Origin:", str(function))
 
 def remove(item, list):
     global usedUnits
@@ -246,10 +246,9 @@ def health(arguments):
     else:
         error("unit", "health")
         return
-    currentHealth = table.get(unit)
     if newHealth <= 0: kill(arguments)
     else: table[unit] = float(newHealth)
-    update()
+    score()
 
 def freeze(arguments):
     if len(arguments.split()) == 1: unit = arguments
