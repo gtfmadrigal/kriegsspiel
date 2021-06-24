@@ -731,8 +731,12 @@ def missile(arguments, teamTable, targetTeamTable):
     score()
 
 # Air functions
-def takeoff():
-    pass
+def takeoff(arguments, teamFlyingTable):
+    unit = arguments[2]
+    if unit in teamFlyingTable:
+        print("Already airborne.")
+        return
+    append(unit, teamFlyingTable)
 
 def land():
     pass
