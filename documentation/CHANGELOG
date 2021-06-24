@@ -242,3 +242,4 @@ v3.0 - Land-Sea-Air unification release
     v3.0.39 - score(), details(), helpText() and quitGame() debugged
     v3.0.40 - health() debugged
     v3.0.41 - kill() debugged
+    v3.0.42 - valueError in health() fixed, encased in try-except statement
