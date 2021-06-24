@@ -227,3 +227,5 @@ v3.0 - Land-Sea-Air unification release
     v3.0.25 - missile() implemented
     v3.0.26 - info() implemented
     v3.0.27 - takeoff() implemented
+    v3.0.28 - land() implemented
+    

@@ -467,11 +467,14 @@ def attack(arguments, teamTable, targetTeamTable, airPhase):
     score()
     if airPhase == False: turn()
 
-def move(arguments):
+def move(arguments, teamTable):
     global locationTable
     unit = arguments[2]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    if not unit in teamTable:
+        error("team", "convert")
+        return
     if unit in immobileUnits:
         error("available", "move")
         return
@@ -488,10 +491,13 @@ def move(arguments):
     locationTable[unit] = str(newLocation)
     freeze(unit)
 
-def spy(arguments):
+def spy(arguments, teamTable):
     unit = arguments[2]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    if not unit in teamTable:
+        error("team", "convert")
+        return
     if unit in usedUnits:
         error("available", "spy")
         return
@@ -535,8 +541,11 @@ def fire(arguments, teamTable, targetTeamTable, table):
     score()
 
 # Naval functions
-def heading(arguments):
+def heading(arguments, teamTable):
     unit = arguments[2]
+    if not unit in teamTable:
+        error("team", "convert")
+        return
     if unit in usedUnits or unit in immobileUnits:
         error("available", "heading")
         return
@@ -672,11 +681,14 @@ def board(arguments, teamTable, targetTeamTable):
     score()
 
 # Army functions
-def build(arguments):
+def build(arguments, teamTable):
     global structureTable
     unit = arguments[2]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    if not unit in teamTable:
+        error("team", "convert")
+        return
     if unit in usedUnits:
         error("available", "build")
         return
@@ -731,18 +743,68 @@ def missile(arguments, teamTable, targetTeamTable):
     score()
 
 # Air functions
-def takeoff(arguments, teamFlyingTable):
+def takeoff(arguments):
     unit = arguments[2]
+    if unit in firstTeamTable: teamFlyingTable = firstTeamFlying
+    elif unit in secondTeamTable: teamFlyingTable = secondTeamFlying
+    else:
+        error("unit", "takeoff")
+        return
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    if not unitType in flyTable:
+        error("function", "takeoff")
+        return
     if unit in teamFlyingTable:
         print("Already airborne.")
         return
+    
     append(unit, teamFlyingTable)
 
-def land():
-    pass
+def land(arguments):
+    unit = arguments[2]
+    if unit in firstTeamTable: teamFlyingTable = firstTeamFlying
+    elif unit in secondTeamTable: teamFlyingTable = secondTeamFlying
+    else:
+        error("unit", "takeoff")
+        return
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    if not unitType in flyTable:
+        error("function", "takeoff")
+        return
+    if not unit in teamFlyingTable:
+        error("airborne", "takeoff")
+        return
+    remove(unit, teamFlyingTable)
+    use(unit)
 
-def pulse():
-    pass
+def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable):
+    del arguments[1]
+    defendingUnits = []
+    for x in arguments:
+        if x == ">": pass
+        elif x in teamTable:
+            if x in teamFlyingTable:
+                unit = x
+            else: print(x, "is not airborne.")
+        elif x in targetTeamTable:
+            defendingUnits.append(x)
+        else: print(x, "does not exist.")
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    if unitType in usedUnits:
+        error("available", "pulse")
+        return
+    if not unitType in pulseTable:
+        error("function", "pulse")
+        return
+    effectiveness = damage(unit, pulseTable)
+    if effectiveness == 6:
+        print("Pulse effective.")
+        for x in defendingUnits: disable(x)
+    else:
+        print("Pulse ineffective.")
 
 def airlift():
     pass
