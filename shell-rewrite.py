@@ -673,8 +673,24 @@ def board(arguments, teamTable, targetTeamTable):
     score()
 
 # Army functions
-def build():
-    pass
+def build(arguments):
+    global structureTable
+    unit = arguments[2]
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    if unit in usedUnits:
+        error("available", "build")
+        return
+    if not unitType in buildTable:
+        error("function", "build")
+        return
+    strength = damage(unit, buildTable)
+    structure = input("Name of new structure:")
+    while structure in structureTable:
+        print("A structure with that name already exists.")
+        structure = input("Name of new structure:")
+    structureTable[structure] = strength
+    print(structure, "has strength:", strength)
 
 def missile():
     pass
