@@ -238,4 +238,5 @@ v3.0 - Land-Sea-Air unification release
     v3.0.35 - survey() implemented
     v3.0.36 - airShell() re-implemented; all functions included now, proceeding to debugging
     v3.0.37 - core game loop debugged
-    v3.0.38 - shell functions debugged
+    v3.0.38 - shell debugged
+    v3.0.39 - score(), details(), helpText() and quitGame() debugged

@@ -14,7 +14,7 @@ Umpire commands: score, turn, details, quit, help, health, kill, freeze, convert
 Theater-agnostic commands: attack, move, hide, reveal, spy, fire
 Naval commands: heading, torpedo, sortie, depthcharge, board
 Army commands: build, missile
-Air commands: takeoff, land, pulse, airlift, survey, bomb, kamikaze, dogfight
+Air commands: takeoff, land, pulse, airlift, survey, bomb, kamikaze, dogfight, missile
 """
 
 # Lists
