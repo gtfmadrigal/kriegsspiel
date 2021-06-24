@@ -1096,7 +1096,7 @@ def airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlying
     elif parsedCommand[1] == "info": info(parsedCommand)
     elif parsedCommand[1] == "use": use(parsedCommand)
     elif parsedCommand[1] == "dogfight": dogfight(parsedCommand, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
-    elif parsedCommand[1] == "survey": pass
+    elif parsedCommand[1] == "survey": survey(parsedCommand, teamTable, teamFlyingTable)
     elif parsedCommand[1] == "bomb": bomb(parsedCommand, teamTable, targetTeamTable, teamFlyingTable)
     elif parsedCommand[1] == "heading": heading(parsedCommand)
     elif parsedCommand[1] == "missile": air_missile(parsedCommand, teamTable, targetTeamTable, teamFlyingTable)
