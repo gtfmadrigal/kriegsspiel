@@ -27,7 +27,6 @@ disabledUnits = []
 deadUnits = []
 firstTeamFlying = []
 secondTeamFlying = []
-ships = []
 convertTable = ["light-artillery", "med-artillery", "heavy-artillery", "light-cavalry", "med-cavalry", "heavy-cavalry"]
 hideTable = ["infantry", "engineers", "mechanized", "light-artillery", "med-artillery", "heavy-artillery", "special", "attack-submarine", "missile-submarine", "stealth-bomber", "recon", "drone"]
 hideableTerrain = ["forest", "swamp", "ocean"]
@@ -108,13 +107,7 @@ def clear(list):
     global deadUnits
     global firstTeamFlying
     global secondTeamFlying
-    list.clear()
-
-def check(item, table, returnInteger):
-    if item in table: 
-        if returnInteger == True: return table.get(item)
-        else: return True
-    elif not item in table: return False
+    list.clear()    
 
 def reduce(unit):
     export = 0
@@ -150,13 +143,13 @@ def fortificationReduce(structure, damage):
 def damage(unit, table):
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
-    if check(unit, immobileUnits, False) == True or check(unit, usedUnits, False) == True:
+    if unit in immobileUnits or unit in usedUnits:
         error("available", "damage")
         return
-    if check(unit, deadUnits, False) == True:
+    if unit in deadUnits:
         error("dead", "damage")
         return
-    if check(unit, table, False) == False: return
+    if not unit in table: return
     basicMaximum = float(table.get(unitType)) + 1
     multiplier = dividedTable.get(unit, 1)
     maximum = basicMaximum * multiplier
@@ -755,7 +748,56 @@ def kamikaze():
 
 # Shell functions
 def info(arguments):
-    pass
+    unit = arguments[2]
+    print(unit, "attributes:")
+    if unit in firstTeamTable: 
+        print("Affiliation:", firstTeam)
+        teamTable = firstTeamTable
+    elif unit in secondTeamTable: 
+        print("Affiliation:", secondTeam)
+        teamTable = secondTeamTable
+    elif unit in deadUnits: print("Dead.")
+    else:
+        print("No such unit.")
+        return
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    print("Local unit type:", localUnitType)
+    print("Universal unit type:", unitType)
+    print("Current health:", teamTable.get(unit))
+    healthPercentage = teamTable.get(unit) / healthTable.get(unitType)
+    print("Health percentage:", healthPercentage)
+    if unit in locationTable:
+        location = locationTable.get(unit)
+        print("Current location:", location)
+        if location in structureTable: print("Current structure strength:", structureTable.get(location))
+    if unit in usedUnits or unit in alreadyDropped: print("Used this turn.")
+    if unit in immobileUnits: print("Immobile this turn.")
+    else: print("Movement range:", movementTable.get(unitType))
+    if unit in hiddenUnits: print("Hidden, type 'details' for more.")
+    else:
+        if unitType in hideTable: print("Hideable.")
+    if unit in firstTeamFlying or unit in secondTeamFlying: print("Airborne.")
+    if unitType in convertTable: print("Convertible to infantry.")
+    if unitType in spyTable: print("Can spy.")
+    if unitType in splitTable or unit in dividedTable: print("Divisible.")
+    if unitType in headingTable: print("Cannot change heading more than 45 degrees in a turn.")
+    if unitType in torpedoTable: print("Can fire torpedoes.")
+    if unitType in depthchargeTable: print("Can drop depthcharges.")
+    if unitType in boardTable: print("Can attempt to commandeer ships.")
+    if unitType in pulseTable: print("Can drop electromagnetic pulses.")
+    if unitType in transportTable: print("Can transport other units.")
+    if unitType in moveFireTable: print("Can move and fire in the same turn.")
+    if unitType in flyTable: print("Airplane.")
+    if unit in dividedTable: print("Size multiplier:", dividedTable.get(unit))
+    if unitType in attackTable: print("Maximum attack damage:", attackTable.get(unitType))
+    if unitType in fireTable: print("Maximum artillery damage:", fireTable.get(unitType))
+    if unitType in missileTable: print("Maximum missile damage:", missileTable.get(unitType))
+    if unitType in bombTable: print("Maximum bomb damage:", bombTable.get(unitType))
+    if unitType in sortieTable: print("Maximum sortie damage:", sortieTable.get(unitType))
+    if unitType in sortieDefenseTable: print("Maximum sortie defense:", sortieDefenseTable.get(unitType))
+    if unitType in buildTable: print("Maximum built structure strength:", buildTable.get(unitType))
+    if unitType in kamikazeTable: print("Maximum kamikaze damage:", kamikazeTable.get(unitType))
 
 def airShell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
     pass
@@ -769,8 +811,7 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
     prompt = str(round) + " ~ " + str(commandNumber) + " " + str(campaign) + ":" + str(team) + " % "
     rawCommand = input(prompt)
     parsedCommand = rawCommand.split()
-    commandFog = fog()
-    if commandFog == True:
+    if fog() == True:
         print("This command fails.")
         commandNumber = commandNumber + 1
         return
@@ -787,7 +828,7 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
     elif parsedCommand[1] == "disable": disable(parsedCommand)
     elif parsedCommand[1] == "merge": merge(parsedCommand, teamTable)
     elif parsedCommand[1] == "split": split(parsedCommand, teamTable)
-    elif parsedCommand[1] == "info": pass
+    elif parsedCommand[1] == "info": info(parsedCommand)
     elif parsedCommand[1] == "use": use(parsedCommand)
     elif parsedCommand[1] == "attack": attack(parsedCommand, teamTable, targetTeamTable, False)
     elif parsedCommand[1] == "move": move(parsedCommand)
