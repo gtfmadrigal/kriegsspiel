@@ -164,12 +164,13 @@ def fog():
     if export == 1: return True
     else: return False
 
-def kill(arguments):
+def kill(arguments): # DEBUGGED
     global firstTeamTable
     global secondTeamTable
     global firstTeamFlying
     global secondTeamTable
-    unit = arguments[1]
+    if len(arguments) == 2: unit = arguments[1]
+    else: unit = arguments[1]
     if unit in firstTeamTable: 
         table = firstTeamTable
         flyingTable = firstTeamFlying
@@ -777,7 +778,7 @@ def takeoff(arguments): # DEBUGGED
     if unitType in hideTable:
         hide(unit)
 
-def land(arguments):
+def land(arguments): # DEBUGGED
     unit = arguments[1]
     if unit in firstTeamTable: teamFlyingTable = firstTeamFlying
     elif unit in secondTeamTable: teamFlyingTable = secondTeamFlying
@@ -974,7 +975,7 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
     score()
     turn()
 
-def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
+def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
     del arguments[0]
     totalAttackDamage = 0
     defendingUnits = []
@@ -995,7 +996,7 @@ def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
             defendingUnits.append(x)
         else: print(x, " does not exist.")
     print("Damage:", totalAttackDamage)
-    perUnitDamage = totalAttackDamage / len(defendingUnits.split())
+    perUnitDamage = totalAttackDamage / len(defendingUnits)
     print("Damage per unit:", perUnitDamage)
     for x in defendingUnits:
         location = locationTable.get(x)
@@ -1006,7 +1007,7 @@ def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
     defendingUnits.clear()
     score()
 
-def survey(arguments, teamTable, teamFlyingTable):
+def survey(arguments, teamTable, teamFlyingTable): # DEBUGGEd
     unit = arguments[1]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)

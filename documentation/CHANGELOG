@@ -250,3 +250,4 @@ v3.0 - Land-Sea-Air unification release
     v3.0.47 - unitType lookup in damage() fixed
     v3.0.48 - attributeError in dogfight() fixed by removal of a bad .split() function
     v3.0.49 - takeoff() now checks if the unit passed has already been used
+    v3.0.50 - removed bad .split() function in bomb(); fixed parsing of kill() arguments to allow for both shell calls and in-function calls
