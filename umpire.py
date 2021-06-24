@@ -167,8 +167,7 @@ def kill(arguments):
     global secondTeamTable
     global firstTeamFlying
     global secondTeamTable
-    if len(arguments.split()) == 1: unit = arguments
-    else: unit = arguments[1]
+    unit = arguments[1]
     if unit in firstTeamTable: 
         table = firstTeamTable
         flyingTable = firstTeamFlying
