@@ -197,14 +197,14 @@ def dealDamage(units, damage, teamTable):
     update()
 
 # Umpire commands
-def score():
+def score(): # DEBUGGED
     update()
     firstPercent = firstHealth / firstHealthTotal * 100
     secondPercent = secondHealth / secondHealthTotal * 100
     print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
     print(secondTeam, "total health:", secondHealth, "or", secondPercent, "%")
 
-def turn():
+def turn(): # DEBUGGED
     global round
     global airPhase
     score()
@@ -216,26 +216,26 @@ def turn():
     round = round + 1
     airPhase = True
 
-def details():
+def details(): # DEBUGGED
     print("Secrets:")
     print(secrets)
     print("Hidden units:")
     print(*hiddenUnits, sep = ", ")
     score()
 
-def quitGame():
+def quitGame(): # DEBUGGED
     areYouSure = input("Are you sure you want to quit? [Yes/no]: ")
     if areYouSure == "yes" or areYouSure == "y":
         score()
         quit()
 
-def helpText():
+def helpText(): # DEBUGGED
     print("Commands: ")
     print(helpTextBlock)
     print("Unit types:")
     print(*allUnitTypes.keys(), sep = ", ")
 
-def health(arguments):
+def health(arguments): # DEBUGGED
     global firstTeamTable
     global secondTeamTable
     unit = arguments[1]
@@ -424,7 +424,7 @@ def split(arguments, teamTable):
     if originalUnit in usedUnits: remove(originalUnit, usedUnits)
     if originalUnit in hiddenUnits: reveal(originalUnit)       
 
-def man(arguments):
+def man(arguments): # DEBUGGED
     command = arguments[1]
     if not str(command) in manPages:
         error("command", "man")
@@ -1022,9 +1022,10 @@ def survey(arguments, teamTable, teamFlyingTable):
     use(unit)
 
 # Shell functions
-def info(arguments):
+def info(arguments): # DEBUGGED
     unit = arguments[1]
     print(unit, "attributes:")
+    print("")
     if unit in firstTeamTable: 
         print("Affiliation:", firstTeam)
         teamTable = firstTeamTable
@@ -1039,6 +1040,7 @@ def info(arguments):
     unitType = allUnitTypes.get(localUnitType)
     print("Local unit type:", localUnitType)
     print("Universal unit type:", unitType)
+    print("")
     print("Current health:", teamTable.get(unit))
     healthPercentage = teamTable.get(unit) / healthTable.get(unitType)
     print("Health percentage:", healthPercentage)
@@ -1049,6 +1051,8 @@ def info(arguments):
     if unit in usedUnits or unit in alreadyDropped: print("Used this turn.")
     if unit in immobileUnits: print("Immobile this turn.")
     else: print("Movement range:", movementTable.get(unitType))
+    if unit in dividedTable: print("Size multiplier:", dividedTable.get(unit))
+    print("")
     if unit in hiddenUnits: print("Hidden, type 'details' for more.")
     else:
         if unitType in hideTable: print("Hideable.")
@@ -1064,7 +1068,7 @@ def info(arguments):
     if unitType in transportTable: print("Can transport other units.")
     if unitType in moveFireTable: print("Can move and fire in the same turn.")
     if unitType in flyTable: print("Airplane.")
-    if unit in dividedTable: print("Size multiplier:", dividedTable.get(unit))
+    print("")
     if unitType in attackTable: print("Maximum attack damage:", attackTable.get(unitType))
     if unitType in fireTable: print("Maximum artillery damage:", fireTable.get(unitType))
     if unitType in missileTable: print("Maximum missile damage:", missileTable.get(unitType))
