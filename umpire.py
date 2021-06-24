@@ -141,7 +141,7 @@ def fortificationReduce(structure, damage):
         finalNetDamage = abs(initialNetDamage)
         return finalNetDamage
 
-def damage(unit, table):
+def damage(unit, table): # DEBUGGED
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if unit in immobileUnits or unit in usedUnits:
@@ -150,8 +150,10 @@ def damage(unit, table):
     if unit in deadUnits:
         error("dead", "damage")
         return
-    if not unit in table: return
-    basicMaximum = float(table.get(unitType)) + 1
+    if not unitType in table: 
+        error("function", "damage")
+        return
+    basicMaximum = table.get(unitType) + 1
     multiplier = dividedTable.get(unit, 1)
     maximum = basicMaximum * multiplier
     return random.randrange(1, maximum)
@@ -923,7 +925,7 @@ def air_missile(arguments, teamTable, targetTeamTable, teamFlyingTable):
     use(unit)
     score()
 
-def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
+def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable): # DEBUGGED
     totalAttackDamage = 0
     totalDefenseDamage = 0
     defendingUnits = []
@@ -936,9 +938,8 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
                 continue
             if x in usedUnits: continue
             initialDamage = damage(x, attackTable)
-            print(initialDamage)
             if initialDamage == None: continue
-            if type(reduce(x)) == None: pass
+            if reduce(x) == None: finalDamage = initialDamage
             else: finalDamage = initialDamage - reduce(x)
             totalAttackDamage = totalAttackDamage + finalDamage
             if x in hiddenUnits: reveal(x)
@@ -949,7 +950,6 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
                 print(x, "is not airborne.")
                 continue
             initialDefense = damage(x, attackTable)
-            print(initialDefense)
             if initialDefense == None: continue
             totalDefenseDamage = totalDefenseDamage + initialDefense
             defendingUnits.append(x)
@@ -964,7 +964,7 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
         return
     netDamage = totalAttackDamage - totalDefenseDamage
     print("Net damage: ", netDamage)
-    perUnitDamage = netDamage / len(defendingUnits.split())
+    perUnitDamage = netDamage / len(defendingUnits)
     print("Damage per unit:", perUnitDamage)
     for x in defendingUnits:
         dealDamage(defendingUnits, perUnitDamage, targetTeamTable)

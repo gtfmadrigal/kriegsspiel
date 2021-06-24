@@ -247,3 +247,5 @@ v3.0 - Land-Sea-Air unification release
     v3.0.44 - added whitespace to info() to avoid clutter
     v3.0.45 - attributeError in use() fixed by removal of a bad .split() function
     v3.0.46 - takeoff() confirmed without alteration
+    v3.0.47 - unitType lookup in damage() fixed
+    
