@@ -248,4 +248,5 @@ v3.0 - Land-Sea-Air unification release
     v3.0.45 - attributeError in use() fixed by removal of a bad .split() function
     v3.0.46 - takeoff() confirmed without alteration
     v3.0.47 - unitType lookup in damage() fixed
-    v3.0.48 - attributeError in dogfight() fixed by remove of a bad .split() function
+    v3.0.48 - attributeError in dogfight() fixed by removal of a bad .split() function
+    v3.0.49 - takeoff() now checks if the unit passed has already been used

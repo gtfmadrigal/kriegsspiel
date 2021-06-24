@@ -261,8 +261,7 @@ def freeze(arguments):
 
 def use(arguments): # DEBUGGED
     if len(arguments) == 1: unit = str(arguments)
-    else: unit = str(arguments[1])
-    if unit in usedUnits: return
+    else: unit = arguments
     append(unit, usedUnits)
 
 def hide(arguments):
@@ -765,6 +764,9 @@ def takeoff(arguments): # DEBUGGED
         return
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    if unit in usedUnits:
+        error("available", "takeoff")
+        return
     if not unitType in flyTable:
         error("function", "takeoff")
         return
