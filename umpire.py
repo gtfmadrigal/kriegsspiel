@@ -960,6 +960,35 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
     perUnitDamage = netDamage / len(defendingUnits.split())
     print("Damage per unit:", perUnitDamage)
     for x in defendingUnits:
+        dealDamage(defendingUnits, perUnitDamage, targetTeamTable)
+    defendingUnits.clear()
+    score()
+    turn()
+
+def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
+    del arguments[1]
+    totalAttackDamage = 0
+    defendingUnits = []
+    for x in arguments:
+        if x == ">": pass
+        elif x in teamTable:
+            if not x in teamFlyingTable:
+                error("airborne")
+                return
+            if x in usedUnits: continue
+            initialDamage = damage(x, fireTable)
+            if initialDamage == None: continue
+            totalAttackDamage = initialDamage + totalAttackDamage
+            use(x)
+            if not x in moveFireTable: freeze(x)
+            if x in hiddenUnits: reveal(x)
+        elif x in targetTeamTable:
+            defendingUnits.append(x)
+        else: print(x, " does not exist.")
+    print("Damage:", totalAttackDamage)
+    perUnitDamage = totalAttackDamage / len(defendingUnits.split())
+    print("Damage per unit:", perUnitDamage)
+    for x in defendingUnits:
         location = locationTable.get(x)
         if location in structureTable:
             reducedDamage = fortificationReduce(location, perUnitDamage)
@@ -967,10 +996,6 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
         dealDamage(defendingUnits, reducedDamage, targetTeamTable)
     defendingUnits.clear()
     score()
-    turn()
-
-def bomb():
-    pass
 
 # Shell functions
 def info(arguments):
