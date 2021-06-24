@@ -236,4 +236,5 @@ v3.0 - Land-Sea-Air unification release
     v3.0.33 - dogfight() implemented
     v3.0.34 - bomb() implemented
     v3.0.35 - survey() implemented
-    v3.0.36 - airShell() re-implemented
+    v3.0.36 - airShell() re-implemented; all functions included now, proceeding to debugging
+    v3.0.37 - core game loop debugged
