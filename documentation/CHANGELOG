@@ -201,32 +201,34 @@ v2.3 - Final naval battle release
     v2.3.44 - dogfight() function implemented
 
 v3.0 - Land-Sea-Air unification release
-    v3.0.1 - shell rewrite meta-functions implemented
-    v3.0.2 - added "upcoming" section to RELEASENOTES, implemented score(), turn(), details(), quitGame(), and helpText()
-    v3.0.3 - kill(), health(), and freeze() implemented
-    v3.0.4 - convert() implemented, air shell temporarily disabled
-    v3.0.6 - disable() implemented
-    v3.0.7 - merge() implemented
-    v3.0.8 - split() implemented
-    v3.0.9 - hide() implemented
-    v3.0.10 - reveal() implemented
+    v3.0.1 - shell rewrite meta-functions re-implemented
+    v3.0.2 - added "upcoming" section to RELEASENOTES; score(), turn(), details(), quitGame(), and helpText() re-implemented
+    v3.0.3 - kill(), health(), and freeze() re-implemented
+    v3.0.4 - convert() re-implemented, air shell temporarily disabled
+    v3.0.6 - disable() re-implemented
+    v3.0.7 - merge() re-implemented
+    v3.0.8 - split() re-implemented
+    v3.0.9 - hide() re-implemented
+    v3.0.10 - reveal() re-implemented
     v3.0.11 - man() implemented and manpages added back from v2.2
     v3.0.12 - shell encased in a try-except statement to prevent crashes 
-    v3.0.13 - shell try-except statement removed temporarily, info() implemented
-    v3.0.14 - attack() implemented
-    v3.0.15 - move() implemented
-    v3.0.16 - spy() implemented
-    v3.0.17 - fire() implemented
-    v3.0.18 - heading() implemented
-    v3.0.19 - freeze() implemented
-    v3.0.20 - sortie() implemented
+    v3.0.13 - shell try-except statement removed temporarily
+    v3.0.14 - attack() re-implemented
+    v3.0.15 - move() re-implemented
+    v3.0.16 - spy() re-implemented
+    v3.0.17 - fire() re-implemented
+    v3.0.18 - heading() re-implemented
+    v3.0.19 - freeze() re-implemented
+    v3.0.20 - sortie() re-implemented
     v3.0.21 - dealDamage() implemented
-    v3.0.22 - depthcharge() implemented
-    v3.0.23 - board() implemented
-    v3.0.24 - build() implemented
-    v3.0.25 - missile() implemented
-    v3.0.26 - info() implemented
-    v3.0.27 - takeoff() implemented
-    v3.0.28 - land() implemented
-    v3.0.29 - pulse() implemented
-    v3.0.30 - airlift() implemented
+    v3.0.22 - depthcharge() re-implemented
+    v3.0.23 - board() re-implemented
+    v3.0.24 - build() re-implemented
+    v3.0.25 - missile() re-implemented
+    v3.0.26 - info() re-implemented
+    v3.0.27 - takeoff() re-implemented
+    v3.0.28 - land() re-implemented
+    v3.0.29 - pulse() re-implemented
+    v3.0.30 - airlift() re-implemented
+    v3.0.31 - kamikaze() re-implemented
+    v3.0.31 - shell-rewrite.py moved to umpire.py, original umpire.py removed
