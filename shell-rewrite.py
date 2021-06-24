@@ -465,7 +465,6 @@ def attack(arguments, teamTable, targetTeamTable, airPhase):
     perUnitDamage = netDamage / len(defendingUnits.split())
     print("Damage per unit:", perUnitDamage)
     for x in defendingUnits:
-        oldHealth = targetTeamTable.get(x)
         location = locationTable.get(x)
         if location in structureTable:
             reducedDamage = fortificationReduce(location, perUnitDamage)
@@ -524,6 +523,9 @@ def fire(arguments, teamTable, targetTeamTable, table):
             initialDamage = damage(x, table)
             if initialDamage == None: continue
             totalAttackDamage = initialDamage + totalAttackDamage
+            use(x)
+            if not x in moveFireTable: freeze(x)
+            if x in hiddenUnits: reveal(x)
         elif x in targetTeamTable:
             defendingUnits.append(x)
         else: print(x, " does not exist.")
@@ -569,6 +571,7 @@ def torpedo(arguments, teamTable, targetTeamTable):
         if x == ">": pass
         elif x in teamTable: effectiveness = damage(x, torpedoTable)
         elif x in targetTeamTable: target = x
+        else: print(x, "does not exist.")
     oldHealth = targetTeamTable.get(target)
     if effectiveness == 6 or oldHealth - effectiveness <= 0:   
         kill(target)
@@ -600,6 +603,7 @@ def sortie(arguments, teamTable, targetTeamTable):
         elif x in targetTeamTable: 
             defenseDamage = damage(x, sortieDefenseTable)
             defendingUnits.append(x)
+        else: print(x, "does not exist.")
     if defenseDamage >= attackDamage: print("Sortie repelled.")
     else:
         netDamage = attackDamage - defenseDamage
@@ -627,6 +631,7 @@ def depthcharge(arguments, teamTable, targetTeamTable):
         if x == ">": pass
         elif x in teamTable: effectiveness = damage(x, depthchargeTable)
         elif x in targetTeamTable: target = x
+        else: print(x, "does not exist.")
     if effectiveness == 6: kill(target)
     elif effectiveness == 5:
         print(target, "disabled.")
@@ -654,6 +659,7 @@ def board(arguments, teamTable, targetTeamTable):
         if x == ">": pass
         elif x in teamTable: effectiveness = damage(x, boardTable)
         elif x in targetTeamTable: target = x
+        else: print(x, "does not exist.")
     if effectiveness >= 5:
         print(target, "seized.")
         targetHealth = targetTeamTable.get(target)
@@ -691,9 +697,45 @@ def build(arguments):
         structure = input("Name of new structure:")
     structureTable[structure] = strength
     print(structure, "has strength:", strength)
+    use(unit)
+    if not unitType in moveFireTable: freeze(unit)
 
-def missile():
-    pass
+def missile(arguments, teamTable, targetTeamTable):
+    global firstTeamTable
+    global secondTeamTable
+    del arguments[1]
+    for x in arguments:
+        if x == ">": pass
+        elif x in teamTable: 
+            unit = x
+            if x in hiddenUnits: reveal(x)
+            use(x)
+        elif x in targetTeamTable: target = x
+        else: print(x, "does not exist.")
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    if unit in usedUnits:
+        error("available", "missile")
+        return
+    if not unitType in missileTable:
+        error("function", "missile")
+        return
+    attackDamage = damage(unit, missileTable)
+    localTargetUnitType = unitTable.get(target)
+    targetUnitType = allUnitTypes.get(localTargetUnitType)
+    targetLocation = locationTable.get(target)
+    if targetUnitType in missileTable:
+        defenseDamage = damage(target, missileTable)
+        if defenseDamage >= attackDamage:
+            print("Missile repelled.")
+            return
+        else: netDamage = attackDamage - defenseDamage
+    else: netDamage = attackDamage
+    if targetLocation in structureTable:
+        finalDamage = fortificationReduce(targetLocation, netDamage)
+    else: finalDamage = netDamage
+    dealDamage(target, finalDamage, targetTeamTable)
+    score()
 
 # Air functions
 def takeoff():
@@ -753,13 +795,13 @@ def shell(team, targetTeam, teamTable, targetTeamTable, teamFlyingTable, targetT
     elif parsedCommand[1] == "reveal": reveal(parsedCommand)
     elif parsedCommand[1] == "spy": spy(parsedCommand)
     elif parsedCommand[1] == "fire": fire(parsedCommand, teamTable, targetTeamTable, fireTable)
-    elif parsedCommand[1] == "heading": pass
-    elif parsedCommand[1] == "torpedo": pass
-    elif parsedCommand[1] == "sortie": pass
-    elif parsedCommand[1] == "depthcharge": pass
-    elif parsedCommand[1] == "board": pass
-    elif parsedCommand[1] == "build": pass
-    elif parsedCommand[1] == "missile": pass
+    elif parsedCommand[1] == "heading": heading(parsedCommand)
+    elif parsedCommand[1] == "torpedo": torpedo(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[1] == "sortie": sortie(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[1] == "depthcharge": depthcharge(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[1] == "board": board(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[1] == "build": build(parsedCommand)
+    elif parsedCommand[1] == "missile": missile(parsedCommand, teamTable, targetTeamTable)
     else:
         error("command", "shell")
         return
