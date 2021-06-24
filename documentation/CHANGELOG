@@ -245,3 +245,4 @@ v3.0 - Land-Sea-Air unification release
     v3.0.42 - valueError in health() fixed, encased in try-except statement
     v3.0.43 - failed dictionary lookup in man() fixed, converted arguments[1] to str type
     v3.0.44 - added whitespace to info() to avoid clutter
+    v3.0.45 - attributeError in use() fixed by removal of a bad .split() function

@@ -258,8 +258,9 @@ def freeze(arguments):
     append(unit, immobileUnits)
 
 def use(arguments):
-    if len(arguments.split()) == 1: unit = arguments
-    else: unit = arguments[1]
+    if len(arguments) == 1: unit = str(arguments)
+    else: unit = str(arguments[1])
+    if unit in usedUnits: return
     append(unit, usedUnits)
 
 def hide(arguments):
