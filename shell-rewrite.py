@@ -805,6 +805,7 @@ def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable):
         for x in defendingUnits: disable(x)
     else:
         print("Pulse ineffective.")
+    use(unit)
 
 def airlift():
     pass
