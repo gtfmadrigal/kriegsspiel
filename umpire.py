@@ -310,7 +310,7 @@ def reveal(arguments):
     newSecret = unit + " is no longer hidden."
     secrets = secrets + ", " + newSecret
 
-def convert(arguments, teamTable):
+def convert(arguments, teamTable): # DEBUGGED
     global firstTeamTable
     global secondTeamTable
     global unitTable
