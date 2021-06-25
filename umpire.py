@@ -337,7 +337,7 @@ def disable(arguments): # DEBUGGED
     use(unit)
     append(unit, disabledUnits)
 
-def merge(arguments, teamTable):
+def merge(arguments, teamTable): # DEBUGGED
     global firstTeamTable
     global secondTeamTable
     global unitTable
@@ -1052,8 +1052,8 @@ def info(arguments): # DEBUGGED
     print("Universal unit type:", unitType)
     print("")
     print("Current health:", teamTable.get(unit))
-    healthPercentage = teamTable.get(unit) / healthTable.get(unitType)
-    print("Health percentage:", healthPercentage)
+    healthPercentage = teamTable.get(unit) / healthTable.get(unitType) * 100
+    print("Health percentage:", healthPercentage, "%")
     if unit in locationTable:
         location = locationTable.get(unit)
         print("Current location:", location)
