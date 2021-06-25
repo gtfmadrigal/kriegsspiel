@@ -256,3 +256,4 @@ v3.0 - Land-Sea-Air unification release
     v3.0.53 - removed 3 more non-air command calls from airShell
     v3.0.54 - removed bad del statement from kill()
     v3.0.55 - changed .get(x) to .get(unit) in airlift(), fixing bad dictionary lookup
+    v3.0.56 - ensured that airlift() can only airlift certain units

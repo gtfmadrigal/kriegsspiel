@@ -837,15 +837,15 @@ def airlift(arguments, teamTable, teamFlyingTable):
             else:
                 liftedLocalUnitType = unitTable.get(x)
                 liftedUnitType = allUnitTypes.get(liftedLocalUnitType)
-                if liftedUnitType in airliftTable:
-                    liftedUnits.append(x)
-                else:
+                if not liftedUnitType in airliftTable:
                     print(x, "cannot be airlifted.")
-        else: print(x, "does not exist, or does not belong to you.")
+                    return
+                liftedUnits.append(x)
+        else: 
+            print(x, "does not exist, or does not belong to you.")
+            return
     localUnitType = unitTable.get(unit)
-    print(localUnitType)
     unitType = allUnitTypes.get(localUnitType)
-    print(unitType)
     if unit in usedUnits:
         error("available", "airlift")
         return
