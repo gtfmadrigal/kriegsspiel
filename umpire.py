@@ -383,7 +383,7 @@ def merge(arguments, teamTable): # DEBUGGED
     if disabled == True: disable(finalUnit)
     if hidden == True: hide(finalUnit)
 
-def split(arguments, teamTable):
+def split(arguments, teamTable): # DEBUGGED
     global firstTeamTable
     global secondTeamTable
     global dividedTable
@@ -404,6 +404,7 @@ def split(arguments, teamTable):
         else:
             if x in unitTable:
                 print(x, "could not be created.")
+                return
             else:
                 numberOfUnits = numberOfUnits + 1
                 newUnits.append(x)
