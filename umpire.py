@@ -254,8 +254,8 @@ def health(arguments): # DEBUGGED
     else: table[unit] = float(newHealth)
     score()
 
-def freeze(arguments):
-    if len(arguments.split()) == 1: unit = arguments
+def freeze(arguments): # DEBUGGED
+    if len(arguments) == 1: unit = arguments
     else: unit = arguments[1]
     append(unit, immobileUnits)
 
@@ -1132,9 +1132,9 @@ def airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlying
 def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
     global airPhase
     global commandNumber
-    if airPhase == True and airTheater == True:
-        airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
-        return
+    # if airPhase == True and airTheater == True:
+        # airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
+        # return
     prompt = str(round) + " ~ " + str(commandNumber) + " " + str(campaign) + ": " + str(team) + " % "
     rawCommand = input(prompt)
     parsedCommand = rawCommand.split()

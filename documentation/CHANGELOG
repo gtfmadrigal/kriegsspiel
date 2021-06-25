@@ -260,3 +260,10 @@ v3.1-pre1 - Air-shell rewrite debugging
     v3.1-pre1.19 - changed .get(x) to .get(unit) in airlift(), fixing bad dictionary lookup
     v3.1-pre1.20 - ensured that airlift() can only airlift certain units
     v3.1-pre1.21 - kamikaze() ensured, all air-only functions and their dependencies debugged
+
+v3.1-pre2 - Shell rewrite debugging
+    v3.1-pre2.1 - removed bad .split() function in freeze()
+
+v3.1-pre3 - Gamefile rewriting
+
+v3.1-pre4 - Documentation updating
