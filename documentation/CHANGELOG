@@ -254,3 +254,4 @@ v3.0 - Land-Sea-Air unification release
     v3.0.51 - removed 10 non-air command calls from airShell
     v3.0.52 - fixed calls to units that do not exist within air_missile()
     v3.0.53 - removed 3 more non-air command calls from airShell
+    v3.0.54 - removed bad del statement from kill()

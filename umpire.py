@@ -170,7 +170,8 @@ def kill(arguments): # DEBUGGED
     global firstTeamFlying
     global secondTeamTable
     if len(arguments) == 2: unit = arguments[1]
-    else: unit = arguments[1]
+    else: unit = arguments
+    print(unit)
     if unit in firstTeamTable: 
         table = firstTeamTable
         flyingTable = firstTeamFlying
@@ -181,7 +182,7 @@ def kill(arguments): # DEBUGGED
         error("unit", "kill")
         return
     del table[unit]
-    if unit in flyingTable: del flyingTable[unit]
+    if unit in flyingTable: remove(unit, flyingTable)
     print(unit, "killed.")
     append(unit, deadUnits)
     update()
@@ -778,19 +779,20 @@ def takeoff(arguments): # DEBUGGED
         hide(unit)
 
 def land(arguments): # DEBUGGED
-    unit = arguments[1]
+    if len(arguments) == 2: unit = arguments[1]
+    else: unit = arguments
     if unit in firstTeamTable: teamFlyingTable = firstTeamFlying
     elif unit in secondTeamTable: teamFlyingTable = secondTeamFlying
     else:
-        error("unit", "takeoff")
+        error("unit", "land")
         return
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unitType in flyTable:
-        error("function", "takeoff")
+        error("function", "land")
         return
     if not unit in teamFlyingTable:
-        error("airborne", "takeoff")
+        error("airborne", "land")
         return
     remove(unit, teamFlyingTable)
     use(unit)
@@ -815,7 +817,8 @@ def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable):
     if not unitType in pulseTable:
         error("function", "pulse")
         return
-    effectiveness = damage(unit, pulseTable)
+    # effectiveness = damage(unit, pulseTable)
+    effectiveness = 6
     if effectiveness == 6:
         print("Pulse effective.")
         for x in defendingUnits: disable(x)
@@ -1096,6 +1099,7 @@ def airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlying
         return
     if parsedCommand[0] == "score": score()
     elif parsedCommand[0] == "turn": 
+        for x in teamFlyingTable: kill(x)
         score()
         airPhase = False
     elif parsedCommand[0] == "details": details()
@@ -1111,7 +1115,7 @@ def airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlying
     elif parsedCommand[0] == "bomb": bomb(parsedCommand, teamTable, targetTeamTable, teamFlyingTable)
     elif parsedCommand[0] == "missile": air_missile(parsedCommand, teamTable, targetTeamTable, teamFlyingTable)
     elif parsedCommand[0] == "use": use(parsedCommand)
-    elif parsedCommand[0] == "survey": survey(parsedCommand, teamTable, teamFlyingTable) 
+    elif parsedCommand[0] == "survey": survey(parsedCommand, teamTable, teamFlyingTable)
     elif parsedCommand[0] == "takeoff": takeoff(parsedCommand)
     elif parsedCommand[0] == "land": land(parsedCommand)
     elif parsedCommand[0] == "pulse": pulse(parsedCommand, teamTable, targetTeamTable, teamFlyingTable)
@@ -1130,9 +1134,6 @@ def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTab
     if airPhase == True and airTheater == True:
         airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
         return
-    for x in teamFlyingTable:
-        land(x)
-        kill(x)
     prompt = str(round) + " ~ " + str(commandNumber) + " " + str(campaign) + ": " + str(team) + " % "
     rawCommand = input(prompt)
     parsedCommand = rawCommand.split()
