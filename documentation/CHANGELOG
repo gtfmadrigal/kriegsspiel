@@ -264,6 +264,7 @@ v3.1-pre1 - Air-shell rewrite debugging
 v3.1-pre2 - Shell rewrite debugging
     v3.1-pre2.1 - removed bad .split() function in freeze()
     v3.1-pre2.2 - cleaned up unneeded LOC in convert()
+    v3.1-pre2.3 - removed bad .split() function in disable()
 
 v3.1-pre3 - Final polishing of code
 

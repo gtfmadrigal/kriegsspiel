@@ -330,8 +330,8 @@ def convert(arguments, teamTable): # DEBUGGED
     teamTable[unit] = newHealth
     update()
 
-def disable(arguments):
-    if len(arguments.split()) == 1: unit = arguments
+def disable(arguments): # DEBUGGED
+    if len(arguments) == 1: unit = arguments
     else: unit = arguments[1]
     freeze(unit)
     use(unit)
