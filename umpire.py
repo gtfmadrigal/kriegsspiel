@@ -825,7 +825,7 @@ def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
         print("Pulse ineffective.")
     use(unit)
 
-def airlift(arguments, teamTable, teamFlyingTable):
+def airlift(arguments, teamTable, teamFlyingTable): # DEBUGGED
     global locationTable
     del arguments[0]
     liftedUnits = []
@@ -862,7 +862,7 @@ def airlift(arguments, teamTable, teamFlyingTable):
         locationTable[x] = str(newLocation)
     use(unit)
 
-def kamikaze(arguments, teamTable, targetTeamTable, teamFlyingTable):
+def kamikaze(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
     del arguments[0]
     for x in arguments:
         if x == ">": pass

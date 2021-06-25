@@ -237,23 +237,26 @@ v3.0 - Land-Sea-Air unification release
     v3.0.34 - bomb() implemented
     v3.0.35 - survey() implemented
     v3.0.36 - airShell() re-implemented; all functions included now, proceeding to debugging
-    v3.0.37 - core game loop debugged
-    v3.0.38 - shell debugged
-    v3.0.39 - score(), details(), helpText() and quitGame() debugged
-    v3.0.40 - health() debugged
-    v3.0.41 - kill() debugged
-    v3.0.42 - valueError in health() fixed, encased in try-except statement
-    v3.0.43 - failed dictionary lookup in man() fixed, converted arguments[1] to str type
-    v3.0.44 - added whitespace to info() to avoid clutter
-    v3.0.45 - attributeError in use() fixed by removal of a bad .split() function
-    v3.0.46 - takeoff() confirmed without alteration
-    v3.0.47 - unitType lookup in damage() fixed
-    v3.0.48 - attributeError in dogfight() fixed by removal of a bad .split() function
-    v3.0.49 - takeoff() now checks if the unit passed has already been used
-    v3.0.50 - removed bad .split() function in bomb(); fixed parsing of kill() arguments to allow for both shell calls and in-function calls
-    v3.0.51 - removed 10 non-air command calls from airShell
-    v3.0.52 - fixed calls to units that do not exist within air_missile()
-    v3.0.53 - removed 3 more non-air command calls from airShell
-    v3.0.54 - removed bad del statement from kill()
-    v3.0.55 - changed .get(x) to .get(unit) in airlift(), fixing bad dictionary lookup
-    v3.0.56 - ensured that airlift() can only airlift certain units
+
+v3.1-pre1 - Air-shell rewrite debugging
+    v3.1-pre1.1 - core game loop debugged
+    v3.1-pre1.2 - shell debugged
+    v3.1-pre1.3 - score(), details(), helpText() and quitGame() debugged
+    v3.1-pre1.4 - health() debugged
+    v3.1-pre1.5 - kill() debugged
+    v3.1-pre1.6 - valueError in health() fixed, encased in try-except statement
+    v3.1-pre1.7 - failed dictionary lookup in man() fixed, converted arguments[1] to str type
+    v3.1-pre1.8 - added whitespace to info() to avoid clutter
+    v3.1-pre1.9 - attributeError in use() fixed by removal of a bad .split() function
+    v3.1-pre1.10 - takeoff() confirmed without alteration
+    v3.1-pre1.11 - unitType lookup in damage() fixed
+    v3.1-pre1.12 - attributeError in dogfight() fixed by removal of a bad .split() function
+    v3.1-pre1.13 - takeoff() now checks if the unit passed has already been used
+    v3.1-pre1.14 - removed bad .split() function in bomb(); fixed parsing of kill() arguments to allow for both shell calls and in-function calls
+    v3.1-pre1.15 - removed 10 non-air command calls from airShell
+    v3.1-pre1.16 - fixed calls to units that do not exist within air_missile()
+    v3.1-pre1.17 - removed 3 more non-air command calls from airShell
+    v3.1-pre1.18 - removed bad del statement from kill()
+    v3.1-pre1.19 - changed .get(x) to .get(unit) in airlift(), fixing bad dictionary lookup
+    v3.1-pre1.20 - ensured that airlift() can only airlift certain units
+    v3.1-pre1.21 - kamikaze() ensured, all air-only functions and their dependencies debugged
