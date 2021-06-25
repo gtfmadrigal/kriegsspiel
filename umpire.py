@@ -50,7 +50,6 @@ boardTable = {"corvette":6, "amphibious":6, "patrol":6, "cruiser":8, "destroyer"
 buildTable = {"infantry":4, "engineers":8, "mechanized":4, "special":6}
 missileTable = {"destroyer":8, "missile-submarine":16, "light-fighter":6, "heavy-fighter":6, "bomber":8, "stealth-bomber":8}
 pulseTable = {"bomber":6, "stealth-bomber":6}
-transportTable = {"transport":1}
 kamikazeTable = {"light-fighter":6, "heavy-fighter":8}
 moveFireTable = {"infantry":1, "engineers":1, "mechanized":1, "light-cavalry":1, "med-cavalry":1, "heavy-cavalry":1, "special":1, "corvette":1, "amphibious":1, "patrol":1, "cruiser":1, "destroyer":1, "battleship":1, "carrier":1, "light-fighter":1, "heavy-fighter":1, "bomber":1, "stealth-bomber":1, "recon":4, "transport":1, "drone":1}
 bombTable = {"bomber":8, "stealth-bomber":6, "drone":10}
@@ -797,7 +796,7 @@ def land(arguments): # DEBUGGED
     remove(unit, teamFlyingTable)
     use(unit)
 
-def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable):
+def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
     del arguments[0]
     defendingUnits = []
     for x in arguments:
@@ -817,7 +816,7 @@ def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable):
     if not unitType in pulseTable:
         error("function", "pulse")
         return
-    # effectiveness = damage(unit, pulseTable)
+    effectiveness = damage(unit, pulseTable)
     effectiveness = 6
     if effectiveness == 6:
         print("Pulse effective.")
@@ -843,13 +842,15 @@ def airlift(arguments, teamTable, teamFlyingTable):
                 else:
                     print(x, "cannot be airlifted.")
         else: print(x, "does not exist, or does not belong to you.")
-    localUnitType = unitTable.get(x)
+    localUnitType = unitTable.get(unit)
+    print(localUnitType)
     unitType = allUnitTypes.get(localUnitType)
+    print(unitType)
     if unit in usedUnits:
-        error("availahle", "pulse")
+        error("available", "airlift")
         return
-    if not unitType in transportTable:
-        error("function", "pulse")
+    if unitType != "transport":
+        error("function", "airlift")
         return
     for x in liftedUnits:
         currentLocation = locationTable.get(x)
@@ -1074,7 +1075,7 @@ def info(arguments): # DEBUGGED
     if unitType in depthchargeTable: print("Can drop depthcharges.")
     if unitType in boardTable: print("Can attempt to commandeer ships.")
     if unitType in pulseTable: print("Can drop electromagnetic pulses.")
-    if unitType in transportTable: print("Can transport other units.")
+    if unitType == "transport": print("Can transport other units.")
     if unitType in moveFireTable: print("Can move and fire in the same turn.")
     if unitType in flyTable: print("Airplane.")
     print("")
