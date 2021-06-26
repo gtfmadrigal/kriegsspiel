@@ -6,7 +6,6 @@ round = 1
 commandNumber = 1
 secrets = ""
 airPhase = True
-campaign = "Normandy"
 firstHealth = sum(firstTeamTable.values())
 secondHealth = sum(secondTeamTable.values())
 helpTextBlock = """
@@ -436,7 +435,7 @@ def man(arguments): # DEBUGGED
     print(manPages.get(command))
 
 # Theater-agnostic functions
-def attack(arguments, teamTable, targetTeamTable):
+def attack(arguments, teamTable, targetTeamTable): # DEBUGGED
     totalAttackDamage = 0
     totalDefenseDamage = 0
     defendingUnits = []
@@ -447,7 +446,7 @@ def attack(arguments, teamTable, targetTeamTable):
             if x in usedUnits: continue
             initialDamage = damage(x, attackTable)
             if initialDamage == None: continue
-            if type(reduce(x)) == None: pass
+            if reduce(x) == None: finalDamage = initialDamage
             else: finalDamage = initialDamage - reduce(x)
             totalAttackDamage = totalAttackDamage + finalDamage
             if x in hiddenUnits: reveal(x)
@@ -467,7 +466,7 @@ def attack(arguments, teamTable, targetTeamTable):
         return
     netDamage = totalAttackDamage - totalDefenseDamage
     print("Net damage: ", netDamage)
-    perUnitDamage = netDamage / len(defendingUnits.split())
+    perUnitDamage = netDamage / len(defendingUnits)
     print("Damage per unit:", perUnitDamage)
     for x in defendingUnits:
         location = locationTable.get(x)
@@ -476,7 +475,6 @@ def attack(arguments, teamTable, targetTeamTable):
         else: reducedDamage = perUnitDamage
         dealDamage(x, reducedDamage, targetTeamTable)
     defendingUnits.clear()
-    score()
     turn()
 
 def move(arguments, teamTable):
@@ -963,8 +961,6 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
             use(x)
             if not x in moveFireTable: freeze(x)
         else: print(x, " does not exist.")
-    print(totalAttackDamage)
-    print(totalDefenseDamage)
     if totalDefenseDamage >= totalAttackDamage:
         print("Attack repelled.")
         return
@@ -975,7 +971,6 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
     for x in defendingUnits:
         dealDamage(defendingUnits, perUnitDamage, targetTeamTable)
     defendingUnits.clear()
-    score()
     turn()
 
 def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED

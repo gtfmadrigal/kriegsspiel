@@ -267,6 +267,7 @@ v3.1-pre2 - Shell rewrite debugging
     v3.1-pre2.3 - removed bad .split() function in disable()
     v3.1-pre2.4 - polished merge(), fixed health percentage lookup in info()
     v3.1-pre2.5 - ensured that split() can only be called for units in the player's team
+    v3.1-pre2.6 - removed bad .split() function from dogfight(), moved campaign name variable from umpire.py to gamefile
 
 v3.1-pre3 - Final polishing of code
 
