@@ -499,7 +499,7 @@ def spy(arguments, teamTable): # DEBUGGED
     details()
     use(unit)
 
-def fire(arguments, teamTable, targetTeamTable):
+def fire(arguments, teamTable, targetTeamTable): # DEBUGGED
     del arguments[0]
     totalAttackDamage = 0
     defendingUnits = []
@@ -1142,7 +1142,7 @@ def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTab
     elif parsedCommand[0] == "reveal": reveal(parsedCommand)
     elif parsedCommand[0] == "spy": spy(parsedCommand, teamTable)
     elif parsedCommand[0] == "fire": fire(parsedCommand, teamTable, targetTeamTable)
-    elif parsedCommand[0] == "heading": heading(parsedCommand)
+    elif parsedCommand[0] == "heading": heading(parsedCommand, teamTable)
     elif parsedCommand[0] == "torpedo": torpedo(parsedCommand, teamTable, targetTeamTable)
     elif parsedCommand[0] == "sortie": sortie(parsedCommand, teamTable, targetTeamTable)
     elif parsedCommand[0] == "depthcharge": depthcharge(parsedCommand, teamTable, targetTeamTable)
