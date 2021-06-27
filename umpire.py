@@ -517,7 +517,7 @@ def fire(arguments, teamTable, targetTeamTable):
             defendingUnits.append(x)
         else: print(x, " does not exist.")
     print("Damage:", totalAttackDamage)
-    perUnitDamage = totalAttackDamage / len(defendingUnits.split())
+    perUnitDamage = totalAttackDamage / len(defendingUnits)
     print("Damage per unit:", perUnitDamage)
     for x in defendingUnits:
         location = locationTable.get(x)

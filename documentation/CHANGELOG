@@ -270,6 +270,7 @@ v3.1-pre2 - Shell rewrite debugging
     v3.1-pre2.6 - removed bad .split() function from dogfight(), moved campaign name variable from umpire.py to gamefile
     v3.1-pre2.7 - remove(), append(), and clear() as separate meta-functions deprecated
     v3.1-pre2.8 - fixed bad call of spy() function from shell()
+    v3.1-pre2.9 - removed bad .split() function in fire(), changed some unit names in normandy.py
 
 v3.1-pre3 - Gamefile rewriting
 
