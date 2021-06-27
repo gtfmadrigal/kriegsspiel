@@ -454,7 +454,7 @@ def attack(arguments, teamTable, targetTeamTable): # DEBUGGED
     defendingUnits.clear()
     turn()
 
-def move(arguments, teamTable):
+def move(arguments, teamTable): # DEBUGGED
     global locationTable
     global immobileUnits
     unit = arguments[1]
@@ -479,7 +479,7 @@ def move(arguments, teamTable):
     locationTable[unit] = str(newLocation)
     immobileUnits.append(unit)
 
-def spy(arguments, teamTable):
+def spy(arguments, teamTable): # DEBUGGED
     unit = arguments[1]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
@@ -1140,7 +1140,7 @@ def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTab
     elif parsedCommand[0] == "move": move(parsedCommand, teamTable)
     elif parsedCommand[0] == "hide": hide(parsedCommand)
     elif parsedCommand[0] == "reveal": reveal(parsedCommand)
-    elif parsedCommand[0] == "spy": spy(parsedCommand)
+    elif parsedCommand[0] == "spy": spy(parsedCommand, teamTable)
     elif parsedCommand[0] == "fire": fire(parsedCommand, teamTable, targetTeamTable)
     elif parsedCommand[0] == "heading": heading(parsedCommand)
     elif parsedCommand[0] == "torpedo": torpedo(parsedCommand, teamTable, targetTeamTable)
