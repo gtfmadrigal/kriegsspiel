@@ -429,7 +429,9 @@ def attack(arguments, teamTable, targetTeamTable): # DEBUGGED
             totalAttackDamage = totalAttackDamage + finalDamage
             if x in hiddenUnits: reveal(x)
             use(x)
-            if not x in moveFireTable: freeze(x)
+            localUnitType = unitTable.get(x)
+            unitType = allUnitTypes.get(localUnitType)
+            if not unitType in moveFireTable: freeze(x)
         elif x in targetTeamTable:
             initialDefense = damage(x, attackTable)
             if initialDefense == None: continue
@@ -437,7 +439,9 @@ def attack(arguments, teamTable, targetTeamTable): # DEBUGGED
             defendingUnits.append(x)
             if x in hiddenUnits: reveal(x)
             use(x)
-            if not x in moveFireTable: freeze(x)
+            localUnitType = unitTable.get(x)
+            unitType = allUnitTypes.get(localUnitType)
+            if not unitType in moveFireTable: freeze(x)
         else: print(x, " does not exist.")
     if totalDefenseDamage >= totalAttackDamage:
         print("Attack repelled.")
@@ -512,7 +516,9 @@ def fire(arguments, teamTable, targetTeamTable): # DEBUGGED
             if initialDamage == None: continue
             totalAttackDamage = initialDamage + totalAttackDamage
             use(x)
-            if not x in moveFireTable: freeze(x)
+            localUnitType = unitTable.get(x)
+            unitType = allUnitTypes.get(localUnitType)
+            if not unitType in moveFireTable: freeze(x)
             if x in hiddenUnits: reveal(x)
         elif x in targetTeamTable:
             defendingUnits.append(x)
@@ -933,7 +939,9 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
             totalAttackDamage = totalAttackDamage + finalDamage
             if x in hiddenUnits: reveal(x)
             use(x)
-            if not x in moveFireTable: freeze(x)
+            localUnitType = unitTable.get(x)
+            unitType = allUnitTypes.get(localUnitType)
+            if not unitType in moveFireTable: freeze(x)
         elif x in targetTeamTable:
             if not x in targetTeamFlyingTable:
                 print(x, "is not airborne.")
@@ -944,7 +952,9 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
             defendingUnits.append(x)
             if x in hiddenUnits: reveal(x)
             use(x)
-            if not x in moveFireTable: freeze(x)
+            localUnitType = unitTable.get(x)
+            unitType = allUnitTypes.get(localUnitType)
+            if not unitType in moveFireTable: freeze(x)
         else: print(x, " does not exist.")
     if totalDefenseDamage >= totalAttackDamage:
         print("Attack repelled.")
@@ -973,7 +983,9 @@ def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
             if initialDamage == None: continue
             totalAttackDamage = initialDamage + totalAttackDamage
             use(x)
-            if not x in moveFireTable: freeze(x)
+            localUnitType = unitTable.get(x)
+            unitType = allUnitTypes.get(localUnitType)
+            if not unitType in moveFireTable: freeze(x)
             if x in hiddenUnits: reveal(x)
         elif x in targetTeamTable:
             defendingUnits.append(x)
