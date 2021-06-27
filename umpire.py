@@ -70,43 +70,7 @@ def update():
 
 def error(code, function):
     print(errorMessages.get(code))
-    print("Origin:", str(function))
-
-def remove(item, list):
-    global usedUnits
-    global immobileUnits
-    global hiddenUnits
-    global disabledUnits
-    global alreadyDropped
-    global defendingUnits
-    global deadUnits
-    global firstTeamFlying
-    global secondTeamFlying
-    list.remove(item)
-
-def append(item, list):
-    global usedUnits
-    global immobileUnits
-    global hiddenUnits
-    global disabledUnits
-    global alreadyDropped
-    global defendingUnits
-    global deadUnits
-    global firstTeamFlying
-    global secondTeamFlying
-    list.append(item)
-
-def clear(list):
-    global usedUnits
-    global immobileUnits
-    global hiddenUnits
-    global disabledUnits
-    global alreadyDropped
-    global defendingUnits
-    global deadUnits
-    global firstTeamFlying
-    global secondTeamFlying
-    list.clear()    
+    print("Origin:", str(function))   
 
 def reduce(unit):
     export = 0
@@ -167,6 +131,7 @@ def kill(arguments): # DEBUGGED
     global secondTeamTable
     global firstTeamFlying
     global secondTeamTable
+    global deadUnits
     if len(arguments) == 2: unit = arguments[1]
     else: unit = arguments
     print(unit)
@@ -180,9 +145,9 @@ def kill(arguments): # DEBUGGED
         error("unit", "kill")
         return
     del table[unit]
-    if unit in flyingTable: remove(unit, flyingTable)
+    if unit in flyingTable: flyingTable.remove(unit)
     print(unit, "killed.")
-    append(unit, deadUnits)
+    deadUnits.append(unit)
     update()
 
 def dealDamage(unit, damage, teamTable):
@@ -208,12 +173,16 @@ def score(): # DEBUGGED
 def turn(): # DEBUGGED
     global round
     global airPhase
+    global usedUnits
+    global immobileUnits
+    global alreadyDropped
+    global disabledUnits
     score()
-    clear(usedUnits)
-    clear(immobileUnits)
-    clear(alreadyDropped)
+    usedUnits.clear()
+    immobileUnits.clear()
+    alreadyDropped.clear()
     for x in disabledUnits: freeze(x)
-    clear(disabledUnits)
+    disabledUnits.clear()
     round = round + 1
     airPhase = True
 
@@ -254,18 +223,21 @@ def health(arguments): # DEBUGGED
     score()
 
 def freeze(arguments): # DEBUGGED
-    if len(arguments) == 1: unit = arguments
+    global immobileUnits
+    if len(arguments) == 1: unit = str(arguments)
     else: unit = arguments[1]
-    append(unit, immobileUnits)
+    immobileUnits.append(unit)
 
 def use(arguments): # DEBUGGED
+    global usedUnits
     if len(arguments) == 1: unit = str(arguments)
     else: unit = arguments
-    append(unit, usedUnits)
+    usedUnits.append(unit)
 
 def hide(arguments):
     global secrets
     global locationTable
+    global hiddenUnits
     if len(arguments.split()) == 1: unit = arguments
     else: unit = arguments[1]
     localUnitType = unitTable.get(unit)
@@ -279,7 +251,7 @@ def hide(arguments):
     structure = input("Structure to hide in, if any: ")
     if structure in structureTable:
         locationTable[unit] = structure
-        append(unit, hiddenUnits)
+        hiddenUnits.append(unit)
         newSecret = unit + " hidden inside " + structure
         secrets = secrets + ", " + newSecret
         return
@@ -287,7 +259,7 @@ def hide(arguments):
     if not terrain in hideableTerrain:
         error("terrain", "hide")
         return
-    append(unit, hiddenUnits)
+    hiddenUnits.append(unit)
     locationTable[unit] = terrain
     location = input("Location of this hidden unit: ")
     newSecret = unit + " hidden at " + location
@@ -296,6 +268,7 @@ def hide(arguments):
 def reveal(arguments):
     global secrets
     global locationTable
+    global hiddenUnits
     if len(arguments.split()) == 1: unit = arguments
     else: unit = arguments[1]
     localUnitType = unitTable.get(unit)
@@ -305,7 +278,7 @@ def reveal(arguments):
         return
     newLocation = input("New terrain: ")
     locationTable[unit] = newLocation
-    remove(unit, hiddenUnits)
+    hiddenUnits.remove(unit)
     newSecret = unit + " is no longer hidden."
     secrets = secrets + ", " + newSecret
 
@@ -330,11 +303,12 @@ def convert(arguments, teamTable): # DEBUGGED
     update()
 
 def disable(arguments): # DEBUGGED
+    global disabledUnits
     if len(arguments) == 1: unit = arguments
     else: unit = arguments[1]
     freeze(unit)
     use(unit)
-    append(unit, disabledUnits)
+    disabledUnits.append(unit)
 
 def merge(arguments, teamTable): # DEBUGGED
     global firstTeamTable
@@ -387,6 +361,9 @@ def split(arguments, teamTable): # DEBUGGED
     global secondTeamTable
     global dividedTable
     global unitTable
+    global usedUnits
+    global immobileUnits
+    global disabledUnits
     del arguments[0]
     originalUnit = arguments[0]
     localUnitType = unitTable.get(originalUnit)
@@ -419,11 +396,11 @@ def split(arguments, teamTable): # DEBUGGED
     del teamTable[originalUnit]
     del unitTable[originalUnit]
     if originalUnit in dividedTable: del dividedTable[originalUnit] 
-    if originalUnit in immobileUnits: remove(originalUnit, immobileUnits)
+    if originalUnit in immobileUnits: immobileUnits.remove(originalUnit)
     if originalUnit in disabledUnits: 
-        remove(originalUnit, disabledUnits)
+        disabledUnits.remove(originalUnit)
         reveal(originalUnit)
-    if originalUnit in usedUnits: remove(originalUnit, usedUnits)
+    if originalUnit in usedUnits: usedUnits.remove(originalUnit)
     if originalUnit in hiddenUnits: reveal(originalUnit)       
 
 def man(arguments): # DEBUGGED
@@ -479,6 +456,7 @@ def attack(arguments, teamTable, targetTeamTable): # DEBUGGED
 
 def move(arguments, teamTable):
     global locationTable
+    global immobileUnits
     unit = arguments[1]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
@@ -493,13 +471,13 @@ def move(arguments, teamTable):
     if not unitType in moveFireTable:
         use(unit)
     currentLocation = locationTable.get(unit)
-    print("Current location or terrain: ", currentLocation)
+    print("Current location or terrain:", currentLocation)
     newLocation = input("New location or terrain: ")
     if unit in hiddenUnits:
         if not newLocation in structureTable or not newLocation in hideableTerrain:
             reveal(unit)
     locationTable[unit] = str(newLocation)
-    freeze(unit)
+    immobileUnits.append(unit)
 
 def spy(arguments, teamTable):
     unit = arguments[1]
@@ -629,6 +607,7 @@ def sortie(arguments, teamTable, targetTeamTable):
 def depthcharge(arguments, teamTable, targetTeamTable):
     global firstTeamTable
     global secondTeamTable
+    global alreadyDropped
     del arguments[0]
     unit = arguments [0]
     localUnitType = unitTable.get(unit)
@@ -650,7 +629,7 @@ def depthcharge(arguments, teamTable, targetTeamTable):
         disable(target)
     else: print("Missed.")
     freeze(unit)
-    append(unit, alreadyDropped)
+    alreadyDropped.append(unit)
     score()
 
 def board(arguments, teamTable, targetTeamTable):
@@ -755,6 +734,8 @@ def missile(arguments, teamTable, targetTeamTable):
 
 # Air functions
 def takeoff(arguments): # DEBUGGED
+    global firstTeamFlying
+    global secondTeamFlying
     unit = arguments[1]
     if unit in firstTeamTable: teamFlyingTable = firstTeamFlying
     elif unit in secondTeamTable: teamFlyingTable = secondTeamFlying
@@ -772,11 +753,13 @@ def takeoff(arguments): # DEBUGGED
     if unit in teamFlyingTable:
         print("Already airborne.")
         return
-    append(unit, teamFlyingTable)
+    teamFlyingTable.append(unit)
     if unitType in hideTable:
         hide(unit)
 
 def land(arguments): # DEBUGGED
+    global firstTeamFlying
+    global secondTeamFlying
     if len(arguments) == 2: unit = arguments[1]
     else: unit = arguments
     if unit in firstTeamTable: teamFlyingTable = firstTeamFlying
@@ -792,7 +775,7 @@ def land(arguments): # DEBUGGED
     if not unit in teamFlyingTable:
         error("airborne", "land")
         return
-    remove(unit, teamFlyingTable)
+    teamFlyingTable.remove(unit)
     use(unit)
 
 def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
@@ -1154,7 +1137,7 @@ def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTab
     elif parsedCommand[0] == "info": info(parsedCommand)
     elif parsedCommand[0] == "use": use(parsedCommand)
     elif parsedCommand[0] == "attack": attack(parsedCommand, teamTable, targetTeamTable)
-    elif parsedCommand[0] == "move": move(parsedCommand)
+    elif parsedCommand[0] == "move": move(parsedCommand, teamTable)
     elif parsedCommand[0] == "hide": hide(parsedCommand)
     elif parsedCommand[0] == "reveal": reveal(parsedCommand)
     elif parsedCommand[0] == "spy": spy(parsedCommand)
