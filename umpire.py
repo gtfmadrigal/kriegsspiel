@@ -104,8 +104,11 @@ def fortificationReduce(structure, damage):
         return finalNetDamage
 
 def damage(unit, table): # DEBUGGED
+    # print(unit)
     localUnitType = unitTable.get(unit)
+    # print(localUnitType)
     unitType = allUnitTypes.get(localUnitType)
+    # print(unitType)
     if unit in immobileUnits or unit in usedUnits:
         error("available", "damage")
         return
@@ -565,6 +568,7 @@ def torpedo(arguments, teamTable, targetTeamTable):
         error("function", "torpedo")
         return
     effectiveness = 0
+    target = ""
     for x in arguments:
         if x == ">": pass
         elif x in teamTable: effectiveness = damage(x, torpedoTable)

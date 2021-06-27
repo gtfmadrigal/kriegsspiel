@@ -274,6 +274,7 @@ v3.1-pre2 - Shell rewrite debugging
     v3.1-pre2.10 - fixed bad heading() call from shell()
     v3.1-pre2.11 - heading() now freezes the unit
     v3.1-pre2.12 - unitTypes checked for presence in moveFireTable rather than the unit itself, fixing 11 functions
+    v3.1-pre2.13 - polished torpedo()
 
 v3.1-pre3 - Gamefile rewriting
 
