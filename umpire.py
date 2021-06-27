@@ -226,6 +226,7 @@ def freeze(arguments): # DEBUGGED
     global immobileUnits
     if len(arguments) == 1: unit = str(arguments)
     else: unit = arguments[1]
+    print(unit)
     immobileUnits.append(unit)
 
 def use(arguments): # DEBUGGED
@@ -529,7 +530,8 @@ def fire(arguments, teamTable, targetTeamTable): # DEBUGGED
     score()
 
 # Naval functions
-def heading(arguments, teamTable):
+def heading(arguments, teamTable): # DEBUGGED
+    global immobileUnits
     unit = arguments[1]
     if not unit in teamTable:
         error("team", "convert")
@@ -542,7 +544,7 @@ def heading(arguments, teamTable):
     if not unitType in headingTable:
         error("required", "heading")
         return
-    freeze(unit)
+    immobileUnits.append(unit)
     if not unitType in moveFireTable: use(unit)
 
 def torpedo(arguments, teamTable, targetTeamTable):

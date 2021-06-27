@@ -272,6 +272,7 @@ v3.1-pre2 - Shell rewrite debugging
     v3.1-pre2.8 - fixed bad call of spy() function from shell()
     v3.1-pre2.9 - removed bad .split() function in fire(), changed some unit names in normandy.py
     v3.1-pre2.10 - fixed bad heading() call from shell()
+    v3.1-pre2.11 - heading() now freezes the unit
 
 v3.1-pre3 - Gamefile rewriting
 
