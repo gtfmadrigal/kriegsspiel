@@ -592,9 +592,12 @@ def torpedo(arguments, teamTable, targetTeamTable): # DEBUGGED
     if unit in hiddenUnits: reveal(unit)
     score()
 
-def sortie(arguments, teamTable, targetTeamTable):
+def sortie(arguments, teamTable, targetTeamTable): # DEBUGGED
     del arguments[0]
     unit = arguments[0]
+    if not unit in teamTable:
+        print("team", "sortie")
+        return
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if unit in usedUnits:
@@ -616,7 +619,7 @@ def sortie(arguments, teamTable, targetTeamTable):
     if defenseDamage >= attackDamage: print("Sortie repelled.")
     else:
         netDamage = attackDamage - defenseDamage
-        perUnitDamage = netDamage / len(defendingUnits.split())
+        perUnitDamage = netDamage / len(defendingUnits.split)
         for x in defendingUnits:
             if x in hiddenUnits: reveal(x)
             dealDamage(defendingUnits, perUnitDamage, targetTeamTable)
