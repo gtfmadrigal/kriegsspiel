@@ -285,6 +285,7 @@ v3.1-pre2 - Shell rewrite debugging
 
 v3.1-pre3 - Gamefile rewriting
     v3.1-pre3.1 - test_gamefile.py created
+    v3.1-pre3.2 - error calls fixed
 
 v3.1-pre4 - Documentation updating
 - update manpages dictionary

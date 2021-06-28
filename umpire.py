@@ -469,7 +469,7 @@ def move(arguments, teamTable): # DEBUGGED
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unit in teamTable:
-        error("team", "convert")
+        error("team", "move")
         return
     if unit in immobileUnits:
         error("available", "move")
