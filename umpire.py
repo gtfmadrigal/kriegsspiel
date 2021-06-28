@@ -1,13 +1,10 @@
 import random
-from normandy import *
 
 # Strings
 round = 1
 commandNumber = 1
 secrets = ""
 airPhase = True
-firstHealth = sum(firstTeamTable.values())
-secondHealth = sum(secondTeamTable.values())
 helpTextBlock = """
 Umpire commands: score, turn, details, quit, help, health, kill, freeze, convert, disable, merge, split, info, use, man
 Theater-agnostic commands: attack, move, hide, reveal, spy, fire
@@ -57,6 +54,9 @@ structureTable = {}
 manPages = {"score":"'score'", "turn":"'turn'", "details":"'details'", "quit":"'quit'", "help":"'help'", "health":"'health [unit]'", "kill":"'kill [unit]'", "convert":"'convert [unit]'", "disable":"'disable [unit]'", "merge":"'merge [unit1] [unit2] ... > [unit]'", "split":"'split [unit] > [unit1] [unit2] ...'", "info":"'info [unit]'", "use":"'use [unit]'", "man":"'man [command]'", "attack":"'attack [unit1] [unit2] ... > [unit3] [unit4] ...'", "hide":"'hide [unit]'", "reveal":"'reveal [unit]'", "fire":"'fire [unit1] [unit2] ... > [unit3] [unit4] ...'", "heading":"'heading [unit]'"}
 
 # Initialization work
+from test_gamefile import *
+firstHealth = sum(firstTeamTable.values())
+secondHealth = sum(secondTeamTable.values())
 loadGame()
 
 # Meta-functions

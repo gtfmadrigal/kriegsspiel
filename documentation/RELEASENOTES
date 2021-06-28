@@ -71,7 +71,7 @@ Features to be added in a later release:
 - Package kriegsspiel files into binaries, to be offered with the releases.
 - Choose which gamefile is imported by hand, instead of setting it in the source code.
 
-v2.3 - Final naval battles release:
+v2.3 - Final naval battles release
 
 New features in this release:
 - Ability to convert units from one type to another
@@ -108,7 +108,7 @@ Features to be added in a later release:
 - Ability to reduce damage using fortifications
 - Terrain tracking
 
-(UPCOMING) v3.1 - Updated shell release
+(UPCOMING) v4.0 - Updated shell release
 
 New features in this release:
 - Arguments can be passed to commands
@@ -116,9 +116,19 @@ New features in this release:
 - In-function prompts no longer look like the shell
 - Shell can parse commands via lists, rather than having to input units individually
 - Terrain can reduce travel and damage
-- Fortifications can reduce damage and cause hiding
+- Useful fortifications
 - General terrain tracking
 
 Features to be added in a later release
 - Nuclear weapons
 - Save and return to in-progress games
+
+(UPCOMING) v4.1 - Nuclear weapons release
+
+New features in this release:
+- Nuclear weapons
+
+(UPCOMING) v4.2 - Save and return release
+
+New features in this release:
+- Save games and return to them later
