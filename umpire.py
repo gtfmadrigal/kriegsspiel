@@ -626,11 +626,14 @@ def sortie(arguments, teamTable, targetTeamTable): # DEBUGGED
     use(unit)
     score()
 
-def depthcharge(arguments, teamTable, targetTeamTable):
+def depthcharge(arguments, teamTable, targetTeamTable): # DEBUGGED
     global firstTeamTable
     global secondTeamTable
     global alreadyDropped
     del arguments[0]
+    if not unit in teamTable:
+        error("team", "depthcharge")
+        return
     unit = arguments [0]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
