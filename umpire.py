@@ -704,9 +704,10 @@ def board(arguments, teamTable, targetTeamTable): # DEBUGGED
     score()
 
 # Army functions
-def build(arguments, teamTable):
+def build(arguments, teamTable): # DEBUGGED
     global structureTable
-    unit = arguments[1]
+    del arguments[0]
+    unit = arguments[0]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unit in teamTable:
