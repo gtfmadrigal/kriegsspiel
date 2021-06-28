@@ -615,7 +615,9 @@ def sortie(arguments, teamTable, targetTeamTable): # DEBUGGED
         elif x in targetTeamTable: 
             defenseDamage = damage(x, sortieDefenseTable)
             defendingUnits.append(x)
-        else: print(x, "does not exist.")
+        else: 
+            print(x, "does not exist.")
+            return
     if defenseDamage >= attackDamage: print("Sortie repelled.")
     else:
         netDamage = attackDamage - defenseDamage
@@ -631,10 +633,10 @@ def depthcharge(arguments, teamTable, targetTeamTable): # DEBUGGED
     global secondTeamTable
     global alreadyDropped
     del arguments[0]
+    unit = arguments [0]
     if not unit in teamTable:
         error("team", "depthcharge")
         return
-    unit = arguments [0]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if unit in alreadyDropped:
@@ -647,7 +649,9 @@ def depthcharge(arguments, teamTable, targetTeamTable): # DEBUGGED
         if x == ">": pass
         elif x in teamTable: effectiveness = damage(x, depthchargeTable)
         elif x in targetTeamTable: target = x
-        else: print(x, "does not exist.")
+        else: 
+            print(x, "does not exist.")
+            return
     if effectiveness == 6: kill(target)
     elif effectiveness == 5:
         print(target, "disabled.")
@@ -657,11 +661,14 @@ def depthcharge(arguments, teamTable, targetTeamTable): # DEBUGGED
     alreadyDropped.append(unit)
     score()
 
-def board(arguments, teamTable, targetTeamTable):
+def board(arguments, teamTable, targetTeamTable): # DEBUGGED
     global firstTeamTable
     global secondTeamTable
     del arguments[0]
     unit = arguments[0]
+    if not unit in teamTable:
+        error("team", "depthcharge")
+        return
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     currentHealth = teamTable.get(unit)
@@ -675,7 +682,9 @@ def board(arguments, teamTable, targetTeamTable):
         if x == ">": pass
         elif x in teamTable: effectiveness = damage(x, boardTable)
         elif x in targetTeamTable: target = x
-        else: print(x, "does not exist.")
+        else: 
+            print(x, "does not exist.")
+            return
     if effectiveness >= 5:
         print(target, "seized.")
         targetHealth = targetTeamTable.get(target)
