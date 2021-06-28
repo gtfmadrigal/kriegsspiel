@@ -525,7 +525,9 @@ def fire(arguments, teamTable, targetTeamTable): # DEBUGGED
             if x in hiddenUnits: reveal(x)
         elif x in targetTeamTable:
             defendingUnits.append(x)
-        else: print(x, " does not exist.")
+        else: 
+            print(x, " does not exist.")
+            return
     print("Damage:", totalAttackDamage)
     perUnitDamage = totalAttackDamage / len(defendingUnits)
     print("Damage per unit:", perUnitDamage)
