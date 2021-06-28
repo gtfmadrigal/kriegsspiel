@@ -281,6 +281,7 @@ v3.1-pre2 - Shell rewrite debugging
     v3.1-pre2.17 - debugged common errors in depthcharge()
     v3.1-pre2.18 - debugged common errors in board()
     v3.1-pre2.19 - debugged common errors in build()
+    v3.1-pre2.20 - debugged common errors in missile()
 
 v3.1-pre3 - Gamefile rewriting
 

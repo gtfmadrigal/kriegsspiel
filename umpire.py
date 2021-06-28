@@ -729,7 +729,7 @@ def build(arguments, teamTable): # DEBUGGED
     use(unit)
     if not unitType in moveFireTable: freeze(unit)
 
-def missile(arguments, teamTable, targetTeamTable):
+def missile(arguments, teamTable, targetTeamTable): # DEBUGGED
     global firstTeamTable
     global secondTeamTable
     del arguments[0]
@@ -740,7 +740,9 @@ def missile(arguments, teamTable, targetTeamTable):
             if x in hiddenUnits: reveal(x)
             use(x)
         elif x in targetTeamTable: target = x
-        else: print(x, "does not exist.")
+        else: 
+            print(x, "does not exist.")
+            return
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if unit in usedUnits:
