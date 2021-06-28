@@ -276,6 +276,7 @@ v3.1-pre2 - Shell rewrite debugging
     v3.1-pre2.12 - unitTypes checked for presence in moveFireTable rather than the unit itself, fixing 11 functions
     v3.1-pre2.13 - polished torpedo()
     v3.1-pre2.14 - fire() will now only execute if the units passed to it exist; otherwise, it quits
+    v3.1-pre2.15 - torpedo() will now only execute if the units passed to it exist; otherwise, it quits
 
 v3.1-pre3 - Gamefile rewriting
 

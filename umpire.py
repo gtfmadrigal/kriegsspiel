@@ -558,9 +558,12 @@ def heading(arguments, teamTable): # DEBUGGED
     immobileUnits.append(unit)
     if not unitType in moveFireTable: use(unit)
 
-def torpedo(arguments, teamTable, targetTeamTable):
+def torpedo(arguments, teamTable, targetTeamTable): # DEBUGGED
     del arguments[0]
     unit = arguments[0]
+    if not unit in teamTable:
+        error("team", "torpedo")
+        return
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if unit in immobileUnits or unit in usedUnits:
@@ -575,7 +578,9 @@ def torpedo(arguments, teamTable, targetTeamTable):
         if x == ">": pass
         elif x in teamTable: effectiveness = damage(x, torpedoTable)
         elif x in targetTeamTable: target = x
-        else: print(x, "does not exist.")
+        else: 
+            print(x, "does not exist.")
+            return
     oldHealth = targetTeamTable.get(target)
     if effectiveness == 6 or oldHealth - effectiveness <= 0:   
         kill(target)
