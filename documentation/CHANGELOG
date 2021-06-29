@@ -299,3 +299,5 @@ v4.0-pre4 - Documentation updating
 v4.0-pre5 - Final code polishing
     v4.0-pre5.1 - empty commands no longer cause crashes
     v4.0-pre5.2 - several bad .split() calls removed
+
+v4.0 - Updated shell release
