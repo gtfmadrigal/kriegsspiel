@@ -1120,7 +1120,10 @@ def airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlying
         print("This command fails.")
         commandNumber = commandNumber + 1
         return
-    if parsedCommand[0] == "score": score()
+    if not parsedCommand:
+        error("command", "air-shell")
+        airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
+    elif parsedCommand[0] == "score": score()
     elif parsedCommand[0] == "turn": 
         for x in teamFlyingTable: kill(x)
         score()
@@ -1154,9 +1157,9 @@ def airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlying
 def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
     global airPhase
     global commandNumber
-    # if airPhase == True and airTheater == True:
-        # airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
-        # return
+    if airPhase == True and airTheater == True:
+        airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
+        return
     prompt = str(round) + " ~ " + str(commandNumber) + " " + str(campaign) + ": " + str(team) + " % "
     rawCommand = input(prompt)
     parsedCommand = rawCommand.split()
@@ -1164,7 +1167,10 @@ def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTab
         print("This command fails.")
         commandNumber = commandNumber + 1
         return
-    if parsedCommand[0] == "score": score()
+    if not parsedCommand:
+        error("command", "shell")
+        return
+    elif parsedCommand[0] == "score": score()
     elif parsedCommand[0] == "turn": turn()
     elif parsedCommand[0] == "details": details()
     elif parsedCommand[0] == "quit": quitGame()
