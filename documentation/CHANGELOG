@@ -294,8 +294,6 @@ v3.1-pre3 - Gamefile rewriting
 v4.0-pre4 - Documentation updating
     v4.0-pre4.1 - manpages dictionary completed
     v4.0-pre4.2 - manual fully completed for the v4.0 release
-
-- update fourth edition manual
-- add a "history of code writing" section
+    v4.0-pre4.3 - removed remnant third edition manual
 
 v4.0-pre5 - Final code polishing
