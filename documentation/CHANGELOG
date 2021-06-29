@@ -289,6 +289,7 @@ v3.1-pre3 - Gamefile rewriting
     v3.1-pre3.3 - v3.1 release cancelled, next release planned is version 4.0
     v4.0-pre3.4 - brandywine.py gamefile updated
     v4.0-pre3.5 - nile.py gamefile updated
+    v4.0-pre3.6 - gamefile_template.py updated
 
 v4.0-pre4 - Documentation updating
 - update manpages dictionary
