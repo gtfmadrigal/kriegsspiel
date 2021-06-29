@@ -292,11 +292,10 @@ v3.1-pre3 - Gamefile rewriting
     v4.0-pre3.6 - gamefile_template.py updated
 
 v4.0-pre4 - Documentation updating
-- update manpages dictionary
+    v4.0-pre4.1 - manpages dictionary completed
+    
 - update fourth edition manual
-- add better code documentary
+- add better code documentation
 - add a "history of code writing" section
 
 v4.0-pre5 - Final code polishing
-- remove unnecessary for loops
-- remove debugging messages and comments in the code itself
