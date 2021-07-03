@@ -654,6 +654,7 @@ def depthcharge(arguments, teamTable, targetTeamTable): # DEBUGGED
     global alreadyDropped
     global usedUnits
     global immobileUnits
+    global disabledUnits
     del arguments[0]
     unit = arguments [0]
     if not unit in teamTable:
@@ -677,7 +678,8 @@ def depthcharge(arguments, teamTable, targetTeamTable): # DEBUGGED
     if effectiveness == 6: kill(target)
     elif effectiveness == 5:
         print(target, "disabled.")
-        disable(target)
+        immobileUnits.append(target)
+        disabledUnits.append(target)
     else: print("Missed.")
     immobileUnits.append(unit)
     alreadyDropped.append(unit)
@@ -688,6 +690,7 @@ def board(arguments, teamTable, targetTeamTable): # DEBUGGED
     global secondTeamTable
     global usedUnits
     global immobileUnits
+    global disabledUnits
     del arguments[0]
     unit = arguments[0]
     if not unit in teamTable:
@@ -723,7 +726,8 @@ def board(arguments, teamTable, targetTeamTable): # DEBUGGED
         else:
             newHealth = currentHealth - effectiveness
             teamTable[unit] = newHealth
-        disable(unit)
+        immobileUnits.append(unit)
+        disabledUnits.append(unit)
     usedUnits.append(unit)
     score()
 
@@ -732,6 +736,8 @@ def nuke(arguments, teamTable, targetTeamTable):
     global secondTeamTable
     global warheads
     global usedUnits
+    global immobileUnits
+    global disabledUnits
     del arguments[0]
     unit = arguments[0]
     target = arguments[2]
@@ -769,7 +775,8 @@ def nuke(arguments, teamTable, targetTeamTable):
         if x in structureTable: fortificationReduce(x, quarterDamage)
         elif x in targetTeamTable: dealDamage(x, quarterDamage, targetTeamTable)
         else: print(x, "is not a structure or a unit.")
-    disable(unit)
+    immobileUnits.append(unit)
+    disabledUnits.append(unit)
 
 # Army functions
 def build(arguments, teamTable): # DEBUGGED
@@ -892,6 +899,8 @@ def land(arguments): # DEBUGGED
 
 def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
     global usedUnits
+    global immobileUnits
+    global disabledUnits
     del arguments[0]
     defendingUnits = []
     for x in arguments:
@@ -915,7 +924,9 @@ def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
     effectiveness = 6
     if effectiveness == 6:
         print("Pulse effective.")
-        for x in defendingUnits: disable(x)
+        for x in defendingUnits: 
+            immobileUnits.append(x)
+            disabledUnits.append(x)
     else:
         print("Pulse ineffective.")
     usedUnits.append(unit)
