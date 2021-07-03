@@ -184,7 +184,9 @@ def turn(): # DEBUGGED
     usedUnits.clear()
     immobileUnits.clear()
     alreadyDropped.clear()
-    for x in disabledUnits: immobileUnits.append(x)
+    for x in disabledUnits: 
+        immobileUnits.append(x)
+        usedUnits.append(x)
     disabledUnits.clear()
     round = round + 1
     airPhase = True
@@ -364,6 +366,7 @@ def merge(arguments, teamTable): # DEBUGGED
     if disabled == True: 
         immobileUnits.append(finalUnit)
         disabledUnits.append(finalUnit)
+        usedUnits.append(finalUnit)
     if hidden == True: hiddenUnits.append(finalUnit)
 
 def split(arguments, teamTable): # DEBUGGED
@@ -402,6 +405,7 @@ def split(arguments, teamTable): # DEBUGGED
         if originalUnit in disabledUnits:
             immobileUnits.append(x)
             disabledUnits.append(x)
+            usedUnits.append(x)
         if originalUnit in usedUnits: usedUnits.append(x)
         if originalUnit in hiddenUnits: hiddenUnits.append(x)
         dividedTable[x] = 1 / numberOfUnits
@@ -680,6 +684,7 @@ def depthcharge(arguments, teamTable, targetTeamTable): # DEBUGGED
         print(target, "disabled.")
         immobileUnits.append(target)
         disabledUnits.append(target)
+        usedUnits.append(target)
     else: print("Missed.")
     immobileUnits.append(unit)
     alreadyDropped.append(unit)
@@ -728,6 +733,7 @@ def board(arguments, teamTable, targetTeamTable): # DEBUGGED
             teamTable[unit] = newHealth
         immobileUnits.append(unit)
         disabledUnits.append(unit)
+        usedUnits.append(unit)
     usedUnits.append(unit)
     score()
 
@@ -777,6 +783,7 @@ def nuke(arguments, teamTable, targetTeamTable):
         else: print(x, "is not a structure or a unit.")
     immobileUnits.append(unit)
     disabledUnits.append(unit)
+    usedUnits.append(unit)
 
 # Army functions
 def build(arguments, teamTable): # DEBUGGED
@@ -927,6 +934,7 @@ def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
         for x in defendingUnits: 
             immobileUnits.append(x)
             disabledUnits.append(x)
+            usedUnits.append(x)
     else:
         print("Pulse ineffective.")
     usedUnits.append(unit)

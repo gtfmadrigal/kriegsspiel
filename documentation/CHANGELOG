@@ -306,6 +306,7 @@ v4.1-pre1 - Nuclear weapons
     v4.1-pre1.1 - added nuke() function and nukeTable{} dictionary
     v4.1-pre1.2 - use() and freeze() function subcalls deprecated
     v4.1-pre1.3 - disable() function subcalls deprecated
+    v4.1-pre1.4 - nuke() function debugged
 
 - add nuclear table and function
 - debug nuke() function
