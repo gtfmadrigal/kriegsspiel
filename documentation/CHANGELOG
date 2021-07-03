@@ -304,6 +304,7 @@ v4.0 - Updated shell release
 
 v4.1-pre1 - Nuclear weapons
     v4.1-pre1.1 - added nuke() function and nukeTable{} dictionary
+    v4.1-pre1.2 - use() and freeze() function subcalls deprecated
 
 - add nuclear table and function
 - debug nuke() function

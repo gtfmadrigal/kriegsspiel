@@ -184,7 +184,7 @@ def turn(): # DEBUGGED
     usedUnits.clear()
     immobileUnits.clear()
     alreadyDropped.clear()
-    for x in disabledUnits: freeze(x)
+    for x in disabledUnits: immobileUnits.append(x)
     disabledUnits.clear()
     round = round + 1
     airPhase = True
@@ -307,10 +307,12 @@ def convert(arguments, teamTable): # DEBUGGED
 
 def disable(arguments): # DEBUGGED
     global disabledUnits
+    global usedUnits
+    global immobileUnits
     if len(arguments) == 1: unit = arguments
     else: unit = arguments[1]
-    freeze(unit)
-    use(unit)
+    immobileUnits.append(unit)
+    usedUnits.append(unit)
     disabledUnits.append(unit)
 
 def merge(arguments, teamTable): # DEBUGGED
@@ -318,6 +320,9 @@ def merge(arguments, teamTable): # DEBUGGED
     global secondTeamTable
     global unitTable
     global dividedTable
+    global usedUnits
+    global immobileUnits
+    global disabledUnits
     del arguments[0]
     mergedLocalUnitType = unitTable.get(arguments[0])
     mergedUnitType = allUnitTypes.get(mergedLocalUnitType)
@@ -354,10 +359,12 @@ def merge(arguments, teamTable): # DEBUGGED
     for x in mergedUnits: 
         del teamTable[x]
         del unitTable[x]
-    if immobile == True: freeze(finalUnit)
-    if used == True: use(finalUnit)
-    if disabled == True: disable(finalUnit)
-    if hidden == True: hide(finalUnit)
+    if immobile == True: immobileUnits.append(finalUnit)
+    if used == True: usedUnits.append(finalUnit)
+    if disabled == True: 
+        immobileUnits.append(finalUnit)
+        disabledUnits.append(finalUnit)
+    if hidden == True: hiddenUnits.append(finalUnit)
 
 def split(arguments, teamTable): # DEBUGGED
     global firstTeamTable
@@ -391,10 +398,12 @@ def split(arguments, teamTable): # DEBUGGED
     for x in newUnits:
         teamTable[x] = newHealth
         unitTable[x] = unitType
-        if originalUnit in immobileUnits: freeze(x)
-        if originalUnit in disabledUnits: disable(x)
-        if originalUnit in usedUnits: use(x)
-        if originalUnit in hiddenUnits: hide(x)
+        if originalUnit in immobileUnits: immobileUnits.append(x)
+        if originalUnit in disabledUnits:
+            immobileUnits.append(x)
+            disabledUnits.append(x)
+        if originalUnit in usedUnits: usedUnits.append(x)
+        if originalUnit in hiddenUnits: hiddenUnits.append(x)
         dividedTable[x] = 1 / numberOfUnits
     del teamTable[originalUnit]
     del unitTable[originalUnit]
@@ -402,9 +411,9 @@ def split(arguments, teamTable): # DEBUGGED
     if originalUnit in immobileUnits: immobileUnits.remove(originalUnit)
     if originalUnit in disabledUnits: 
         disabledUnits.remove(originalUnit)
-        reveal(originalUnit)
+        hiddenUnits.remove(originalUnit)
     if originalUnit in usedUnits: usedUnits.remove(originalUnit)
-    if originalUnit in hiddenUnits: reveal(originalUnit)       
+    if originalUnit in hiddenUnits: hiddenUnits.remove(originalUnit)      
 
 def man(arguments): # DEBUGGED
     command = arguments[1]
@@ -416,6 +425,9 @@ def man(arguments): # DEBUGGED
 
 # Theater-agnostic functions
 def attack(arguments, teamTable, targetTeamTable): # DEBUGGED
+    global usedUnits
+    global hiddenUnits
+    global immobileUnits
     totalAttackDamage = 0
     totalDefenseDamage = 0
     defendingUnits = []
@@ -429,21 +441,21 @@ def attack(arguments, teamTable, targetTeamTable): # DEBUGGED
             if reduce(x) == None: finalDamage = initialDamage
             else: finalDamage = initialDamage - reduce(x)
             totalAttackDamage = totalAttackDamage + finalDamage
-            if x in hiddenUnits: reveal(x)
-            use(x)
+            if x in hiddenUnits: hiddenUnits.remove(x)
+            usedUnits.append(x)
             localUnitType = unitTable.get(x)
             unitType = allUnitTypes.get(localUnitType)
-            if not unitType in moveFireTable: freeze(x)
+            if not unitType in moveFireTable: immobileUnits.append(x)
         elif x in targetTeamTable:
             initialDefense = damage(x, attackTable)
             if initialDefense == None: continue
             totalDefenseDamage = totalDefenseDamage + initialDefense
             defendingUnits.append(x)
-            if x in hiddenUnits: reveal(x)
-            use(x)
+            if x in hiddenUnits: hiddenUnits.remove(x)
+            usedUnits.append(x)
             localUnitType = unitTable.get(x)
             unitType = allUnitTypes.get(localUnitType)
-            if not unitType in moveFireTable: freeze(x)
+            if not unitType in moveFireTable: immobileUnits.append(x)
         else: print(x, " does not exist.")
     if totalDefenseDamage >= totalAttackDamage:
         print("Attack repelled.")
@@ -464,6 +476,7 @@ def attack(arguments, teamTable, targetTeamTable): # DEBUGGED
 def move(arguments, teamTable): # DEBUGGED
     global locationTable
     global immobileUnits
+    global usedUnits
     unit = arguments[1]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
@@ -476,17 +489,18 @@ def move(arguments, teamTable): # DEBUGGED
     if unitType in headingTable:
         error("heading", "move")
     if not unitType in moveFireTable:
-        use(unit)
+        usedUnits.append(unit)
     currentLocation = locationTable.get(unit)
     print("Current location or terrain:", currentLocation)
     newLocation = input("New location or terrain: ")
     if unit in hiddenUnits:
         if not newLocation in structureTable or not newLocation in hideableTerrain:
-            reveal(unit)
+            usedUnits.remove(unit)
     locationTable[unit] = str(newLocation)
     immobileUnits.append(unit)
 
 def spy(arguments, teamTable): # DEBUGGED
+    global usedUnits
     unit = arguments[1]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
@@ -504,9 +518,11 @@ def spy(arguments, teamTable): # DEBUGGED
     elif effectiveness == 1: print("Bad information.")
     else: print("No information.")
     details()
-    use(unit)
+    usedUnits.append(unit)
 
 def fire(arguments, teamTable, targetTeamTable): # DEBUGGED
+    global usedUnits
+    global immobileUnits
     del arguments[0]
     totalAttackDamage = 0
     defendingUnits = []
@@ -517,10 +533,10 @@ def fire(arguments, teamTable, targetTeamTable): # DEBUGGED
             initialDamage = damage(x, fireTable)
             if initialDamage == None: continue
             totalAttackDamage = initialDamage + totalAttackDamage
-            use(x)
+            usedUnits.append(x)
             localUnitType = unitTable.get(x)
             unitType = allUnitTypes.get(localUnitType)
-            if not unitType in moveFireTable: freeze(x)
+            if not unitType in moveFireTable: immobileUnits.append(x)
             if x in hiddenUnits: reveal(x)
         elif x in targetTeamTable:
             defendingUnits.append(x)
@@ -542,6 +558,7 @@ def fire(arguments, teamTable, targetTeamTable): # DEBUGGED
 # Naval functions
 def heading(arguments, teamTable): # DEBUGGED
     global immobileUnits
+    global usedUnits
     unit = arguments[1]
     if not unit in teamTable:
         error("team", "convert")
@@ -555,9 +572,11 @@ def heading(arguments, teamTable): # DEBUGGED
         error("required", "heading")
         return
     immobileUnits.append(unit)
-    if not unitType in moveFireTable: use(unit)
+    if not unitType in moveFireTable: usedUnits.append(unit)
 
 def torpedo(arguments, teamTable, targetTeamTable): # DEBUGGED
+    global usedUnits
+    global immobileUnits
     del arguments[0]
     unit = arguments[0]
     if not unit in teamTable:
@@ -586,12 +605,14 @@ def torpedo(arguments, teamTable, targetTeamTable): # DEBUGGED
     else:
         newHealth = oldHealth - effectiveness
         targetTeamTable[target] = newHealth
-    use(unit)
-    freeze(unit)
+    usedUnits.append(unit)
+    immobileUnits.append(unit)
     if unit in hiddenUnits: reveal(unit)
     score()
 
 def sortie(arguments, teamTable, targetTeamTable): # DEBUGGED
+    global usedUnits
+    global immobileUnits
     del arguments[0]
     unit = arguments[0]
     if not unit in teamTable:
@@ -624,13 +645,15 @@ def sortie(arguments, teamTable, targetTeamTable): # DEBUGGED
         for x in defendingUnits:
             if x in hiddenUnits: reveal(x)
             dealDamage(defendingUnits, perUnitDamage, targetTeamTable)
-    use(unit)
+    usedUnits.append(unit)
     score()
 
 def depthcharge(arguments, teamTable, targetTeamTable): # DEBUGGED
     global firstTeamTable
     global secondTeamTable
     global alreadyDropped
+    global usedUnits
+    global immobileUnits
     del arguments[0]
     unit = arguments [0]
     if not unit in teamTable:
@@ -656,13 +679,15 @@ def depthcharge(arguments, teamTable, targetTeamTable): # DEBUGGED
         print(target, "disabled.")
         disable(target)
     else: print("Missed.")
-    freeze(unit)
+    immobileUnits.append(unit)
     alreadyDropped.append(unit)
     score()
 
 def board(arguments, teamTable, targetTeamTable): # DEBUGGED
     global firstTeamTable
     global secondTeamTable
+    global usedUnits
+    global immobileUnits
     del arguments[0]
     unit = arguments[0]
     if not unit in teamTable:
@@ -689,7 +714,7 @@ def board(arguments, teamTable, targetTeamTable): # DEBUGGED
         targetHealth = targetTeamTable.get(target)
         del targetTeamTable[target]
         teamTable[target] = targetHealth
-        freeze(unit)
+        immobileUnits.append(unit)
     else:
         print("Seizure failed.")
         print(unit, "suffers", str(effectiveness), "damage.")
@@ -699,13 +724,14 @@ def board(arguments, teamTable, targetTeamTable): # DEBUGGED
             newHealth = currentHealth - effectiveness
             teamTable[unit] = newHealth
         disable(unit)
-    use(unit)
+    usedUnits.append(unit)
     score()
 
 def nuke(arguments, teamTable, targetTeamTable):
     global firstTeamTable
     global secondTeamTable
     global warheads
+    global usedUnits
     del arguments[0]
     unit = arguments[0]
     target = arguments[2]
@@ -748,6 +774,8 @@ def nuke(arguments, teamTable, targetTeamTable):
 # Army functions
 def build(arguments, teamTable): # DEBUGGED
     global structureTable
+    global usedUnits
+    global immobileUnits
     del arguments[0]
     unit = arguments[0]
     localUnitType = unitTable.get(unit)
@@ -768,19 +796,21 @@ def build(arguments, teamTable): # DEBUGGED
         structure = input("Name of new structure:")
     structureTable[structure] = strength
     print(structure, "has strength:", strength)
-    use(unit)
-    if not unitType in moveFireTable: freeze(unit)
+    usedUnits.append(unit)
+    if not unitType in moveFireTable: immobileUnits.append(unit)
 
 def missile(arguments, teamTable, targetTeamTable): # DEBUGGED
     global firstTeamTable
     global secondTeamTable
+    global usedUnits
+    global immobileUnits
     del arguments[0]
     for x in arguments:
         if x == ">": pass
         elif x in teamTable: 
             unit = x
             if x in hiddenUnits: reveal(x)
-            use(x)
+            usedUnits.append(x)
         elif x in targetTeamTable: target = x
         else: 
             print(x, "does not exist.")
@@ -808,13 +838,15 @@ def missile(arguments, teamTable, targetTeamTable): # DEBUGGED
         finalDamage = fortificationReduce(targetLocation, netDamage)
     else: finalDamage = netDamage
     dealDamage(target, finalDamage, targetTeamTable)
-    use(unit)
+    usedUnits.append(unit)
     score()
 
 # Air functions
 def takeoff(arguments): # DEBUGGED
     global firstTeamFlying
     global secondTeamFlying
+    global usedUnits
+    global immobileUnits
     unit = arguments[1]
     if unit in firstTeamTable: teamFlyingTable = firstTeamFlying
     elif unit in secondTeamTable: teamFlyingTable = secondTeamFlying
@@ -839,6 +871,7 @@ def takeoff(arguments): # DEBUGGED
 def land(arguments): # DEBUGGED
     global firstTeamFlying
     global secondTeamFlying
+    global usedUnits
     if len(arguments) == 2: unit = arguments[1]
     else: unit = arguments
     if unit in firstTeamTable: teamFlyingTable = firstTeamFlying
@@ -855,9 +888,10 @@ def land(arguments): # DEBUGGED
         error("airborne", "land")
         return
     teamFlyingTable.remove(unit)
-    use(unit)
+    usedUnits.append(unit)
 
 def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
+    global usedUnits
     del arguments[0]
     defendingUnits = []
     for x in arguments:
@@ -884,10 +918,12 @@ def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
         for x in defendingUnits: disable(x)
     else:
         print("Pulse ineffective.")
-    use(unit)
+    usedUnits.append(unit)
 
 def airlift(arguments, teamTable, teamFlyingTable): # DEBUGGED
     global locationTable
+    global usedUnits
+    global immobileUnits
     del arguments[0]
     liftedUnits = []
     for x in arguments:
@@ -921,9 +957,10 @@ def airlift(arguments, teamTable, teamFlyingTable): # DEBUGGED
             if not newLocation in structureTable or not newLocation in hideableTerrain:
                 reveal(x)
         locationTable[x] = str(newLocation)
-    use(unit)
+    usedUnits.append(unit)
 
 def kamikaze(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
+    global usedUnits
     del arguments[0]
     for x in arguments:
         if x == ">": pass
@@ -954,6 +991,7 @@ def kamikaze(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
 def air_missile(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
     global firstTeamTable
     global secondTeamTable
+    global usedUnits
     for x in arguments:
         if x in teamTable: unit = str(x)
         elif x in targetTeamTable: target = str(x)
@@ -988,10 +1026,12 @@ def air_missile(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUG
         finalDamage = fortificationReduce(targetLocation, netDamage)
     else: finalDamage = netDamage
     dealDamage(target, finalDamage, targetTeamTable)
-    use(unit)
+    usedUnits.append(unit)
     score()
 
 def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable): # DEBUGGED
+    global usedUnits
+    global immobileUnits
     totalAttackDamage = 0
     totalDefenseDamage = 0
     defendingUnits = []
@@ -1009,10 +1049,10 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
             else: finalDamage = initialDamage - reduce(x)
             totalAttackDamage = totalAttackDamage + finalDamage
             if x in hiddenUnits: reveal(x)
-            use(x)
+            usedUnits.append(x)
             localUnitType = unitTable.get(x)
             unitType = allUnitTypes.get(localUnitType)
-            if not unitType in moveFireTable: freeze(x)
+            if not unitType in moveFireTable: immobileUnits.append(x)
         elif x in targetTeamTable:
             if not x in targetTeamFlyingTable:
                 print(x, "is not airborne.")
@@ -1022,10 +1062,10 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
             totalDefenseDamage = totalDefenseDamage + initialDefense
             defendingUnits.append(x)
             if x in hiddenUnits: reveal(x)
-            use(x)
+            usedUnits.append(x)
             localUnitType = unitTable.get(x)
             unitType = allUnitTypes.get(localUnitType)
-            if not unitType in moveFireTable: freeze(x)
+            if not unitType in moveFireTable: immobileUnits.append(x)
         else: print(x, " does not exist.")
     if totalDefenseDamage >= totalAttackDamage:
         print("Attack repelled.")
@@ -1040,6 +1080,8 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
     turn()
 
 def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
+    global usedUnits
+    global immobileUnits
     del arguments[0]
     totalAttackDamage = 0
     defendingUnits = []
@@ -1053,10 +1095,10 @@ def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
             initialDamage = damage(x, fireTable)
             if initialDamage == None: continue
             totalAttackDamage = initialDamage + totalAttackDamage
-            use(x)
+            usedUnits.append(x)
             localUnitType = unitTable.get(x)
             unitType = allUnitTypes.get(localUnitType)
-            if not unitType in moveFireTable: freeze(x)
+            if not unitType in moveFireTable: immobileUnits.append(x)
             if x in hiddenUnits: reveal(x)
         elif x in targetTeamTable:
             defendingUnits.append(x)
@@ -1074,6 +1116,7 @@ def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable): # DEBUGGED
     score()
 
 def survey(arguments, teamTable, teamFlyingTable): # DEBUGGEd
+    global usedUnits
     unit = arguments[1]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
@@ -1093,7 +1136,7 @@ def survey(arguments, teamTable, teamFlyingTable): # DEBUGGEd
     elif effectiveness == 1: print("Bad information.")
     else: print("No information.")
     details()
-    use(unit)
+    usedUnits.append(unit)
 
 # Shell functions
 def info(arguments): # DEBUGGED
