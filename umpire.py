@@ -50,6 +50,7 @@ kamikazeTable = {"light-fighter":6, "heavy-fighter":8}
 moveFireTable = {"infantry":1, "engineers":1, "mechanized":1, "light-cavalry":1, "med-cavalry":1, "heavy-cavalry":1, "special":1, "corvette":1, "amphibious":1, "patrol":1, "cruiser":1, "destroyer":1, "battleship":1, "carrier":1, "light-fighter":1, "heavy-fighter":1, "bomber":1, "stealth-bomber":1, "recon":4, "transport":1, "drone":1}
 bombTable = {"bomber":8, "stealth-bomber":6, "drone":10}
 flyTable = {"light-fighter":1, "heavy-fighter":1, "bomber":1, "stealth-bomber":1, "recon":1, "transport":1, "drone":1}
+nukeTable = {"missile-submarine":30}
 structureTable = {}
 manPages = {"score":"'score'", "turn":"'turn'", "details":"'details'", "quit":"'quit'", "help":"'help'", "health":"'health [unit] [value]'", "kill":"'kill [unit]'", "convert":"'convert [unit]'", "disable":"'disable [unit]'", "merge":"'merge [unit1] [unit2] ... > [unit]'", "split":"'split [unit] > [unit1] [unit2] ...'", "info":"'info [unit]'", "use":"'use [unit]'", "man":"'man [command]'", "attack":"'attack [unit1] [unit2] ... > [unit3] [unit4] ...'", "hide":"'hide [unit]'", "reveal":"'reveal [unit]'", "fire":"'fire [unit1] [unit2] ... > [unit3] [unit4] ...'", "heading":"'heading [unit]'", "torpedo":"'torpedo [unit] > [target]'", "sortie":"'sortie [unit] > [target]'", "depthcharge":"'depthcharge [unit] > [target]'", "board":"'board [unit] > [target]'", "missile":"'missile [unit] > [target]'", "takeoff":"'takeoff [unit]'", "land":"'land [unit]'", "kamikaze":"'kamikaze [unit] > [target]'", "dogfight":"'dogfight [unit1] [unit2] ... > [target1] [target2] ...'", "bomb":"'bomb [unit] > [target1] [target2] ...'", "survey":"'survey [unit]'", "pulse":"'pulse [unit] > [target1] [target2] ...'", "airlift":"'airlift [plane] > [unit]'"}
 
@@ -701,6 +702,49 @@ def board(arguments, teamTable, targetTeamTable): # DEBUGGED
     use(unit)
     score()
 
+def nuke(arguments, teamTable, targetTeamTable):
+    global firstTeamTable
+    global secondTeamTable
+    global warheads
+    del arguments[0]
+    unit = arguments[0]
+    target = arguments[2]
+    if not unit in teamTable:
+        error("team", "nuke")
+        return
+    if not target in targetTeamTable:
+        error("team", "nuke")
+        return
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    if unit in usedUnits:
+        error("available", "nuke")
+        return
+    if not unitType in nukeTable:
+        error("function", "nuke")
+        return
+    if warheads <= 0:
+        print("Not enough warheads.")
+        return
+    warheads = warheads - 1
+    principalDamage = damage(unit, nukeTable)
+    dealDamage(target, principalDamage, targetTeamTable)
+    halfDamageRawUnits = input("Units or structures within 7 cm: ")
+    halfDamageUnits = halfDamageRawUnits.split()
+    halfDamage = principalDamage / 2
+    for x in halfDamageUnits:
+        if x in structureTable: fortificationReduce(x, halfDamage)
+        elif x in targetTeamTable: dealDamage(x, halfDamage, targetTeamTable)
+        else: print(x, "is not a structure or a unit.")
+    quarterDamageRawUnits = input("Units or structures within 15 cm: ")
+    quarterDamageUnits = quarterDamageRawUnits.split()    
+    quarterDamage = principalDamage / 4
+    for x in quarterDamageUnits:
+        if x in structureTable: fortificationReduce(x, quarterDamage)
+        elif x in targetTeamTable: dealDamage(x, quarterDamage, targetTeamTable)
+        else: print(x, "is not a structure or a unit.")
+    disable(unit)
+
 # Army functions
 def build(arguments, teamTable): # DEBUGGED
     global structureTable
@@ -1107,6 +1151,7 @@ def info(arguments): # DEBUGGED
     if unitType in sortieDefenseTable: print("Maximum sortie defense:", sortieDefenseTable.get(unitType))
     if unitType in buildTable: print("Maximum built structure strength:", buildTable.get(unitType))
     if unitType in kamikazeTable: print("Maximum kamikaze damage:", kamikazeTable.get(unitType))
+    if unitType in nukeTable: print("Maximum nucke damage:", nukeTable.get(unitType))
 
 def airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
     global airPhase
@@ -1196,6 +1241,7 @@ def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTab
     elif parsedCommand[0] == "board": board(parsedCommand, teamTable, targetTeamTable)
     elif parsedCommand[0] == "build": build(parsedCommand)
     elif parsedCommand[0] == "missile": missile(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "nuke": nuke(parsedCommand, teamTable, targetTeamTable)
     else:
         error("command", "shell")
         return

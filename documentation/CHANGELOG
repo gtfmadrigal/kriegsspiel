@@ -301,3 +301,11 @@ v4.0-pre5 - Final code polishing
     v4.0-pre5.2 - several bad .split() calls removed
 
 v4.0 - Updated shell release
+
+v4.1-pre1 - Nuclear weapons
+    v4.1-pre1.1 - added nuke() function and nukeTable{} dictionary
+
+- add nuclear table and function
+- debug nuke() function
+- update manpages and manual
+- update gamefiles
