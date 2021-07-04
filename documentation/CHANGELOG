@@ -309,5 +309,4 @@ v4.1-pre1 - Nuclear weapons
     v4.1-pre1.4 - nuke() function debugged
     v4.1-pre1.5 - manpages["nuke"] key added
     v4.1-pre1.6 - gamefiles and template updated for the nuke function
-
-- update manpages and manual
+    v4.1-pre1.7 - manual updated to include nuke function
