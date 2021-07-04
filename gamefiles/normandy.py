@@ -9,6 +9,7 @@ secondTeamTable = {"201st":4, "202nd":4, "203rd":4, "204th":4, "205th":4, "206th
 firstHealthTotal = 202
 secondHealthTotal = 228
 fogOfWar = 1
+warheads = 0
 locationTable = {}
 
 def loadGame():

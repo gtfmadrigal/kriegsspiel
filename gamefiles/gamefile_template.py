@@ -7,6 +7,7 @@ secondTeam = ""
 campaign = "" # The campaign variable is a string also displayed at the shell prompt, but for every command in every turn. It can be any length, but should be appropriately capitalized ("Nile", "Brandywine", "Coral Sea", etc.)
 airTheater = True # airTheater is a Boolean value that is set to True if there are air units included in the unit table, and False if not
 fogOfWar = 1 # fogOfWar is an integer variable. If every command should be interpreted, set it to 1. Otherwise, set fogOfWar to the number of commands for which one should fail, i.e. 4 if 1 in 4 should fail, 10 if 1 in 10 should fail, etc.
+warheads = 0 # warheads is the number of nuclear weapons available in a game. Set it to 0 if no "missile-submarine" type units are available, or if you do not want to allow those missile submarines to launch nukes.
 
 # Second, name all of the units
 
