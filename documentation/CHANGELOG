@@ -307,8 +307,7 @@ v4.1-pre1 - Nuclear weapons
     v4.1-pre1.2 - use() and freeze() function subcalls deprecated
     v4.1-pre1.3 - disable() function subcalls deprecated
     v4.1-pre1.4 - nuke() function debugged
+    v4.1-pre1.5 - manpages["nuke"] key added
 
-- add nuclear table and function
-- debug nuke() function
 - update manpages and manual
 - update gamefiles
