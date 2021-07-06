@@ -312,3 +312,7 @@ v4.1-pre1 - Nuclear weapons
     v4.1-pre1.7 - manual updated to include nuke function
 
 v4.1 - Nuclear weapons release
+
+v4.2-pre1 - Code polishing
+    v4.2-pre1.1 - reduce() function debugged, will always return an integer and its calls reflect that
+    v4.2-pre1.2 - code generally cleaned up, readability improved
