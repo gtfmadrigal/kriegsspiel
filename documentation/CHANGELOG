@@ -319,3 +319,4 @@ v4.2-pre1 - Code polishing
 
 v4.2-pre2 - Save and return function
     v4.2-pre2.1 - save() function implemented
+    v4.2-pre2.2 - gamefile_template no longer relies on importing umpire.py
