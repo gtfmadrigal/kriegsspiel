@@ -181,6 +181,26 @@ def dealDamage(unit, damage, teamTable):
         print(unit, "new health:", newHealth)
     update()
 
+def save():
+    print("")
+    print("firstTeam =", firstTeam)
+    print("secondTeam =", secondTeam)
+    print("campaign =", campaign)
+    print("airTheater =", airTheater)
+    print("fogOfWar =", fogOfWar)
+    print("warheads =", warheads)
+    print("firstTeamTable =", firstTeamTable)
+    print("secondTeamTable =", secondTeamTable)
+    print("locationTable =", locationTable)
+    print("unitTable =", unitTable)
+    print("allUnitTypes =", allUnitTypes)
+    print("firstHealthTotal =", firstHealthTotal)
+    print("secondHealthTotal =", secondHealthTotal)
+    print("dividedTable =", dividedTable)
+    print("hiddenUnits =", hiddenUnits)
+    print("deadUnits =", deadUnits)
+    print("")
+
 # Umpire commands
 def score():
     update()
@@ -301,8 +321,10 @@ def reveal(arguments):
     global secrets
     global locationTable
     global hiddenUnits
-    if len(arguments) == 1: unit = arguments
-    else: unit = arguments[1]
+    if len(arguments) == 1: 
+        unit = arguments
+    else: 
+        unit = arguments[1]
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unit in hiddenUnits or not unitType in hideTable:
@@ -1261,7 +1283,7 @@ def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
     defendingUnits.clear()
     score()
 
-def survey(arguments, teamTable, teamFlyingTable):
+def survey(arguments, teamTable, teamFlyingTable): # DEBUGGEd
     global usedUnits
     unit = arguments[1]
     localUnitType = unitTable.get(unit)
@@ -1288,6 +1310,7 @@ def survey(arguments, teamTable, teamFlyingTable):
     usedUnits.append(unit)
 
 # Shell functions
+
 def info(arguments): # DEBUGGED
     unit = arguments[1]
     print(unit, "attributes:")
@@ -1382,6 +1405,7 @@ def airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlying
     elif parsedCommand[0] == "pulse": pulse(parsedCommand, teamTable, targetTeamTable, teamFlyingTable)
     elif parsedCommand[0] == "airlift": airlift(parsedCommand, teamTable, teamFlyingTable)
     elif parsedCommand[0] == "kamikaze": kamikaze(parsedCommand, teamTable, targetTeamTable, teamFlyingTable)
+    elif parsedCommand[0] == "save": save()
     else:
         error("command", "air-shell")
         airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
@@ -1434,6 +1458,7 @@ def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTab
     elif parsedCommand[0] == "build": build(parsedCommand)
     elif parsedCommand[0] == "missile": missile(parsedCommand, teamTable, targetTeamTable)
     elif parsedCommand[0] == "nuke": nuke(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "save": save()
     else:
         error("command", "shell")
         return

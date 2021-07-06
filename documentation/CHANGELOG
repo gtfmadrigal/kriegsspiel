@@ -316,3 +316,6 @@ v4.1 - Nuclear weapons release
 v4.2-pre1 - Code polishing
     v4.2-pre1.1 - reduce() function debugged, will always return an integer and its calls reflect that
     v4.2-pre1.2 - code generally cleaned up, readability improved
+
+v4.2-pre2 - Save and return function
+    v4.2-pre2.1 - save() function implemented

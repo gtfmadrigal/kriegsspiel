@@ -1,7 +1,6 @@
 # This gamefile template is an example, and can be followed along with to create a campaign for your own game.
 # First, we need to define some important information about the campaign scenario itself
 
-from umpire import *
 firstTeam = "" # The team name variables (firstTeam and secondTeam) are strings that are displayed at the shell so that the user knows for which team he is entering commands. These strings should be the capitalized names of the two teams ("Allied" and "Axis", "French" and "British", etc.)
 secondTeam = ""
 campaign = "" # The campaign variable is a string also displayed at the shell prompt, but for every command in every turn. It can be any length, but should be appropriately capitalized ("Nile", "Brandywine", "Coral Sea", etc.)
