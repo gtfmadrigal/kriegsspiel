@@ -5,318 +5,320 @@ Release naming conventions: (vX.Y.Z)
 - Second digit (Y) signifies a minor release. MUST be polished and fully functional
 - Third digit (Z) signifies a commit build. Ideally, changes should not be implemented into a commit build and pushed to the main branch until all bugs have been ironed out and everything is fully functional, but polishing is not required. Sometimes, things may be broken in commit builds.
 
-v0.1 - Initial Release (5/4/21)
-    v0.1.1 - initial commit
-    v0.1.2 - created readme
-    v0.1.3 - .docx guide added
-    v0.1.4 - first full draft
-    v0.1.5 - branch merge
-    v0.1.6 - updated setup.py
-    v0.1.7 - fixed whitespace errors
-    v0.1.8 - moved unitless functions from getCommand to game loop
-    v0.1.9 - fixed endGame function
-    v0.1.10 - moved endGame function to gamefile
-    v0.1.11 - license added
+v0.0 - Initial release
+    v0.1 - Initial release
+        v1.0-pre1 - Land-battles prerelease
+            v1.0-pre1.1 - initial commit
+            v1.0-pre1.2 - created readme
+            v1.0-pre1.3 - .docx guide added
+            v1.0-pre1.4 - first full draft
+            v1.0-pre1.5 - branch merge
+            v1.0-pre1.6 - updated setup.py
+            v1.0-pre1.7 - fixed whitespace errors
+            v1.0-pre1.8 - moved unitless functions from getCommand to game loop
+            v1.0-pre1.9 - fixed endGame function
+            v1.0-pre1.10 - moved endGame function to gamefile
+            v1.0-pre1.11 - license added
 
-v1.0 - Full release for land battles (5/6/21)
-    v1.0.1 - moved info() command to gamefile()
-    v1.0.2 - improved speed and efficiency
-    v1.0.3 - implemented move() command
-    v1.0.4 - created scenariotemplate.py
-    v1.0.5 - updated brandywine.py
-    v1.0.6 - fixed bug in manual() function
-    v1.0.7 - fixed move() function
-    v1.0.8 - updated kriegsspiel.py
-    v1.0.9 - build() function implemented
-    v1.0.10 - hide() function implemented
-    v1.0.11 - reveal() function implemented
-    v1.0.12 - spy() function implemented
-    v1.0.13 - added framework for naval commands: torpedo(), sortie(), missile(), dropcharge()
-    v1.0.14 - search() function implemented
-    v1.0.15 - created gamefiles directory
-    v1.0.16 - attack() function implemented
-    v1.0.17 - fire() function implemented
-    v1.0.18 - added framework for defend() function
-    v1.0.19 - defend() function implemented
+v1.0 - Full release for land battles
+    v1.0 - Initial full release
+        v1.1-pre1 - Artifact-clearing prerelease
+            v1.1-pre1.1 - moved info() command to gamefile()
+            v1.1-pre1.2 - improved speed and efficiency
+            v1.1-pre1.3 - implemented move() command
+            v1.1-pre1.4 - created scenariotemplate.py
+            v1.1-pre1.5 - updated brandywine.py
+            v1.1-pre1.6 - fixed bug in manual() function
+            v1.1-pre1.7 - fixed move() function
+            v1.1-pre1.8 - updated kriegsspiel.py
+            v1.1-pre1.9 - build() function implemented
+            v1.1-pre1.10 - hide() function implemented
+            v1.1-pre1.11 - reveal() function implemented
+            v1.1-pre1.12 - spy() function implemented
+            v1.1-pre1.13 - added framework for naval commands: torpedo(), sortie(), missile(), dropcharge()
+            v1.1-pre1.14 - search() function implemented
+            v1.1-pre1.15 - created gamefiles directory
+            v1.1-pre1.16 - attack() function implemented
+            v1.1-pre1.17 - fire() function implemented
+            v1.1-pre1.18 - added framework for defend() function
+            v1.1-pre1.19 - defend() function implemented
+    v1.1 - Cleared artifacts
+        v1.2-pre1 - Polished prerelease
+            v1.2-pre1.1 - artifacts cleared up, gamefile.py improved
+    v1.2 - Polished release
+        v2.0-pre1 - Naval pre-release
+            v2.0-pre1.1 - removed search function(), added man() function
+            v2.0-pre1.2 - started work on naval battle framework
+            v2.0-pre1.3 - heading() function implemented
+            v2.0-pre1.4 - unnecessary whitespace removed
+            v2.0-pre1.5 - torpedo() function implemented
+            v2.0-pre1.6 - sortie() function implemented
+            v2.0-pre1.7 - depthcharge() function implemented
+            v2.0-pre1.8 - fixed randomness engine
+            v2.0-pre1.9 - man() moved to manpages.py
+            v2.0-pre1.10 - depthcharge() function implemented
+            v2.0-pre1.11 - added exception to getCommand() function
+            v2.0-pre1.12 - core game loop rewritten
+            v2.0-pre1.13 - added quitGame() and helpText() function
+            v2.0-pre1.14 - improved gamefile template
+            v2.0-pre1.15 - Agincourt gamefile created
 
-v1.1 - Cleared artifacts (5/6/21)
-    v1.1.1 - artifacts cleared up, gamefile.py improved
-
-v1.2 - Polished release (5/7/21)
-    v1.2.1 - removed search function(), added man() function
-    v1.2.2 - started work on naval battle framework
-    v1.2.3 - heading() function implemented
-    v1.2.4 - unnecessary whitespace removed
-    v1.2.5 - torpedo() function implemented
-    v1.2.6 - sortie() function implemented
-    v1.2.7 - depthcharge() function implemented
-    v1.2.8 - fixed randomness engine
-    v1.2.9 - man() moved to manpages.py
-    v1.2.10 - depthcharge() function implemented
-    v1.2.11 - added exception to getCommand() function
-    v1.2.12 - core game loop rewritten
-    v1.2.13 - added quitGame() and helpText() function
-    v1.2.14 - improved gamefile template
-    v1.2.15 - Agincourt gamefile created
-
-v2.0 - Naval battle release (5/12/21)
-    v2.0.1 - game loop reduced to 4LOC, functionality moved to getCommand()
-    v2.0.2 - attack() command reintegrated
-    v2.0.3 - attack() and defend() commands fixed, bug closed
-    v2.0.4 - fixed scenariotemplate.py
-    v2.0.5 - moved manpages.py variables to text files
-    v2.0.6 - moved files around
-    v2.0.7 - made manpages.py work for Linux and macOS
-    v2.0.8 - man() now fully portable
-    v2.0.9 - attack() function fully portable, attackDefend() added, defend() removed
-    v2.0.10 - attack manpage updated
-    v2.0.11 - changelog fully fleshed out
-    v2.0.12 - removed temporary files
-    v2.0.13 - added to the readme
-    v2.0.14 - cleaned up commit history
-    v2.0.15 - added a naming convention scheme to the changelog
-    v2.0.16 - updated attackDefend() function
-    v2.0.17 - fixed typo
-    v2.0.18 - functions now callable through globals(), reducing LOC
-
-v2.1 - Naval battle polished release (5/25/21)
-    v2.1.1 - attack(), fire(), and build() now work with dictionaries
-    v2.1.2 - gamefile now uses dictionaries
-    v2.1.3 - sortie() now works with dictionaries, coralsea.py updated with dictionaries
-    v2.1.4 - scenariotemplate.py updated with dictionaries
-    v2.1.5 - team attributions made automatic for attack() and other functions
- 
- v2.2 - Naval battles made simplified (5/26/21)
-    v2.2.1 - releasenotes file added
-    v2.2.2 - warPhase variable deprecated and removed
-    v2.2.3 - readme updated
-    v2.2.4 - all comments removed; heavy documentation to be added elsewhere later
-    v2.2.5 - documentation/ folder created for heavy function-by-function documentation, which is to be added later
-    v2.2.6 - reveal() function implemented within attack()
-    v2.2.7 - documentation added for attack() function
-    v2.2.8 - documentation added for build() function
-    v2.2.9 - depthcharge() fixed to work with alreadyDropped[] list
-    v2.2.10 - documentation added for depthcharge() function
-    v2.2.11 - documentation added for details() function
-    v2.2.12 - moved info() to kriegsspiel.py, removed documentation in preparation for v2.3 rewrite
-    v2.2.13 - added .gitignore
-    v2.2.14 - unitType no longer required in shell command
-    v2.2.15 - structure of rewrite completed
-    v2.2.16 - shell() function implemented
-    v2.2.17 - turn() function implemented
-    v2.2.18 - helpText() function implemented
-    v2.2.19 - quitGame() funciton implemented
-    v2.2.20 - details() function implemented
-    v2.2.21 - score() function implemented
-    v2.2.21 - freeze() function implemented
-    v2.2.22 - kill() function implemented
-    v2.2.23 - health() function implemented
-    v2.2.24 - calculateDamage() function implemented
-    v2.2.25 - attack() function implemented
-    v2.2.26 - depthcharge() function implemented
-    v2.2.27 - sortie() function implemented
-    v2.2.28 - torpedo() function implemented
-    v2.2.29 - fire() function implemented
-    v2.2.30 - spy() function implemented
-    v2.2.31 - hide() function implemented
-    v2.2.32 - heading() function implemented
-    v2.2.33 - move() function implemented
-    v2.2.34 - rewrite completed
-    v2.2.35 - update() and changeList() functions added, 53 LOC removed
-    v2.2.36 - hide()-reveal() bugs fixed
-    v2.2.37 - fire() bugs fixed
-    v2.2.38 - build() bugs fixed
-    v2.2.39 - man() bugs fixed
-    v2.2.40 - attack() bugs fixed
-    v2.2.41 - more attack() bugs fixed
-    v2.2.42 - v2.3 rewrite fully functional for land battles
-    v2.2.43 - naval battle gamefile updated for v2.3 rewrite, not yet fully functional
-    v2.2.44 - kill() bugs fixed
-    v2.2.45 - sortie() bugs fixed
-    v2.2.46 - evaluate() bugs fixed
-    v2.2.47 - depthcharge() bugs fixed, v2.3 rewrite now fully functional
-    v2.2.48 - README.md updated
-    v2.2.49 - scenariotemplate.py updated
-    v2.2.50 - manpages updated for rewrite
-    v2.2.51 - redundant update() calls removed
-    v2.2.52 - freeze() command re-added
-    v2.2.53 - error messages fixed, game no longer crashes because of nonexistent units being entered
-    v2.2.54 - annotations added for the Kriegsspiel shell, game loop, and basic definitions, in the annotations/ directory
-    v2.2.55 - documentation/annotations/callables/ and documentation/annotations/metafunctions/ directories created, and annotation files made
-    v2.2.56 - evaluate(..., helpTable) fixed so that the reveal() function works
-    v2.2.57 - throwError() function deprecated, replaced by a simple dictionary call
-    v2.2.58 - callables divided between game-functions/ and oneword/
-    v2.2.59 - concatenated "team" error messages into shell; game-functions will now only ever receive valid units
-    v2.2.60 - all one-word command functions are now documented, minor changes to kriegsspiel.py
-    v2.2.61 - health() function made more portable, fixed negative-damage bug
-    v2.2.62 - convert() function added
-    v2.2.63 - build() function globals removed, as they are rendered irrelevant by the changeList() function
-    v2.2.64 - .vscode/ added to .gitignore
-    v2.2.65 - manpage added for convert()
-    v2.2.66 - annotations removed (too complicated)
-
-v2.3 - Final naval battle release
-    v2.3.1 - files created in preparation for v3
-    v2.3.2 - move() function implemented
-    v2.3.3 - hide() function implemented
-    v2.3.4 - reveal() function implemented
-    v2.3.5 - spy() function implemented
-    v2.3.6 - fire() function implemented
-    v2.3.7 - heading() function implemented
-    v2.3.8 - torpedo() function implemented
-    v2.3.9 - sortie() function implemented
-    v2.3.10 - depthcharge() function implemented
-    v2.3.11 - build() function implemented
-    v2.3.12 - attack() function implemented
-    v2.3.13 - health() function implemented
-    v2.3.14 - convert() function implemented
-    v2.3.15 - all umpire functions and v2.3 functions implemented, proceeding to new air warfare functions
-    v2.3.16 - takeoff() function implemented
-    v2.3.17 - land() function implemented
-    v2.3.18 - pulse() function implemented
-    v2.3.19 - airlift() function implemented
-    v2.3.20 - kamikaze() function implemented, bomb() and dogfight() mapped to fire() and attack()
-    v2.3.21 - air functions implemented, bugs present and may need to be fixed
-    v2.3.22 - missile() function implemented
-    v2.3.24 - renamed repository to "umpire"
-    v2.3.25 - board() function implemented
-    v2.3.26 - merge() function implemented
-    v2.3.27 - split() function implemented
-    v2.3.28 - use() and freeze() meta-functions used internally
-    v2.3.29 - dividedTable{} moved from gamefile to umpire.py
-    v2.3.30 - tables moved from gamefile to umpire.py in anticipation of making unitTypes global
-    v2.3.31 - unitTypes moved from gamefile to umpire, loadGame() function implemented
-    v2.3.32 - loadGame() function implemented
-    v2.3.33 - convert() function updated
-    v2.3.34 - Unit-Chart.xlsx completed
-    v2.3.35 - attack() function updated
-    v2.3.36 - bad umpireShell() call fixed
-    v2.3.37 - local-universal unit type distinction implemented
-    v2.3.38 - merge() function save phase fixed
-    v2.3.39 - split() function save phase fixed
-    v2.3.40 - air shell fixed
-    v2.3.41 - fourth edition manual completed
-    v2.3.42 - airShell fixed
-    v2.3.43 - airlift fixed
-    v2.3.44 - dogfight() function implemented
+v2.0 - Naval battle release
+    v2.0 - Naval battle initial release
+        v2.1-pre1 - Polished prerelease
+            v2.1-pre1.1 - game loop reduced to 4LOC, functionality moved to getCommand()
+            v2.1-pre1.2 - attack() command reintegrated
+            v2.1-pre1.3 - attack() and defend() commands fixed, bug closed
+            v2.1-pre1.4 - fixed scenariotemplate.py
+            v2.1-pre1.5 - moved manpages.py variables to text files
+            v2.1-pre1.6 - moved files around
+            v2.1-pre1.7 - made manpages.py work for Linux and macOS
+            v2.1-pre1.8 - man() now fully portable
+            v2.1-pre1.9 - attack() function fully portable, attackDefend() added, defend() removed
+            v2.1-pre1.10 - attack manpage updated
+            v2.1-pre1.11 - changelog fully fleshed out
+            v2.1-pre1.12 - removed temporary files
+            v2.1-pre1.13 - added to the readme
+            v2.1-pre1.14 - cleaned up commit history
+            v2.1-pre1.15 - added a naming convention scheme to the changelog
+            v2.1-pre1.16 - updated attackDefend() function
+            v2.1-pre1.17 - fixed typo
+            v2.1-pre1.18 - functions now callable through globals(), reducing LOC 
+    v2.1 - Naval battle polished release
+        v2.2-pre1 - Simplification prerelease
+            v2.2-pre1.1 - attack(), fire(), and build() now work with dictionaries
+            v2.2-pre1.2 - gamefile now uses dictionaries
+            v2.2-pre1.3 - sortie() now works with dictionaries, coralsea.py updated with dictionaries
+            v2.2-pre1.4 - scenariotemplate.py updated with dictionaries
+            v2.2-pre1.5 - team attributions made automatic for attack() and other functions
+    v2.2 - Naval battles simplified
+        v2.3-pre1 - Function implementation for rewrite
+            v2.3-pre1.1 - releasenotes file added
+            v2.3-pre1.2 - warPhase variable deprecated and removed
+            v2.3-pre1.3 - readme updated
+            v2.3-pre1.4 - all comments removed; heavy documentation to be added elsewhere later
+            v2.3-pre1.5 - documentation/ folder created for heavy function-by-function documentation, which is to be added later
+            v2.3-pre1.6 - reveal() function implemented within attack()
+            v2.3-pre1.7 - documentation added for attack() function
+            v2.3-pre1.8 - documentation added for build() function
+            v2.3-pre1.9 - depthcharge() fixed to work with alreadyDropped[] list
+            v2.3-pre1.10 - documentation added for depthcharge() function
+            v2.3-pre1.11 - documentation added for details() function
+            v2.3-pre1.12 - moved info() to kriegsspiel.py, removed documentation in preparation for v2.3 rewrite
+            v2.3-pre1.13 - added .gitignore
+            v2.3-pre1.14 - unitType no longer required in shell command
+            v2.3-pre1.15 - structure of rewrite completed
+            v2.3-pre1.16 - shell() function implemented
+            v2.3-pre1.17 - turn() function implemented
+            v2.3-pre1.18 - helpText() function implemented
+            v2.3-pre1.19 - quitGame() funciton implemented
+            v2.3-pre1.20 - details() function implemented
+            v2.3-pre1.21 - score() function implemented
+            v2.3-pre1.21 - freeze() function implemented
+            v2.3-pre1.22 - kill() function implemented
+            v2.3-pre1.23 - health() function implemented
+            v2.3-pre1.24 - calculateDamage() function implemented
+            v2.3-pre1.25 - attack() function implemented
+            v2.3-pre1.26 - depthcharge() function implemented
+            v2.3-pre1.27 - sortie() function implemented
+            v2.3-pre1.28 - torpedo() function implemented
+            v2.3-pre1.29 - fire() function implemented
+            v2.3-pre1.30 - spy() function implemented
+            v2.3-pre1.31 - hide() function implemented
+            v2.3-pre1.32 - heading() function implemented
+            v2.3-pre1.33 - move() function implemented
+            v2.3-pre1.34 - rewrite completed
+        v2.3-pre2 - Line of code reduction
+            v2.3-pre2.1 - update() and changeList() functions added, 53 LOC removed
+            v2.3-pre2.2 - hide()-reveal() bugs fixed
+            v2.3-pre2.3 - fire() bugs fixed
+            v2.3-pre2.4 - build() bugs fixed
+            v2.3-pre2.5 - man() bugs fixed
+            v2.3-pre2.6 - attack() bugs fixed
+            v2.3-pre2.7 - more attack() bugs fixed
+            v2.3-pre2.8 - v2.3 rewrite fully functional for land battles
+            v2.3-pre2.9 - naval battle gamefile updated for v2.3 rewrite, not yet fully functional
+            v2.3-pre2.10 - kill() bugs fixed
+            v2.3-pre2.11 - sortie() bugs fixed
+            v2.3-pre2.12 - evaluate() bugs fixed
+            v2.3-pre2.13 - depthcharge() bugs fixed, v2.3 rewrite now fully functional
+            v2.3-pre2.14 - README.md updated
+            v2.3-pre2.15 - scenariotemplate.py updated
+            v2.3-pre2.16 - manpages updated for rewrite
+            v2.3-pre2.17 - redundant update() calls removed
+            v2.3-pre2.18 - freeze() command re-added
+            v2.3-pre2.19 - error messages fixed, game no longer crashes because of nonexistent units being entered
+            v2.3-pre2.20 - annotations added for the Kriegsspiel shell, game loop, and basic definitions, in the annotations/ directory
+            v2.3-pre2.21 - documentation/annotations/callables/ and documentation/annotations/metafunctions/ directories created, and annotation files made
+            v2.3-pre2.22 - evaluate(..., helpTable) fixed so that the reveal() function works
+            v2.3-pre2.23 - throwError() function deprecated, replaced by a simple dictionary call
+            v2.3-pre2.24 - callables divided between game-functions/ and oneword/
+            v2.3-pre2.25 - concatenated "team" error messages into shell; game-functions will now only ever receive valid units
+            v2.3-pre2.26 - all one-word command functions are now documented, minor changes to kriegsspiel.py
+            v2.3-pre2.27 - health() function made more portable, fixed negative-damage bug
+            v2.3-pre2.28 - convert() function added
+            v2.3-pre2.29 - build() function globals removed, as they are rendered irrelevant by the changeList() function
+            v2.3-pre2.30 - .vscode/ added to .gitignore
+            v2.3-pre2.31 - manpage added for convert()
+            v2.3-pre2.32 - annotations removed (too complicated)
+    v2.3 - Final naval battles release
+        v3.0-pre1 - Unification prerelease
+            v3.0-pre1.1 - files created in preparation for v3
+            v3.0-pre1.2 - move() function implemented
+            v3.0-pre1.3 - hide() function implemented
+            v3.0-pre1.4 - reveal() function implemented
+            v3.0-pre1.5 - spy() function implemented
+            v3.0-pre1.6 - fire() function implemented
+            v3.0-pre1.7 - heading() function implemented
+            v3.0-pre1.8 - torpedo() function implemented
+            v3.0-pre1.9 - sortie() function implemented
+            v3.0-pre1.10 - depthcharge() function implemented
+            v3.0-pre1.11 - build() function implemented
+            v3.0-pre1.12 - attack() function implemented
+            v3.0-pre1.13 - health() function implemented
+            v3.0-pre1.14 - convert() function implemented
+            v3.0-pre1.15 - all umpire functions and v2.3 functions implemented, proceeding to new air warfare functions
+            v3.0-pre1.16 - takeoff() function implemented
+            v3.0-pre1.17 - land() function implemented
+            v3.0-pre1.18 - pulse() function implemented
+            v3.0-pre1.19 - airlift() function implemented
+            v3.0-pre1.20 - kamikaze() function implemented, bomb() and dogfight() mapped to fire() and attack()
+            v3.0-pre1.21 - air functions implemented, bugs present and may need to be fixed
+            v3.0-pre1.22 - missile() function implemented
+            v3.0-pre1.24 - renamed repository to "umpire"
+            v3.0-pre1.25 - board() function implemented
+            v3.0-pre1.26 - merge() function implemented
+            v3.0-pre1.27 - split() function implemented
+            v3.0-pre1.28 - use() and freeze() meta-functions used internally
+            v3.0-pre1.29 - dividedTable{} moved from gamefile to umpire.py
+            v3.0-pre1.30 - tables moved from gamefile to umpire.py in anticipation of making unitTypes global
+            v3.0-pre1.31 - unitTypes moved from gamefile to umpire, loadGame() function implemented
+            v3.0-pre1.32 - loadGame() function implemented
+            v3.0-pre1.33 - convert() function updated
+            v3.0-pre1.34 - Unit-Chart.xlsx completed
+            v3.0-pre1.35 - attack() function updated
+            v3.0-pre1.36 - bad umpireShell() call fixed
+            v3.0-pre1.37 - local-universal unit type distinction implemented
+            v3.0-pre1.38 - merge() function save phase fixed
+            v3.0-pre1.39 - split() function save phase fixed
+            v3.0-pre1.40 - air shell fixed
+            v3.0-pre1.41 - fourth edition manual completed
+            v3.0-pre1.42 - airShell fixed
+            v3.0-pre1.43 - airlift fixed
+            v3.0-pre1.44 - dogfight() function implemented
 
 v3.0 - Land-Sea-Air unification release
-    v3.0.1 - shell rewrite meta-functions re-implemented
-    v3.0.2 - added "upcoming" section to RELEASENOTES; score(), turn(), details(), quitGame(), and helpText() re-implemented
-    v3.0.3 - kill(), health(), and freeze() re-implemented
-    v3.0.4 - convert() re-implemented, air shell temporarily disabled
-    v3.0.6 - disable() re-implemented
-    v3.0.7 - merge() re-implemented
-    v3.0.8 - split() re-implemented
-    v3.0.9 - hide() re-implemented
-    v3.0.10 - reveal() re-implemented
-    v3.0.11 - man() implemented and manpages added back from v2.2
-    v3.0.12 - shell encased in a try-except statement to prevent crashes 
-    v3.0.13 - shell try-except statement removed temporarily
-    v3.0.14 - attack() re-implemented
-    v3.0.15 - move() re-implemented
-    v3.0.16 - spy() re-implemented
-    v3.0.17 - fire() re-implemented
-    v3.0.18 - heading() re-implemented
-    v3.0.19 - freeze() re-implemented
-    v3.0.20 - sortie() re-implemented
-    v3.0.21 - dealDamage() implemented
-    v3.0.22 - depthcharge() re-implemented
-    v3.0.23 - board() re-implemented
-    v3.0.24 - build() re-implemented
-    v3.0.25 - missile() re-implemented
-    v3.0.26 - info() re-implemented
-    v3.0.27 - takeoff() re-implemented
-    v3.0.28 - land() re-implemented
-    v3.0.29 - pulse() re-implemented
-    v3.0.30 - airlift() re-implemented
-    v3.0.31 - kamikaze() re-implemented
-    v3.0.31 - shell-rewrite.py moved to umpire.py, original umpire.py removed
-    v3.0.32 - air-missile() implemented
-    v3.0.33 - dogfight() implemented
-    v3.0.34 - bomb() implemented
-    v3.0.35 - survey() implemented
-    v3.0.36 - airShell() re-implemented; all functions included now, proceeding to debugging
-
-v3.1-pre1 - Air-shell rewrite debugging
-    v3.1-pre1.1 - core game loop debugged
-    v3.1-pre1.2 - shell debugged
-    v3.1-pre1.3 - score(), details(), helpText() and quitGame() debugged
-    v3.1-pre1.4 - health() debugged
-    v3.1-pre1.5 - kill() debugged
-    v3.1-pre1.6 - valueError in health() fixed, encased in try-except statement
-    v3.1-pre1.7 - failed dictionary lookup in man() fixed, converted arguments[1] to str type
-    v3.1-pre1.8 - added whitespace to info() to avoid clutter
-    v3.1-pre1.9 - attributeError in use() fixed by removal of a bad .split() function
-    v3.1-pre1.10 - takeoff() confirmed without alteration
-    v3.1-pre1.11 - unitType lookup in damage() fixed
-    v3.1-pre1.12 - attributeError in dogfight() fixed by removal of a bad .split() function
-    v3.1-pre1.13 - takeoff() now checks if the unit passed has already been used
-    v3.1-pre1.14 - removed bad .split() function in bomb(); fixed parsing of kill() arguments to allow for both shell calls and in-function calls
-    v3.1-pre1.15 - removed 10 non-air command calls from airShell
-    v3.1-pre1.16 - fixed calls to units that do not exist within air_missile()
-    v3.1-pre1.17 - removed 3 more non-air command calls from airShell
-    v3.1-pre1.18 - removed bad del statement from kill()
-    v3.1-pre1.19 - changed .get(x) to .get(unit) in airlift(), fixing bad dictionary lookup
-    v3.1-pre1.20 - ensured that airlift() can only airlift certain units
-    v3.1-pre1.21 - kamikaze() ensured, all air-only functions and their dependencies debugged
-
-v3.1-pre2 - Shell rewrite debugging
-    v3.1-pre2.1 - removed bad .split() function in freeze()
-    v3.1-pre2.2 - cleaned up unneeded LOC in convert()
-    v3.1-pre2.3 - removed bad .split() function in disable()
-    v3.1-pre2.4 - polished merge(), fixed health percentage lookup in info()
-    v3.1-pre2.5 - ensured that split() can only be called for units in the player's team
-    v3.1-pre2.6 - removed bad .split() function from dogfight(), moved campaign name variable from umpire.py to gamefile
-    v3.1-pre2.7 - remove(), append(), and clear() as separate meta-functions deprecated
-    v3.1-pre2.8 - fixed bad call of spy() function from shell()
-    v3.1-pre2.9 - removed bad .split() function in fire(), changed some unit names in normandy.py
-    v3.1-pre2.10 - fixed bad heading() call from shell()
-    v3.1-pre2.11 - heading() now freezes the unit
-    v3.1-pre2.12 - unitTypes checked for presence in moveFireTable rather than the unit itself, fixing 11 functions
-    v3.1-pre2.13 - polished torpedo()
-    v3.1-pre2.14 - fire() will now only execute if the units passed to it exist; otherwise, it quits
-    v3.1-pre2.15 - torpedo() will now only execute if the units passed to it exist; otherwise, it quits
-    v3.1-pre2.16 - debugged common errors in sortie()
-    v3.1-pre2.17 - debugged common errors in depthcharge()
-    v3.1-pre2.18 - debugged common errors in board()
-    v3.1-pre2.19 - debugged common errors in build()
-    v3.1-pre2.20 - debugged common errors in missile()
-
-v3.1-pre3 - Gamefile rewriting
-    v3.1-pre3.1 - test_gamefile.py created
-    v3.1-pre3.2 - error calls fixed
-    v3.1-pre3.3 - v3.1 release cancelled, next release planned is version 4.0
-    v4.0-pre3.4 - brandywine.py gamefile updated
-    v4.0-pre3.5 - nile.py gamefile updated
-    v4.0-pre3.6 - gamefile_template.py updated
-
-v4.0-pre4 - Documentation updating
-    v4.0-pre4.1 - manpages dictionary completed
-    v4.0-pre4.2 - manual fully completed for the v4.0 release
-    v4.0-pre4.3 - removed remnant third edition manual
-
-v4.0-pre5 - Final code polishing
-    v4.0-pre5.1 - empty commands no longer cause crashes
-    v4.0-pre5.2 - several bad .split() calls removed
+    v3.0 - Initial unification release
+        v4.0-pre1 - First rewrite
+            v4.0-pre1.1 - shell rewrite meta-functions re-implemented
+            v4.0-pre1.2 - added "upcoming" section to RELEASENOTES; score(), turn(), details(), quitGame(), and helpText() re-implemented
+            v4.0-pre1.3 - kill(), health(), and freeze() re-implemented
+            v4.0-pre1.4 - convert() re-implemented, air shell temporarily disabled
+            v4.0-pre1.6 - disable() re-implemented
+            v4.0-pre1.7 - merge() re-implemented
+            v4.0-pre1.8 - split() re-implemented
+            v4.0-pre1.9 - hide() re-implemented
+            v4.0-pre1.10 - reveal() re-implemented
+            v4.0-pre1.11 - man() implemented and manpages added back from v2.2
+            v4.0-pre1.12 - shell encased in a try-except statement to prevent crashes 
+            v4.0-pre1.13 - shell try-except statement removed temporarily
+            v4.0-pre1.14 - attack() re-implemented
+            v4.0-pre1.15 - move() re-implemented
+            v4.0-pre1.16 - spy() re-implemented
+            v4.0-pre1.17 - fire() re-implemented
+            v4.0-pre1.18 - heading() re-implemented
+            v4.0-pre1.19 - freeze() re-implemented
+            v4.0-pre1.20 - sortie() re-implemented
+            v4.0-pre1.21 - dealDamage() implemented
+            v4.0-pre1.22 - depthcharge() re-implemented
+            v4.0-pre1.23 - board() re-implemented
+            v4.0-pre1.24 - build() re-implemented
+            v4.0-pre1.25 - missile() re-implemented
+            v4.0-pre1.26 - info() re-implemented
+            v4.0-pre1.27 - takeoff() re-implemented
+            v4.0-pre1.28 - land() re-implemented
+            v4.0-pre1.29 - pulse() re-implemented
+            v4.0-pre1.30 - airlift() re-implemented
+            v4.0-pre1.31 - kamikaze() re-implemented
+            v4.0-pre1.31 - shell-rewrite.py moved to umpire.py, original umpire.py removed
+            v4.0-pre1.32 - air-missile() implemented
+            v4.0-pre1.33 - dogfight() implemented
+            v4.0-pre1.34 - bomb() implemented
+            v4.0-pre1.35 - survey() implemented
+            v4.0-pre1.36 - airShell() re-implemented; all functions included now, proceeding to debugging
+        v4.0-pre2 - Air shell rewrite debugging
+            v4.0-pre2.1 - core game loop debugged
+            v4.0-pre2.2 - shell debugged
+            v4.0-pre2.3 - score(), details(), helpText() and quitGame() debugged
+            v4.0-pre2.4 - health() debugged
+            v4.0-pre2.5 - kill() debugged
+            v4.0-pre2.6 - valueError in health() fixed, encased in try-except statement
+            v4.0-pre2.7 - failed dictionary lookup in man() fixed, converted arguments[1] to str type
+            v4.0-pre2.8 - added whitespace to info() to avoid clutter
+            v4.0-pre2.9 - attributeError in use() fixed by removal of a bad .split() function
+            v4.0-pre2.10 - takeoff() confirmed without alteration
+            v4.0-pre2.11 - unitType lookup in damage() fixed
+            v4.0-pre2.12 - attributeError in dogfight() fixed by removal of a bad .split() function
+            v4.0-pre2.13 - takeoff() now checks if the unit passed has already been used
+            v4.0-pre2.14 - removed bad .split() function in bomb(); fixed parsing of kill() arguments to allow for both shell calls and in-function calls
+            v4.0-pre2.15 - removed 10 non-air command calls from airShell
+            v4.0-pre2.16 - fixed calls to units that do not exist within air_missile()
+            v4.0-pre2.17 - removed 3 more non-air command calls from airShell
+            v4.0-pre2.18 - removed bad del statement from kill()
+            v4.0-pre2.19 - changed .get(x) to .get(unit) in airlift(), fixing bad dictionary lookup
+            v4.0-pre2.20 - ensured that airlift() can only airlift certain units
+            v4.0-pre2.21 - kamikaze() ensured, all air-only functions and their dependencies debugged
+        v4.0-pre3 - Shell rewrite debugging
+            v4.0-pre3.1 - removed bad .split() function in freeze()
+            v4.0-pre3.2 - cleaned up unneeded LOC in convert()
+            v4.0-pre3.3 - removed bad .split() function in disable()
+            v4.0-pre3.4 - polished merge(), fixed health percentage lookup in info()
+            v4.0-pre3.5 - ensured that split() can only be called for units in the player's team
+            v4.0-pre3.6 - removed bad .split() function from dogfight(), moved campaign name variable from umpire.py to gamefile
+            v4.0-pre3.7 - remove(), append(), and clear() as separate meta-functions deprecated
+            v4.0-pre3.8 - fixed bad call of spy() function from shell()
+            v4.0-pre3.9 - removed bad .split() function in fire(), changed some unit names in normandy.py
+            v4.0-pre3.10 - fixed bad heading() call from shell()
+            v4.0-pre3.11 - heading() now freezes the unit
+            v4.0-pre3.12 - unitTypes checked for presence in moveFireTable rather than the unit itself, fixing 11 functions
+            v4.0-pre3.13 - polished torpedo()
+            v4.0-pre3.14 - fire() will now only execute if the units passed to it exist; otherwise, it quits
+            v4.0-pre3.15 - torpedo() will now only execute if the units passed to it exist; otherwise, it quits
+            v4.0-pre3.16 - debugged common errors in sortie()
+            v4.0-pre3.17 - debugged common errors in depthcharge()
+            v4.0-pre3.18 - debugged common errors in board()
+            v4.0-pre3.19 - debugged common errors in build()
+            v4.0-pre3.20 - debugged common errors in missile()
+        v4.0-pre4 - Gamefile rewriting
+            v4.0-pre4.1 - test_gamefile.py created
+            v4.0-pre4.2 - error calls fixed
+            v4.0-pre4.3 - v3.1 release cancelled, next release planned is version 4.0
+            v4.0-pre4.4 - brandywine.py gamefile updated
+            v4.0-pre4.5 - nile.py gamefile updated
+            v4.0-pre4.6 - gamefile_template.py updated
+        v4.0-pre5 - Documentation update
+            v4.0-pre5.1 - manpages dictionary completed
+            v4.0-pre5.2 - manual fully completed for the v4.0 release
+            v4.0-pre5.3 - removed remnant third edition manual
+        v4.0-pre6 - Final code polishing
+            v4.0-pre6.1 - empty commands no longer cause crashes
+            v4.0-pre6.2 - several bad .split() calls removed
 
 v4.0 - Updated shell release
-
-v4.1-pre1 - Nuclear weapons
-    v4.1-pre1.1 - added nuke() function and nukeTable{} dictionary
-    v4.1-pre1.2 - use() and freeze() function subcalls deprecated
-    v4.1-pre1.3 - disable() function subcalls deprecated
-    v4.1-pre1.4 - nuke() function debugged
-    v4.1-pre1.5 - manpages["nuke"] key added
-    v4.1-pre1.6 - gamefiles and template updated for the nuke function
-    v4.1-pre1.7 - manual updated to include nuke function
-
-v4.1 - Nuclear weapons release
-
-v4.2-pre1 - Code polishing
-    v4.2-pre1.1 - reduce() function debugged, will always return an integer and its calls reflect that
-    v4.2-pre1.2 - code generally cleaned up, readability improved
-
-v4.2-pre2 - Save and return function
-    v4.2-pre2.1 - save() function implemented
-    v4.2-pre2.2 - gamefile_template no longer relies on importing umpire.py
+    v4.0 - Initial release
+        v4.1-pre1.1 - Nuclear weapons prerelease
+            v4.1-pre1.1 - added nuke() function and nukeTable{} dictionary
+            v4.1-pre1.2 - use() and freeze() function subcalls deprecated
+            v4.1-pre1.3 - disable() function subcalls deprecated
+            v4.1-pre1.4 - nuke() function debugged
+            v4.1-pre1.5 - manpages["nuke"] key added
+            v4.1-pre1.6 - gamefiles and template updated for the nuke function
+            v4.1-pre1.7 - manual updated to include nuke function
+    v4.1 - Nuclear weapons release
+        v4.2-pre1 - Code polishing
+            v4.2-pre1.1 - reduce() function debugged, will always return an integer and its calls reflect that
+            v4.2-pre1.2 - code generally cleaned up, readability improved
+        v4.2-pre2 - Save function implementation
+            v4.2-pre2.1 - save() function implemented
+            v4.2-pre2.2 - gamefile_template no longer relies on importing umpire.py
+            v4.2-pre2.3 - changelog structure altered
