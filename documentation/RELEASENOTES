@@ -131,7 +131,7 @@ New features in this release:
 Features to be added in a later release:
 - Ability to save a game and return to it later
 
-(UPCOMING) v4.2 - Save and return release
+v4.2 - Save and return release
 
 New features in this release:
 - Save games and return to them later via the save() function
