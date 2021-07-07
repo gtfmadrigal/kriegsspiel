@@ -3,7 +3,8 @@ Changelog
 Release naming conventions: (vX.Y.Z)
 - First digit (X) signifies a major release, seriously updating the game mechanics or changing the program entirely
 - Second digit (Y) signifies a minor release. MUST be polished and fully functional
-- Third digit (Z) signifies a commit build. Ideally, changes should not be implemented into a commit build and pushed to the main branch until all bugs have been ironed out and everything is fully functional, but polishing is not required. Sometimes, things may be broken in commit builds.
+- Before every major or minor release, prereleases (Z) (indicated with the infix vX.Y-preZ), are created, which may be unpolished. Sets of commits are grouped into prereleases
+- Commits (A) are indicated with a value after the prerelease according to the formula vX.Y-preZ.A 
 
 v0 - Initial release
     v0.1 - Initial release
@@ -326,6 +327,7 @@ v4 - Updated shell release
     v4.2 - Save and return release
         v5.0-pre1 - Initial Eschaton pre-release
             v5.0-pre1.1 - eschaton.py and ww3.py created
+            v5.0-pre1.2 - changelog further altered
         v5.0-pre2 - Eschaton debugging
         v5.0-pre3 - Documentation update
             - Eschaton manual
