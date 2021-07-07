@@ -5,7 +5,7 @@ Release naming conventions: (vX.Y.Z)
 - Second digit (Y) signifies a minor release. MUST be polished and fully functional
 - Third digit (Z) signifies a commit build. Ideally, changes should not be implemented into a commit build and pushed to the main branch until all bugs have been ironed out and everything is fully functional, but polishing is not required. Sometimes, things may be broken in commit builds.
 
-v0.0 - Initial release
+v0 - Initial release
     v0.1 - Initial release
         v1.0-pre1 - Land-battles prerelease
             v1.0-pre1.1 - initial commit
@@ -20,7 +20,7 @@ v0.0 - Initial release
             v1.0-pre1.10 - moved endGame function to gamefile
             v1.0-pre1.11 - license added
 
-v1.0 - Full release for land battles
+v1 - Full release for land battles
     v1.0 - Initial full release
         v1.1-pre1 - Artifact-clearing prerelease
             v1.1-pre1.1 - moved info() command to gamefile()
@@ -63,7 +63,7 @@ v1.0 - Full release for land battles
             v2.0-pre1.14 - improved gamefile template
             v2.0-pre1.15 - Agincourt gamefile created
 
-v2.0 - Naval battle release
+v2 - Naval battle release
     v2.0 - Naval battle initial release
         v2.1-pre1 - Polished prerelease
             v2.1-pre1.1 - game loop reduced to 4LOC, functionality moved to getCommand()
@@ -207,7 +207,7 @@ v2.0 - Naval battle release
             v3.0-pre1.43 - airlift fixed
             v3.0-pre1.44 - dogfight() function implemented
 
-v3.0 - Land-Sea-Air unification release
+v3 - Land-Sea-Air unification release
     v3.0 - Initial unification release
         v4.0-pre1 - First rewrite
             v4.0-pre1.1 - shell rewrite meta-functions re-implemented
@@ -304,7 +304,7 @@ v3.0 - Land-Sea-Air unification release
             v4.0-pre6.1 - empty commands no longer cause crashes
             v4.0-pre6.2 - several bad .split() calls removed
 
-v4.0 - Updated shell release
+v4 - Updated shell release
     v4.0 - Initial release
         v4.1-pre1.1 - Nuclear weapons prerelease
             v4.1-pre1.1 - added nuke() function and nukeTable{} dictionary

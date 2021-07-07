@@ -134,4 +134,7 @@ Features to be added in a later release:
 (UPCOMING) v4.2 - Save and return release
 
 New features in this release:
-- Save games and return to them later
+- Save games and return to them later via the save() function
+
+Features to be added in a later release:
+- Multi-military team campaigns
