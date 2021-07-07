@@ -328,7 +328,7 @@ v4 - Updated shell release
         v5.0-pre1 - Initial Eschaton pre-release
             v5.0-pre1.1 - eschaton.py and ww3.py created
             v5.0-pre1.2 - changelog further altered
+            v5.0-pre1.3 - eschaton shell and game loop created
         v5.0-pre2 - Eschaton debugging
         v5.0-pre3 - Documentation update
-            - Eschaton manual
         v5.0-pre4 - Final code polishing
