@@ -323,3 +323,10 @@ v4 - Updated shell release
             v4.2-pre2.2 - gamefile_template no longer relies on importing umpire.py
             v4.2-pre2.3 - changelog structure altered
             v4.2-pre2.4 - releasenotes and readme updated
+    v4.2 - Save and return release
+        v5.0-pre1 - Initial Eschaton pre-release
+            v5.0-pre1.1 - eschaton.py and ww3.py created
+        v5.0-pre2 - Eschaton debugging
+        v5.0-pre3 - Documentation update
+            - Eschaton manual
+        v5.0-pre4 - Final code polishing
