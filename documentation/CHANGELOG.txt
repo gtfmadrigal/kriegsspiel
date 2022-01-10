@@ -330,6 +330,7 @@ v4 - Updated shell release
             v5.0-pre1.2 - changelog further altered
             v5.0-pre1.3 - eschaton shell and game loop created
             v5.0-pre1.4 - updated naming conventions for certain files
+            v5.0-pre1.5 - fixed health() arguments bug
         v5.0-pre2 - Eschaton debugging
         v5.0-pre3 - Documentation update
         v5.0-pre4 - Final code polishing
