@@ -1,4 +1,5 @@
 import random
+import sys
 
 # Strings
 round = 1
@@ -167,6 +168,32 @@ def kill(arguments):
     print(unit, "killed.")
     deadUnits.append(unit)
     update()
+
+def log():
+    originalOutput = sys.stdout
+    with open("log.txt", "w") as f:
+        sys.stdout = f
+        print("Round:", round)
+        print("Command:", commandNumber)
+        for x in firstTeamTable:
+            healthValue = firstTeamTable[x]
+            originalValue = firstTeamTableOriginal[x]
+            if healthValue == originalValue: continue
+            print(x, ":", healthValue)
+        for x in secondTeamTable:
+            healthValue = secondTeamTable[x]
+            originalValue = secondTeamTableOriginal[x]
+            if healthValue == originalValue: continue
+            print(x, ":", healthValue)
+        print("")
+        print("usedUnits =", usedUnits)
+        print("immobileUnits =", immobileUnits)
+        print("hiddenUnits =", hiddenUnits)
+        print("disabledUnits =", disabledUnits)
+        print("deadUnits =", deadUnits)
+        print(secrets)
+        score()
+    sys.stdout = originalOutput
 
 def dealDamage(unit, damage, teamTable):
     global firstTeamTable
@@ -1421,6 +1448,7 @@ def airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlying
         error("command", "air-shell")
         airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
     commandNumber = commandNumber + 1
+    log()
     if airPhase == True:
         airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
 
@@ -1474,6 +1502,7 @@ def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTab
         error("command", "shell")
         return
     commandNumber = commandNumber + 1
+    log()
 
 while True:
     while (round % 2) != 0: shell(firstTeam, firstTeamTable, secondTeamTable, firstTeamFlying, secondTeamFlying)
