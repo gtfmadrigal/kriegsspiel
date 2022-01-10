@@ -343,7 +343,11 @@ def convert(arguments, teamTable):
     global firstTeamTable
     global secondTeamTable
     global unitTable
-    unit = arguments[1]
+    try:
+        unit = arguments[1]
+    except:
+        error("argument", "convert")
+        return
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unit in teamTable:
