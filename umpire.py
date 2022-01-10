@@ -384,7 +384,11 @@ def merge(arguments, teamTable):
     global immobileUnits
     global disabledUnits
     del arguments[0]
-    mergedLocalUnitType = unitTable.get(arguments[0])
+    try:
+        mergedLocalUnitType = unitTable.get(arguments[0])
+    except:
+        error("argument", "merge")
+        return
     mergedUnitType = allUnitTypes.get(mergedLocalUnitType)
     totalHealth = 0
     numberOfUnits = 0

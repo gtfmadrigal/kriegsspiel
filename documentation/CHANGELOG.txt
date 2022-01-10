@@ -336,6 +336,7 @@ v4 - Updated shell release
             v5.0-pre2.3 - added exception for health() arguments error
             v5.0-pre2.4 - added exception for convert() arguments error
             v5.0-pre2.5 - altered changelog
+            v5.0-pre2.6 - added exception for merge() arguments error
         v5.0-pre3 - Eschaton debugging
         v5.0-pre4 - Documentation update
         v5.0-pre5 - Final code polishing
