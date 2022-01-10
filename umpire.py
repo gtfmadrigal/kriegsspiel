@@ -248,10 +248,11 @@ def helpText():
 def health(arguments):
     global firstTeamTable
     global secondTeamTable
-    if len(arguments) != 2:
+    try:
+        unit = arguments[1]
+    except:
         error("argument", "health")
         return
-    unit = arguments[1]
     try: 
         newHealth = float(arguments[2])
     except:

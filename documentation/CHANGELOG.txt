@@ -332,6 +332,7 @@ v4 - Updated shell release
             v5.0-pre1.4 - updated naming conventions for certain files
             v5.0-pre1.5 - fixed health() arguments bug
             v5.0-pre1.6 - fixed error message "argument"
+            v5.0-pre1.7 - added exception for health() arguments error
         v5.0-pre2 - Eschaton debugging
         v5.0-pre3 - Documentation update
         v5.0-pre4 - Final code polishing
