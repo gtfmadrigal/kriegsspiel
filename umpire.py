@@ -660,6 +660,14 @@ def man(arguments):
         return
     print(manPages.get(command))
 
+def message():
+    test = fog()
+    if test == True:
+        print("Message failed to deliver.")
+        return
+    else:
+        print("Message delivered.")
+
 # Theater-agnostic functions
 def attack(arguments, teamTable, targetTeamTable):
     global usedUnits
@@ -1649,6 +1657,7 @@ def airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlying
     elif parsedCommand[0] == "health": health(parsedCommand)
     elif parsedCommand[0] == "kill": kill(parsedCommand)
     elif parsedCommand[0] == "man": man(parsedCommand)
+    elif parsedCommand[0] == "message": message()
     elif parsedCommand[0] == "info": info(parsedCommand)
     elif parsedCommand[0] == "use": use(parsedCommand)
     elif parsedCommand[0] == "dogfight": dogfight(parsedCommand, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
@@ -1695,6 +1704,7 @@ def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTab
     elif parsedCommand[0] == "health": health(parsedCommand)
     elif parsedCommand[0] == "kill": kill(parsedCommand)
     elif parsedCommand[0] == "man": man(parsedCommand)
+    elif parsedCommand[0] == "message": message()
     elif parsedCommand[0] == "freeze": freeze(parsedCommand)
     elif parsedCommand[0] == "convert": convert(parsedCommand, teamTable)
     elif parsedCommand[0] == "disable": disable(parsedCommand)
