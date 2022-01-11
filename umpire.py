@@ -543,7 +543,11 @@ def split(arguments, teamTable):
         hiddenUnits.remove(originalUnit)      
 
 def man(arguments):
-    command = arguments[1]
+    try:
+        command = arguments[1]
+    except:
+        error("argument", "man")
+        return
     if not str(command) in manPages:
         error("command", "man")
         print("Type 'help' for a list of commands.")

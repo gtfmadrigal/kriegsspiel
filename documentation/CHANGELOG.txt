@@ -347,6 +347,7 @@ v4 - Updated shell release
             v4.3-pre2.14 - delayed release v5.0 for v4.3
             v4.3-pre2.15 - added exception for reveal() arguments error
             v4.3-pre2.16 - added exception for split() arguments error
+            v4.3-pre2.17 - added exception for man() arguments error
         v4.3-pre3 - Error messages
         v4.3-pre4 - Documentation
         v4.3-pre5 - Updates to Manual
