@@ -354,6 +354,8 @@ v4 - Updated shell release
             v4.3-pre2.21 - added exception for heading() arguments error
             v4.3-pre2.22 - added exception for torpedo() arguments error
             v4.3-pre2.23 - added exception for sortie() arguments error
+            v4.3-pre2.24 - added exception for depthcharge() arguments error
+            v4.3-pre2.25 - added exception for board() arguments error
         v4.3-pre3 - Error messages
         v4.3-pre4 - Documentation
         v4.3-pre5 - Updates to Manual

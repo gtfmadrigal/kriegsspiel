@@ -840,7 +840,11 @@ def depthcharge(arguments, teamTable, targetTeamTable):
     global immobileUnits
     global disabledUnits
     del arguments[0]
-    unit = arguments [0]
+    try:
+        unit = arguments [0]
+    except:
+        error("argument", "depthcharge")
+        return
     if not unit in teamTable:
         error("team", "depthcharge")
         return
@@ -881,7 +885,11 @@ def board(arguments, teamTable, targetTeamTable):
     global immobileUnits
     global disabledUnits
     del arguments[0]
-    unit = arguments[0]
+    try:
+        unit = arguments[0]
+    except:
+        error("argument", "board")
+        return
     if not unit in teamTable:
         error("team", "depthcharge")
         return
