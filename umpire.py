@@ -338,40 +338,61 @@ def helpText():
     print(*allUnitTypes.keys(), sep = ", ")
 
 def health(arguments):
+    # health.globals
     global firstTeamTable
     global secondTeamTable
+    # health.unit
+    # health.unit.try
     try:
         unit = arguments[1]
+    # health.unit.except
     except:
-        error("argument", "health")
+        error("argument", "health.unit.except")
         return
+    # health.newHealth
+    # health.newHealth.try
     try: 
         newHealth = float(arguments[2])
+    # health.newHealth.except
     except:
-        error("type", "health")
+        error("type", "health.newHealth.except")
         return
+    # health.team
+    # health.team.first
     if unit in firstTeamTable: 
         table = firstTeamTable
+    # health.team.second
     elif unit in secondTeamTable: 
         table = secondTeamTable
+    # health.team.none
     else:
-        error("unit", "health")
+        error("unit", "health.team.none")
         return
+    # health.action
+    # health.action.kill
     if newHealth <= 0: 
         kill(arguments)
+    # health.action.reduce
     else: 
         table[unit] = float(newHealth)
+    # health.return
     score()
 
 def freeze(arguments):
+    # freeze.globals
     global immobileUnits
+    # freeze.unit
+    # freeze.unit.argument
     if len(arguments) == 1: 
         unit = str(arguments)
+    # freeze.unit.tooManyArguments
     else: 
         unit = arguments[1]
+    # freeze.team
     if not unit in firstTeamTable and not unit in secondTeamTable:
-        error("unit", "use")
+        error("unit", "freeze.team")
         return
+    # freeze.action
     immobileUnits.append(unit)
 
 def use(arguments):
