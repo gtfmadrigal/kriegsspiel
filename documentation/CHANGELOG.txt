@@ -360,6 +360,15 @@ v4 - Updated shell release
             v4.3-pre2.27 - fixed bad shell() call to build() lacking teamTable
             v4.3-pre2.28 - added exception for build() arguments error
             v4.3-pre2.29 - added exception for missile() arguments error
+            v4.3-pre2.30 - added exception for takeoff() arguments error
+            v4.3-pre2.31 - added exception for land() arguments error
+            v4.3-pre2.32 - added exception for pulse() arguments error
+            v4.3-pre2.33 - added exception for airlift() arguments error
+            v4.3-pre3.34 - added exception for kamikaze() arguments error
+            v4.3-pre3.35 - added exception for air_missile() arguments error
+            v4.3-pre3.36 - added exception for dogfight() arguments error
+            v4.3-pre3.37 - added exception for bomb() arguments error
+            v4.3-pre3.38 - added exception for survey() arguments error
         v4.3-pre3 - Error messages
         v4.3-pre4 - Documentation
         v4.3-pre5 - Updates to Manual

@@ -1080,7 +1080,11 @@ def takeoff(arguments):
     global secondTeamFlying
     global usedUnits
     global immobileUnits
-    unit = arguments[1]
+    try:
+        unit = arguments[1]
+    except:
+        error("argument", "takeoff")
+        return
     if unit in firstTeamTable: 
         teamFlyingTable = firstTeamFlying
     elif unit in secondTeamTable: 
@@ -1118,7 +1122,11 @@ def land(arguments):
     else:
         error("unit", "land")
         return
-    localUnitType = unitTable.get(unit)
+    try:
+        localUnitType = unitTable.get(unit)
+    except:
+        error("argument", "land")
+        return
     unitType = allUnitTypes.get(localUnitType)
     if not unitType in flyTable:
         error("function", "land")
@@ -1133,6 +1141,11 @@ def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable):
     global usedUnits
     global immobileUnits
     global disabledUnits
+    try:
+        foo = arguments[1]
+    except:
+        error("argument", "pulse")
+        return
     del arguments[0]
     defendingUnits = []
     for x in arguments:
@@ -1171,6 +1184,11 @@ def airlift(arguments, teamTable, teamFlyingTable):
     global locationTable
     global usedUnits
     global immobileUnits
+    try:
+        foo = arguments[1]
+    except:
+        error("argument", "airlift")
+        return
     del arguments[0]
     liftedUnits = []
     for x in arguments:
@@ -1208,6 +1226,11 @@ def airlift(arguments, teamTable, teamFlyingTable):
 
 def kamikaze(arguments, teamTable, targetTeamTable, teamFlyingTable):
     global usedUnits
+    try:
+        foo = arguments[1]
+    except:
+        error("argument", "kamikaze")
+        return
     del arguments[0]
     for x in arguments:
         if x == ">": 
@@ -1243,6 +1266,11 @@ def air_missile(arguments, teamTable, targetTeamTable, teamFlyingTable):
     global firstTeamTable
     global secondTeamTable
     global usedUnits
+    try:
+        foo = arguments[1]
+    except:
+        error("argument", "air-missile")
+        return
     for x in arguments:
         if x in teamTable: 
             unit = str(x)
@@ -1291,6 +1319,11 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
     totalAttackDamage = 0
     totalDefenseDamage = 0
     defendingUnits = []
+    try:
+        foo = arguments[1]
+    except:
+        error("argument", "dogfight")
+        return
     del arguments[0]
     for x in arguments:
         if x == ">": pass
@@ -1348,6 +1381,11 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
 def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
     global usedUnits
     global immobileUnits
+    try:
+        foo = arguments[1]
+    except:
+        error("argument", "bomb")
+        return
     del arguments[0]
     totalAttackDamage = 0
     defendingUnits = []
@@ -1390,7 +1428,11 @@ def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
 
 def survey(arguments, teamTable, teamFlyingTable): # DEBUGGEd
     global usedUnits
-    unit = arguments[1]
+    try:
+        unit = arguments[1]
+    except:
+        error("argument", "survey")
+        return
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unit in teamTable:
