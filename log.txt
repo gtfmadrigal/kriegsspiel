@@ -8,4 +8,4 @@ disabledUnits = []
 deadUnits = []
 
 Rebel total health: 278 or 100.0 %
-British total health: 342 or 100.0 
+British total health: 342 or 100.0 %

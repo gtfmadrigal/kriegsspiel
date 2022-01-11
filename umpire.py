@@ -365,7 +365,11 @@ def reveal(arguments):
         unit = arguments
     else: 
         unit = arguments[1]
-    localUnitType = unitTable.get(unit)
+    try:
+        localUnitType = unitTable.get(unit)
+    except:
+        error("argument", "reveal")
+        return
     unitType = allUnitTypes.get(localUnitType)
     if not unit in hiddenUnits or not unitType in hideTable:
         error("function", "reveal")

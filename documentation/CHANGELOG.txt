@@ -345,6 +345,7 @@ v4 - Updated shell release
             v4.3-pre2.12 - changed error call for bad unit in freeze() and use()
             v4.3-pre2.13 - added exception for hide() arguments error
             v4.3-pre2.14 - delayed release v5.0 for v4.3
+            v4.3-pre2.15 - added exception for reveal() arguments error
         v4.3-pre3 - Error messages
         v4.3-pre4 - Documentation
         v4.3-pre5 - Updates to Manual
