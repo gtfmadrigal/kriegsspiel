@@ -1027,6 +1027,11 @@ def missile(arguments, teamTable, targetTeamTable):
     global secondTeamTable
     global usedUnits
     global immobileUnits
+    try:
+        foo = arguments[1]
+    except:
+        error("argument", "missile")
+        return
     del arguments[0]
     for x in arguments:
         if x == ">": 
