@@ -396,47 +396,67 @@ def freeze(arguments):
     immobileUnits.append(unit)
 
 def use(arguments):
+    # use.globals
     global usedUnits
+    # use.unit
+    # use.unit.argument
     if len(arguments) == 1: 
         unit = str(arguments)
+    # use.unit.tooManyArguments
     else: 
         unit = arguments
+    # use.team
     if not unit in firstTeamTable and not unit in secondTeamTable:
-        error("unit", "use")
+        error("unit", "use.team")
         return
+    # use.action
     usedUnits.append(unit)
 
 def hide(arguments):
+    # hide.globals
     global secrets
     global locationTable
     global hiddenUnits
+    # hide.unit
+    # hide.unit.argument
     if len(arguments) == 1: 
         unit = arguments
+    # hide.unit.tooManyArguments
     else: 
         unit = arguments[1]
+    # hide.argument
+    # hide.argument.try
     try:
         localUnitType = unitTable.get(unit)
+    # hide.argument.except
     except:
-        error("argument", "hide")
+        error("argument", "hide.argument.except")
         return
+    # hide.type
     unitType = allUnitTypes.get(localUnitType)
     if not unitType in hideTable:
-        error("function", "hide")
+        error("function", "hide.type")
         return
+    # hide.hidden
     if unit in hiddenUnits:
-        error("hidden", "hide")
+        error("hidden", "hide.hidden")
         return
+    # hide.structure
     structure = input("Structure to hide in, if any: ")
     if structure in structureTable:
+        # hide.structure.definitions
         locationTable[unit] = structure
+        # hide.structure.action
         hiddenUnits.append(unit)
         newSecret = unit + " hidden inside " + structure
         secrets = secrets + ", " + newSecret
         return
+    # hide.terrain
     terrain = input("Terrain to hide in: ")
     if not terrain in hideableTerrain:
-        error("terrain", "hide")
+        error("terrain", "hide.terrain")
         return
+    # hide.action
     hiddenUnits.append(unit)
     locationTable[unit] = terrain
     location = input("Location of this hidden unit: ")
