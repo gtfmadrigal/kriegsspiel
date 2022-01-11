@@ -315,7 +315,7 @@ def use(arguments):
         unit = str(arguments)
     else: 
         unit = arguments
-    if not unit in unitTable:
+    if not unit in firstTeamTable and not unit in secondTeamTable:
         error("unit", "use")
         return
     usedUnits.append(unit)
