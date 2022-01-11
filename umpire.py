@@ -55,7 +55,7 @@ nukeTable = {"missile-submarine":30, "stealth-bomber":16}
 structureTable = {}
 manPages = {"score":"'score'", "turn":"'turn'", "details":"'details'", "quit":"'quit'", "help":"'help'", "health":"'health [unit] [value]'", "kill":"'kill [unit]'", "convert":"'convert [unit]'", "disable":"'disable [unit]'", "merge":"'merge [unit1] [unit2] ... > [unit]'", "split":"'split [unit] > [unit1] [unit2] ...'", "info":"'info [unit]'", "use":"'use [unit]'", "man":"'man [command]'", "attack":"'attack [unit1] [unit2] ... > [unit3] [unit4] ...'", "hide":"'hide [unit]'", "reveal":"'reveal [unit]'", "fire":"'fire [unit1] [unit2] ... > [unit3] [unit4] ...'", "heading":"'heading [unit]'", "torpedo":"'torpedo [unit] > [target]'", "sortie":"'sortie [unit] > [target]'", "depthcharge":"'depthcharge [unit] > [target]'", "board":"'board [unit] > [target]'", "missile":"'missile [unit] > [target]'", "takeoff":"'takeoff [unit]'", "land":"'land [unit]'", "kamikaze":"'kamikaze [unit] > [target]'", "dogfight":"'dogfight [unit1] [unit2] ... > [target1] [target2] ...'", "bomb":"'bomb [unit] > [target1] [target2] ...'", "survey":"'survey [unit]'", "pulse":"'pulse [unit] > [target1] [target2] ...'", "airlift":"'airlift [plane] > [unit]'", "nuke":"'nuke [unit] > [target]'"}
 
-# Initialization work
+# initialization
 from gamefiles.brandywine import *
 firstHealth = sum(firstTeamTable.values())
 secondHealth = sum(secondTeamTable.values())
@@ -63,10 +63,12 @@ loadGame()
 
 # Meta-functions
 def update():
+    # update.globals
     global firstHealth
     global secondHealth
     global firstTeamTable
     global secondTeamTable
+    # update.health
     firstHealth = sum(firstTeamTable.values())
     secondHealth = sum(secondTeamTable.values())
 
@@ -75,42 +77,62 @@ def error(code, function):
     print("Origin:", str(function))   
 
 def reduce(unit):
+    # reduce.definitions
     export = 0
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # reduce.hillTerrain
     if locationTable.get(unit) == "hill": 
+        # reduce.hillTerrain.mechanized
         if unitType == "mechanized": 
             pass
+        # reduce.hillTerrain.special
         elif unitType == "special": 
             pass
+        # reduce.hillTerrain.remainder
         else: 
             export = export + 1
+    # reduce.forestTerrain
     elif locationTable.get(unit) == "forest":
+        # reduce.forestTerrain.infantry
         if unitType == "infantry": 
             pass
+        # reduce.forestTerrain.lightArtillery
         elif unitType == "light-artillery": 
             pass
+        # reduce.forestTerrain.medArtillery
         elif unitType == "med-artillery": 
             pass
+        # reduce.forestTerrain.heavyArtillery
         elif unitType == "heavy-artillery": 
             pass
+        # reduce.forestTerrain.special
         elif unitType == "special": 
             pass
+        # reduce.forestTerrain.remainder
         else: 
             export = export + 1
+    # reduce.swampTerrain
     elif locationTable.get(unit) == "swamp": 
         export = export + 1
+    # reduce.structure
     elif locationTable.get(unit) in structureTable: 
         export = structureTable.get(locationTable.get(unit))
+    # reduce.return
     return int(export)
 
 def fortificationReduce(structure, damage):
+    # fortificationReduce.globals
     global structureTable
+    # fortificationReduce.definitions
     initialNetDamage = structureTable.get(structure) - damage
+    # fortificaitonReduce.action
+    # fortificationReduce.action.reduction
     if initialNetDamage > 0:
         structureTable[structure] = initialNetDamage
         print(structure, "new value:", str(initialNetDamage))
         return 0
+    # fortificationReduce.action.destruction
     else:
         print(structure, "destroyed.")
         del structureTable[structure]
@@ -118,50 +140,69 @@ def fortificationReduce(structure, damage):
         return finalNetDamage
 
 def damage(unit, table):
+    # damage.definitions
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # damage.checks
+    # damage.checks.immobileUsed
     if unit in immobileUnits or unit in usedUnits:
-        error("available", "damage")
+        error("available", "damage.checks.immobileUsed")
         return
+    # damage.checks.dead
     if unit in deadUnits:
-        error("dead", "damage")
+        error("dead", "damage.checks.dead")
         return
+    # damage.checks.functionAvailability
     if not unitType in table: 
-        error("function", "damage")
+        error("function", "damage.checks.functionAvailability")
         return
+    # damage.calculation
     basicMaximum = table.get(unitType) + 1
     multiplier = dividedTable.get(unit, 1)
     maximum = basicMaximum * multiplier
     return random.randrange(1, maximum)
 
 def fog():
+    # fog.checkFogExists
     if fogOfWar == 1: 
         return False
+    # fog.calculation
     export = random.randrange(1, fogOfWar + 1)
+    # fog.fail
     if export == 1: 
         return True
+    # fog.pass
     else: 
         return False
 
 def kill(arguments):
+    # kill.globals
     global firstTeamTable
     global secondTeamTable
     global firstTeamFlying
     global secondTeamTable
     global deadUnits
+    # kill.unit
+    # kill.unit.tooManyArguments
     if len(arguments) == 2: 
         unit = arguments[1]
+    # kill.unit.correctArguments
     else: 
         unit = arguments
+    # kill.team
+    # kill.team.first
     if unit in firstTeamTable: 
         table = firstTeamTable
         flyingTable = firstTeamFlying
+    # kill.team.second
     elif unit in secondTeamTable: 
         table = secondTeamTable
         flyingTable = secondTeamFlying
+    # kill.team.none
     else: 
-        error("unit", "kill")
+        error("unit", "kill.team.none")
         return
+    # kill.action
     del table[unit]
     if unit in flyingTable: 
         flyingTable.remove(unit)
