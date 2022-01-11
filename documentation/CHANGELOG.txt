@@ -369,6 +369,7 @@ v4 - Updated shell release
             v4.3-pre3.36 - added exception for dogfight() arguments error
             v4.3-pre3.37 - added exception for bomb() arguments error
             v4.3-pre3.38 - added exception for survey() arguments error
+            v4.3-pre3.39 - added exception for info() arguments error
         v4.3-pre3 - Error messages
         v4.3-pre4 - Documentation
         v4.3-pre5 - Updates to Manual

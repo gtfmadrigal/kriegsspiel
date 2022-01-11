@@ -1426,7 +1426,7 @@ def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
     defendingUnits.clear()
     score()
 
-def survey(arguments, teamTable, teamFlyingTable): # DEBUGGEd
+def survey(arguments, teamTable, teamFlyingTable):
     global usedUnits
     try:
         unit = arguments[1]
@@ -1458,8 +1458,12 @@ def survey(arguments, teamTable, teamFlyingTable): # DEBUGGEd
 
 # Shell functions
 
-def info(arguments): # DEBUGGED
-    unit = arguments[1]
+def info(arguments):
+    try:
+        unit = arguments[1]
+    except:
+        error("argument", "info")
+        return
     print(unit, "attributes:")
     print("")
     if unit in firstTeamTable: 
