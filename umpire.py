@@ -647,7 +647,11 @@ def move(arguments, teamTable):
 
 def spy(arguments, teamTable):
     global usedUnits
-    unit = arguments[1]
+    try:
+        unit = arguments[1]
+    except:
+        error("argument", "spy")
+        return
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unit in teamTable:
