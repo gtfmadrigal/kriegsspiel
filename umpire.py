@@ -619,7 +619,11 @@ def move(arguments, teamTable):
     global locationTable
     global immobileUnits
     global usedUnits
-    unit = arguments[1]
+    try:
+        unit = arguments[1]
+    except:
+        error("argument", "move")
+        return
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unit in teamTable:
