@@ -481,12 +481,12 @@ def reveal(arguments):
         localUnitType = unitTable.get(unit)
     # reveal.argument.except
     except:
-        error("argument", "reveal")
+        error("argument", "reveal.argument.except")
         return
     # reveal.type
     unitType = allUnitTypes.get(localUnitType)
     if not unit in hiddenUnits or not unitType in hideTable:
-        error("function", "reveal")
+        error("function", "reveal.type")
         return
     # reveal.action
     newLocation = input("New terrain: ")
@@ -496,37 +496,51 @@ def reveal(arguments):
     secrets = secrets + ", " + newSecret
 
 def convert(arguments, teamTable):
+    # convert.globals
     global firstTeamTable
     global secondTeamTable
     global unitTable
+    # convert.argument
+    # convert.argument.try
     try:
         unit = arguments[1]
+    # convert.argument.except
     except:
-        error("argument", "convert")
+        error("argument", "convert.argument.except")
         return
+    # convert.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
-    if not unit in teamTable:
-        error("team", "convert")
-        return
+    # convert.type.function
     if not unitType in convertTable:
-        error("function", "convert")
+        error("function", "convert.type.function")
         return
+    # convert.team
+    if not unit in teamTable:
+        error("team", "convert.team")
+        return
+    # convert.action
     currentHealth = teamTable.get(unit)
     unitTable[unit] = "infantry"
     if currentHealth > 4: newHealth = 4
     else: newHealth = currentHealth
+    # convert.return
     teamTable[unit] = newHealth
     update()
 
 def disable(arguments):
+    # disable.globals
     global disabledUnits
     global usedUnits
     global immobileUnits
+    # disable.unit
+    # disable.unit.argument
     if len(arguments) == 1: 
         unit = arguments
+    # disable.unit.tooManyArguments
     else: 
         unit = arguments[1]
+    # disable.action
     immobileUnits.append(unit)
     usedUnits.append(unit)
     disabledUnits.append(unit)
