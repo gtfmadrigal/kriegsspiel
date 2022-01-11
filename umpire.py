@@ -996,7 +996,11 @@ def build(arguments, teamTable):
     global usedUnits
     global immobileUnits
     del arguments[0]
-    unit = arguments[0]
+    try:
+        unit = arguments[0]
+    except:
+        error("argument", "build")
+        return
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     if not unit in teamTable:
