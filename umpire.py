@@ -1552,7 +1552,7 @@ def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTab
     elif parsedCommand[0] == "sortie": sortie(parsedCommand, teamTable, targetTeamTable)
     elif parsedCommand[0] == "depthcharge": depthcharge(parsedCommand, teamTable, targetTeamTable)
     elif parsedCommand[0] == "board": board(parsedCommand, teamTable, targetTeamTable)
-    elif parsedCommand[0] == "build": build(parsedCommand)
+    elif parsedCommand[0] == "build": build(parsedCommand, teamTable)
     elif parsedCommand[0] == "missile": missile(parsedCommand, teamTable, targetTeamTable)
     elif parsedCommand[0] == "nuke": nuke(parsedCommand, teamTable, targetTeamTable)
     elif parsedCommand[0] == "save": save()

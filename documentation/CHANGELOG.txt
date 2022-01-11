@@ -357,6 +357,7 @@ v4 - Updated shell release
             v4.3-pre2.24 - added exception for depthcharge() arguments error
             v4.3-pre2.25 - added exception for board() arguments error
             v4.3-pre2.26 - added exception for nuke() arguments error
+            v4.3-pre2.27 - fixed bad shell() call to build() lacking teamTable
         v4.3-pre3 - Error messages
         v4.3-pre4 - Documentation
         v4.3-pre5 - Updates to Manual
