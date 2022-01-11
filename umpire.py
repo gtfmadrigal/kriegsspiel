@@ -488,7 +488,11 @@ def split(arguments, teamTable):
     global immobileUnits
     global disabledUnits
     del arguments[0]
-    originalUnit = arguments[0]
+    try:
+        originalUnit = arguments[0]
+    except:
+        error("argument", "split")
+        return
     localUnitType = unitTable.get(originalUnit)
     unitType = allUnitTypes.get(localUnitType)
     numberOfUnits = 0
