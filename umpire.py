@@ -940,7 +940,11 @@ def nuke(arguments, teamTable, targetTeamTable):
     global immobileUnits
     global disabledUnits
     del arguments[0]
-    unit = arguments[0]
+    try:
+        unit = arguments[0]
+    except:
+        error("argument", "nuke")
+        return
     target = arguments[2]
     if not unit in teamTable:
         error("team", "nuke")
