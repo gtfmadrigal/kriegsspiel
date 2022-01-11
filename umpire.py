@@ -464,22 +464,31 @@ def hide(arguments):
     secrets = secrets + ", " + newSecret
 
 def reveal(arguments):
+    # reveal.globals
     global secrets
     global locationTable
     global hiddenUnits
+    # reveal.unit
+    # reveal.unit.argument
     if len(arguments) == 1: 
         unit = arguments
+    # reveal.unit.tooManyArguments
     else: 
         unit = arguments[1]
+    # reveal.argument
+    # reveal.argument.try
     try:
         localUnitType = unitTable.get(unit)
+    # reveal.argument.except
     except:
         error("argument", "reveal")
         return
+    # reveal.type
     unitType = allUnitTypes.get(localUnitType)
     if not unit in hiddenUnits or not unitType in hideTable:
         error("function", "reveal")
         return
+    # reveal.action
     newLocation = input("New terrain: ")
     locationTable[unit] = newLocation
     hiddenUnits.remove(unit)
