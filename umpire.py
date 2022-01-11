@@ -304,6 +304,9 @@ def freeze(arguments):
         unit = str(arguments)
     else: 
         unit = arguments[1]
+    if not unit in unitTable:
+        error("unit", "use")
+        return
     immobileUnits.append(unit)
 
 def use(arguments):
@@ -312,6 +315,9 @@ def use(arguments):
         unit = str(arguments)
     else: 
         unit = arguments
+    if not unit in allUnitTypes:
+        error("unit", "use")
+        return
     usedUnits.append(unit)
 
 def hide(arguments):

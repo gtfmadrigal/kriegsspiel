@@ -340,6 +340,7 @@ v4 - Updated shell release
             v5.0-pre2.7 - added log.txt
             v5.0-pre2.8 - added log() meta-function
             v5.0-pre2.9 - changed import mechanism for initialization work
+            v5.0-pre2.10 - added error call for bad unit in freeze()
         v5.0-pre3 - Eschaton debugging
         v5.0-pre4 - Documentation update
         v5.0-pre5 - Final code polishing

@@ -1,11 +1,11 @@
 Round: 1
-Command: 2
+Command: 3
 
 usedUnits = []
-immobileUnits = []
+immobileUnits = ['va1']
 hiddenUnits = []
 disabledUnits = []
-deadUnits = ['va1']
+deadUnits = []
 
-Rebel total health: 274 or 98.56115107913669 %
+Rebel total health: 278 or 100.0 %
 British total health: 342 or 100.0 %
