@@ -746,7 +746,11 @@ def torpedo(arguments, teamTable, targetTeamTable):
     global usedUnits
     global immobileUnits
     del arguments[0]
-    unit = arguments[0]
+    try:
+        unit = arguments[0]
+    except:
+        error("argument", "torpedo")
+        return
     if not unit in teamTable:
         error("team", "torpedo")
         return
