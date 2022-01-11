@@ -14,5 +14,6 @@ fogOfWar = 1
 warheads = 0
 locationTable = {}
 
+# Loadgame function
 def loadGame():
     pass

@@ -14,7 +14,7 @@ Army commands: build, missile
 Air commands: takeoff, land, pulse, airlift, survey, bomb, kamikaze, dogfight, missile
 """
 
-# Lists
+# List of lists
 usedUnits = []
 immobileUnits = []
 hiddenUnits = []

@@ -69,6 +69,7 @@ def turn(arguments, team):
     elif team == "islamorg": pass
 
 # Offensive functions
+#
 def launch():
     pass
 

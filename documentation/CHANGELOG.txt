@@ -325,25 +325,30 @@ v4 - Updated shell release
             v4.2-pre2.3 - changelog structure altered
             v4.2-pre2.4 - releasenotes and readme updated
     v4.2 - Save and return release
-        v5.0-pre1 - Eschaton framework
-            v5.0-pre1.1 - eschaton.py and ww3.py created
-            v5.0-pre1.2 - changelog further altered
-            v5.0-pre1.3 - eschaton shell and game loop created
-            v5.0-pre1.4 - updated naming conventions for certain files
-        v5.0-pre2 - Baseline fixes in preparation for pre-release
-            v5.0-pre2.1 - fixed health() arguments bug
-            v5.0-pre2.2 - fixed error message "argument"
-            v5.0-pre2.3 - added exception for health() arguments error
-            v5.0-pre2.4 - added exception for convert() arguments error
-            v5.0-pre2.5 - altered changelog
-            v5.0-pre2.6 - added exception for merge() arguments error
-            v5.0-pre2.7 - added log.txt
-            v5.0-pre2.8 - added log() meta-function
-            v5.0-pre2.9 - changed import mechanism for initialization work
-            v5.0-pre2.10 - added error call for bad unit in freeze()
-            v5.0-pre2.11 - added error call for bad unit in use()
-            v5.0-pre2.12 - changed error call for bad unit in freeze() and use()
-            v5.0-pre2.13 - added exception for hide() arguments error
+        v4.3-pre1 - Eschaton framework
+            v4.3-pre1.1 - eschaton.py and ww3.py created
+            v4.3-pre1.2 - changelog further altered
+            v4.3-pre1.3 - eschaton shell and game loop created
+            v4.3-pre1.4 - updated naming conventions for certain files
+        v4.3-pre2 - Baseline fixes in preparation for pre-release
+            v4.3-pre2.1 - fixed health() arguments bug
+            v4.3-pre2.2 - fixed error message "argument"
+            v4.3-pre2.3 - added exception for health() arguments error
+            v4.3-pre2.4 - added exception for convert() arguments error
+            v4.3-pre2.5 - altered changelog
+            v4.3-pre2.6 - added exception for merge() arguments error
+            v4.3-pre2.7 - added log.txt
+            v4.3-pre2.8 - added log() meta-function
+            v4.3-pre2.9 - changed import mechanism for initialization work
+            v4.3-pre2.10 - added error call for bad unit in freeze()
+            v4.3-pre2.11 - added error call for bad unit in use()
+            v4.3-pre2.12 - changed error call for bad unit in freeze() and use()
+            v4.3-pre2.13 - added exception for hide() arguments error
+            v4.3-pre2.14 - delayed release v5.0 for v4.3
+        v4.3-pre3 - Error messages
+        v4.3-pre4 - Documentation
+        v4.3-pre5 - Updates to Manual
+    v4.3 - Documentation release
         v5.0-pre3 - Eschaton debugging
         v5.0-pre4 - Documentation update
         v5.0-pre5 - Final code polishing
