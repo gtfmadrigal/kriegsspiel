@@ -211,21 +211,33 @@ def kill(arguments):
     update()
 
 def log():
+    # log.definitions
     originalOutput = sys.stdout
+    # log.write
     with open("log.txt", "w") as f:
+        # log.write.definitions
         sys.stdout = f
+        # log.write.header
         print("Round:", round)
         print("Command:", commandNumber)
+        # log.write.team
+        # log.write.team.first
         for x in firstTeamTable:
+            # log.write.team.first.definitions
             healthValue = firstTeamTable[x]
             originalValue = firstTeamTableOriginal[x]
             if healthValue == originalValue: continue
+            # log.write.team.first.write
             print(x, ":", healthValue)
+        # log.write.team.second
         for x in secondTeamTable:
+            # log.write.team.second.definitions
             healthValue = secondTeamTable[x]
             originalValue = secondTeamTableOriginal[x]
             if healthValue == originalValue: continue
+            # log.write.team.second.write
             print(x, ":", healthValue)
+        # log.lists
         print("")
         print("usedUnits =", usedUnits)
         print("immobileUnits =", immobileUnits)
@@ -234,18 +246,25 @@ def log():
         print("deadUnits =", deadUnits)
         print(secrets)
         score()
+    # log.return
     sys.stdout = originalOutput
 
 def dealDamage(unit, damage, teamTable):
+    # dealDamage.globals
     global firstTeamTable
     global secondTeamTable
+    # dealDamage.definitions
     oldHealth = teamTable[unit]
+    # dealDamage.action
+    # dealDamage.action.kill
     if oldHealth - damage <= 0:
         kill(unit)
+    # dealDamage.action.reduce
     else:
         newHealth = oldHealth - damage
         teamTable[unit] = newHealth
         print(unit, "new health:", newHealth)
+    # dealDamage.update
     update()
 
 def save():
@@ -270,34 +289,40 @@ def save():
 
 # Umpire commands
 def score():
+    # score.update
     update()
+    # score.definitions
     firstPercent = firstHealth / firstHealthTotal * 100
     secondPercent = secondHealth / secondHealthTotal * 100
+    # score.display
     print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
     print(secondTeam, "total health:", secondHealth, "or", secondPercent, "%")
 
 def turn():
+    # turn.globals
     global round
     global airPhase
     global usedUnits
     global immobileUnits
     global alreadyDropped
     global disabledUnits
+    # turn.update
     score()
     usedUnits.clear()
     immobileUnits.clear()
     alreadyDropped.clear()
+    # turn.action
     for x in disabledUnits: 
         immobileUnits.append(x)
         usedUnits.append(x)
+    # turn.return
     disabledUnits.clear()
     round = round + 1
     airPhase = True
 
 def details():
-    print("Secrets:")
-    print(secrets)
-    print("Hidden units:")
+    print("Secrets:", secrets)
+    print("Hidden units:", end = ": ")
     print(*hiddenUnits, sep = ", ")
     score()
 
@@ -308,9 +333,8 @@ def quitGame():
         quit()
 
 def helpText():
-    print("Commands: ")
-    print(helpTextBlock)
-    print("Unit types:")
+    print("Commands:", helpTextBlock)
+    print("Unit types:", end = ": ")
     print(*allUnitTypes.keys(), sep = ", ")
 
 def health(arguments):
