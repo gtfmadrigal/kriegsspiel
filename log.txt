@@ -1,8 +1,8 @@
 Round: 1
-Command: 5
+Command: 2
 
 usedUnits = []
-immobileUnits = ['va1', '4']
+immobileUnits = []
 hiddenUnits = []
 disabledUnits = []
 deadUnits = []

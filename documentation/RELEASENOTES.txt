@@ -139,7 +139,10 @@ New features in this release:
 Features to be added in a later release:
 - Multi-military team campaigns
 
-(UPCOMING) v5.0 - Eschaton-Kriegsspiel Unification Release
+(UPCOMING) v5.0 - Eschaton version
 
 New features in this release:
-- Eschaton nuclear warheads game addressed
+- Eschaton nuclear warheads version added
+- More debugging
+- Better error message reporting
+- More code documentation and comments

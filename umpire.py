@@ -328,7 +328,11 @@ def hide(arguments):
         unit = arguments
     else: 
         unit = arguments[1]
-    localUnitType = unitTable.get(unit)
+    try:
+        localUnitType = unitTable.get(unit)
+    except:
+        error("argument", "hide")
+        return
     unitType = allUnitTypes.get(localUnitType)
     if not unitType in hideTable:
         error("function", "hide")
