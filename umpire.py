@@ -790,7 +790,11 @@ def sortie(arguments, teamTable, targetTeamTable):
     global usedUnits
     global immobileUnits
     del arguments[0]
-    unit = arguments[0]
+    try:
+        unit = arguments[0]
+    except:
+        error("argument", "sortie")
+        return
     if not unit in teamTable:
         print("team", "sortie")
         return
