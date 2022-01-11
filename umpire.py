@@ -702,7 +702,11 @@ def fire(arguments, teamTable, targetTeamTable):
             print(x, " does not exist.")
             return
     print("Damage:", totalAttackDamage)
-    perUnitDamage = totalAttackDamage / len(defendingUnits)
+    try:
+        perUnitDamage = totalAttackDamage / len(defendingUnits)
+    except:
+        error("argument", "fire")
+        return
     print("Damage per unit:", perUnitDamage)
     for x in defendingUnits:
         location = locationTable.get(x)
@@ -718,7 +722,11 @@ def fire(arguments, teamTable, targetTeamTable):
 def heading(arguments, teamTable):
     global immobileUnits
     global usedUnits
-    unit = arguments[1]
+    try:
+        unit = arguments[1]
+    except:
+        error("argument", "heading")
+        return
     if not unit in teamTable:
         error("team", "convert")
         return
