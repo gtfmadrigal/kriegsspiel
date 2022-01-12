@@ -243,7 +243,7 @@ def log():
             if healthValue == originalValue: continue
             # log.write.team.second.write
             print(x, ":", healthValue)
-        # log.lists
+        # log.write.lists
         print("")
         print("usedUnits =", usedUnits)
         print("immobileUnits =", immobileUnits)
@@ -252,14 +252,14 @@ def log():
         print("deadUnits =", deadUnits)
         print(secrets)
         score()
-    # log.return
+    # log.push
     sys.stdout = originalOutput
 
 def dealDamage(unit, damage, teamTable):
     # dealDamage.globals
     global firstTeamTable
     global secondTeamTable
-    # dealDamage.definition
+    # dealDamage.parsing
     oldHealth = teamTable[unit]
     # dealDamage.action
     # dealDamage.action.kill
@@ -270,7 +270,7 @@ def dealDamage(unit, damage, teamTable):
         newHealth = oldHealth - damage
         teamTable[unit] = newHealth
         print(unit, "new health:", newHealth)
-    # dealDamage.update
+    # dealDamage.return
     update()
 
 def save():
@@ -295,12 +295,12 @@ def save():
 
 # Umpire commands
 def score():
-    # score.update
-    update()
     # score.definition
+    update()
+    # score.push
     firstPercent = firstHealth / firstHealthTotal * 100
     secondPercent = secondHealth / secondHealthTotal * 100
-    # score.display
+    # score.return
     print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
     print(secondTeam, "total health:", secondHealth, "or", secondPercent, "%")
 
@@ -312,16 +312,16 @@ def turn():
     global immobileUnits
     global alreadyDropped
     global disabledUnits
-    # turn.update
+    # turn.action
     score()
     usedUnits.clear()
     immobileUnits.clear()
     alreadyDropped.clear()
-    # turn.action
+    # turn.action.disabledUnits
     for x in disabledUnits: 
         immobileUnits.append(x)
         usedUnits.append(x)
-    # turn.return
+    # turn.push
     disabledUnits.clear()
     round = round + 1
     airPhase = True
@@ -347,32 +347,33 @@ def health(arguments):
     # health.globals
     global firstTeamTable
     global secondTeamTable
-    # health.unit
-    # health.unit.try
+    # health.parsing
+    # health.parsing.unit
+    # health.parsing.unit.try
     try:
         unit = arguments[1]
-    # health.unit.except
+    # health.parsing.unit.except
     except:
-        error("argument", "health.unit.except")
+        error("argument", "health.parsing.unit.except")
         return
-    # health.newHealth
-    # health.newHealth.try
+    # health.parsing.health
+    # health.parsing.health.try
     try: 
         newHealth = float(arguments[2])
-    # health.newHealth.except
+    # health.parsing.health.except
     except:
-        error("type", "health.newHealth.except")
+        error("type", "health.parsing.health.except")
         return
-    # health.team
-    # health.team.first
+    # health.parsing.team
+    # health.parsing.team.first
     if unit in firstTeamTable: 
         table = firstTeamTable
-    # health.team.second
+    # health.parsing.team.second
     elif unit in secondTeamTable: 
         table = secondTeamTable
-    # health.team.none
+    # health.parsing.team.none
     else:
-        error("unit", "health.team.none")
+        error("unit", "health.parsing.team.none")
         return
     # health.action
     # health.action.kill
@@ -381,41 +382,41 @@ def health(arguments):
     # health.action.reduce
     else: 
         table[unit] = float(newHealth)
-    # health.return
+    # health.action.return
     score()
 
 def freeze(arguments):
     # freeze.globals
     global immobileUnits
-    # freeze.unit
-    # freeze.unit.argument
+    # freeze.parsing.unit
+    # freeze.parsing.unit.argument
     if len(arguments) == 1: 
         unit = str(arguments)
-    # freeze.unit.tooManyArguments
+    # freeze.parsing.unit.tooManyArguments
     else: 
         unit = arguments[1]
-    # freeze.team
+    # freeze.parsing.team
     if not unit in firstTeamTable and not unit in secondTeamTable:
-        error("unit", "freeze.team")
+        error("unit", "freeze.parsing.team")
         return
-    # freeze.action
+    # freeze.push
     immobileUnits.append(unit)
 
 def use(arguments):
     # use.globals
     global usedUnits
-    # use.unit
-    # use.unit.argument
+    # use.parsing.unit
+    # use.parsing.unit.argument
     if len(arguments) == 1: 
         unit = str(arguments)
-    # use.unit.tooManyArguments
+    # use.parsing.unit.tooManyArguments
     else: 
         unit = arguments
-    # use.team
+    # use.parsing.team
     if not unit in firstTeamTable and not unit in secondTeamTable:
-        error("unit", "use.team")
+        error("unit", "use.parsing.team")
         return
-    # use.action
+    # use.push
     usedUnits.append(unit)
 
 def hide(arguments):
@@ -423,46 +424,50 @@ def hide(arguments):
     global secrets
     global locationTable
     global hiddenUnits
-    # hide.unit
-    # hide.unit.argument
+    # hide.parsing
+    # hide.parsing.unit
+    # hide.parsing.unit.argument
     if len(arguments) == 1: 
         unit = arguments
-    # hide.unit.tooManyArguments
+    # hide.parsing.unit.tooManyArguments
     else: 
         unit = arguments[1]
-    # hide.argument
-    # hide.argument.try
+    # hide.parsing.argument
+    # hide.parsing.argument.try
     try:
         localUnitType = unitTable.get(unit)
-    # hide.argument.except
+    # hide.parsing.argument.except
     except:
-        error("argument", "hide.argument.except")
+        error("argument", "hide.parsing.argument.except")
         return
-    # hide.type
+    # hide.parsing.type
     unitType = allUnitTypes.get(localUnitType)
+    # hide.checks
+    # hide.checks.type
     if not unitType in hideTable:
-        error("function", "hide.type")
+        error("function", "hide.checks.type")
         return
-    # hide.hidden
+    # hide.checks,hidden
     if unit in hiddenUnits:
-        error("hidden", "hide.hidden")
+        error("hidden", "hide.checks.hidden")
         return
-    # hide.structure
+    # hide.action
+    # hide.action.structure
     structure = input("Structure to hide in, if any: ")
     if structure in structureTable:
-        # hide.structure.definition
+        # hide.action.structure.definition
         locationTable[unit] = structure
-        # hide.structure.action
+        # hide.action.structure.action
         hiddenUnits.append(unit)
         newSecret = unit + " hidden inside " + structure
         secrets = secrets + ", " + newSecret
         return
-    # hide.terrain
+    # hide.action.terrain
     terrain = input("Terrain to hide in: ")
     if not terrain in hideableTerrain:
-        error("terrain", "hide.terrain")
+        error("terrain", "hide.action.terrain")
         return
-    # hide.action
+    # hide.push
     hiddenUnits.append(unit)
     locationTable[unit] = terrain
     location = input("Location of this hidden unit: ")
@@ -474,28 +479,32 @@ def reveal(arguments):
     global secrets
     global locationTable
     global hiddenUnits
-    # reveal.unit
-    # reveal.unit.argument
+    # reveal.parsing
+    # reveal.parsing.unit
+    # reveal.parsing.unit.argument
     if len(arguments) == 1: 
         unit = arguments
-    # reveal.unit.tooManyArguments
+    # reveal.parsing.unit.tooManyArguments
     else: 
         unit = arguments[1]
-    # reveal.argument
-    # reveal.argument.try
+    # reveal.parsing.argument
+    # reveal.parsing.argument.try
     try:
         localUnitType = unitTable.get(unit)
-    # reveal.argument.except
+    # reveal.parsing.argument.except
     except:
-        error("argument", "reveal.argument.except")
+        error("argument", "reveal.parsing.argument.except")
         return
-    # reveal.type
+    # reveal.parsing.type
     unitType = allUnitTypes.get(localUnitType)
+    # reveal.checks
+    # reveal.checks.type
     if not unit in hiddenUnits or not unitType in hideTable:
-        error("function", "reveal.type")
+        error("function", "reveal.checks.type")
         return
     # reveal.action
     newLocation = input("New terrain: ")
+    # reveal.push
     locationTable[unit] = newLocation
     hiddenUnits.remove(unit)
     newSecret = unit + " is no longer hidden."
@@ -506,32 +515,34 @@ def convert(arguments, teamTable):
     global firstTeamTable
     global secondTeamTable
     global unitTable
-    # convert.argument
-    # convert.argument.try
+    # convert.parse
+    # convert.parse.unit
+    # convert.parse.unit.try
     try:
         unit = arguments[1]
-    # convert.argument.except
+    # convert.parse.unit.except
     except:
-        error("argument", "convert.argument.except")
+        error("argument", "convert.parse.unit.except")
         return
-    # convert.type
+    # convert.parse.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
-    # convert.type.function
+    # convert.checks
+    # convert.checks.function
     if not unitType in convertTable:
-        error("function", "convert.type.function")
+        error("function", "convert.checks.function")
         return
-    # convert.team
+    # convert.checks.team
     if not unit in teamTable:
-        error("team", "convert.team")
+        error("team", "convert.checks.team")
         return
     # convert.action
     currentHealth = teamTable.get(unit)
-    unitTable[unit] = "infantry"
     if currentHealth > 4: newHealth = 4
     else: newHealth = currentHealth
-    # convert.return
+    # convert.push
     teamTable[unit] = newHealth
+    unitTable[unit] = "infantry"
     update()
 
 def disable(arguments):
