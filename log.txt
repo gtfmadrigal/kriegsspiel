@@ -1,5 +1,5 @@
 Round: 1
-Command: 4
+Command: 10
 
 usedUnits = []
 immobileUnits = []

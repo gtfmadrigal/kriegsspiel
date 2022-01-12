@@ -10,7 +10,7 @@ secondTeamTable = {"4":4, "5":4, "10":4, "15":4, "17":4, "23":4, "28":4, "33":4,
 secondTeamTableOriginal = {"4":4, "5":4, "10":4, "15":4, "17":4, "23":4, "28":4, "33":4, "38":4, "40":4, "44":4, "64":4, "71":4, "72":4, "73":4, "gd1":4, "gd2":4, "lrg":4, "eb":6, "lg":6, "dp":6, "wb":6, "mg":6, "ls":6, "st":6, "mb":6, "lt1":12, "lt2":12, "lt3":12, "gr1":12, "gr2":12, "gr3":12, "16":16, "17":16, "jag":16, "6-1":8, "6-2":8, "12-1":10, "12-2":10, "howe":10, "british-guards1":20, "british-guards2":20, "greene":20}
 firstHealthTotal = 278
 secondHealthTotal = 342
-fogOfWar = 1
+fogOfWar = 8
 warheads = 0
 locationTable = {}
 

@@ -53,7 +53,7 @@ bombTable = {"bomber":8, "stealth-bomber":6, "drone":10}
 flyTable = {"light-fighter":1, "heavy-fighter":1, "bomber":1, "stealth-bomber":1, "recon":1, "transport":1, "drone":1}
 nukeTable = {"missile-submarine":30, "stealth-bomber":16}
 structureTable = {}
-manPages = {"score":"'score'", "turn":"'turn'", "details":"'details'", "quit":"'quit'", "help":"'help'", "health":"'health [unit] [value]'", "kill":"'kill [unit]'", "convert":"'convert [unit]'", "disable":"'disable [unit]'", "merge":"'merge [unit1] [unit2] ... > [unit]'", "split":"'split [unit] > [unit1] [unit2] ...'", "info":"'info [unit]'", "use":"'use [unit]'", "man":"'man [command]'", "attack":"'attack [unit1] [unit2] ... > [unit3] [unit4] ...'", "hide":"'hide [unit]'", "reveal":"'reveal [unit]'", "fire":"'fire [unit1] [unit2] ... > [unit3] [unit4] ...'", "heading":"'heading [unit]'", "torpedo":"'torpedo [unit] > [target]'", "sortie":"'sortie [unit] > [target]'", "depthcharge":"'depthcharge [unit] > [target]'", "board":"'board [unit] > [target]'", "missile":"'missile [unit] > [target]'", "takeoff":"'takeoff [unit]'", "land":"'land [unit]'", "kamikaze":"'kamikaze [unit] > [target]'", "dogfight":"'dogfight [unit1] [unit2] ... > [target1] [target2] ...'", "bomb":"'bomb [unit] > [target1] [target2] ...'", "survey":"'survey [unit]'", "pulse":"'pulse [unit] > [target1] [target2] ...'", "airlift":"'airlift [plane] > [unit]'", "nuke":"'nuke [unit] > [target]'"}
+manPages = {"score":"'score'", "turn":"'turn'", "details":"'details'", "quit":"'quit'", "help":"'help'", "health":"'health [unit] [value]'", "kill":"'kill [unit]'", "convert":"'convert [unit]'", "disable":"'disable [unit]'", "merge":"'merge [unit1] [unit2] ... > [unit]'", "split":"'split [unit] > [unit1] [unit2] ...'", "info":"'info [unit]'", "use":"'use [unit]'", "man":"'man [command]'", "attack":"'attack [unit1] [unit2] ... > [unit3] [unit4] ...'", "hide":"'hide [unit]'", "reveal":"'reveal [unit]'", "fire":"'fire [unit1] [unit2] ... > [unit3] [unit4] ...'", "heading":"'heading [unit]'", "torpedo":"'torpedo [unit] > [target]'", "sortie":"'sortie [unit] > [target]'", "depthcharge":"'depthcharge [unit] > [target]'", "board":"'board [unit] > [target]'", "missile":"'missile [unit] > [target]'", "takeoff":"'takeoff [unit]'", "land":"'land [unit]'", "kamikaze":"'kamikaze [unit] > [target]'", "dogfight":"'dogfight [unit1] [unit2] ... > [target1] [target2] ...'", "bomb":"'bomb [unit] > [target1] [target2] ...'", "survey":"'survey [unit]'", "pulse":"'pulse [unit] > [target1] [target2] ...'", "airlift":"'airlift [plane] > [unit]'", "nuke":"'nuke [unit] > [target]'", "message":"'message'"}
 
 # initialization
 from gamefiles.brandywine import *
@@ -79,7 +79,7 @@ def error(code, function):
 def reduce(unit):
     # reduce.definition
     export = 0
-    # reduce.parsing
+    # reduce.parse
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     # reduce.checks
@@ -126,7 +126,7 @@ def reduce(unit):
 def fortificationReduce(structure, damage):
     # fortificationReduce.globals
     global structureTable
-    # fortificationReduce.parsing
+    # fortificationReduce.parse
     initialNetDamage = structureTable.get(structure) - damage
     # fortificaitonReduce.action
     # fortificationReduce.action.reduction
@@ -142,7 +142,7 @@ def fortificationReduce(structure, damage):
         return finalNetDamage
 
 def damage(unit, table):
-    # damage.parsing
+    # damage.parse
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     # damage.checks
@@ -186,26 +186,26 @@ def kill(arguments):
     global firstTeamFlying
     global secondTeamTable
     global deadUnits
-    # kill.parsing
-    # kill.parsing.unit
-    # kill.parsing.unit.tooManyArguments
+    # kill.parse
+    # kill.parse.unit
+    # kill.parse.unit.tooManyArguments
     if len(arguments) == 2: 
         unit = arguments[1]
-    # kill.parsing.unit.argument
+    # kill.parse.unit.argument
     else: 
         unit = arguments
-    # kill.parsing.team
-    # kill.parsing.team.first
+    # kill.parse.team
+    # kill.parse.team.first
     if unit in firstTeamTable: 
         table = firstTeamTable
         flyingTable = firstTeamFlying
-    # kill.parsing.team.second
+    # kill.parse.team.second
     elif unit in secondTeamTable: 
         table = secondTeamTable
         flyingTable = secondTeamFlying
-    # kill.parsing.team.none
+    # kill.parse.team.none
     else: 
-        error("unit", "kill.parsing.team.none")
+        error("unit", "kill.parse.team.none")
         return
     # kill.push
     del table[unit]
@@ -259,7 +259,7 @@ def dealDamage(unit, damage, teamTable):
     # dealDamage.globals
     global firstTeamTable
     global secondTeamTable
-    # dealDamage.parsing
+    # dealDamage.parse
     oldHealth = teamTable[unit]
     # dealDamage.action
     # dealDamage.action.kill
@@ -347,33 +347,33 @@ def health(arguments):
     # health.globals
     global firstTeamTable
     global secondTeamTable
-    # health.parsing
-    # health.parsing.unit
-    # health.parsing.unit.try
+    # health.parse
+    # health.parse.unit
+    # health.parse.unit.try
     try:
         unit = arguments[1]
-    # health.parsing.unit.except
+    # health.parse.unit.except
     except:
-        error("argument", "health.parsing.unit.except")
+        error("argument", "health.parse.unit.except")
         return
-    # health.parsing.health
-    # health.parsing.health.try
+    # health.parse.health
+    # health.parse.health.try
     try: 
         newHealth = float(arguments[2])
-    # health.parsing.health.except
+    # health.parse.health.except
     except:
-        error("type", "health.parsing.health.except")
+        error("type", "health.parse.health.except")
         return
-    # health.parsing.team
-    # health.parsing.team.first
+    # health.parse.team
+    # health.parse.team.first
     if unit in firstTeamTable: 
         table = firstTeamTable
-    # health.parsing.team.second
+    # health.parse.team.second
     elif unit in secondTeamTable: 
         table = secondTeamTable
-    # health.parsing.team.none
+    # health.parse.team.none
     else:
-        error("unit", "health.parsing.team.none")
+        error("unit", "health.parse.team.none")
         return
     # health.action
     # health.action.kill
@@ -388,16 +388,16 @@ def health(arguments):
 def freeze(arguments):
     # freeze.globals
     global immobileUnits
-    # freeze.parsing.unit
-    # freeze.parsing.unit.argument
+    # freeze.parse.unit
+    # freeze.parse.unit.argument
     if len(arguments) == 1: 
         unit = str(arguments)
-    # freeze.parsing.unit.tooManyArguments
+    # freeze.parse.unit.tooManyArguments
     else: 
         unit = arguments[1]
-    # freeze.parsing.team
+    # freeze.parse.team
     if not unit in firstTeamTable and not unit in secondTeamTable:
-        error("unit", "freeze.parsing.team")
+        error("unit", "freeze.parse.team")
         return
     # freeze.push
     immobileUnits.append(unit)
@@ -405,16 +405,16 @@ def freeze(arguments):
 def use(arguments):
     # use.globals
     global usedUnits
-    # use.parsing.unit
-    # use.parsing.unit.argument
+    # use.parse.unit
+    # use.parse.unit.argument
     if len(arguments) == 1: 
         unit = str(arguments)
-    # use.parsing.unit.tooManyArguments
+    # use.parse.unit.tooManyArguments
     else: 
         unit = arguments
-    # use.parsing.team
+    # use.parse.team
     if not unit in firstTeamTable and not unit in secondTeamTable:
-        error("unit", "use.parsing.team")
+        error("unit", "use.parse.team")
         return
     # use.push
     usedUnits.append(unit)
@@ -424,23 +424,23 @@ def hide(arguments):
     global secrets
     global locationTable
     global hiddenUnits
-    # hide.parsing
-    # hide.parsing.unit
-    # hide.parsing.unit.argument
+    # hide.parse
+    # hide.parse.unit
+    # hide.parse.unit.argument
     if len(arguments) == 1: 
         unit = arguments
-    # hide.parsing.unit.tooManyArguments
+    # hide.parse.unit.tooManyArguments
     else: 
         unit = arguments[1]
-    # hide.parsing.argument
-    # hide.parsing.argument.try
+    # hide.parse.argument
+    # hide.parse.argument.try
     try:
         localUnitType = unitTable.get(unit)
-    # hide.parsing.argument.except
+    # hide.parse.argument.except
     except:
-        error("argument", "hide.parsing.argument.except")
+        error("argument", "hide.parse.argument.except")
         return
-    # hide.parsing.type
+    # hide.parse.type
     unitType = allUnitTypes.get(localUnitType)
     # hide.checks
     # hide.checks.type
@@ -479,23 +479,23 @@ def reveal(arguments):
     global secrets
     global locationTable
     global hiddenUnits
-    # reveal.parsing
-    # reveal.parsing.unit
-    # reveal.parsing.unit.argument
+    # reveal.parse
+    # reveal.parse.unit
+    # reveal.parse.unit.argument
     if len(arguments) == 1: 
         unit = arguments
-    # reveal.parsing.unit.tooManyArguments
+    # reveal.parse.unit.tooManyArguments
     else: 
         unit = arguments[1]
-    # reveal.parsing.argument
-    # reveal.parsing.argument.try
+    # reveal.parse.argument
+    # reveal.parse.argument.try
     try:
         localUnitType = unitTable.get(unit)
-    # reveal.parsing.argument.except
+    # reveal.parse.argument.except
     except:
-        error("argument", "reveal.parsing.argument.except")
+        error("argument", "reveal.parse.argument.except")
         return
-    # reveal.parsing.type
+    # reveal.parse.type
     unitType = allUnitTypes.get(localUnitType)
     # reveal.checks
     # reveal.checks.type
@@ -550,19 +550,20 @@ def disable(arguments):
     global disabledUnits
     global usedUnits
     global immobileUnits
-    # disable.unit
-    # disable.unit.argument
+    # disable.parse
+    # disable.parse.argument
     if len(arguments) == 1: 
         unit = arguments
-    # disable.unit.tooManyArguments
+    # disable.parse.tooManyArguments
     else: 
         unit = arguments[1]
-    # disable.action
+    # disable.push
     immobileUnits.append(unit)
     usedUnits.append(unit)
     disabledUnits.append(unit)
 
 def merge(arguments, teamTable):
+    # merge.globals
     global firstTeamTable
     global secondTeamTable
     global unitTable
@@ -570,12 +571,16 @@ def merge(arguments, teamTable):
     global usedUnits
     global immobileUnits
     global disabledUnits
+    # merge.parse
     del arguments[0]
+    # merge.parse.try
     try:
         mergedLocalUnitType = unitTable.get(arguments[0])
+    # merge.parse.except
     except:
-        error("argument", "merge")
+        error("argument", "merge.parse.except")
         return
+    # merge.definition
     mergedUnitType = allUnitTypes.get(mergedLocalUnitType)
     totalHealth = 0
     numberOfUnits = 0
@@ -585,47 +590,68 @@ def merge(arguments, teamTable):
     disabled = False
     used = False
     hidden = False
+    # merge.action
     for x in arguments:
+        # merge.action.exists
         if x in teamTable:
+            # merge.action.exists.correctType
             if unitTable[x] == mergedUnitType:
+                # merge.action.exists.correctType.update
                 numberOfUnits = numberOfUnits + 1
                 totalHealth = totalHealth + teamTable[x]
                 mergedUnits.append(x)
+                # merge.action.exists.correctType.immobile
                 if x in immobileUnits: 
                     immobile = True
+                # merge.action.exists.correctType.disabled
                 if x in disabledUnits: 
                     disabled = True
+                # merge.action.exists.correctType.used
                 if x in usedUnits: 
                     used = True
+                # merge.action.exists.correctType.hidden
                 if x in hiddenUnits: 
                     hidden = True
+            # merge.action.exists.wrongType
             else:
                 print(x, "could not be merged.")
+        # merge.action.redirect
         elif x == ">": pass
+        # merge.action.doesNotExist
         else:
+            # merge.action.doesNotExist.wrongTeam
             if x in unitTable:
-                error("exists", "merge")
+                error("exists", "merge.action.doesNotExist.wrongTeam")
                 return
+            # merge.action.doesNotExist.newUnit
             finalUnit = x
             break
     teamTable[finalUnit] = totalHealth
     unitTable[finalUnit] = mergedUnitType
     dividedTable[finalUnit] = numberOfUnits
+    # merge.push
+    # merge.push.clearOld
     for x in mergedUnits: 
         del teamTable[x]
         del unitTable[x]
+    # merge.push.appendNew
+    # merge.push.appendNew.immobile
     if immobile == True: 
         immobileUnits.append(finalUnit)
+    # merge.push.appendNew.used
     if used == True: 
         usedUnits.append(finalUnit)
+    # merge.push.appendNew.disabled
     if disabled == True: 
         immobileUnits.append(finalUnit)
         disabledUnits.append(finalUnit)
         usedUnits.append(finalUnit)
+    # merge.push.appendNew.hidden
     if hidden == True: 
         hiddenUnits.append(finalUnit)
 
 def split(arguments, teamTable):
+    # split.globals
     global firstTeamTable
     global secondTeamTable
     global dividedTable
@@ -633,20 +659,25 @@ def split(arguments, teamTable):
     global usedUnits
     global immobileUnits
     global disabledUnits
+    # split.parse
     del arguments[0]
+    # split.parse.try
     try:
         originalUnit = arguments[0]
     except:
         error("argument", "split")
         return
+    # split.definition
     localUnitType = unitTable.get(originalUnit)
     unitType = allUnitTypes.get(localUnitType)
     numberOfUnits = 0
     newUnits = []
     currentHealth = teamTable.get(originalUnit)
+    # split.checks
     if not originalUnit in dividedTable or not unitType in splitTable:
         error("function", "split")
         return
+    # split.action
     for x in arguments:
         if x in teamTable: 
             pass
@@ -674,6 +705,7 @@ def split(arguments, teamTable):
         if originalUnit in hiddenUnits: 
             hiddenUnits.append(x)
         dividedTable[x] = 1 / numberOfUnits
+    # split.push
     del teamTable[originalUnit]
     del unitTable[originalUnit]
     if originalUnit in dividedTable: 

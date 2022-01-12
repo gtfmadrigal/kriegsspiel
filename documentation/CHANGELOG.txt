@@ -378,6 +378,7 @@ v4 - Updated shell release
             v4.3-pre3_327 - added message() command
             v4.3-pre3_328 - kill() restructured
             v4.3-pre3_329 - convert() restructured
+            v4.3-pre3_330 - man page for message() added
             v4.3-pre3_329 - subdivided functions into .globals, .definition, .parsing, .checks, .action, .push, and .return
         v4.3-pre4 - Documentation
         v4.3-pre5 - Updates to Manual
