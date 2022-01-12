@@ -630,23 +630,23 @@ def merge(arguments, teamTable):
     unitTable[finalUnit] = mergedUnitType
     dividedTable[finalUnit] = numberOfUnits
     # merge.push
-    # merge.push.clearOld
+    # merge.push.clear
     for x in mergedUnits: 
         del teamTable[x]
         del unitTable[x]
-    # merge.push.appendNew
-    # merge.push.appendNew.immobile
+    # merge.push.append
+    # merge.push.append.immobile
     if immobile == True: 
         immobileUnits.append(finalUnit)
-    # merge.push.appendNew.used
+    # merge.push.append.used
     if used == True: 
         usedUnits.append(finalUnit)
-    # merge.push.appendNew.disabled
+    # merge.push.append.disabled
     if disabled == True: 
         immobileUnits.append(finalUnit)
         disabledUnits.append(finalUnit)
         usedUnits.append(finalUnit)
-    # merge.push.appendNew.hidden
+    # merge.push.append.hidden
     if hidden == True: 
         hiddenUnits.append(finalUnit)
 
@@ -664,6 +664,7 @@ def split(arguments, teamTable):
     # split.parse.try
     try:
         originalUnit = arguments[0]
+    # split.parse.except
     except:
         error("argument", "split")
         return
@@ -675,68 +676,98 @@ def split(arguments, teamTable):
     currentHealth = teamTable.get(originalUnit)
     # split.checks
     if not originalUnit in dividedTable or not unitType in splitTable:
-        error("function", "split")
+        error("function", "split.checks")
         return
     # split.action
+    # split.action.originals
     for x in arguments:
+        # split.action.originals.exists
         if x in teamTable: 
             pass
+        # split.action.originals.redirect
         elif x == ">": 
             pass
+        # split.action.originals.doesNotExist
         else:
+            # split.action.originals.doesNotExist.wrongTeam
             if x in unitTable:
                 print(x, "could not be created.")
                 return
+            # split.action.originals.doesNotExist.newUnit
             else:
                 numberOfUnits = numberOfUnits + 1
                 newUnits.append(x)
+    # split.action.health
     newHealth = currentHealth / numberOfUnits
+    # split.action.new
     for x in newUnits:
+        # split.action.new.parse
         teamTable[x] = newHealth
         unitTable[x] = unitType
+        # split.action.new.append
+        # split.action.new.append.immobile
         if originalUnit in immobileUnits: 
             immobileUnits.append(x)
+        # split.action.new.append.disabled
         if originalUnit in disabledUnits:
             immobileUnits.append(x)
             disabledUnits.append(x)
             usedUnits.append(x)
+        # split.action.new.append.used
         if originalUnit in usedUnits: 
             usedUnits.append(x)
+        # split.action.new.append.hidden
         if originalUnit in hiddenUnits: 
             hiddenUnits.append(x)
+        # split.action.new.newHealth
         dividedTable[x] = 1 / numberOfUnits
     # split.push
+    # split.push.tables
     del teamTable[originalUnit]
     del unitTable[originalUnit]
     if originalUnit in dividedTable: 
-        del dividedTable[originalUnit] 
+        del dividedTable[originalUnit]
+    # split.push.immobile 
     if originalUnit in immobileUnits: 
         immobileUnits.remove(originalUnit)
+    # split.push.disabled
     if originalUnit in disabledUnits: 
         disabledUnits.remove(originalUnit)
         hiddenUnits.remove(originalUnit)
+    # split.push.used
     if originalUnit in usedUnits: 
         usedUnits.remove(originalUnit)
+    # split.push.hidden
     if originalUnit in hiddenUnits: 
         hiddenUnits.remove(originalUnit)      
 
 def man(arguments):
+    # man.checks
+    # man.checks.arguments
+    # man.checks.arguments.try
     try:
         command = arguments[1]
+    # man.checks.arguments.except
     except:
-        error("argument", "man")
+        error("argument", "man.checks.arguments.except")
         return
+    # man.checks.command
     if not str(command) in manPages:
-        error("command", "man")
+        error("command", "man.checks.command")
         print("Type 'help' for a list of commands.")
         return
+    # man.return
     print(manPages.get(command))
 
 def message():
+    # message.action
     test = fog()
+    # message.return
+    # message.return.failed
     if test == True:
         print("Message failed to deliver.")
         return
+    # message.return.passed
     else:
         print("Message delivered.")
 
