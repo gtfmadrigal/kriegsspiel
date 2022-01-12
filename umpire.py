@@ -68,7 +68,7 @@ def update():
     global secondHealth
     global firstTeamTable
     global secondTeamTable
-    # update.health
+    # update.push
     firstHealth = sum(firstTeamTable.values())
     secondHealth = sum(secondTeamTable.values())
 
@@ -77,54 +77,56 @@ def error(code, function):
     print("Origin:", str(function))   
 
 def reduce(unit):
-    # reduce.definitions
+    # reduce.definition
     export = 0
+    # reduce.parsing
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
-    # reduce.hillTerrain
+    # reduce.checks
+    # reduce.checks.hillTerrain
     if locationTable.get(unit) == "hill": 
-        # reduce.hillTerrain.mechanized
+        # reduce.checks.hillTerrain.mechanized
         if unitType == "mechanized": 
             pass
-        # reduce.hillTerrain.special
+        # reduce.checks.hillTerrain.special
         elif unitType == "special": 
             pass
-        # reduce.hillTerrain.remainder
+        # reduce.checks.hillTerrain.remainder
         else: 
             export = export + 1
-    # reduce.forestTerrain
+    # reduce.checks.forestTerrain
     elif locationTable.get(unit) == "forest":
-        # reduce.forestTerrain.infantry
+        # reduce.checks.forestTerrain.infantry
         if unitType == "infantry": 
             pass
-        # reduce.forestTerrain.lightArtillery
+        # reduce.checks.forestTerrain.lightArtillery
         elif unitType == "light-artillery": 
             pass
-        # reduce.forestTerrain.medArtillery
+        # reduce.checks.forestTerrain.medArtillery
         elif unitType == "med-artillery": 
             pass
-        # reduce.forestTerrain.heavyArtillery
+        # reduce.checks.forestTerrain.heavyArtillery
         elif unitType == "heavy-artillery": 
             pass
-        # reduce.forestTerrain.special
+        # reduce.checks.forestTerrain.special
         elif unitType == "special": 
             pass
-        # reduce.forestTerrain.remainder
+        # reduce.checks.forestTerrain.remainder
         else: 
             export = export + 1
-    # reduce.swampTerrain
+    # reduce.checks.swampTerrain
     elif locationTable.get(unit) == "swamp": 
         export = export + 1
-    # reduce.structure
+    # reduce.checks.structure
     elif locationTable.get(unit) in structureTable: 
         export = structureTable.get(locationTable.get(unit))
-    # reduce.return
+    # reduce.push
     return int(export)
 
 def fortificationReduce(structure, damage):
     # fortificationReduce.globals
     global structureTable
-    # fortificationReduce.definitions
+    # fortificationReduce.parsing
     initialNetDamage = structureTable.get(structure) - damage
     # fortificaitonReduce.action
     # fortificationReduce.action.reduction
@@ -140,7 +142,7 @@ def fortificationReduce(structure, damage):
         return finalNetDamage
 
 def damage(unit, table):
-    # damage.definitions
+    # damage.parsing
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     # damage.checks
@@ -156,22 +158,24 @@ def damage(unit, table):
     if not unitType in table: 
         error("function", "damage.checks.functionAvailability")
         return
-    # damage.calculation
+    # damage.action
     basicMaximum = table.get(unitType) + 1
     multiplier = dividedTable.get(unit, 1)
     maximum = basicMaximum * multiplier
+    # damage.push
     return random.randrange(1, maximum)
 
 def fog():
-    # fog.checkFogExists
+    # fog.checks
     if fogOfWar == 1: 
         return False
-    # fog.calculation
+    # fog.action
     export = random.randrange(1, fogOfWar + 1)
-    # fog.fail
+    # fog.push
+    # fog.push.fail
     if export == 1: 
         return True
-    # fog.pass
+    # fog.push.pass
     else: 
         return False
 
@@ -182,40 +186,42 @@ def kill(arguments):
     global firstTeamFlying
     global secondTeamTable
     global deadUnits
-    # kill.unit
-    # kill.unit.tooManyArguments
+    # kill.parsing
+    # kill.parsing.unit
+    # kill.parsing.unit.tooManyArguments
     if len(arguments) == 2: 
         unit = arguments[1]
-    # kill.unit.correctArguments
+    # kill.parsing.unit.argument
     else: 
         unit = arguments
-    # kill.team
-    # kill.team.first
+    # kill.parsing.team
+    # kill.parsing.team.first
     if unit in firstTeamTable: 
         table = firstTeamTable
         flyingTable = firstTeamFlying
-    # kill.team.second
+    # kill.parsing.team.second
     elif unit in secondTeamTable: 
         table = secondTeamTable
         flyingTable = secondTeamFlying
-    # kill.team.none
+    # kill.parsing.team.none
     else: 
-        error("unit", "kill.team.none")
+        error("unit", "kill.parsing.team.none")
         return
-    # kill.action
+    # kill.push
     del table[unit]
     if unit in flyingTable: 
         flyingTable.remove(unit)
-    print(unit, "killed.")
     deadUnits.append(unit)
+    # kill.return
+    print(unit, "killed.")
     update()
 
 def log():
-    # log.definitions
+    # log.definition
     originalOutput = sys.stdout
     # log.write
     with open("log.txt", "w") as f:
-        # log.write.definitions
+        # log.write.definition
         sys.stdout = f
         # log.write.header
         print("Round:", round)
@@ -223,7 +229,7 @@ def log():
         # log.write.team
         # log.write.team.first
         for x in firstTeamTable:
-            # log.write.team.first.definitions
+            # log.write.team.first.definition
             healthValue = firstTeamTable[x]
             originalValue = firstTeamTableOriginal[x]
             if healthValue == originalValue: continue
@@ -231,7 +237,7 @@ def log():
             print(x, ":", healthValue)
         # log.write.team.second
         for x in secondTeamTable:
-            # log.write.team.second.definitions
+            # log.write.team.second.definition
             healthValue = secondTeamTable[x]
             originalValue = secondTeamTableOriginal[x]
             if healthValue == originalValue: continue
@@ -253,7 +259,7 @@ def dealDamage(unit, damage, teamTable):
     # dealDamage.globals
     global firstTeamTable
     global secondTeamTable
-    # dealDamage.definitions
+    # dealDamage.definition
     oldHealth = teamTable[unit]
     # dealDamage.action
     # dealDamage.action.kill
@@ -291,7 +297,7 @@ def save():
 def score():
     # score.update
     update()
-    # score.definitions
+    # score.definition
     firstPercent = firstHealth / firstHealthTotal * 100
     secondPercent = secondHealth / secondHealthTotal * 100
     # score.display
@@ -444,7 +450,7 @@ def hide(arguments):
     # hide.structure
     structure = input("Structure to hide in, if any: ")
     if structure in structureTable:
-        # hide.structure.definitions
+        # hide.structure.definition
         locationTable[unit] = structure
         # hide.structure.action
         hiddenUnits.append(unit)

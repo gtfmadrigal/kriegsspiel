@@ -376,9 +376,14 @@ v4 - Updated shell release
             v4.3-pre3_325 - changed display text for helpText()
             v4.3-pre3_326 - debugged syntax problem in freeze()
             v4.3-pre3_327 - added message() command
+            v4.3-pre3_328 - kill() restructured
+            v4.3-pre3_329 - updated error messages
         v4.3-pre4 - Documentation
         v4.3-pre5 - Updates to Manual
     v4.3 - Documentation release
-        v5.0-pre3 - Eschaton debugging
-        v5.0-pre4 - Documentation update
-        v5.0-pre5 - Final code polishing
+        v5.0-pre1 - Eschaton shell
+        v5.0-pre2 - Eschaton gamefiles
+        v5.0-pre3 - Eschaton functions
+        v5.0-pre4 - Eschaton debugging
+        v5.0-pre5 - Eschaton error messages
+        v5.0-pre6 - Eschaton documentation
