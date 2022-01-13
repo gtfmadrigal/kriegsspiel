@@ -382,6 +382,7 @@ v4 - Updated shell release
             v4.3-pre3_331 - subdivided meta-functions and umpire functions into .globals, .definition, .parsing, .checks, .action, .push, and .return
             v4.3-pre3_332 - man page for move() added
             v4.3-pre3_333 - man page for build() added
+            v4.3-pre3_334 - manual.pdf added
         v4.3-pre4 - Documentation
         v4.3-pre5 - Updates to Manual
     v4.3 - Documentation release
