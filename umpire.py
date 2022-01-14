@@ -73,8 +73,17 @@ def update():
     secondHealth = sum(secondTeamTable.values())
 
 def error(code, function):
-    print(errorMessages.get(code))
-    print("Origin:", str(function))   
+    # error.parse
+    # error.parse.try
+    try:
+        message = errorMessages.get(code)
+    # error.parse.except
+    except:
+        message = str(code)
+    # error.action
+    stringReturn = "[" + str(function) + "]: " + str(message)
+    # error.return
+    print(stringReturn)
 
 def reduce(unit):
     # reduce.definition
