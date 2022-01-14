@@ -1435,86 +1435,133 @@ def nuke(arguments, teamTable, targetTeamTable):
 
 # Army functions
 def build(arguments, teamTable):
+    # build.globals
     global structureTable
     global usedUnits
     global immobileUnits
+    # build.parse
     del arguments[0]
+    # build.parse.unit
+    # build.parse.unit.try
     try:
         unit = arguments[0]
+    # build.parse.unit.except
     except:
-        error("argument", "build")
+        error("argument", "build.parse.unit.except")
         return
+    # build.parse.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # build.check
+    # build.check.team
     if not unit in teamTable:
-        error("team", "convert")
+        error("team", "build.check.team")
         return
+    # build.check.used
     if unit in usedUnits:
-        error("available", "build")
+        error("available", "build.check.used")
         return
+    # build.check.function
     if not unitType in buildTable:
-        error("function", "build")
+        error("function", "build.check.function")
         return
+    # build.action
+    # build.action.calculate
     strength = damage(unit, buildTable)
+    # build.action.input
     structure = input("Name of new structure:")
     while structure in structureTable:
         print("A structure with that name already exists.")
         structure = input("Name of new structure:")
+    # build.action.strength
     structureTable[structure] = strength
+    # build.return
     print(structure, "has strength:", strength)
+    # build.push
     usedUnits.append(unit)
-    if not unitType in moveFireTable: immobileUnits.append(unit)
+    if not unitType in moveFireTable: 
+        immobileUnits.append(unit)
 
 def missile(arguments, teamTable, targetTeamTable):
+    # missile.globals
     global firstTeamTable
     global secondTeamTable
     global usedUnits
     global immobileUnits
+    # missile.parse
+    # missile.parse.argument
+    # missile.parse.argument.try
     try:
         foo = arguments[1]
+    # missile.parse.argument.except
     except:
-        error("argument", "missile")
+        error("argument", "missile.parse.argument.except")
         return
+    # missile.parse.unit
     del arguments[0]
     for x in arguments:
+        # missile.parse.unit.redirect
         if x == ">": 
             pass
-        elif x in teamTable: 
+        # missile.parse.unit.team
+        elif x in teamTable:
             unit = x
-            if x in hiddenUnits: reveal(x)
+            # missile.parse.unit.team.hidden
+            if x in hiddenUnits: 
+                reveal(x)
             usedUnits.append(x)
+        # missile.parse.unit.target
         elif x in targetTeamTable: 
             target = x
+        # missile.parse.unit.none
         else: 
             print(x, "does not exist.")
             return
+    # missile.parse.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # missile.check
+    # missile.check.used
     if unit in usedUnits:
-        error("available", "missile")
+        error("available", "missile.check.used")
         return
+    # missile.check.function
     if not unitType in missileTable:
-        error("function", "missile")
+        error("function", "missile.check.function")
         return
+    # missile.action
+    # missile.action.calculation
     attackDamage = damage(unit, missileTable)
     localTargetUnitType = unitTable.get(target)
     targetUnitType = allUnitTypes.get(localTargetUnitType)
     targetLocation = locationTable.get(target)
+    # missile.action.defense
+    # missile.action.defense.defending
     if targetUnitType in missileTable:
+        # missile.action.defense.defending.calculate
         defenseDamage = damage(target, missileTable)
+        # missile.action.defense.defending.reduction
+        # missile.action.defense.defending.reduction.repulsion
         if defenseDamage >= attackDamage:
             print("Missile repelled.")
             return
+        # missile.action.defense.defending.reduction.netDamage
         else: 
             netDamage = attackDamage - defenseDamage
+    # missile.action.defense.nonDefending
     else: 
         netDamage = attackDamage
+    # missile.action.location
+    # missile.action.location.structure
     if targetLocation in structureTable:
         finalDamage = fortificationReduce(targetLocation, netDamage)
+    # missile.action.location.noStructure
     else: 
         finalDamage = netDamage
+    # missile.push
     dealDamage(target, finalDamage, targetTeamTable)
     usedUnits.append(unit)
+    # missile.return
     score()
 
 # Air functions
