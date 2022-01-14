@@ -1958,43 +1958,73 @@ def survey(arguments, teamTable, teamFlyingTable):
 # Shell functions
 
 def info(arguments):
+    # info.parse
+    # info.parse.argument
+    # info.parse.argument.try
     try:
         unit = arguments[1]
+    # info.parse.argument.except
     except:
-        error("argument", "info")
+        error("argument", "info.parse.argument.except")
         return
+    # info.parse.attributes
     print(unit, "attributes:")
     print("")
+    # info.parse.attributes.team
+    # info.parse.attributes.team.first
     if unit in firstTeamTable: 
         print("Affiliation:", firstTeam)
         teamTable = firstTeamTable
+    # info.parse.attributes.team.second
     elif unit in secondTeamTable: 
         print("Affiliation:", secondTeam)
         teamTable = secondTeamTable
-    elif unit in deadUnits: print("Dead.")
+    # info.parse.attributes.team.dead
+    elif unit in deadUnits: 
+        print("Dead.")
+    # info.parse.attributes.team.none
     else:
         print("No such unit.")
         return
+    # info.parse.attributes.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
     print("Local unit type:", localUnitType)
     print("Universal unit type:", unitType)
     print("")
     print("Current health:", teamTable.get(unit))
+    # info.parse.attributes.health
     healthPercentage = teamTable.get(unit) / healthTable.get(unitType) * 100
     print("Health percentage:", healthPercentage, "%")
+    # info.parse.attributes.location
     if unit in locationTable:
+        # info.parse.attributes.location.parse
         location = locationTable.get(unit)
         print("Current location:", location)
-        if location in structureTable: print("Current structure strength:", structureTable.get(location))
+        # info.parse.attributes.location.structure
+        if location in structureTable: 
+            print("Current structure strength:", structureTable.get(location))
+    # info.return
+    # info.return.used
     if unit in usedUnits or unit in alreadyDropped: print("Used this turn.")
-    if unit in immobileUnits: print("Immobile this turn.")
-    else: print("Movement range:", movementTable.get(unitType))
+    # info.return.movement
+    # info.return.movement.immobile
+    if unit in immobileUnits: 
+        print("Immobile this turn.")
+    # info.return.movement.movement
+    else: 
+        print("Movement range:", movementTable.get(unitType))
+    # info.return.division
     if unit in dividedTable: print("Size multiplier:", dividedTable.get(unit))
     print("")
-    if unit in hiddenUnits: print("Hidden, type 'details' for more.")
+    # info.return.hide
+    # info.return.hide.hidden
+    if unit in hiddenUnits: 
+        print("Hidden, type 'details' for more.")
+    # info.return.hide.hideable
     else:
         if unitType in hideTable: print("Hideable.")
+    # info.return.functions
     if unit in firstTeamFlying or unit in secondTeamFlying: print("Airborne.")
     if unitType in convertTable: print("Convertible to infantry.")
     if unitType in spyTable: print("Can spy.")
@@ -2019,18 +2049,24 @@ def info(arguments):
     if unitType in nukeTable: print("Maximum nuke damage:", nukeTable.get(unitType))
 
 def airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
+    # airShell.globals
     global airPhase
     global commandNumber
+    # airShell.parse
     prompt = str(round) + " ~ " + str(commandNumber) + " " + str(campaign) + "-Air: " + str(team) + " % "
     rawCommand = input(prompt)
     parsedCommand = rawCommand.split()
+    # airShell.check
+    # airShell.check.fog
     if fog() == True:
         print("This command fails.")
         commandNumber = commandNumber + 1
         return
+    # airShell.check.badCommand
     if not parsedCommand:
         error("command", "air-shell")
         airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
+    # airShell.action
     elif parsedCommand[0] == "score": score()
     elif parsedCommand[0] == "turn": 
         for x in teamFlyingTable: kill(x)
@@ -2060,27 +2096,37 @@ def airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlying
     else:
         error("command", "air-shell")
         airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
+    # airShell.push
     commandNumber = commandNumber + 1
     log()
+    # airShell.return
     if airPhase == True:
         airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
 
 def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
+    # shell.globals
     global airPhase
     global commandNumber
+    # shell.parse
+    # shell.parse.airShell
     if airPhase == True and airTheater == True:
         airShell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable)
         return
+    # shell.parse.command
     prompt = str(round) + " ~ " + str(commandNumber) + " " + str(campaign) + ": " + str(team) + " % "
     rawCommand = input(prompt)
     parsedCommand = rawCommand.split()
+    # shell.check
+    # shell.check.fog
     if fog() == True:
         print("This command fails.")
         commandNumber = commandNumber + 1
         return
+    # shell.check.badCommand
     if not parsedCommand:
         error("command", "shell")
         return
+    # shell.action
     elif parsedCommand[0] == "score": score()
     elif parsedCommand[0] == "turn": turn()
     elif parsedCommand[0] == "details": details()
@@ -2115,6 +2161,7 @@ def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTab
     else:
         error("command", "shell")
         return
+    # shell.push
     commandNumber = commandNumber + 1
     log()
 
