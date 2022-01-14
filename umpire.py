@@ -1612,7 +1612,7 @@ def takeoff(arguments):
     if not unitType in flyTable:
         error("function", "takeoff.check.function")
         return
-    # takeoff.check.flying
+    # takeoff.check.airborne
     if unit in teamFlyingTable:
         print("Already airborne.")
         return
@@ -1660,9 +1660,9 @@ def land(arguments):
     if not unitType in flyTable:
         error("function", "land.check.function")
         return
-    # land.check.flying
+    # land.check.airborne
     if not unit in teamFlyingTable:
-        error("airborne", "land.check.flying")
+        error("airborne", "land.check.airborne")
         return
     # land.push
     teamFlyingTable.remove(unit)
@@ -1691,7 +1691,7 @@ def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable):
             pass
         # pulse.parse.unit.team
         elif x in teamTable:
-            # pulse.parse.unit.team.flying
+            # pulse.parse.unit.team.airborne
             if x in teamFlyingTable:
                 unit = x
             # pulse.parse.unit.team.landed
@@ -1717,162 +1717,248 @@ def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable):
         return
     # pulse.action
     effectiveness = damage(unit, pulseTable)
+    # pulse.action.effectiveness
+    # pulse.action.effectiveness.effective
     if effectiveness == 6:
         print("Pulse effective.")
+        # pulse.action.effectiveness.effective.push
         for x in defendingUnits: 
             immobileUnits.append(x)
             disabledUnits.append(x)
             usedUnits.append(x)
+    # pulse.action.effectiveness.failed
     else:
         print("Pulse ineffective.")
     # pulse.push
     usedUnits.append(unit)
 
 def airlift(arguments, teamTable, teamFlyingTable):
+    # airlift.globals
     global locationTable
     global usedUnits
     global immobileUnits
+    # airlift.parse
+    # airlift.parse.argument
+    # airlift.parse.argument.try
     try:
         foo = arguments[1]
+    # airlift.parse.argument.except
     except:
-        error("argument", "airlift")
+        error("argument", "airlift.parse.argument.except")
         return
     del arguments[0]
     liftedUnits = []
+    # airlift.parse.unit
     for x in arguments:
-        if x == ">": pass
+        # airlift.parse.unit.redirect
+        if x == ">": 
+            pass
+        # airlift.parse.unit.team
         elif x in teamTable:
+            # airlift.parse.unit.team.own
             if x in teamFlyingTable:
                 unit = x
+            # airlift.parse.unit.team.other
             else:
+                # airlift.parse.unit.team.other.type
                 liftedLocalUnitType = unitTable.get(x)
                 liftedUnitType = allUnitTypes.get(liftedLocalUnitType)
+                # airlift.parse.unit.team.other.function
                 if not liftedUnitType in airliftTable:
                     print(x, "cannot be airlifted.")
                     return
+                # airlift.parse.unit.team.other.push
                 liftedUnits.append(x)
+        # airlift.parse.unit.none
         else: 
             print(x, "does not exist, or does not belong to you.")
             return
+    # airlift.parse.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # airlift.check
+    # airlift.check.used
     if unit in usedUnits:
-        error("available", "airlift")
+        error("available", "airlift.check.used")
         return
+    # airlift.check.function
     if unitType != "transport":
-        error("function", "airlift")
+        error("function", "airlift.check.transport")
         return
+    # airlift.action
     for x in liftedUnits:
+        # airlift.action.location
         currentLocation = locationTable.get(x)
         print("Current location or terrain: ", currentLocation)
         newLocation = input("New location or terrain: ")
+        # airlift.action.hidden
         if x in hiddenUnits:
+            # airlift.action.hidden.unhideable
             if not newLocation in structureTable or not newLocation in hideableTerrain:
                 reveal(x)
+        # airlift.action.push
         locationTable[x] = str(newLocation)
+    # airlift.push
     usedUnits.append(unit)
 
 def kamikaze(arguments, teamTable, targetTeamTable, teamFlyingTable):
+    # kamikaze.globals
     global usedUnits
+    # kamikaze.parse
+    # kamikaze.parse.argument
+    # kamikaze.parse.argument.try
     try:
         foo = arguments[1]
+    # kamikaze.parse.argument.except
     except:
-        error("argument", "kamikaze")
+        error("argument", "kamikaze.parse.argument.except")
         return
     del arguments[0]
+    # kamikaze.parse.unit
     for x in arguments:
+        # kamikaze.parse.unit.redirect
         if x == ">": 
             pass
+        # kamikaze.parse.unit.team
         elif x in teamTable:
+            # kamikaze.parse.unit.team.airborne
             if not x in teamFlyingTable:
-                error("airborne", "kamikaze")
+                error("airborne", "kamikaze.parse.unit.team.airborne")
                 return
+            # kamikaze.parse.unit.team.flying
             else:
                 unit = x
+        # kamikaze.parse.unit.target
         elif x in targetTeamTable: 
             target = x
+        # kamikaze.parse.unit.none
         else: 
             print(x, "does not exist.")
             return
+    # kamikaze.parse.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # kamikaze.check
+    # kamikaze.check.used
     if unit in usedUnits:
-        error("available", "kamikaze")
+        error("available", "kamikaze.check.used")
         return
+    # kamikaze.check.function
     if not unitType in kamikazeTable:
-        error("function", "kamikaze")
+        error("function", "kamikaze.check.function")
         return
+    # kamikaze.action
+    # kamikaze.action.calculate
     effectiveness = damage(unit, kamikazeTable)
+    # kamikaze.action.effectiveness
+    # kamikaze.action.effectiveness.kill
     if effectiveness == 6: 
         kill(target)
+    # kamikaze.action.effectiveness.reduce
     else: 
         dealDamage(target, effectiveness, targetTeamTable)
+    # kamikaze.push
     kill(unit)
+    # kamikaze.return
     score()
 
 def air_missile(arguments, teamTable, targetTeamTable, teamFlyingTable):
+    # airMissile.globals
     global firstTeamTable
     global secondTeamTable
     global usedUnits
+    # airMissile.parse
+    # airMissile.parse.argument
+    # airMissile.parse.argument.try
     try:
         foo = arguments[1]
+    # airMissile.parse.argument.except
     except:
-        error("argument", "air-missile")
+        error("argument", "airMissile.parse.argument.except")
         return
+    # airMissile.parse.unit
     for x in arguments:
+        # airMissile.parse.unit.team
         if x in teamTable: 
             unit = str(x)
+        # airMissile.parse.unit.target
         elif x in targetTeamTable: 
             target = str(x)
+        # airMissile.parse.unit.else
         else:
-            if x == ">" or x == "missile": continue
+            # airMissile.parse.unit.else.redirect
+            if x == ">" or x == "missile": 
+                continue
+            # airMissile.parse.unit.else.none
             if not x in unitTable:
-                error("unit", "air-missile")
+                error("unit", "airMissile.parse.unit.else.none")
                 return
+    # airMissile.parse.team
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # airMissile.check
+    # airMissile.check.used
     if unit in usedUnits:
-        error("available", "air-missile")
+        error("available", "airMissile.check.used")
         return
+    # airMissile.check.function
     if not unitType in missileTable:
-        error("function", "air-missile")
+        error("function", "airMissile.check.function")
         return
+    # airMissile.check.airborne
     if not unit in teamFlyingTable:
-        error("airborne", "air-missile")
+        error("airborne", "airMissile.check.airborne")
         return
+    # airMissile.action
+    # airMissile.action.parse
     attackDamage = damage(unit, missileTable)
     localTargetUnitType = unitTable.get(target)
     targetUnitType = allUnitTypes.get(localTargetUnitType)
     targetLocation = locationTable.get(target)
+    # airMissile.action.calculate
+    # airMissile.action.calculate.defending
     if targetUnitType in missileTable:
         defenseDamage = damage(target, missileTable)
+        # airMissile.action.calculate.defending.repelled
         if defenseDamage >= attackDamage:
             print("Missile repelled.")
             return
+        # airMissile.action.calculate.defending.reduce
         else: 
             netDamage = attackDamage - defenseDamage
+    # airMissile.action.calculate.noDefense
     else: 
         netDamage = attackDamage
+    # airMissile.action.location
+    # airMissile.action.location.structure
     if targetLocation in structureTable:
         finalDamage = fortificationReduce(targetLocation, netDamage)
+    # airMissile.action.location.noStructure
     else: 
         finalDamage = netDamage
+    # airMissile.push
     dealDamage(target, finalDamage, targetTeamTable)
     usedUnits.append(unit)
+    # airMissile.return
     score()
 
 def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTable):
+    # dogfight.globals
     global usedUnits
     global immobileUnits
+    # dogfight.definition
     totalAttackDamage = 0
     totalDefenseDamage = 0
     defendingUnits = []
+    # dogfight.parse
+    # dogfight.parse.argument
     try:
         foo = arguments[1]
     except:
         error("argument", "dogfight")
         return
     del arguments[0]
+    # dogfight.parse.unit
     for x in arguments:
         if x == ">": pass
         elif x in teamTable:
@@ -1914,16 +2000,24 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
                 immobileUnits.append(x)
         else: 
             print(x, " does not exist.")
+    # dogfight.action
+    # dogfight.action.repelled
     if totalDefenseDamage >= totalAttackDamage:
         print("Attack repelled.")
+        defendingUnits.clear()
+        turn()
         return
+    # dogfight.action.netDamage
     netDamage = totalAttackDamage - totalDefenseDamage
     print("Net damage: ", netDamage)
     perUnitDamage = netDamage / len(defendingUnits)
     print("Damage per unit:", perUnitDamage)
+    # dogfight.action.defendingUnits
     for x in defendingUnits:
         dealDamage(defendingUnits, perUnitDamage, targetTeamTable)
+    # dogfight.push
     defendingUnits.clear()
+    # dogfight.return
     turn()
 
 def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
