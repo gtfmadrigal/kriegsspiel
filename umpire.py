@@ -82,42 +82,42 @@ def reduce(unit):
     # reduce.parse
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
-    # reduce.checks
-    # reduce.checks.hillTerrain
+    # reduce.check
+    # reduce.checkhillTerrain
     if locationTable.get(unit) == "hill": 
-        # reduce.checks.hillTerrain.mechanized
+        # reduce.checkhillTerrain.mechanized
         if unitType == "mechanized": 
             pass
-        # reduce.checks.hillTerrain.special
+        # reduce.checkhillTerrain.special
         elif unitType == "special": 
             pass
-        # reduce.checks.hillTerrain.remainder
+        # reduce.checkhillTerrain.remainder
         else: 
             export = export + 1
-    # reduce.checks.forestTerrain
+    # reduce.checkforestTerrain
     elif locationTable.get(unit) == "forest":
-        # reduce.checks.forestTerrain.infantry
+        # reduce.checkforestTerrain.infantry
         if unitType == "infantry": 
             pass
-        # reduce.checks.forestTerrain.lightArtillery
+        # reduce.checkforestTerrain.lightArtillery
         elif unitType == "light-artillery": 
             pass
-        # reduce.checks.forestTerrain.medArtillery
+        # reduce.checkforestTerrain.medArtillery
         elif unitType == "med-artillery": 
             pass
-        # reduce.checks.forestTerrain.heavyArtillery
+        # reduce.checkforestTerrain.heavyArtillery
         elif unitType == "heavy-artillery": 
             pass
-        # reduce.checks.forestTerrain.special
+        # reduce.checkforestTerrain.special
         elif unitType == "special": 
             pass
-        # reduce.checks.forestTerrain.remainder
+        # reduce.checkforestTerrain.remainder
         else: 
             export = export + 1
-    # reduce.checks.swampTerrain
+    # reduce.checkswampTerrain
     elif locationTable.get(unit) == "swamp": 
         export = export + 1
-    # reduce.checks.structure
+    # reduce.checkstructure
     elif locationTable.get(unit) in structureTable: 
         export = structureTable.get(locationTable.get(unit))
     # reduce.push
@@ -145,18 +145,18 @@ def damage(unit, table):
     # damage.parse
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
-    # damage.checks
-    # damage.checks.immobileUsed
+    # damage.check
+    # damage.checkimmobileUsed
     if unit in immobileUnits or unit in usedUnits:
-        error("available", "damage.checks.immobileUsed")
+        error("available", "damage.checkimmobileUsed")
         return
-    # damage.checks.dead
+    # damage.checkdead
     if unit in deadUnits:
-        error("dead", "damage.checks.dead")
+        error("dead", "damage.checkdead")
         return
-    # damage.checks.functionAvailability
+    # damage.checkfunctionAvailability
     if not unitType in table: 
-        error("function", "damage.checks.functionAvailability")
+        error("function", "damage.checkfunctionAvailability")
         return
     # damage.action
     basicMaximum = table.get(unitType) + 1
@@ -166,7 +166,7 @@ def damage(unit, table):
     return random.randrange(1, maximum)
 
 def fog():
-    # fog.checks
+    # fog.check
     if fogOfWar == 1: 
         return False
     # fog.action
@@ -442,14 +442,14 @@ def hide(arguments):
         return
     # hide.parse.type
     unitType = allUnitTypes.get(localUnitType)
-    # hide.checks
-    # hide.checks.type
+    # hide.check
+    # hide.checktype
     if not unitType in hideTable:
-        error("function", "hide.checks.type")
+        error("function", "hide.checktype")
         return
-    # hide.checks,hidden
+    # hide.check.hidden
     if unit in hiddenUnits:
-        error("hidden", "hide.checks.hidden")
+        error("hidden", "hide.checkhidden")
         return
     # hide.action
     # hide.action.structure
@@ -497,10 +497,10 @@ def reveal(arguments):
         return
     # reveal.parse.type
     unitType = allUnitTypes.get(localUnitType)
-    # reveal.checks
-    # reveal.checks.type
+    # reveal.check
+    # reveal.check.type
     if not unit in hiddenUnits or not unitType in hideTable:
-        error("function", "reveal.checks.type")
+        error("function", "reveal.check.type")
         return
     # reveal.action
     newLocation = input("New terrain: ")
@@ -527,14 +527,15 @@ def convert(arguments, teamTable):
     # convert.parse.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
-    # convert.checks
-    # convert.checks.function
+    # convert.check
+    # convert.check.function
+    # convert.check.function
     if not unitType in convertTable:
-        error("function", "convert.checks.function")
+        error("function", "convert.check.function")
         return
-    # convert.checks.team
+    # convert.check.team
     if not unit in teamTable:
-        error("team", "convert.checks.team")
+        error("team", "convert.check.team")
         return
     # convert.action
     currentHealth = teamTable.get(unit)
@@ -742,18 +743,18 @@ def split(arguments, teamTable):
         hiddenUnits.remove(originalUnit)      
 
 def man(arguments):
-    # man.checks
-    # man.checks.arguments
-    # man.checks.arguments.try
+    # man.check
+    # man.check.arguments
+    # man.check.arguments.try
     try:
         command = arguments[1]
-    # man.checks.arguments.except
+    # man.check.arguments.except
     except:
-        error("argument", "man.checks.arguments.except")
+        error("argument", "man.check.arguments.except")
         return
-    # man.checks.command
+    # man.check.command
     if not str(command) in manPages:
-        error("command", "man.checks.command")
+        error("command", "man.check.command")
         print("Type 'help' for a list of commands.")
         return
     # man.return
@@ -773,135 +774,209 @@ def message():
 
 # Theater-agnostic functions
 def attack(arguments, teamTable, targetTeamTable):
+    # attack.globals
     global usedUnits
     global hiddenUnits
     global immobileUnits
+    # attack.definition
     totalAttackDamage = 0
     totalDefenseDamage = 0
     defendingUnits = []
+    # attack.action
     del arguments[0]
     for x in arguments:
+        # attack.action.redirect
         if x == ">": 
             pass
+        # attack.action.team
         elif x in teamTable:
+            # attack.action.checkUsed
             if x in usedUnits: 
                 continue
+            # attack.action.initialDamage
             initialDamage = damage(x, attackTable)
+            # attack.action.comparison
+            # attack.action.comparison.noDamage
             if initialDamage == None: 
                 continue
+            # attack.action.comparison.unreduced
             if reduce(x) == 0: 
                 finalDamage = initialDamage
+            # attack.action.comparison.reduced
             else: 
                 finalDamage = initialDamage - reduce(x)
+            # attack.action.total
             totalAttackDamage = totalAttackDamage + finalDamage
+            # attack.action.clearHidden
             if x in hiddenUnits: 
                 hiddenUnits.remove(x)
+            # attack.action.used
             usedUnits.append(x)
+            # attack.action.parse
             localUnitType = unitTable.get(x)
             unitType = allUnitTypes.get(localUnitType)
+            # attack.action.push
             if not unitType in moveFireTable: 
                 immobileUnits.append(x)
+        # attack.action.target
         elif x in targetTeamTable:
+            # attack.action.target.initialDamage
             initialDefense = damage(x, attackTable)
+            # attack.action.target.check
             if initialDefense == None: 
                 continue
+            # attack.action.target.totalDamage
             totalDefenseDamage = totalDefenseDamage + initialDefense
             defendingUnits.append(x)
+            # attack.action.target.hidden
             if x in hiddenUnits: 
                 hiddenUnits.remove(x)
+            # attack.action.target.used
             usedUnits.append(x)
+            # attack.action.target.parse
             localUnitType = unitTable.get(x)
             unitType = allUnitTypes.get(localUnitType)
+            # attack.action.target.push
             if not unitType in moveFireTable: 
                 immobileUnits.append(x)
-        else: print(x, " does not exist.")
+        # attack.action.doesNotExist
+        else: 
+            print(x, " does not exist.")
+    # attack.push
+    # attack.push.repelled
     if totalDefenseDamage >= totalAttackDamage:
         print("Attack repelled.")
         return
+    # attack.push.netDamage
     netDamage = totalAttackDamage - totalDefenseDamage
     print("Net damage: ", netDamage)
     perUnitDamage = netDamage / len(defendingUnits)
     print("Damage per unit:", perUnitDamage)
+    # attack.push.location
     for x in defendingUnits:
         location = locationTable.get(x)
+        # attack.push.location.structure
         if location in structureTable:
             reducedDamage = fortificationReduce(location, perUnitDamage)
+        # attack.push.location.noStructure
         else: 
             reducedDamage = perUnitDamage
+        # attack.push.location.deal
         dealDamage(x, reducedDamage, targetTeamTable)
+    # attack.push.clear
     defendingUnits.clear()
+    # attack.return
     turn()
 
 def move(arguments, teamTable):
+    # move.globals
     global locationTable
     global immobileUnits
     global usedUnits
+    # move.parse
+    # move.parse.unit
+    # move.parse.unit.try
     try:
         unit = arguments[1]
+    # move.parse.unit.except
     except:
-        error("argument", "move")
+        error("argument", "move.parse.unit.except")
         return
+    # move.parse.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # move.check
+    # move.check.team
     if not unit in teamTable:
-        error("team", "move")
+        error("team", "move.check.team")
         return
+    # move.check.immobile
     if unit in immobileUnits:
-        error("available", "move")
+        error("available", "move.check.immobile")
         return
+    # move.check.heading
     if unitType in headingTable:
-        error("heading", "move")
+        error("heading", "move.check.heading")
+    # move.check.moveFire
     if not unitType in moveFireTable:
         usedUnits.append(unit)
+    # move.action
     currentLocation = locationTable.get(unit)
     print("Current location or terrain:", currentLocation)
     newLocation = input("New location or terrain: ")
+    # move.push
+    # move.push.hidden
     if unit in hiddenUnits:
+        # move.push.hidden.location
         if not newLocation in structureTable or not newLocation in hideableTerrain:
             usedUnits.remove(unit)
+    # move.push.location
     locationTable[unit] = str(newLocation)
     immobileUnits.append(unit)
 
 def spy(arguments, teamTable):
+    # spy.globals
     global usedUnits
+    # spy.parse
+    # spy.parse.argument
+    # spy.parse.argument.try
     try:
         unit = arguments[1]
+    # spy.parse.argument.except
     except:
-        error("argument", "spy")
+        error("argument", "spy.parse.argument.except")
         return
+    # spy.parse.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # spy.check
+    # spy.check.team
     if not unit in teamTable:
-        error("team", "spy")
+        error("team", "spy.check.team")
         return
+    # spy.check.used
     if unit in usedUnits:
-        error("available", "spy")
+        error("available", "spy.check.used")
         return
+    # spy.check.function
     if not unitType in spyTable:
-        error("function", "spy")
+        error("function", "spy.check.function")
         return
+    # spy.action
     effectiveness = damage(unit, spyTable)
+    # spy.action.good
     if effectiveness >= 6: 
         print("Good information.")
+    # spy.action.bad
     elif effectiveness == 1: 
         print("Bad information.")
+    # spy.action.nothing
     else: 
         print("No information.")
-    details()
+    # spy.push
     usedUnits.append(unit)
+    # spy.return
+    details()
 
 def fire(arguments, teamTable, targetTeamTable):
+    # fire.globals
     global usedUnits
     global immobileUnits
+    # fire.definition
     del arguments[0]
     totalAttackDamage = 0
     defendingUnits = []
+    # fire.parse
     for x in arguments:
+        # fire.parse.redirect
         if x == ">": 
             pass
+        # fire.parse.team
         elif x in teamTable:
+            # fire.parse.team.used
             if x in usedUnits: 
                 continue
+            # fire.parse.team.calculate
             initialDamage = damage(x, fireTable)
             if initialDamage == None: 
                 continue
@@ -909,30 +984,45 @@ def fire(arguments, teamTable, targetTeamTable):
             usedUnits.append(x)
             localUnitType = unitTable.get(x)
             unitType = allUnitTypes.get(localUnitType)
+            # fire.parse.team.moveFire
             if not unitType in moveFireTable: 
                 immobileUnits.append(x)
+            # fire.parse.team.hidden
             if x in hiddenUnits: 
                 reveal(x)
+        # fire.parse.target
         elif x in targetTeamTable:
             defendingUnits.append(x)
+        # fire.parse.none
         else: 
             print(x, " does not exist.")
             return
+    # fire.check
     print("Damage:", totalAttackDamage)
+    # fire.check.argument
+    # fire.check.argument.try
     try:
         perUnitDamage = totalAttackDamage / len(defendingUnits)
+    # fire.check.argument.except
     except:
-        error("argument", "fire")
+        error("argument", "fire.check.argument.except")
         return
+    # fire.check.damage
     print("Damage per unit:", perUnitDamage)
+    # fire.action
     for x in defendingUnits:
         location = locationTable.get(x)
+        # fire.action.structure
         if location in structureTable:
             reducedDamage = fortificationReduce(location, perUnitDamage)
+        # fire.action.noStructure
         else: 
             reducedDamage = perUnitDamage
+        # fire.action.deal
         dealDamage(x, reducedDamage, targetTeamTable)
+    # fire.push
     defendingUnits.clear()
+    # fire.return
     score()
 
 # Naval functions
