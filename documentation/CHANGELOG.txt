@@ -391,6 +391,7 @@ v4 - Updated shell release
             v4.3-pre3_340 - subdivided shell functions
             v4.3-pre3_341 - removed artifact from pulse() function
             v4.3-pre3_342 - added a turn() call to dogfight() function
+            v4.3-pre3_343 - fixed error call in bomb.parse.unit.team.check.airborne()
         v4.3-pre4 - Documentation
         v4.3-pre5 - Updates to Manual
     v4.3 - Documentation release

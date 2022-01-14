@@ -1952,52 +1952,82 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
     defendingUnits = []
     # dogfight.parse
     # dogfight.parse.argument
+    # dogfight.parse.argument.try
     try:
         foo = arguments[1]
+    # dogfight.parse.argument.except
     except:
-        error("argument", "dogfight")
+        error("argument", "dogfight.parse.argument.except")
         return
     del arguments[0]
     # dogfight.parse.unit
     for x in arguments:
-        if x == ">": pass
+        # dogfight.parse.unit.redirect
+        if x == ">": 
+            pass
+        # dogfight.parse.unit.team
         elif x in teamTable:
+            # dogfight.parse.unit.team.check
+            # dogfight.parse.unit.team.check.airborne
             if not x in teamFlyingTable:
                 print(x, "is not airborne.")
                 continue
+            # dogfight.parse.unit.team.check.used
             if x in usedUnits: 
                 continue
+            # dogfight.parse.unit.team.action
+            # dogfight.parse.unit.team.action.calculate
             initialDamage = damage(x, attackTable)
+            # dogfight.parse.unit.team.action.noDamage
             if initialDamage == None: 
                 continue
+            # dogfight.parse.unit.team.action.damage
+            # dogfight.parse.unit.team.action.damage.noDefense
             if reduce(x) == 0: 
                 finalDamage = initialDamage
+            # dogfight.parse.unit.team.action.damage.defense
             else: 
                 finalDamage = initialDamage - reduce(x)
+            # dogfight.parse.unit.team.action.reduce
             totalAttackDamage = totalAttackDamage + finalDamage
+            # dogfight.parse.unit.team.action.reduce.hidden
             if x in hiddenUnits: 
                 reveal(x)
+            # dogfight.parse.unit.team.push
             usedUnits.append(x)
             localUnitType = unitTable.get(x)
             unitType = allUnitTypes.get(localUnitType)
+            # dogfight.parse.unit.team.push.immobile
             if not unitType in moveFireTable: 
                 immobileUnits.append(x)
+        # dogfight.parse.unit.target
         elif x in targetTeamTable:
+            # dogfight.parse.unit.target.check
             if not x in targetTeamFlyingTable:
                 print(x, "is not airborne.")
                 continue
+            # dogfight.parse.unit.target.action
+            # dogfight.parse.unit.target.action.calculate
             initialDefense = damage(x, attackTable)
+            # dogfight.parse.unit.target.action.noDefense
             if initialDefense == None: 
                 continue
+            # dogfight.parse.unit.target.action.reduce
             totalDefenseDamage = totalDefenseDamage + initialDefense
+            # dogfight.parse.unit.target.push
+            # dogfight.parse.unit.target.push.defendingUnits
             defendingUnits.append(x)
+            # dogfight.parse.unit.target.push.hidden
             if x in hiddenUnits: 
                 reveal(x)
+            # dogfight.parse.unit.target.push.usual
             usedUnits.append(x)
             localUnitType = unitTable.get(x)
             unitType = allUnitTypes.get(localUnitType)
+            # dogfight.parse.unit.target.push.immobile
             if not unitType in moveFireTable: 
                 immobileUnits.append(x)
+        # dogfight.parse.unit.none
         else: 
             print(x, " does not exist.")
     # dogfight.action
@@ -2021,29 +2051,43 @@ def dogfight(arguments, teamTable, targetTeamTable, teamFlyingTable, targetTeamF
     turn()
 
 def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
+    # bomb.global
     global usedUnits
     global immobileUnits
-    try:
-        foo = arguments[1]
-    except:
-        error("argument", "bomb")
-        return
-    del arguments[0]
+    # bomb.definition
     totalAttackDamage = 0
     defendingUnits = []
+    # bomb.parse
+    # bomb.parse.argument
+    # bomb.parse.argument.try
+    try:
+        foo = arguments[1]
+    # bomb.parse.argument.except
+    except:
+        error("argument", "bomb.parse.argument.except")
+        return
+    del arguments[0]
+    # bomb.parse.unit
     for x in arguments:
+        # bomb.parse.unit.redirect
         if x == ">": 
             pass
+        # bomb.parse.unit.team
         elif x in teamTable:
+            # bomb.parse.unit.team.check
+            # bomb.parse.unit.team.check.airborne
             if not x in teamFlyingTable:
-                error("airborne")
+                error("airborne", "bomb.parse.unit.team.check.airborne")
                 return
+            # bomb.parse.unit.team.check.used
             if x in usedUnits: 
                 continue
+            # bomb.parse.unit.team.action
             initialDamage = damage(x, fireTable)
             if initialDamage == None: 
                 continue
             totalAttackDamage = initialDamage + totalAttackDamage
+            # bomb.parse.unit.team.push
             usedUnits.append(x)
             localUnitType = unitTable.get(x)
             unitType = allUnitTypes.get(localUnitType)
@@ -2051,10 +2095,13 @@ def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
                 immobileUnits.append(x)
             if x in hiddenUnits: 
                 reveal(x)
+        # bomb.parse.unit.target
         elif x in targetTeamTable:
             defendingUnits.append(x)
+        # bomb.parse.unit.none
         else: 
             print(x, " does not exist.")
+    # bomb.action
     print("Damage:", totalAttackDamage)
     perUnitDamage = totalAttackDamage / len(defendingUnits)
     print("Damage per unit:", perUnitDamage)
@@ -2065,7 +2112,9 @@ def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
         else: 
             reducedDamage = perUnitDamage
         dealDamage(defendingUnits, reducedDamage, targetTeamTable)
+    # bomb.push
     defendingUnits.clear()
+    # bomb.return
     score()
 
 def survey(arguments, teamTable, teamFlyingTable):
