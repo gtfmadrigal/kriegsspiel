@@ -1575,100 +1575,148 @@ def missile(arguments, teamTable, targetTeamTable):
 
 # Air functions
 def takeoff(arguments):
+    # takeoff.globals
     global firstTeamFlying
     global secondTeamFlying
     global usedUnits
     global immobileUnits
+    # takeoff.parse
+    # takeoff.parse.argument
+    # takeoff.parse.argument.try
     try:
         unit = arguments[1]
+    # takeoff.parse.argument.except
     except:
-        error("argument", "takeoff")
+        error("argument", "takeoff.parse.argument.except")
         return
-    if unit in firstTeamTable: 
-        teamFlyingTable = firstTeamFlying
-    elif unit in secondTeamTable: 
-        teamFlyingTable = secondTeamFlying
-    else:
-        error("unit", "takeoff")
-        return
+    # takeoff.parse.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # takeoff.parse.team
+    # takeoff.parse.team.first
+    if unit in firstTeamTable: 
+        teamFlyingTable = firstTeamFlying
+    # takeoff.parse.team.second
+    elif unit in secondTeamTable: 
+        teamFlyingTable = secondTeamFlying
+    # takeoff.parse.team.none
+    else:
+        error("unit", "takeoff.parse.team.none")
+        return
+    # takeoff.check
+    # takeoff.check.used
     if unit in usedUnits:
-        error("available", "takeoff")
+        error("available", "takeoff.check.used")
         return
+    # takeoff.check.function
     if not unitType in flyTable:
-        error("function", "takeoff")
+        error("function", "takeoff.check.function")
         return
+    # takeoff.check.flying
     if unit in teamFlyingTable:
         print("Already airborne.")
         return
+    # takeoff.push
     teamFlyingTable.append(unit)
+    # takeoff.push.hide
     if unitType in hideTable:
         hide(unit)
 
 def land(arguments):
+    # land.globals
     global firstTeamFlying
     global secondTeamFlying
     global usedUnits
+    # land.parse
+    # land.parse.argument
+    # land.parse.argument.tooManyArguments
     if len(arguments) == 2: 
         unit = arguments[1]
+    # land.parse.argument.correct
     else: 
         unit = arguments
+    # land.parse.team
+    # land.parse.team.first
     if unit in firstTeamTable: 
         teamFlyingTable = firstTeamFlying
+    # land.parse.team.second
     elif unit in secondTeamTable: 
         teamFlyingTable = secondTeamFlying
+    # land.parse.team.none
     else:
-        error("unit", "land")
+        error("unit", "land.parse.team.none")
         return
+    # land.parse.type
+    # land.parse.type.try
     try:
         localUnitType = unitTable.get(unit)
+    # land.parse.type.except
     except:
-        error("argument", "land")
+        error("argument", "land.parse.type.except")
         return
     unitType = allUnitTypes.get(localUnitType)
+    # land.check
+    # land.check.function
     if not unitType in flyTable:
-        error("function", "land")
+        error("function", "land.check.function")
         return
+    # land.check.flying
     if not unit in teamFlyingTable:
-        error("airborne", "land")
+        error("airborne", "land.check.flying")
         return
+    # land.push
     teamFlyingTable.remove(unit)
     usedUnits.append(unit)
 
 def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable):
+    # pulse.globals
     global usedUnits
     global immobileUnits
     global disabledUnits
+    # pulse.parse
+    # pulse.parse.argument
+    # pulse.parse.argument.try
     try:
         foo = arguments[1]
+    # pulse.parse.argument.except
     except:
-        error("argument", "pulse")
+        error("argument", "pulse.parse.argument.except")
         return
+    # pulse.parse.unit
     del arguments[0]
     defendingUnits = []
     for x in arguments:
+        # pulse.parse.unit.redirect
         if x == ">": 
             pass
+        # pulse.parse.unit.team
         elif x in teamTable:
+            # pulse.parse.unit.team.flying
             if x in teamFlyingTable:
                 unit = x
+            # pulse.parse.unit.team.landed
             else: 
                 print(x, "is not airborne.")
+        # pulse.parse.unit.target
         elif x in targetTeamTable:
             defendingUnits.append(x)
+        # pulse.parse.unit.none
         else: 
             print(x, "does not exist.")
+    # pulse.parse.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # pulse.check
+    # pulse.check.used
     if unitType in usedUnits:
-        error("available", "pulse")
+        error("available", "pulse.check.used")
         return
+    # pulse.check.function
     if not unitType in pulseTable:
-        error("function", "pulse")
+        error("function", "pulse.check.function")
         return
+    # pulse.action
     effectiveness = damage(unit, pulseTable)
-    effectiveness = 6
     if effectiveness == 6:
         print("Pulse effective.")
         for x in defendingUnits: 
@@ -1677,6 +1725,7 @@ def pulse(arguments, teamTable, targetTeamTable, teamFlyingTable):
             usedUnits.append(x)
     else:
         print("Pulse ineffective.")
+    # pulse.push
     usedUnits.append(unit)
 
 def airlift(arguments, teamTable, teamFlyingTable):
