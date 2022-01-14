@@ -385,6 +385,7 @@ v4 - Updated shell release
             v4.3-pre3_334 - manual.pdf added
             v4.3-pre3_335 - subdivided theater-agnostic functions
             v4.3-pre3_336 - fixed some error messages
+            v4.3-pre3_337 - subdivided navy functions
         v4.3-pre4 - Documentation
         v4.3-pre5 - Updates to Manual
     v4.3 - Documentation release

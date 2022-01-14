@@ -1293,99 +1293,142 @@ def board(arguments, teamTable, targetTeamTable):
     # board.parse.health
     currentHealth = teamTable.get(unit)
     # board.check
+    # board.check.used
     if unit in usedUnits:
-        error("available", "board")
+        error("available", "board.check.used")
         return
+    # board.check.function
     if not unitType in boardTable:
-        error("function", "board")
+        error("function", "board.check.function")
         return
     # board.action
+    # board.action.argument
     for x in arguments:
+        # board.action.argument.redirect
         if x == ">": 
             pass
+        # board.action.argument.team
         elif x in teamTable: 
             effectiveness = damage(x, boardTable)
+        # board.action.argument.target
         elif x in targetTeamTable: 
             target = x
+        # board.action.argument.none
         else: 
             print(x, "does not exist.")
             return
+    # board.action.effective
     if effectiveness >= 5:
-        print(target, "seized.")
+        # board.action.effective.push
         targetHealth = targetTeamTable.get(target)
         del targetTeamTable[target]
         teamTable[target] = targetHealth
         immobileUnits.append(unit)
+        # board.action.effective.return
+        print(target, "seized.")
+    # board.action.failed
     else:
-        print("Seizure failed.")
-        print(unit, "suffers", str(effectiveness), "damage.")
+        # board.action.kill
         if currentHealth - effectiveness <= 0:
             kill(unit)
+        # board.action.reduce
         else:
             newHealth = currentHealth - effectiveness
             teamTable[unit] = newHealth
+        # board.action.push
         immobileUnits.append(unit)
         disabledUnits.append(unit)
         usedUnits.append(unit)
+        # board.action.failed.return
+        print("Seizure failed.")
+        print(unit, "suffers", str(effectiveness), "damage.")
     # board.push
     usedUnits.append(unit)
     # board.return
     score()
 
 def nuke(arguments, teamTable, targetTeamTable):
+    # nuke.globals
     global firstTeamTable
     global secondTeamTable
     global warheads
     global usedUnits
     global immobileUnits
     global disabledUnits
+    # nuke.parse
+    # nuke.parse.unit
     del arguments[0]
+    # nuke.parse.unit.try
     try:
         unit = arguments[0]
+    # nuke.parse.unit.except
     except:
-        error("argument", "nuke")
+        error("argument", "nuke.parse.unit.except")
         return
+    # nuke.parse.target
     target = arguments[2]
-    if not unit in teamTable:
-        error("team", "nuke")
-        return
-    if not target in targetTeamTable:
-        error("team", "nuke")
-        return
+    # nuke.parse.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # nuke.check
+    # nuke.check.team
+    if not unit in teamTable:
+        error("team", "nuke.check.team")
+        return
+    # nuke.check.target
+    if not target in targetTeamTable:
+        error("team", "nuke.check.target")
+        return
+    # nuke.check.used
     if unit in usedUnits:
-        error("available", "nuke")
+        error("available", "nuke.check.used")
         return
+    # nuke.check.function
     if not unitType in nukeTable:
-        error("function", "nuke")
+        error("function", "nuke.check.function")
         return
+    # nuke.check.warheads
     if warheads <= 0:
         print("Not enough warheads.")
         return
+    # nuke.action
     warheads = warheads - 1
+    # nuke.action.principal
     principalDamage = damage(unit, nukeTable)
     dealDamage(target, principalDamage, targetTeamTable)
+    # nuke.action.half
+    # nuke.action.half.calculation
     halfDamageRawUnits = input("Units or structures within 7 cm: ")
     halfDamageUnits = halfDamageRawUnits.split()
     halfDamage = principalDamage / 2
+    # nuke.action.half.units
     for x in halfDamageUnits:
+        # nuke.action.half.units.structure
         if x in structureTable: 
             fortificationReduce(x, halfDamage)
+        # nuke.action.half.units.noStructure
         elif x in targetTeamTable: 
             dealDamage(x, halfDamage, targetTeamTable)
+        # nuke.action.half.units.none
         else: 
             print(x, "is not a structure or a unit.")
+    # nuke.action.quarter
+    # nuke.action.quarter.calculation
     quarterDamageRawUnits = input("Units or structures within 15 cm: ")
     quarterDamageUnits = quarterDamageRawUnits.split()    
     quarterDamage = principalDamage / 4
+    # nuke.action.quarter.units
     for x in quarterDamageUnits:
+        # nuke.action.quarter.units.structure
         if x in structureTable: 
             fortificationReduce(x, quarterDamage)
+        # nuke.action.quarter.units.noStructure
         elif x in targetTeamTable: 
             dealDamage(x, quarterDamage, targetTeamTable)
+        # nuke.action.quarter.units.none
         else: 
             print(x, "is not a structure or a unit.")
+    # nuke.push
     immobileUnits.append(unit)
     disabledUnits.append(unit)
     usedUnits.append(unit)
