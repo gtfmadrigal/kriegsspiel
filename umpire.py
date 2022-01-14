@@ -2083,16 +2083,22 @@ def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
             if x in usedUnits: 
                 continue
             # bomb.parse.unit.team.action
+            # bomb.parse.unit.team.action.calculate
             initialDamage = damage(x, fireTable)
+            # bomb.parse.unit.team.action.noDefense
             if initialDamage == None: 
                 continue
+            # bomb.parse.unit.team.action.reduce
             totalAttackDamage = initialDamage + totalAttackDamage
             # bomb.parse.unit.team.push
+            # bomb.parse.unit.team.push.usual
             usedUnits.append(x)
             localUnitType = unitTable.get(x)
             unitType = allUnitTypes.get(localUnitType)
+            # bomb.parse.unit.team.push.immobile
             if not unitType in moveFireTable: 
                 immobileUnits.append(x)
+            # bomb.parse.unit.team.push.hidden
             if x in hiddenUnits: 
                 reveal(x)
         # bomb.parse.unit.target
@@ -2102,15 +2108,21 @@ def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
         else: 
             print(x, " does not exist.")
     # bomb.action
+    # bomb.action.calculate
     print("Damage:", totalAttackDamage)
     perUnitDamage = totalAttackDamage / len(defendingUnits)
     print("Damage per unit:", perUnitDamage)
+    # bomb.action.defending
     for x in defendingUnits:
         location = locationTable.get(x)
+        # bomb.action.defending.location
+        # bomb.action.defending.location.structure
         if location in structureTable:
             reducedDamage = fortificationReduce(location, perUnitDamage)
+        # bomb.action.defending.location.noStructure
         else: 
             reducedDamage = perUnitDamage
+        # bomb.action.defending.push
         dealDamage(defendingUnits, reducedDamage, targetTeamTable)
     # bomb.push
     defendingUnits.clear()
@@ -2118,34 +2130,53 @@ def bomb(arguments, teamTable, targetTeamTable, teamFlyingTable):
     score()
 
 def survey(arguments, teamTable, teamFlyingTable):
+    # survey.globals
     global usedUnits
+    # survey.parse
+    # survey.parse.argument
+    # survey.parse.argument.try
     try:
         unit = arguments[1]
+    # survey.parse.argument.except
     except:
-        error("argument", "survey")
+        error("argument", "survey.parse.argument.except")
         return
+    # survey.parse.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # survey.check
+    # survey.check.team
     if not unit in teamTable:
-        error("team", "survey")
+        error("team", "survey.check.team")
         return
+    # survey.check.used
     if unit in usedUnits:
-        error("available", "survey")
+        error("available", "survey.check.used")
         return
+    # survey.check.function
     if not unitType in spyTable:
-        error("function", "survey")
+        error("function", "survey.check.function")
         return
+    # survey.check.airborne
     if not unit in teamFlyingTable:
-        error("airborne", "survy")
+        error("airborne", "survy.check.airborne")
+    # survey.action
+    # survey.action.calculate
     effectiveness = damage(unit, spyTable)
+    # survey.action.effectiveness
+    # survey.action.effectiveness.good
     if effectiveness >= 6: 
         print("Good information.")
+    # survey.action.effectiveness.bad
     elif effectiveness == 1: 
         print("Bad information.")
+    # survey.action.effectiveness.none
     else: 
         print("No information.")
-    details()
+    # survey.push
     usedUnits.append(unit)
+    # survey.return
+    details()
 
 # Shell functions
 
