@@ -1027,188 +1027,279 @@ def fire(arguments, teamTable, targetTeamTable):
 
 # Naval functions
 def heading(arguments, teamTable):
+    # heading.globals
     global immobileUnits
     global usedUnits
+    # heading.parse
+    # heading.parse.argument.try
     try:
         unit = arguments[1]
+    # heading.parse.argument.except
     except:
-        error("argument", "heading")
+        error("argument", "heading.parse.argument.except")
         return
-    if not unit in teamTable:
-        error("team", "convert")
-        return
-    if unit in usedUnits or unit in immobileUnits:
-        error("available", "heading")
-        return
+    # heading.parse.unitType
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
-    if not unitType in headingTable:
-        error("required", "heading")
+    # heading.check
+    # heading.check.team
+    if not unit in teamTable:
+        error("team", "heading.check.team")
         return
+    # heading.check.usedImmobile
+    if unit in usedUnits or unit in immobileUnits:
+        error("available", "heading.check.usedImmobile")
+        return
+    # heading.check.function
+    if not unitType in headingTable:
+        error("required", "heading.check.function")
+        return
+    # heading.action
     immobileUnits.append(unit)
     if not unitType in moveFireTable: 
         usedUnits.append(unit)
 
 def torpedo(arguments, teamTable, targetTeamTable):
+    # torpedo.globals
     global usedUnits
     global immobileUnits
-    del arguments[0]
-    try:
-        unit = arguments[0]
-    except:
-        error("argument", "torpedo")
-        return
-    if not unit in teamTable:
-        error("team", "torpedo")
-        return
-    localUnitType = unitTable.get(unit)
-    unitType = allUnitTypes.get(localUnitType)
-    if unit in immobileUnits or unit in usedUnits:
-        error("available", "torpedo")
-        return
-    if not unitType in torpedoTable:
-        error("function", "torpedo")
-        return
+    # torpedo.definition
     effectiveness = 0
     target = ""
+    # torpedo.parse
+    # torpedo.parse.argument
+    del arguments[0]
+    # torpedo.parse.argument.try
+    try:
+        unit = arguments[0]
+    # torpedo.parse.argument.except
+    except:
+        error("argument", "torpedo.parse.argument.except")
+        return
+    # torpedo.parse.unit
+    if not unit in teamTable:
+        error("team", "torpedo.parse.unit")
+        return
+    # torpedo.parse.type
+    localUnitType = unitTable.get(unit)
+    unitType = allUnitTypes.get(localUnitType)
+    # torpedo.check
+    # torpedo.check.usedImmobile
+    if unit in immobileUnits or unit in usedUnits:
+        error("available", "torpedo.check.usedImmobile")
+        return
+    # torpedo.check.function
+    if not unitType in torpedoTable:
+        error("function", "torpedo.check.function")
+        return
+    # torpedo.action
+    # torpedo.action.argument
     for x in arguments:
+        # torpedo.action.argument.redirect
         if x == ">": 
             pass
+        # torpedo.action.argument.team
         elif x in teamTable: 
             effectiveness = damage(x, torpedoTable)
+        # torpedo.action.argument.target
         elif x in targetTeamTable: 
             target = x
+        # torpedo.action.argument.none
         else: 
             print(x, "does not exist.")
             return
+    # torpedo.action.effectiveness
     oldHealth = targetTeamTable.get(target)
+    # torpedo.action.effectiveness.kill
     if effectiveness == 6 or oldHealth - effectiveness <= 0:   
         kill(target)
+    # torpedo.action.effectiveness.reduce
     else:
         newHealth = oldHealth - effectiveness
         targetTeamTable[target] = newHealth
+    # torpedo.push
     usedUnits.append(unit)
     immobileUnits.append(unit)
+    # torpedo.push.hidden
     if unit in hiddenUnits: 
         reveal(unit)
+    # torpedo.return
     score()
 
 def sortie(arguments, teamTable, targetTeamTable):
+    # sortie.globals
     global usedUnits
     global immobileUnits
+    # sortie.parse
+    # sortie.parse.unit
     del arguments[0]
+    # sortie.parse.unit.try
     try:
         unit = arguments[0]
+    # sortie.parse.unit.except
     except:
-        error("argument", "sortie")
+        error("argument", "sortie.parse.unit.except")
         return
+    # sortie.parse.unit.team
     if not unit in teamTable:
-        print("team", "sortie")
+        print("team", "sortie.parse.unit.team")
         return
+    # sortie.parse.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # sortie.parse.check
+    # sortie.parse.check.used
     if unit in usedUnits:
-        error("available", "sortie")
+        error("available", "sortie.parse.check.used")
         return
+    # sortie.parse.check.function
     if not unitType in sortieTable:
-        error("function", "sortie")
+        error("function", "sortie.parse.check.function")
         return
+    # sortie.definition
     attackDamage = 0
     defenseDamage = 0
     defendingUnits = []
+    # sortie.action
+    # sortie.action.argument
     for x in arguments:
+        # sortie.action.argument.redirect
         if x == ">": 
             pass
+        # sortie.action.argument.team
         elif x in teamTable: 
             attackDamage = damage(x, sortieTable)
+        # sortie.action.argument.target
         elif x in targetTeamTable: 
             defenseDamage = damage(x, sortieDefenseTable)
             defendingUnits.append(x)
+        # sortie.action.argument.none
         else: 
             print(x, "does not exist.")
             return
+    # sortie.action.repulsion
     if defenseDamage >= attackDamage: 
         print("Sortie repelled.")
+    # sortie.action.effective
     else:
+        # sortie.action.effective.calculate
         netDamage = attackDamage - defenseDamage
         perUnitDamage = netDamage / len(defendingUnits)
+        # sortie.action.effective.defending
         for x in defendingUnits:
+            # sortie.action.effective.defending.hidden
             if x in hiddenUnits: 
                 reveal(x)
+            # sortie.action.effective.defending.push
             dealDamage(defendingUnits, perUnitDamage, targetTeamTable)
+    # sortie.push
     usedUnits.append(unit)
+    # sortie.return
     score()
 
 def depthcharge(arguments, teamTable, targetTeamTable):
+    # depthcharge.globals
     global firstTeamTable
     global secondTeamTable
     global alreadyDropped
     global usedUnits
     global immobileUnits
     global disabledUnits
+    # depthcharge.parse
+    # depthcharge.parse
     del arguments[0]
+    # depthcharge.parse.argument
+    # depthcharge.parse.argument.try
     try:
         unit = arguments [0]
+    # depthcharge.parse.argument.except
     except:
-        error("argument", "depthcharge")
+        error("argument", "depthcharge.parse.argument.except")
         return
+    # depthcharge.parse.team
     if not unit in teamTable:
-        error("team", "depthcharge")
+        error("team", "depthcharge.parse.team")
         return
+    # depthcharge.parse.type
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # depthcharge.check
     if unit in alreadyDropped:
         error("available", "depthcharge")
         return
     if not unitType in depthchargeTable:
         error("function", "depthcharge")
         return
+    # depthcharge.action
+    # depthcharge.action.argument
     for x in arguments:
+        # depthcharge.action.argument.redirect
         if x == ">": 
             pass
+        # depthcharge.action.argument.team
         elif x in teamTable: 
             effectiveness = damage(x, depthchargeTable)
+        # depthcharge.action.argument.target
         elif x in targetTeamTable: 
             target = x
+        # depthcharge.action.argument.none
         else: 
             print(x, "does not exist.")
             return
+    # depthcharge.action.effectiveness
+    # depthcharge.action.effectiveness.kill
     if effectiveness == 6: 
         kill(target)
+    # depthcharge.action.effectiveness.disable
     elif effectiveness == 5:
         print(target, "disabled.")
         immobileUnits.append(target)
         disabledUnits.append(target)
         usedUnits.append(target)
-    else: print("Missed.")
+    # depthcharge.action.effectiveness.failed
+    else: 
+        print("Missed.")
+    # depthcharge.push
     immobileUnits.append(unit)
     alreadyDropped.append(unit)
+    # depthcharge.return
     score()
 
 def board(arguments, teamTable, targetTeamTable):
+    # board.globals
     global firstTeamTable
     global secondTeamTable
     global usedUnits
     global immobileUnits
     global disabledUnits
+    # board.parse
+    # board.parse.unit
     del arguments[0]
+    # board.parse.unit.argument
+    # board.parse.unit.argument.try
     try:
         unit = arguments[0]
+    # board.parse.unit.argument.except
     except:
-        error("argument", "board")
+        error("argument", "board.parse.unit.argument.except")
         return
+    # board.parse.unit.team
     if not unit in teamTable:
-        error("team", "depthcharge")
+        error("team", "board.parse.unit.team")
         return
+    # board.parse.team
     localUnitType = unitTable.get(unit)
     unitType = allUnitTypes.get(localUnitType)
+    # board.parse.health
     currentHealth = teamTable.get(unit)
+    # board.check
     if unit in usedUnits:
         error("available", "board")
         return
     if not unitType in boardTable:
         error("function", "board")
         return
+    # board.action
     for x in arguments:
         if x == ">": 
             pass
@@ -1236,7 +1327,9 @@ def board(arguments, teamTable, targetTeamTable):
         immobileUnits.append(unit)
         disabledUnits.append(unit)
         usedUnits.append(unit)
+    # board.push
     usedUnits.append(unit)
+    # board.return
     score()
 
 def nuke(arguments, teamTable, targetTeamTable):
