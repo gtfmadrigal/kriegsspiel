@@ -394,6 +394,7 @@ v4 - Updated shell release
             v4.3-pre3_343 - fixed error call in bomb.parse.unit.team.check.airborne()
             v4.3-pre3_344 - subdivided air force functions
         v4.3-pre4 - Documentation
+            v4.3-pre4_345
         v4.3-pre5 - Updates to Manual
     v4.3 - Documentation release
         v5.0-pre1 - Eschaton shell
