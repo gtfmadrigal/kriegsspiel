@@ -1,11 +1,34 @@
-Round: 1
-Command: 12
+Round: 65
+Command: 234
+va1 : 0.8472222222222222
+va2 : 0.8472222222222222
+va3 : 0.8472222222222222
+va5 : 0.8472222222222222
+va6 : 3.5
+va7 : 3.5
+va9 : 0.8472222222222222
+va12 : 3.2222222222222223
+pa1 : 3.5
+pa7 : 0.5
+pa8 : 3.5
+nc1 : 0.8472222222222222
+nc3 : 0.8472222222222222
+md1 : 2.5
+md2 : 0.8472222222222222
+nj2 : 1.5
+light1 : 6.25
+light2 : 6.25
+nj3f : 5.5
+mx1 : 10.25
+mx2 : 10.25
+lg : 4.0
+mb : 2.0
 
 usedUnits = []
 immobileUnits = []
-hiddenUnits = []
+hiddenUnits = ['44']
 disabledUnits = []
-deadUnits = []
-
-Rebel total health: 278 or 100.0 %
-British total health: 342 or 100.0 %
+deadUnits = ['pa2f', 'nj1f', 'nj2f', 'pa1f', 'pa3f', 'pa4f', 'jag', '17', 'eb', '10', 'lrg', 'gd1', '4', '38', '5', '33', '15']
+, 44 hidden at harvey's run
+Rebel total health: 215.0 or 73.12925170068027 %
+British total health: 270.0 or 78.03468208092485 %

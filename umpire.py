@@ -781,6 +781,14 @@ def message():
     else:
         print("Message delivered.")
 
+def test():
+    test = fog()
+    if test == True:
+        print("Failed.")
+        return
+    else:
+        print("Passed.")
+
 # Theater-agnostic functions
 def attack(arguments, teamTable, targetTeamTable):
     # attack.globals
@@ -859,7 +867,11 @@ def attack(arguments, teamTable, targetTeamTable):
     # attack.push.netDamage
     netDamage = totalAttackDamage - totalDefenseDamage
     print("Net damage: ", netDamage)
-    perUnitDamage = netDamage / len(defendingUnits)
+    try:
+        perUnitDamage = netDamage / len(defendingUnits)
+    except:
+        print("No damage.")
+        return
     print("Damage per unit:", perUnitDamage)
     # attack.push.location
     for x in defendingUnits:
@@ -914,12 +926,6 @@ def move(arguments, teamTable):
     print("Current location or terrain:", currentLocation)
     newLocation = input("New location or terrain: ")
     # move.push
-    # move.push.hidden
-    if unit in hiddenUnits:
-        # move.push.hidden.location
-        if not newLocation in structureTable or not newLocation in hideableTerrain:
-            usedUnits.remove(unit)
-    # move.push.location
     locationTable[unit] = str(newLocation)
     immobileUnits.append(unit)
 
@@ -2352,6 +2358,7 @@ def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTab
     # shell.action
     elif parsedCommand[0] == "score": score()
     elif parsedCommand[0] == "turn": turn()
+    elif parsedCommand[0] == "test": test()
     elif parsedCommand[0] == "details": details()
     elif parsedCommand[0] == "quit": quitGame()
     elif parsedCommand[0] == "help": helpText()
