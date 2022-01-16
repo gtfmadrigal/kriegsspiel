@@ -8,7 +8,7 @@ secrets = ""
 airPhase = True
 helpTextBlock = """
 Umpire commands: score, turn, details, quit, help, health, kill, freeze, convert, disable, merge, split, info, use, man
-Theater-agnostic commands: attack, move, hide, reveal, spy, fire
+Theater-agnostic commands: attack, move, hide, reveal, spy, fire, message
 Naval commands: heading, torpedo, sortie, depthcharge, board
 Army commands: build, missile
 Air commands: takeoff, land, pulse, airlift, survey, bomb, kamikaze, dogfight, missile

@@ -397,8 +397,16 @@ v4 - Updated shell release
             v4.3-pre3_346 - added message.return.failed.failureCode()
             v4.3-pre3_347 - save() function deprecated, functionality merged into log() automatic output
         v4.3-pre4 - Documentation
-            v4.3-pre4_345
+            v4.3-pre4_348 - helpText variable updated
+            - rewrite error messages
+            - fix error() function
+            - subdivide functions
+            - add comments
         v4.3-pre5 - Updates to Manual
+            - add more information to command details
+            - add code guide
+            - add more tables
+            - add information about effective distances for various functions
     v4.3 - Documentation release
         v5.0-pre1 - Eschaton shell
         v5.0-pre2 - Eschaton gamefiles
