@@ -776,18 +776,18 @@ def message():
     # message.return.failed
     if test == True:
         print("Message failed to deliver.")
+        failureCode = random.randrange(1,4)
+        # message.return.failed.failureCode
+        # message.return.failed.failureCode.intercepted
+        if failureCode == 3:
+            print("Intercepted by enemy.")
+        # message.return.failed.failureCode.misinterpreted
+        elif failureCode == 4:
+            print("Message misinterpreted.")
         return
     # message.return.passed
     else:
         print("Message delivered.")
-
-def test():
-    test = fog()
-    if test == True:
-        print("Failed.")
-        return
-    else:
-        print("Passed.")
 
 # Theater-agnostic functions
 def attack(arguments, teamTable, targetTeamTable):
@@ -2358,7 +2358,6 @@ def shell(team, teamTable, targetTeamTable, teamFlyingTable, targetTeamFlyingTab
     # shell.action
     elif parsedCommand[0] == "score": score()
     elif parsedCommand[0] == "turn": turn()
-    elif parsedCommand[0] == "test": test()
     elif parsedCommand[0] == "details": details()
     elif parsedCommand[0] == "quit": quitGame()
     elif parsedCommand[0] == "help": helpText()
