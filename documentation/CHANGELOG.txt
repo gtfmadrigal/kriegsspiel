@@ -395,6 +395,7 @@ v4 - Updated shell release
             v4.3-pre3_344 - subdivided air force functions
             v4.3-pre3_345 - added try-except feature to attack.push.netDamage() and removed move.push.hidden()
             v4.3-pre3_346 - added message.return.failed.failureCode()
+            v4.3-pre3_347 - save() function deprecated, functionality merged into log() automatic output
         v4.3-pre4 - Documentation
             v4.3-pre4_345
         v4.3-pre5 - Updates to Manual

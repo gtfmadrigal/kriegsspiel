@@ -144,7 +144,15 @@ Features to be added in a later release:
 New features in this release:
 - More debugging
 - Better error message reporting
+    - Fully rewritten error() function
 - More code documentation and comments
+    - All functions subdivided into subfunctions
+    - Comments added to core code for ease of reading
+- Fourth Edition Manual
+    - Includes information for creating gamefiles
+    - Updated for all functions
+    - Code guide
+    - Unit-function charts for every command
 
 (UPCOMING) v5.0 - Eschaton version
 
