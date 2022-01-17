@@ -880,8 +880,8 @@ def attack(arguments, teamTable, targetTeamTable):
         dealDamage(x, reducedDamage, targetTeamTable)
     # attack.push.clear
     defendingUnits.clear()
-    # attack.return
-    turn()
+    # attack.push.update
+    update()
 
 def move(arguments, teamTable):
     # move.globals

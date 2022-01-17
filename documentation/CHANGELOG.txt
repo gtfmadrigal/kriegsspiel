@@ -398,6 +398,7 @@ v4 - Updated shell release
             v4.3-pre3_347 - save() function deprecated, functionality merged into log() automatic output
         v4.3-pre4 - Documentation
             v4.3-pre4_348 - helpText variable updated
+            v4.3-pre4_349 - attack.return() removed
             - rewrite error messages
             - fix error() function
             - subdivide functions
