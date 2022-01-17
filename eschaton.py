@@ -76,7 +76,7 @@ def launch():
 def invade():
     pass
 
-def spy():
+def spy(): 
     pass
 
 # Defensive functions

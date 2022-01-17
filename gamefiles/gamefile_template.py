@@ -27,7 +27,7 @@ print("Second team health total: ", sum(secondTeamTable.values()))
 
 # Optionally, alter some information about the unit types here:
 
-def loadGame(): # This function is run before the core game loop in umpire.py, then never again
+def loadGame(): # This function is run before the core game loop in umpire.py, then never again 
     global movementTable # Set any table you wish to alter to global
     del movementTable["item"] # To delete a unitType from a given table, use this template
     movementTable["item"] = 6 # Use this template to change a unitType's value in a given table

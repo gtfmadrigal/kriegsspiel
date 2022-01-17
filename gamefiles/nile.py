@@ -12,4 +12,4 @@ warheads = 0
 locationTable = {}
 
 def loadGame():
-    pass
+    pass 

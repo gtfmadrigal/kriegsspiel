@@ -152,7 +152,7 @@ New features in this release:
     - Includes information for creating gamefiles
     - Updated for all functions
     - Code guide
-    - Unit-function charts for every command
+    - Unit-function charts for every command 
 
 (UPCOMING) v5.0 - Eschaton version
 

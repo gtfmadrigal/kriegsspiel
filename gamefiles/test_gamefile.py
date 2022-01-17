@@ -10,7 +10,7 @@ firstHealthTotal = 215
 secondHealthTotal = 215
 fogOfWar = 1
 warheads = 0
-locationTable = {}
+locationTable = {} 
 
 # Loadgame function
 def loadGame():

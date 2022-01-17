@@ -10,4 +10,4 @@ The principal game code is held in umpire.py, and this is where the import state
 
 The gamefiles are stored in their own directory, gamefiles/. Every gamefile is named according to the format battle.py, hence "brandywine".py, after the Battle of the Brandywine River, and "nile".py, after the Battle of the Nile. Within the gamefiles/ directory, a file called gamefile_template.py is included as an example so that the user can make his own gamefile. 
 
-Kriegsspiel is highly documented, with most of the documentation found in the directory documentation/. Rules for the game itself are contained within Kriegspiel Fourth Edition.docx (pardon the misspelling). The license, changelog, and release notes can also be found within documentation/.
+Kriegsspiel is highly documented, with most of the documentation found in the directory documentation/. Rules for the game itself are contained within Kriegspiel Fourth Edition.docx (pardon the misspelling). The license, changelog, and release notes can also be found within documentation/. 
