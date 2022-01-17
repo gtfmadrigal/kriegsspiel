@@ -456,7 +456,7 @@ def hide(arguments):
         return
     # hide.action
     # hide.action.structure
-    structure = input("Structure to hide in, if any: ")
+    structure = input("Structure or terrain to hide in, if any: ")
     if structure in structureTable:
         # hide.action.structure.definition
         locationTable[unit] = structure
@@ -466,13 +466,15 @@ def hide(arguments):
         secrets = secrets + ", " + newSecret
         return
     # hide.action.terrain
-    terrain = input("Terrain to hide in: ")
-    if not terrain in hideableTerrain:
-        error("terrain", "hide.action.terrain")
+    elif structure in hideableTerrain:
+        pass
+    # hide.action.badTerrain
+    else:
+        error("terrain", "hide.action.badTerrain")
         return
     # hide.push
     hiddenUnits.append(unit)
-    locationTable[unit] = terrain
+    locationTable[unit] = structure
     location = input("Location of this hidden unit: ")
     newSecret = unit + " hidden at " + location
     secrets = secrets + ", " + newSecret
@@ -916,9 +918,14 @@ def move(arguments, teamTable):
     if not unitType in moveFireTable:
         usedUnits.append(unit)
     # move.action
-    currentLocation = locationTable.get(unit)
-    print("Current location or terrain:", currentLocation)
-    newLocation = input("New location or terrain: ")
+    # move.action.hidden
+    if unit in hiddenUnits:
+        currentLocation = locationTable.get(unit)
+        print("Current location or terrain:", currentLocation)
+        newLocation = input("New location or terrain: ")
+        # move.action.hidden.reveal
+        if not newLocation in locationTable and not newLocation in structureTable:
+            reveal(unit)
     # move.push
     locationTable[unit] = str(newLocation)
     immobileUnits.append(unit)

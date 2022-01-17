@@ -399,9 +399,8 @@ v4 - Updated shell release
         v4.3-pre4 - Documentation
             v4.3-pre4_348 - helpText variable updated
             v4.3-pre4_349 - attack.return() removed
-            - rewrite error messages
-            - fix error() function
-            - subdivide functions
+            v4.3-pre4_350 - move.action.hidden() added
+            v4.3-pre4_351 - hide.action.terrain() and hide.action.badTerrain() added
             - add comments
         v4.3-pre5 - Updates to Manual
             - add more information to command details
