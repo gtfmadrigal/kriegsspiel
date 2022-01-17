@@ -12,6 +12,8 @@ warheads = 0 # warheads is the number of nuclear weapons available in a game. Se
 
 firstTeamTable = {} # List every unit in the first team as string keys, where the values are the integers or floats corresponding to those units' initial health values. They can be the same health value as supplied by the healthTable dictionary in umpire.py, or something else. It's up to you.
 secondTeamTable = {}
+firstTeamTableOriginal = {} # Simply copy all values from the relevant team table to an original. This is used in some umpire functions to keep track of changes.
+secondTeamTableOriginal = {}
 locationTable = {} # If desired, list any unit's current location by terrain or structure, but these structures need to be added to the loadGame() function in order to be considered valid by Umpire itself
 unitTable = {} # For every unit in firstTeamTable and secondTeamTable, include it here as a string key, where its value is a string corresponding to a given *local* unit type
 allUnitTypes = {} # For every local unit type present in unitTable, include it here as a string key, where its value is a string corresponding to a given *universal* unit type, as included in the umpire.py file. If you want to include a new universal unit type in a given campaign, this can be done via the loadGame function (see below)
@@ -29,4 +31,4 @@ def loadGame(): # This function is run before the core game loop in umpire.py, t
     global movementTable # Set any table you wish to alter to global
     del movementTable["item"] # To delete a unitType from a given table, use this template
     movementTable["item"] = 6 # Use this template to change a unitType's value in a given table
-    pass # If you do not wish to alter any of the core functionality of the game, simply include a pass statement and nothing else. The pass statement here is required in order to maintain some code within the function
+    pass # If you do not wish to alter any of the core functionality of the game, simply include a pass statement and nothing else. The pass statement here is required in order to maintain some code within the function. Note: you cannot simply remove the loadGame() function, as doing so would break the program.
