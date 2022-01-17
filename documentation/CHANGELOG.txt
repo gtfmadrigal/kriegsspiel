@@ -1,10 +1,10 @@
 Changelog
 
 Release naming conventions: (vX.Y.Z)
-- First digit (X) signifies a major release, seriously updating the game mechanics or changing the program entirely
-- Second digit (Y) signifies a minor release. MUST be polished and fully functional
+- First digit (X) signifies a major (breaking) release, seriously updating the game mechanics or changing the program entirely
+- Second digit (Y) signifies a minor (non-breaking) release
 - Before every major or minor release, prereleases (Z) (indicated with the infix vX.Y-preZ), are created, which may be unpolished. Sets of commits are grouped into prereleases
-- Commits (A) are indicated with a value after the prerelease according to the formula vX.Y-preZ.A 
+- Commits (A) are indicated with a value after the prerelease according to the formula vX.Y-preZ.A; numbered from the first commit
 
 v0 - Initial release
     v0.1 - Initial release
@@ -401,7 +401,7 @@ v4 - Updated shell release
             v4.3-pre4_349 - attack.return() removed
             v4.3-pre4_350 - move.action.hidden() added
             v4.3-pre4_351 - hide.action.terrain() and hide.action.badTerrain() added
-            - add comments
+            v4.3-pre4_352 - changelog.txt heading fixed to match new convention added in v4.3-pre3_323
         v4.3-pre5 - Updates to Manual
             - add more information to command details
             - add code guide
