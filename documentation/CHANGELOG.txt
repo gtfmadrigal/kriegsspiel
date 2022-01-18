@@ -407,7 +407,7 @@ v3 - Land-Sea-Air unification release
             v3.3-pre4_355 - outline for releases v3.3 through v3.6 added
             v3.3-pre4_356 - updated manual to include more information
             v3.3-pre4_357 - added empty disembark() and load() functions for v3.4 release
-            v3.3-pre4_358 - manual.pdf re-added
+            v3.3-pre4_358 - manual.pdf re-added, unit-chart.xlsx removed
             v3.3-pre4_359 - artifacts cleaned for v3.3 full release
     v3.3 - Documentation release
         v3.4-pre1 - Full terrain implementation
