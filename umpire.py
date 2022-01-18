@@ -1449,6 +1449,12 @@ def nuke(arguments, teamTable, targetTeamTable):
     disabledUnits.append(unit)
     usedUnits.append(unit)
 
+def load():
+    pass
+
+def disembark():
+    pass
+
 # Army functions
 def build(arguments, teamTable):
     # build.globals

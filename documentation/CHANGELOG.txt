@@ -405,8 +405,8 @@ v3 - Land-Sea-Air unification release
             v3.3-pre4_353 - gamefile_template.py updated
             v3.3-pre4_354 - changelog commit history and versions fixed retroactively
             v3.3-pre4_355 - outline for releases v3.3 through v3.6 added
-            v3.3-pre4_356 - updated manual to include more information****
-            v3.3-pre4_357 - added code guide to manual
+            v3.3-pre4_356 - updated manual to include more information
+            v3.3-pre4_357 - added empty disembark() and load() functions for v3.4 release
             v3.3-pre4_358 - manual.pdf re-added
             v3.3-pre4_359 - artifacts cleaned for v3.3 full release
     v3.3 - Documentation release
@@ -416,7 +416,9 @@ v3 - Land-Sea-Air unification release
         v3.4-pre4 - Structures handled better by build()
         v3.4-pre5 - Preconstruction in gamefiles added
         v3.4-pre6 - Better documentation for terrain and structures
-    v3.4 - Terrain modification release
+        v3.5-pre7 - Added disembark() and load() functions
+        v3.5-pre8 - Airports implemented
+    v3.4 - Terrain and structure release
         v3.5-pre1 - log() function automatically creates new gamefile
         v3.5-pre2 - Better documentation for log() function
     v3.5 - Save and return release II

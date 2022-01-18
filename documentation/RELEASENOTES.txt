@@ -24,13 +24,13 @@ v1.1: Cleared artifiacts
 - Artifacts from the v0.1 release have been removed
 - gamefiletemplate.py improved
 
-v1.2: Polished release
+v2.0: Polished release
 
 - man() function added and fully implemented
 
-v2.0: Naval battle release
+v2.1: Naval battle release
 
-New features in v2.0:
+New features in v2.1:
 - Naval battle functions added: heading(), torpedo(), sortie(), depthcharge()
 - Increased portability
 - Man pages for every command and function within the game, held in manpages.py
@@ -48,7 +48,7 @@ Features to be added in next release:
 - Simplify man() function (v2.0.5)
 - Use dictionaries instead of lists to ascribe attributes to units and unit types (v2.1.4, v2.1.5, still being worked on)
 
-v2.2 - Naval battles simplified
+v2.3 - Naval battles simplified
 
 New features in this release:
 - Game loop reduced for better speed, functionality moved to getCommand() function.
@@ -71,7 +71,7 @@ Features to be added in a later release:
 - Package kriegsspiel files into binaries, to be offered with the releases.
 - Choose which gamefile is imported by hand, instead of setting it in the source code.
 
-v2.3 - Final naval battles release
+v2.4 - Final naval battles release
 
 New features in this release:
 - Ability to convert units from one type to another
@@ -87,7 +87,7 @@ Features to be added in a later release:
 - Integration of land, sea, air, and space units in a single gamespace
 - Fourth Edition of the Kriegsspiel Guide
 
-v3.0 - Land-Sea-Air unification release
+v2.5 - Land-Sea-Air unification release
 
 New features in this release:
 - Air combat and air combat phase added, including the takeoff, land, pulse, airlift, survey, bomb, kamikaze, and pulse commands
@@ -108,7 +108,7 @@ Features to be added in a later release:
 - Ability to reduce damage using fortifications
 - Terrain tracking
 
-v4.0 - Updated shell release
+v3.0 - Updated shell release
 
 New features in this release:
 - Arguments can be passed to commands
@@ -123,7 +123,7 @@ Features to be added in a later release:
 - Nuclear weapons
 - Save and return to in-progress games
 
-v4.1 - Nuclear weapons release
+v3.1 - Nuclear weapons release
 
 New features in this release:
 - Nuclear weapons
@@ -131,7 +131,7 @@ New features in this release:
 Features to be added in a later release:
 - Ability to save a game and return to it later
 
-v4.2 - Save and return release
+v3.2 - Save and return release
 
 New features in this release:
 - Save games and return to them later via the save() function
@@ -139,7 +139,7 @@ New features in this release:
 Features to be added in a later release:
 - Multi-military team campaigns
 
-(UPCOMING) v4.3 - Documentation release
+(UPCOMING) v3.3 - Documentation release
 
 New features in this release:
 - More debugging
@@ -154,7 +154,25 @@ New features in this release:
     - Code guide
     - Unit-function charts for every command 
 
-(UPCOMING) v5.0 - Eschaton version
+(UPCOMING) v3.4 - Terrain and structure release
+
+New features in this release:
+- Full terrain implementation
+- Unique structure identifiers
+- All structures must have a type
+- Structures handled better by build()
+- Terrain buffs and debuffs
+- Preconstruction in gamefiles
+- Disembark and load functions for ships added
+- Airports implemented
+
+(UPCOMING) v3.5 - Save and return release II
+
+New features in this release:
+- log() function now automatically outputs gamefiles, instead of plain text
+- Easier to quit and return to a game
+
+(UPCOMING) v3.6 - Eschaton release
 
 New features in this release:
 - Eschaton nuclear warheads version added
