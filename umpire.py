@@ -26,7 +26,7 @@ firstTeamFlying = []
 secondTeamFlying = []
 convertTable = ["light-artillery", "med-artillery", "heavy-artillery", "light-cavalry", "med-cavalry", "heavy-cavalry"]
 hideTable = ["infantry", "engineers", "mechanized", "light-artillery", "med-artillery", "heavy-artillery", "special", "attack-submarine", "missile-submarine", "stealth-bomber", "recon", "drone"]
-hideableTerrain = ["forest", "swamp", "ocean", "air"]
+hideableTerrain = ["forest", "swamp", "ocean", "air", "forest-hills"]
 airliftTable = ["infantry", "mechanized", "special", "light-cavalry"]
 
 # Dictionaries
@@ -52,8 +52,12 @@ moveFireTable = {"infantry":1, "engineers":1, "mechanized":1, "light-cavalry":1,
 bombTable = {"bomber":8, "stealth-bomber":6, "drone":10}
 flyTable = {"light-fighter":1, "heavy-fighter":1, "bomber":1, "stealth-bomber":1, "recon":1, "transport":1, "drone":1}
 nukeTable = {"missile-submarine":30, "stealth-bomber":16}
-structureTable = {}
 manPages = {"score":"'score'", "turn":"'turn'", "details":"'details'", "quit":"'quit'", "help":"'help'", "health":"'health [unit] [value]'", "kill":"'kill [unit]'", "convert":"'convert [unit]'", "disable":"'disable [unit]'", "merge":"'merge [unit1] [unit2] ... > [unit]'", "split":"'split [unit] > [unit1] [unit2] ...'", "info":"'info [unit]'", "use":"'use [unit]'", "man":"'man [command]'", "attack":"'attack [unit1] [unit2] ... > [unit3] [unit4] ...'", "hide":"'hide [unit]'", "reveal":"'reveal [unit]'", "fire":"'fire [unit1] [unit2] ... > [unit3] [unit4] ...'", "heading":"'heading [unit]'", "torpedo":"'torpedo [unit] > [target]'", "sortie":"'sortie [unit] > [target]'", "depthcharge":"'depthcharge [unit] > [target]'", "board":"'board [unit] > [target]'", "missile":"'missile [unit] > [target]'", "takeoff":"'takeoff [unit]'", "land":"'land [unit]'", "kamikaze":"'kamikaze [unit] > [target]'", "dogfight":"'dogfight [unit1] [unit2] ... > [target1] [target2] ...'", "bomb":"'bomb [unit] > [target1] [target2] ...'", "survey":"'survey [unit]'", "pulse":"'pulse [unit] > [target1] [target2] ...'", "airlift":"'airlift [plane] > [unit]'", "nuke":"'nuke [unit] > [target]'", "message":"'message'", "move":"'move [unit]'", "spy": "'spy [unit]'", "build":"'build [unit]'"}
+terrainHideabilityTable = {}
+structureTypeHideabilityTable = {}
+portTable = {}
+airfieldTable = {}
+terrainSpeedTable = {}
 
 # initialization
 from gamefiles.brandywine import *
