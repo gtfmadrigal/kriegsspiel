@@ -139,7 +139,7 @@ New features in this release:
 Features to be added in a later release:
 - Multi-military team campaigns
 
-(UPCOMING) v3.3 - Documentation release
+v3.3 - Documentation release
 
 New features in this release:
 - More debugging
