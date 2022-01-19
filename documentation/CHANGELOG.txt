@@ -415,6 +415,7 @@ v3 - Land-Sea-Air unification release
             v3.4-pre1_361 - filled out terrain tables
             v3.4-pre1_362 - filled out structure tables
             v3.4-pre1_363 - added new tables for ship loading and airlifts
+            v3.4-pre1_364 - filled out load and airlift tables
         v3.4-pre2 - Added movement buffs and debuffs for terrain
         v3.4-pre3 - Unique structure identifiers and types
         v3.4-pre4 - Structures handled better by build()

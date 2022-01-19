@@ -55,12 +55,14 @@ manPages = {"score":"'score'", "turn":"'turn'", "details":"'details'", "quit":"'
 terrainHideabilityTable = {"plains":False, "forest":True, "hills":False, "forest-hills":True, "swamp":True, "desert":False, "mountain":False, "river":False, "sea":True, "road":False, "pass":False}
 structureTypeHideabilityTable = {"settlement":True, "building":True, "bridge":False, "road":False, "pass":False, "fortification":False, "port":False, "airfield":False}
 terrainSpeedTable = {"plains":1, "forest":0.75, "hills":0.75, "forest-hills":0.6, "swamp":0.5, "desert":1, "mountain":0.25, "road":1.25, "pass":1.25}
-shipCapacity = {}
-planeCacpacity = {}
-armyUnitWeight = {}
-planeWeight = {}
-airliftTable = {}
-loadTable = {}
+shipArmyCapacity = {"carrier":8, "battleship":8, "cruiser":4, "destroyer":1, "amphibious":4, "patrol":1}
+shipPlaneCapacity = {"carrier":8, "battleship":4, "cruiser":1, "destroyer":1}
+planeCapacity = {"stealth-bomber":2, "bomber":2, "transport":4}
+armyUnitWeight = {"infantry":1, "engineers":1, "special":1, "light-artillery":2, "med-artillery":2, "heavy-artillery":2, "light-cavalry":4, "med-cavalry":4, "heavy-cavalry":4}
+planeWeight = {"light-fighter":1, "transport":1, "drone":1, "heavy-fighter":2, "recon":2, "bomber":4, "stealth-bomber":4}
+liftingTable = {}
+loadingArmyTable = {}
+loadingAirTable = {}
 
 # initialization
 from gamefiles.brandywine import *
