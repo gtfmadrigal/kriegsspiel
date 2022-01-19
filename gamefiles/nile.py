@@ -12,4 +12,8 @@ warheads = 0
 locationTable = {}
 
 def loadGame():
+    global takeoffTable
+    for x in allUnitTypes:
+        if allUnitTypes[x] == "carrier":
+            takeoffTable.append(x)
     pass 
