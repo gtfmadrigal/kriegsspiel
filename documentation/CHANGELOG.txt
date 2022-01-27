@@ -416,14 +416,16 @@ v3 - Land-Sea-Air unification release
             v3.4-pre1_362 - filled out structure tables
             v3.4-pre1_363 - added new tables for ship loading and airlifts
             v3.4-pre1_364 - filled out load and airlift tables
-        v3.4-pre2 - Added movement buffs and debuffs for terrain
-        v3.4-pre3 - Unique structure identifiers and types
-        v3.4-pre4 - Structures handled better by build()
-        v3.4-pre5 - Preconstruction in gamefiles added
-        v3.4-pre6 - Better documentation for terrain and structures
-        v3.5-pre7 - Added disembark() and load() functions
-        v3.5-pre8 - Airports implemented
-    v3.4 - Terrain and structure release
+        v3.4-pre2 - Added draft() and dismiss() functions
+            v3.4-pre2_365 - draft() function added
+        v3.4-pre3 - Added movement buffs and debuffs for terrain
+        v3.4-pre4 - Unique structure identifiers and types
+        v3.4-pre5 - Structures handled better by build()
+        v3.4-pre6 - Preconstruction in gamefiles added
+        v3.4-pre7 - Better documentation for terrain and structures
+        v3.5-pre8 - Added disembark() and load() functions
+        v3.5-pre9 - Airports implemented
+    v3.4 - Terrain, structure, and drafting release
         v3.5-pre1 - log() function automatically creates new gamefile
         v3.5-pre2 - Better documentation for log() function
     v3.5 - Save and return release II

@@ -1595,6 +1595,32 @@ def missile(arguments, teamTable, targetTeamTable):
     # missile.return
     score()
 
+def draft(teamTable):
+    global firstTeamTable
+    global secondTeamTable
+    global unitTable
+    global draftCapacity
+    newUnitTable = []
+    if draftCapacity == 0:
+        print("No draft capacity.")
+        return
+    newUnits = random.randrange(0, draftCapacity)
+    draftCapacity = draftCapacity - newUnits
+    while newUnits != 0:
+        unitName = input("Unit name: ")
+        while unitName in unitTable:
+            print("Already exists.")
+            unitName = input("Unit name: ")
+        newUnitTable.append(unitName)
+        unitName = unitName - 1
+    for x in newUnitTable:
+        teamTable[x] = draftStrength
+        unitTable[x] = draftType
+    update()
+
+def dismiss():
+    pass
+
 # Air functions
 def takeoff(arguments):
     # takeoff.globals
