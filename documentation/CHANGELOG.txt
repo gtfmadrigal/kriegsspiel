@@ -416,9 +416,10 @@ v3 - Land-Sea-Air unification release
             v3.4-pre1_362 - filled out structure tables
             v3.4-pre1_363 - added new tables for ship loading and airlifts
             v3.4-pre1_364 - filled out load and airlift tables
-        v3.4-pre2 - Added draft() and dismiss() functions
+        v3.4-pre2 - Added draft() function
             v3.4-pre2_365 - draft() function added
         v3.4-pre3 - Added movement buffs and debuffs for terrain
+            v3.4-pre2_366 - added locations to brandwine gamefile
         v3.4-pre4 - Unique structure identifiers and types
         v3.4-pre5 - Structures handled better by build()
         v3.4-pre6 - Preconstruction in gamefiles added

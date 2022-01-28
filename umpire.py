@@ -26,7 +26,6 @@ firstTeamFlying = []
 secondTeamFlying = []
 convertTable = ["light-artillery", "med-artillery", "heavy-artillery", "light-cavalry", "med-cavalry", "heavy-cavalry"]
 hideTable = ["infantry", "engineers", "mechanized", "light-artillery", "med-artillery", "heavy-artillery", "special", "attack-submarine", "missile-submarine", "stealth-bomber", "recon", "drone"]
-hideableTerrain = ["forest", "swamp", "ocean", "air", "forest-hills"]
 
 # Dictionaries
 errorMessages = {"argument":"Bad argument for command. Type 'man [command]' for details.", "team":"That unit belongs to the wrong team.", "available":"That unit is currently unavailable.", "function":"That function is unavailable to this unit.", "heading":"Unit cannot change heading more than 45 degrees without calling the heading command.", "dead":"Unit is dead.", "type":"No such unit type.", "unit":"No such unit.", "hidden":"Unit is already hidden.", "required":"Heading changes are not required for this unit.", "airborne":"Unit is not airborne.", "board":"Unit is not a boardable ship", "exists":"A unit with that name already exists.", "terrain":"The terrain does not allow for that function to be called.", "command":"Unknown command. Type 'help' to see a list of commands, or 'man [command]' to see how to use a particular command.", "type":"Wrong datatype passed to command."}
@@ -1617,9 +1616,6 @@ def draft(teamTable):
         teamTable[x] = draftStrength
         unitTable[x] = draftType
     update()
-
-def dismiss():
-    pass
 
 # Air functions
 def takeoff(arguments):
