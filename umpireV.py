@@ -104,8 +104,15 @@ def critical(attack, defense):
 def kill(arguments):
     pass
 
-def damage(unit, damage):
-    pass
+def damage(unit, damage, teamTable):
+    global firstTeamTable
+    global secondTeamTable
+    oldHealth = teamTable.get(unit)
+    if oldHealth - damage <= 0: kill(unit)
+    else:
+        newHealth = oldHealth - damage
+        teamTable[unit] = newHealth
+        print(unit, " has health: ", newHealth)
 
 # Umpire commands
 
@@ -198,7 +205,7 @@ def attack(arguments, teamTable, targetTeamTable):
             criticalUnits - 1
     perUnitDamage = netDamage / len(defendingUnits)
     for x in defendingUnits:
-        damage(x, perUnitDamage)
+        damage(x, perUnitDamage, targetTeamTable)
 
 def move(arguments):
     pass
