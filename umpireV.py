@@ -16,8 +16,9 @@ usedUnits = []
 deadUnits = []
 
 # create dictionaries
-terrainTable = {}
 attackTable = {"lightInfantry":4, "mediumInfantry":4, "heavyInfantry":6, "special":12, "engineer":4, "spy":4, "command":12, "lightArtillery":4, "mediumArtillery":4, "heavyArtillery":4, "lightCavalry":6, "mediumCavalry":8, "heavyCavalry":10, "amphibious":4, "patrol":4, "corvette":6, "destroyer":8, "carrier":12, "battleship":12, "cruiser":12, "heavyFighter":6, "attackSubmarine":0, "missileSubmarine":0, "lightFighter":4, "bomber":4, "stealthBomber":4, "transport":4, "recon":4, "drone":4}
+movementTable = {"foot": 1.5, "horse": 12, "motor": 25, "tank": 15, "oar": 2, "sail": 3, "steam": 10, "nuclear": 20}
+terrainSpeedTable = {"unpaved":1, "paved":2, "forest":-1, "hills":-1, "creek":-2, "denseForest":-2, "steepHills":-2, "swamp":-3, "jungle":-3, "mountains":-3, "plains":0}
 
 # create effect dictionaries from gamefile
 strengthTable = {}
@@ -249,15 +250,35 @@ def attack(arguments, teamTable, targetTeamTable):
     perUnitDamage = netDamage / len(defendingUnits)
     for x in defendingUnits: damage(x, perUnitDamage, targetTeamTable)
 
-def move(arguments):
-    pass
-
-
-
-
-
-
-            
+def move(arguments, teamTable):
+    global terrainTable
+    global usedUnits
+    movingUnits = []
+    for x in arguments:
+        if x == ">": pass
+        if x in teamTable: movingUnits.append(x)
+        if x in terrainTable: destination = x
+        else: print(x, " is not a unit or location.")
+    try: terrainSpeedTable.get(destination)
+    except: destination = "plains"
+    for x in movingUnits:
+        unitType = unitTable.get(x)
+        movementType = unitMovementType.get(unitType)
+        baseMovement = movementTable.get(movementType)
+        oldSpeed = speedTable.get(x)
+        try: oldLocation = terrainTable.get(x)
+        except: oldLocation = "plains"
+        oldLocationSpeed = terrainSpeedTable.get(oldLocation)
+        speedAdjustment = oldSpeed - oldLocationSpeed
+        distanceModifier = 1 + (0.3 * oldSpeed)
+        distance = baseMovement * distanceModifier
+        print(x, " can move: ", distance, " units.")
+        terrainTable.remove(x)
+        speedTable.remove(x)
+        terrainTable[x] = destination
+        destinationSpeed = terrainSpeedTable.get(destination)
+        destinationSpeedAdjusted = destinationSpeed + speedAdjustment
+        speedTable[x] = destinationSpeedAdjusted
 
 
 # Army commands

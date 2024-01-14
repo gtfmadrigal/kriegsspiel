@@ -450,3 +450,4 @@ v5 - Eschaton V release
             v5.0-pre1_373 - critical() function fixed
             v5.0-pre1_374 - locationDamage() function created
             v5.0-pre1_375 - attack() command fixed to include silence adjustment
+            v5.0-pre1_376 - move() command created

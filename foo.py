@@ -5,3 +5,5 @@ firstTeamTable = {}
 firstTeamTableOriginal = {}
 secondTeamTable = {}
 secondTeamTableOriginal = {}
+unitMovementType = {}
+terrainTable = {}
