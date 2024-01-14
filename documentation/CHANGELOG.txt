@@ -438,6 +438,8 @@ v3 - Land-Sea-Air unification release
         v3.6-pre6 - Eschaton documentation
     v3.6 - Eschaton release
 
+v4 - [version 4 was skipped in order to bring program version numbers up to speed with the manual version]
+
 v5 - Eschaton V release
     v5.0 - Adherence to Eschaton V manual release
         v5.0-pre1 - Barebones prerelease
@@ -455,3 +457,4 @@ v5 - Eschaton V release
             v5.0-pre1_378 - disengage() command created
             v5.0-pre1_379 - effect() function created
             v5.0-pre1_380 - effects set to 0 in initialization phase
+            v5.0-pre1_381 - speed adjusted by unit type

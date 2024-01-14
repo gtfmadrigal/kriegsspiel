@@ -44,7 +44,17 @@ for x in firstTeamTable: allUnits.append(x)
 for x in secondTeamTable: allUnits.append(x)
 for x in allUnits:
     strengthTable[x] = 0
-    speedTable[x] = 0
+    unitType = unitTable.get(x)
+    if unitType == "special": speedTable[x] = 1
+    elif unitType == "engineers": speedTable[x] = -1
+    elif unitType == "lightArtillery": speedTable[x] = -1
+    elif unitType == "mediumCavalry": speedTable[x] = -2
+    elif unitType == "heavyInfantry": speedTable[x] = -2
+    elif unitType == "mediumArtillery": speedTable[x] = -2
+    elif unitType == "carrier": speedTable[x] = -2
+    elif unitType == "heavyCavalry": speedTable[x] = -3
+    elif unitType == "heavyArtillery": speedTable[x] = -3
+    else: speedTable[x] = 0
     precisionTable[x] = 0
     hasteTable[x] = 0
     industryTable[x] = 0
