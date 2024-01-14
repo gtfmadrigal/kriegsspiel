@@ -440,18 +440,13 @@ def hide(arguments):
     # hide.parse.unit.argument
     if len(arguments) == 1: 
         unit = arguments
-    # hide.parse.unit.tooManyArguments
     else: 
         unit = arguments[1]
-    # hide.parse.argument
-    # hide.parse.argument.try
     try:
         localUnitType = unitTable.get(unit)
-    # hide.parse.argument.except
     except:
         error("argument", "hide.parse.argument.except")
         return
-    # hide.parse.type
     unitType = allUnitTypes.get(localUnitType)
     # hide.check
     # hide.checktype

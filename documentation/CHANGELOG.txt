@@ -442,3 +442,4 @@ v5 - Eschaton V release
     v5.0 - Adherence to Eschaton V manual release
         v5.0-pre1 - Barebones prerelease
             v5.0-pre1_367 - Updated terminology in preparation for actual work beginning
+            v5.0-pre1_368 - hide() command created
