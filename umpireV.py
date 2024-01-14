@@ -13,6 +13,7 @@ hideTable = ["lightInfantry", "mediumInfantry", "heavyInfantry", "special", "eng
 hideableTerrain = ["forest", "jungle", "swamp", "mountain"]
 secrets = []
 usedUnits = []
+deadUnits = []
 
 # create dictionaries
 terrainTable = {}
@@ -84,9 +85,9 @@ def critical(attack, defense):
         attackingStrength = strengthTable.get(attack)
         attackingResistance = resistanceTable.get(attack)
         attackingGallantry = gallantryTable.get(attack)
-        strengthTable[defense] = defendingStrength + 1
-        resistanceTable[defense] = defendingResistance + 1
-        gallantryTable[defense] = defendingGallantry + 1
+        strengthTable[attack] = attackingStrength + 1
+        resistanceTable[attack] = attackingResistance + 1
+        gallantryTable[attack] = attackingGallantry + 1
     if result >= 6:
         defendingStrength = strengthTable.get(defense)
         defendingResistance = resistanceTable.get(defense)
@@ -97,22 +98,52 @@ def critical(attack, defense):
         attackingStrength = strengthTable.get(attack)
         attackingResistance = resistanceTable.get(attack)
         attackingGallantry = gallantryTable.get(attack)
-        strengthTable[defense] = defendingStrength + 2
-        resistanceTable[defense] = defendingResistance + 2
-        gallantryTable[defense] = defendingGallantry + 2
+        strengthTable[attack] = attackingStrength + 2
+        resistanceTable[attack] = attackingResistance + 2
+        gallantryTable[attack] = attackingGallantry + 2
 
 def kill(arguments):
-    pass
+    global firstTeamTable
+    global secondTeamTable
+    global deadUnits
+    unit = arguments[0]
+    if unit in firstTeamTable: firstTeamTable.remove(unit)
+    if unit in secondTeamTable: secondTeamTable.remove(unit)
+    deadUnits.append(unit)
+
+def structureDamage(damage, location):
+    global structureStrengthTable
+    global terrainTable
+    global hiddenUnits
+    oldStructureHealth = structureStrengthTable(location)
+    newStructureHealth = oldStructureHealth - damage
+    if newStructureHealth > 0:
+        structureStrengthTable[location] = newStructureHealth
+        print(location, " has health: ", newStructureHealth)
+        return 0
+    print(location, " has been destroyed.")
+    affectedUnits = [k for k, unit in terrainTable if unit == location]
+    newLocation = input("New location for units in destroyed structure: ")
+    for x in affectedUnits:
+        reveal(x)
+        terrainTable[x] = newLocation
+    terrainTable.remove[location]
+    adjustedDamage = damage - oldStructureHealth
+    return adjustedDamage
 
 def damage(unit, damage, teamTable):
     global firstTeamTable
     global secondTeamTable
     oldHealth = teamTable.get(unit)
-    if oldHealth - damage <= 0: kill(unit)
+    location = terrainTable.get(unit)
+    if location in structureStrengthTable: newDamage = structureDamage(damage, location)
+    else: newDamage = damage
+    if oldHealth - newDamage <= 0: kill(unit)
     else:
         newHealth = oldHealth - damage
         teamTable[unit] = newHealth
         print(unit, " has health: ", newHealth)
+
 
 # Umpire commands
 

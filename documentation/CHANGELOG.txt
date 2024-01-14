@@ -447,3 +447,5 @@ v5 - Eschaton V release
             v5.0-pre1_370 - attack() commmand created
             v5.0-pre1_371 - critical() function created
             v5.0-pre1_372 - damage() function created
+            v5.0-pre1_373 - critical() function fixed
+            v5.0-pre1_374 - locationDamage() function created
