@@ -454,3 +454,4 @@ v5 - Eschaton V release
             v5.0-pre1_377 - assured units engaged in combat are immobilized
             v5.0-pre1_378 - disengage() command created
             v5.0-pre1_379 - effect() function created
+            v5.0-pre1_380 - effects set to 0 in initialization phase

@@ -15,6 +15,7 @@ secrets = []
 usedUnits = []
 deadUnits = []
 immobileUnits = []
+allUnits = []
 
 # create dictionaries
 attackTable = {"lightInfantry":4, "mediumInfantry":4, "heavyInfantry":6, "special":12, "engineer":4, "spy":4, "command":12, "lightArtillery":4, "mediumArtillery":4, "heavyArtillery":4, "lightCavalry":6, "mediumCavalry":8, "heavyCavalry":10, "amphibious":4, "patrol":4, "corvette":6, "destroyer":8, "carrier":12, "battleship":12, "cruiser":12, "heavyFighter":6, "attackSubmarine":0, "missileSubmarine":0, "lightFighter":4, "bomber":4, "stealthBomber":4, "transport":4, "recon":4, "drone":4}
@@ -39,6 +40,21 @@ gallantryTable = {}
 from foo import *
 for x in hideableLocations: hideableTerrain.append(x)
 for x in permanentlyImmobileUnits: immobileUnits.append(x)
+for x in firstTeamTable: allUnits.append(x)
+for x in secondTeamTable: allUnits.append(x)
+for x in allUnits:
+    strengthTable[x] = 0
+    speedTable[x] = 0
+    precisionTable[x] = 0
+    hasteTable[x] = 0
+    industryTable[x] = 0
+    regenerationTable[x] = 0
+    resistanceTable[x] = 0
+    nobilityTable[x] = 0
+    visionTable[x] = 0
+    silenceTable[x] = 0
+    wisdomTable[x] = 0
+    gallantryTable[x] = 0
 
 # Meta-functions
 
