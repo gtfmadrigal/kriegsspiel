@@ -154,7 +154,7 @@ New features in this release:
     - Code guide
     - Unit-function charts for every command 
 
-(UPCOMING) v3.4 - Terrain and structure release
+(CANCELLED) v3.4 - Terrain and structure release
 
 New features in this release:
 - Full terrain implementation
@@ -166,13 +166,18 @@ New features in this release:
 - Disembark and load functions for ships added
 - Airports implemented
 
-(UPCOMING) v3.5 - Save and return release II
+(CANCELLED) v3.5 - Save and return release II
 
 New features in this release:
 - log() function now automatically outputs gamefiles, instead of plain text
 - Easier to quit and return to a game
 
-(UPCOMING) v3.6 - Eschaton release
+(CANCELLED) v3.6 - Eschaton release
 
 New features in this release:
 - Eschaton nuclear warheads version added
+
+(UPCOMING) v5.0 - Adherence to Eschaton V release
+
+New features in this release:
+- Entirely rewritten codebase

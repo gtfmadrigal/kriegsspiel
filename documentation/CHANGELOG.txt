@@ -437,4 +437,8 @@ v3 - Land-Sea-Air unification release
         v3.6-pre5 - Eschaton error messages
         v3.6-pre6 - Eschaton documentation
     v3.6 - Eschaton release
-    
+
+v5 - Eschaton V release
+    v5.0 - Adherence to Eschaton V manual release
+        v5.0-pre1 - Barebones prerelease
+            v5.0-pre1_367 - Updated terminology in preparation for actual work beginning
