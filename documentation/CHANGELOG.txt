@@ -444,3 +444,5 @@ v5 - Eschaton V release
             v5.0-pre1_367 - Updated terminology in preparation for actual work beginning
             v5.0-pre1_368 - hide() command created
             v5.0-pre1_369 - reveal() command created
+            v5.0-pre1_370 - attack() commmand created
+            v5.0-pre1_371 - critical() function created
