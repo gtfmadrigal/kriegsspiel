@@ -38,6 +38,7 @@ gallantryTable = {}
 # Initialization
 from foo import *
 for x in hideableLocations: hideableTerrain.append(x)
+for x in permanentlyImmobileUnits: immobileUnits.append(x)
 
 # Meta-functions
 
@@ -287,6 +288,16 @@ def move(arguments, teamTable):
         destinationSpeedAdjusted = destinationSpeed + speedAdjustment
         speedTable[x] = destinationSpeedAdjusted
 
+def disengage(arguments):
+    global immobileUnits
+    unit = arguments[0]
+    if unit in permanentlyImmobileUnits:
+        print(unit, " is permanently immobile.")
+        return
+    try: 
+        immobileUnits.remove(unit)
+        print(unit, " can now be moved.")
+    except: print(unit, " is not engaged in combat.")
 
 # Army commands
 

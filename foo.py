@@ -7,3 +7,4 @@ secondTeamTable = {}
 secondTeamTableOriginal = {}
 unitMovementType = {}
 terrainTable = {}
+permanentlyImmobileUnits = []
