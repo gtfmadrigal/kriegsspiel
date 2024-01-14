@@ -56,54 +56,32 @@ def critical(attack, defense):
     if result == 2:
         print(defense, " is moved 0.5*max away from the battle.")
         move(defense)
-        defendingStrength = strengthTable.get(defense)
-        defendingResistance = resistanceTable.get(defense)
-        defendingGallantry = gallantryTable.get(defense)
-        strengthTable[defense] = defendingStrength - 4
-        resistanceTable[defense] = defendingResistance - 4
-        gallantryTable[defense] = defendingGallantry - 4
-        attackingStrength = strengthTable.get(attack)
-        strengthTable[attack] = attackingStrength - 1
+        effect(defense, strengthTable, -4)
+        effect(defense, resistanceTable, -4)
+        effect(defense, gallantryTable, -4)
+        effect(attack, strengthTable, -1)
     if result == 3:
-        defendingStrength = strengthTable.get(defense)
-        defendingResistance = resistanceTable.get(defense)
-        defendingGallantry = gallantryTable.get(defense)
-        strengthTable[defense] = defendingStrength - 3
-        resistanceTable[defense] = defendingResistance - 3
-        gallantryTable[defense] = defendingGallantry - 3
+        effect(defense, strengthTable, -3)
+        effect(defense, resistanceTable, -3)
+        effect(defense, gallantryTable, -3)
     if result == 4:
-        defendingStrength = strengthTable.get(defense)
-        defendingResistance = resistanceTable.get(defense)
-        defendingGallantry = gallantryTable.get(defense)
-        strengthTable[defense] = defendingStrength - 2
-        resistanceTable[defense] = defendingResistance - 2
-        gallantryTable[defense] = defendingGallantry - 2
+        effect(defense, strengthTable, -2)
+        effect(defense, resistanceTable, -2)
+        effect(defense, gallantryTable, -2)
     if result == 5:
-        defendingStrength = strengthTable.get(defense)
-        defendingResistance = resistanceTable.get(defense)
-        defendingGallantry = gallantryTable.get(defense)
-        strengthTable[defense] = defendingStrength - 1
-        resistanceTable[defense] = defendingResistance - 1
-        gallantryTable[defense] = defendingGallantry - 1
-        attackingStrength = strengthTable.get(attack)
-        attackingResistance = resistanceTable.get(attack)
-        attackingGallantry = gallantryTable.get(attack)
-        strengthTable[attack] = attackingStrength + 1
-        resistanceTable[attack] = attackingResistance + 1
-        gallantryTable[attack] = attackingGallantry + 1
+        effect(defense, strengthTable, -1)
+        effect(defense, resistanceTable, -1)
+        effect(defense, gallantryTable, -1)
+        effect(attack, strengthTable, 1)
+        effect(attack, resistanceTable, 1)
+        effect(attack, gallantryTable, 1)
     if result >= 6:
-        defendingStrength = strengthTable.get(defense)
-        defendingResistance = resistanceTable.get(defense)
-        defendingGallantry = gallantryTable.get(defense)
-        strengthTable[defense] = defendingStrength + 4
-        resistanceTable[defense] = defendingResistance - 1
-        gallantryTable[defense] = defendingGallantry + 3
-        attackingStrength = strengthTable.get(attack)
-        attackingResistance = resistanceTable.get(attack)
-        attackingGallantry = gallantryTable.get(attack)
-        strengthTable[attack] = attackingStrength + 2
-        resistanceTable[attack] = attackingResistance + 2
-        gallantryTable[attack] = attackingGallantry + 2
+        effect(defense, strengthTable, 4)
+        effect(defense, resistanceTable, -1)
+        effect(defense, gallantryTable, -3)
+        effect(attack, strengthTable, 2)
+        effect(attack, resistanceTable, 2)
+        effect(attack, gallantryTable, 2)
 
 def kill(arguments):
     global firstTeamTable
@@ -146,6 +124,23 @@ def damage(unit, damage, teamTable):
         newHealth = oldHealth - damage
         teamTable[unit] = newHealth
         print(unit, " has health: ", newHealth)
+
+def effect(unit, effectTable, amount):
+    global strengthTable
+    global speedTable
+    global precisionTable
+    global hasteTable
+    global industryTable
+    global regenerationTable 
+    global resistanceTable
+    global nobilityTable
+    global visionTable
+    global silenceTable
+    global wisdomTable
+    global gallantryTable
+    oldUnitEffect = effectTable.get(unit)
+    newUnitEffect = oldUnitEffect + amount
+    effectTable[unit] = newUnitEffect
 
 # Umpire commands
 
@@ -217,11 +212,9 @@ def attack(arguments, teamTable, targetTeamTable):
         total = base + strength
         if total >= max: attackCritical = True
         totalAttack = totalAttack + total
-        silenceLevel = silenceTable[x]
-        if unitTable[x] == "lightInfantry": newSilenceLevel = silenceLevel - 1
-        if unitTable[x] == "special": newSilenceLevel = silenceLevel - 1
-        else: newSilenceLevel = silenceLevel - 2
-        silenceTable[x] = newSilenceLevel
+        if unitTable[x] == "lightInfantry": effect(x, silenceTable, -1)
+        if unitTable[x] == "special": effect(x, silenceTable, -1)
+        else: effect(x, silenceTable, -2)
         reveal(x)
         immobileUnits.append(x)
     for x in defendingUnits:
@@ -234,11 +227,9 @@ def attack(arguments, teamTable, targetTeamTable):
             total = 1
             defenseCritical = True
         totalDefense = totalDefense + total
-        silenceLevel = silenceTable[x]
-        if unitTable[x] == "lightInfantry": newSilenceLevel = silenceLevel - 1
-        if unitTable[x] == "special": newSilenceLevel = silenceLevel - 1
-        else: newSilenceLevel = silenceLevel - 2
-        silenceTable[x] = newSilenceLevel
+        if unitTable[x] == "lightInfantry": effect(x, silenceTable, -1)
+        if unitTable[x] == "special": effect(x, silenceTable, -1)
+        else: effect(x, silenceTable, -2)
         reveal(x)
         immobileUnits.append(x)
     if totalDefense >= totalAttack:
@@ -290,6 +281,8 @@ def move(arguments, teamTable):
 
 def disengage(arguments):
     global immobileUnits
+    global speedTable
+    global gallantryTable
     unit = arguments[0]
     if unit in permanentlyImmobileUnits:
         print(unit, " is permanently immobile.")
@@ -297,6 +290,8 @@ def disengage(arguments):
     try: 
         immobileUnits.remove(unit)
         print(unit, " can now be moved.")
+        effect(unit, speedTable, -1)
+        effect(unit, gallantryTable, -1)
     except: print(unit, " is not engaged in combat.")
 
 # Army commands
