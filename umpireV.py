@@ -16,6 +16,7 @@ usedUnits = []
 deadUnits = []
 immobileUnits = []
 allUnits = []
+headingTable = ["corvette", "destroyer", "carrier", "battleship", "cruiser"]
 
 # create dictionaries
 attackTable = {"lightInfantry":4, "mediumInfantry":4, "heavyInfantry":6, "special":12, "engineer":4, "spy":4, "command":12, "lightArtillery":4, "mediumArtillery":4, "heavyArtillery":4, "lightCavalry":6, "mediumCavalry":8, "heavyCavalry":10, "amphibious":4, "patrol":4, "corvette":6, "destroyer":8, "carrier":12, "battleship":12, "cruiser":12, "heavyFighter":6, "attackSubmarine":0, "missileSubmarine":0, "lightFighter":4, "bomber":4, "stealthBomber":4, "transport":4, "recon":4, "drone":4}
@@ -288,6 +289,9 @@ def move(arguments, teamTable):
             print(x, " is immobile.")
             pass
         unitType = unitTable.get(x)
+        if unitType in headingTable:
+            print(x, "cannot move without changing heading.")
+            pass
         movementType = unitMovementType.get(unitType)
         baseMovement = movementTable.get(movementType)
         oldSpeed = speedTable.get(x)
@@ -319,6 +323,9 @@ def disengage(arguments):
         effect(unit, speedTable, -1)
         effect(unit, gallantryTable, -1)
     except: print(unit, " is not engaged in combat.")
+
+def spy():
+    pass
 
 # Army commands
 

@@ -458,3 +458,4 @@ v5 - Eschaton V release
             v5.0-pre1_379 - effect() function created
             v5.0-pre1_380 - effects set to 0 in initialization phase
             v5.0-pre1_381 - speed adjusted by unit type
+            v5.0-pre1_382 - move() adjusted to account for heading
