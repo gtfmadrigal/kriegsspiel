@@ -5,8 +5,6 @@ import sys
 round = 1
 commandNumber = 1
 
-# import data from gamefile
-
 # create lists
 hiddenUnits = []
 hideTable = ["lightInfantry", "mediumInfantry", "heavyInfantry", "special", "engineer", "spy", "command", "lightArtillery", "mediumArtillery", "heavyArtillery", "attackSubmarine", "missileSubmarine", "stealthBomber", "recon", "transport", "drone"]
@@ -20,8 +18,9 @@ headingTable = ["corvette", "destroyer", "carrier", "battleship", "cruiser"]
 
 # create dictionaries
 attackTable = {"lightInfantry":4, "mediumInfantry":4, "heavyInfantry":6, "special":12, "engineer":4, "spy":4, "command":12, "lightArtillery":4, "mediumArtillery":4, "heavyArtillery":4, "lightCavalry":6, "mediumCavalry":8, "heavyCavalry":10, "amphibious":4, "patrol":4, "corvette":6, "destroyer":8, "carrier":12, "battleship":12, "cruiser":12, "heavyFighter":6, "attackSubmarine":0, "missileSubmarine":0, "lightFighter":4, "bomber":4, "stealthBomber":4, "transport":4, "recon":4, "drone":4}
-movementTable = {"foot": 1.5, "horse": 12, "motor": 25, "tank": 15, "oar": 2, "sail": 3, "steam": 10, "nuclear": 20}
+movementTable = {"foot":1.5, "horse":12, "motor":25, "tank":15, "oar":2, "sail":3, "steam":10, "nuclear":20}
 terrainSpeedTable = {"unpaved":1, "paved":2, "forest":-1, "hills":-1, "creek":-2, "denseForest":-2, "steepHills":-2, "swamp":-3, "jungle":-3, "mountains":-3, "plains":0}
+spyTable = {"engineers":6, "lightInfantry":8, "mediumInfantry":8, "heavyInfantry":8, "special":10, "spy":10}
 
 # create effect dictionaries from gamefile
 strengthTable = {}
@@ -244,6 +243,7 @@ def attack(arguments, teamTable, targetTeamTable):
         else: effect(x, silenceTable, -2)
         reveal(x)
         immobileUnits.append(x)
+        usedUnits.append(x)
     for x in defendingUnits:
         unitType = unitTable.get[x]
         max = attackTable.get[unitType]
@@ -259,6 +259,7 @@ def attack(arguments, teamTable, targetTeamTable):
         else: effect(x, silenceTable, -2)
         reveal(x)
         immobileUnits.append(x)
+        usedUnits.append(x)
     if totalDefense >= totalAttack:
         print("Attack repelled.")
         return
@@ -313,7 +314,7 @@ def disengage(arguments):
     global immobileUnits
     global speedTable
     global gallantryTable
-    unit = arguments[0]
+    unit = arguments[1]
     if unit in permanentlyImmobileUnits:
         print(unit, " is permanently immobile.")
         return
@@ -324,8 +325,31 @@ def disengage(arguments):
         effect(unit, gallantryTable, -1)
     except: print(unit, " is not engaged in combat.")
 
-def spy():
-    pass
+def spy(arguments, teamTable):
+    global usedUnits
+    try: unit = arguments[1]
+    except:
+        print("Parse error.")
+        return
+    if unit in usedUnits:
+        print(unit, " cannot spy.")
+        return
+    unitType = unitTable.get(unit)
+    if not unitType in spyTable:
+        print(unit, " cannot spy.")
+        return
+    spyMax = spyTable.get(unitType)
+    vision = visionTable.get(unit)
+    baseQuality = random.randrange(0, spyMax)
+    adjQuality = baseQuality + vision
+    if adjQuality >= 6: 
+        print("Give good intelligence: ")
+        print(secrets)
+    elif adjQuality <= 2:
+        print("Give bad intelligence:")
+        print(secrets)
+    else: print("Give no information.")
+    usedUnits.append(unit)   
 
 # Army commands
 
