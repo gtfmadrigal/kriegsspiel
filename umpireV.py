@@ -14,6 +14,7 @@ hideableTerrain = ["forest", "jungle", "swamp", "mountain"]
 secrets = []
 usedUnits = []
 deadUnits = []
+immobileUnits = []
 
 # create dictionaries
 attackTable = {"lightInfantry":4, "mediumInfantry":4, "heavyInfantry":6, "special":12, "engineer":4, "spy":4, "command":12, "lightArtillery":4, "mediumArtillery":4, "heavyArtillery":4, "lightCavalry":6, "mediumCavalry":8, "heavyCavalry":10, "amphibious":4, "patrol":4, "corvette":6, "destroyer":8, "carrier":12, "battleship":12, "cruiser":12, "heavyFighter":6, "attackSubmarine":0, "missileSubmarine":0, "lightFighter":4, "bomber":4, "stealthBomber":4, "transport":4, "recon":4, "drone":4}
@@ -189,6 +190,7 @@ def attack(arguments, teamTable, targetTeamTable):
     global hiddenUnits
     global usedUnits
     global silenceTable
+    global immobileUnits
     attackingUnits = []
     defendingUnits = []
     totalAttack = 0
@@ -220,6 +222,7 @@ def attack(arguments, teamTable, targetTeamTable):
         else: newSilenceLevel = silenceLevel - 2
         silenceTable[x] = newSilenceLevel
         reveal(x)
+        immobileUnits.append(x)
     for x in defendingUnits:
         unitType = unitTable.get[x]
         max = attackTable.get[unitType]
@@ -236,6 +239,7 @@ def attack(arguments, teamTable, targetTeamTable):
         else: newSilenceLevel = silenceLevel - 2
         silenceTable[x] = newSilenceLevel
         reveal(x)
+        immobileUnits.append(x)
     if totalDefense >= totalAttack:
         print("Attack repelled.")
         return
@@ -262,6 +266,9 @@ def move(arguments, teamTable):
     try: terrainSpeedTable.get(destination)
     except: destination = "plains"
     for x in movingUnits:
+        if x in immobileUnits:
+            print(x, " is immobile.")
+            pass
         unitType = unitTable.get(x)
         movementType = unitMovementType.get(unitType)
         baseMovement = movementTable.get(movementType)

@@ -451,3 +451,4 @@ v5 - Eschaton V release
             v5.0-pre1_374 - locationDamage() function created
             v5.0-pre1_375 - attack() command fixed to include silence adjustment
             v5.0-pre1_376 - move() command created
+            v5.0-pre1_377 - assured units engaged in combat are immobilized
