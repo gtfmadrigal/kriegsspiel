@@ -63,6 +63,7 @@ def hide(arguments):
     hiddenUnits.append(unit)
 
 def reveal(arguments):
+    global hiddenUnits
     if len(arguments) == 1: unit = arguments
     else: unit = arguments[1]
     if not unit in hiddenUnits:
