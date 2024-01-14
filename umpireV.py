@@ -144,7 +144,6 @@ def damage(unit, damage, teamTable):
         teamTable[unit] = newHealth
         print(unit, " has health: ", newHealth)
 
-
 # Umpire commands
 
 def hide(arguments):
@@ -188,6 +187,7 @@ def reveal(arguments):
 def attack(arguments, teamTable, targetTeamTable):
     global hiddenUnits
     global usedUnits
+    global silenceTable
     attackingUnits = []
     defendingUnits = []
     totalAttack = 0
@@ -213,6 +213,12 @@ def attack(arguments, teamTable, targetTeamTable):
         total = base + strength
         if total >= max: attackCritical = True
         totalAttack = totalAttack + total
+        silenceLevel = silenceTable[x]
+        if unitTable[x] == "lightInfantry": newSilenceLevel = silenceLevel - 1
+        if unitTable[x] == "special": newSilenceLevel = silenceLevel - 1
+        else: newSilenceLevel = silenceLevel - 2
+        silenceTable[x] = newSilenceLevel
+        reveal(x)
     for x in defendingUnits:
         unitType = unitTable.get[x]
         max = attackTable.get[unitType]
@@ -223,6 +229,12 @@ def attack(arguments, teamTable, targetTeamTable):
             total = 1
             defenseCritical = True
         totalDefense = totalDefense + total
+        silenceLevel = silenceTable[x]
+        if unitTable[x] == "lightInfantry": newSilenceLevel = silenceLevel - 1
+        if unitTable[x] == "special": newSilenceLevel = silenceLevel - 1
+        else: newSilenceLevel = silenceLevel - 2
+        silenceTable[x] = newSilenceLevel
+        reveal(x)
     if totalDefense >= totalAttack:
         print("Attack repelled.")
         return
@@ -235,8 +247,7 @@ def attack(arguments, teamTable, targetTeamTable):
             critical(attackCriticalUnit, defenseCriticalUnit)
             criticalUnits - 1
     perUnitDamage = netDamage / len(defendingUnits)
-    for x in defendingUnits:
-        damage(x, perUnitDamage, targetTeamTable)
+    for x in defendingUnits: damage(x, perUnitDamage, targetTeamTable)
 
 def move(arguments):
     pass
