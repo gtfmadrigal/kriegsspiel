@@ -1,4 +1,8 @@
+firstTeam = ""
+secondTeam = ""
+campaign = ""
 unitTable = {}
+fogOfWar = 0
 hideableLocations = []
 structureStrengthTable = {}
 firstTeamTable = {}

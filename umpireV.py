@@ -2,7 +2,7 @@ import random
 import sys
 
 # set strings
-round = 1
+roundNumber = 1
 commandNumber = 1
 
 # create lists
@@ -167,6 +167,13 @@ def effect(unit, effectTable, amount):
     oldUnitEffect = effectTable.get(unit)
     newUnitEffect = oldUnitEffect + amount
     effectTable[unit] = newUnitEffect
+
+def fog():
+    if fogOfWar == 1:
+        return False
+    export = random.randrange(1, (fogOfWar + 1))
+    if export == 1: return True
+    else: return False
 
 # Umpire commands
 
@@ -358,5 +365,17 @@ def spy(arguments, teamTable):
 # Air commands
 
 # Shell functions
+def shell(team, teamTable, targetTeamTable):
+    global commandNumber
+    prompt = str(roundNumber) + " ~ " + str(commandNumber) + " " + str(campaign) + ": " + str(team) + " % "
+    rawCommand = input(prompt)
+    parsedCommand = rawCommand.parse()
+    if fog() == True:
+        print("This command fails.")
+        commandNumber = commandNumber + 1
+        return
 
 # Shell
+while True: 
+    while (round % 2) != 0: shell(firstTeam, firstTeamTable, secondTeamTable)
+    while (round % 2) == 0: shell(secondTeam, secondTeamTable, firstTeamTable)
