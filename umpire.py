@@ -461,16 +461,37 @@ def shell(team, teamTable, targetTeamTable):
         return
     elif parsedCommand[0] == "kill": kill(parsedCommand)
     elif parsedCommand[0] == "effect":
-        pass
+        amount = parsedCommand[3]
+        try: fakeAmount = amount + 1
+        except: 
+            print("Not an integer amount.")
+            return
+        unit = parsedCommand[1]
+        if parsedCommand[2] == "strength": effect(unit, strengthTable, amount)
+        elif parsedCommand[2] == "speed": effect(unit, speedTable, amount)
+        elif parsedCommand[2] == "precision": effect(unit, precisionTable, amount)
+        elif parsedCommand[2] == "haste": effect(unit, hasteTable, amount)
+        elif parsedCommand[2] == "industry": effect(unit, industryTable, amount)
+        elif parsedCommand[2] == "regeneration": effect(unit, regenerationTable, amount)
+        elif parsedCommand[2] == "resistance": effect(unit, resistanceTable, amount)
+        elif parsedCommand[2] == "nobility": effect(unit, nobilityTable, amount)
+        elif parsedCommand[2] == "vision": effect(unit, visionTable, amount)
+        elif parsedCommand[2] == "silence": effect(unit, silenceTable, amount)
+        elif parsedCommand[2] == "wisdom": effect(unit, wisdomTable, amount)
+        elif parsedCommand[2] == "gallantry": effect(unit, gallantryTable, amount)
+        else: 
+            "No such effect."
+            return
     elif parsedCommand[0] == "hide": hide(parsedCommand)
     elif parsedCommand[0] == "reveal": reveal(parsedCommand)
     elif parsedCommand[0] == "attack": attack(parsedCommand, teamTable, targetTeamTable)
     elif parsedCommand[0] == "move": move(parsedCommand, teamTable)
     elif parsedCommand[0] == "disengage": disengage(parsedCommand)
     elif parsedCommand[0] == "spy": spy(parsedCommand, teamTable)
-    else:
-        print("No such command.")
-        commandNumber = commandNumber + 1
+    elif parsedCommand[0] == "log": log()
+    elif parsedCommand[0] == "score": score()
+    elif parsedCommand[0] == "update": update()
+    else: print("No such command.")
     log()
 
 # Shell
