@@ -36,6 +36,8 @@ silenceTable = {}
 wisdomTable = {}
 gallantryTable = {}
 
+# strength, speed, precision, haste, industry, regeneration, resistance, nobility, vision, silence, wisdom, gallantry
+
 # Initialization
 from foo import *
 for x in hideableLocations: hideableTerrain.append(x)
@@ -121,12 +123,14 @@ def kill(arguments):
     if unit in secondTeamTable: secondTeamTable.remove(unit)
     deadUnits.append(unit)
 
-def structureDamage(damage, location):
+def structureDamage(damage, location, haste):
     global structureStrengthTable
     global terrainTable
     global hiddenUnits
     oldStructureHealth = structureStrengthTable(location)
-    newStructureHealth = oldStructureHealth - damage
+    if (oldStructureHealth - damage - haste) >= oldStructureHealth: 
+        newStructureHealth = oldStructureHealth
+    else: newStructureHealth = oldStructureHealth - damage - haste
     if newStructureHealth > 0:
         structureStrengthTable[location] = newStructureHealth
         print(location, " has health: ", newStructureHealth)
@@ -141,12 +145,12 @@ def structureDamage(damage, location):
     adjustedDamage = damage - oldStructureHealth
     return adjustedDamage
 
-def damage(unit, damage, teamTable):
+def damage(unit, damage, teamTable, haste):
     global firstTeamTable
     global secondTeamTable
     oldHealth = teamTable.get(unit)
     location = terrainTable.get(unit)
-    if location in structureStrengthTable: newDamage = structureDamage(damage, location)
+    if location in structureStrengthTable: newDamage = structureDamage(damage, location, haste)
     else: newDamage = damage
     if oldHealth - newDamage <= 0: kill(unit)
     else:
@@ -300,6 +304,7 @@ def attack(arguments, teamTable, targetTeamTable):
     totalDefense = 0
     attackCritical = 0
     defenseCritical = 0
+    haste = 0
     # deal damage
     # reveal
     del arguments[0]
@@ -322,6 +327,8 @@ def attack(arguments, teamTable, targetTeamTable):
         if unitTable[x] == "lightInfantry": effect(x, silenceTable, -1)
         if unitTable[x] == "special": effect(x, silenceTable, -1)
         else: effect(x, silenceTable, -2)
+        hasteModifier = hasteTable.get(x)
+        haste = haste + hasteModifier
         reveal(x)
         immobileUnits.append(x)
         usedUnits.append(x)
@@ -353,7 +360,7 @@ def attack(arguments, teamTable, targetTeamTable):
             critical(attackCriticalUnit, defenseCriticalUnit)
             criticalUnits - 1
     perUnitDamage = netDamage / len(defendingUnits)
-    for x in defendingUnits: damage(x, perUnitDamage, targetTeamTable)
+    for x in defendingUnits: damage(x, perUnitDamage, targetTeamTable, haste)
 
 def move(arguments, teamTable):
     global terrainTable
