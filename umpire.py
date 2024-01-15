@@ -175,6 +175,61 @@ def fog():
     if export == 1: return True
     else: return False
 
+def log():
+    originalOutput = sys.stdout
+    with open("log.txt", "w") as f:
+        sys.stdout = f
+        print("Round: ", roundNumber)
+        print(firstTeam)
+        for x in firstTeamTable:
+            strength = "strength: " + str(strengthTable.get(x)) + ", "
+            speed = "speed: " + str(speedTable.get(x)) + ", "
+            precision = "precision: " + str(precisionTable.get(x)) + ", "
+            haste = "haste: " + str(hasteTable.get(x)) + ", "
+            industry = "industry: " + str(industryTable.get(x)) + ", "
+            regeneration = "regeneration: " + str(regenerationTable.get(x)) + ", "
+            nobility = "nobility: " + str(nobilityTable.get(x)) + ", "
+            vision = "vision: " + str(visionTable.get(x)) + ", "
+            silence = "silence: " + str(silenceTable.get(x)) + ", "
+            wisdom = "wisdom: " + str(wisdomTable.get(x)) + ", "
+            gallantry = "gallantry: " + str(gallantryTable.get(x)) + ", "
+            health = "health: " + str(firstTeamTable.get(x)) + ", "
+            try: location = str(terrainTable.get(x)) + ", "
+            except: location = "plains, "
+            if x in hiddenUnits: hidden = "hidden, "
+            else: hidden = "visible, "
+            if x in immobileUnits: immobile = "immobile, "
+            else: immobile = "mobile"
+            if x in usedUnits: used = "used, "
+            else: used = "unused, "
+            line = str(x) + ": " + str(location) + str(hidden) + str(immobile) + str(used) + str(strength) + str(speed) + str(precision) + str(haste) + str(industry) + str(regeneration) + str(nobility) + str(vision) + str(silence) + str(wisdom) + str(gallantry) + str(health)
+            print(line)
+        for x in secondTeamTable:
+            strength = "strength: " + str(strengthTable.get(x)) + ", "
+            speed = "speed: " + str(speedTable.get(x)) + ", "
+            precision = "precision: " + str(precisionTable.get(x)) + ", "
+            haste = "haste: " + str(hasteTable.get(x)) + ", "
+            industry = "industry: " + str(industryTable.get(x)) + ", "
+            regeneration = "regeneration: " + str(regenerationTable.get(x)) + ", "
+            nobility = "nobility: " + str(nobilityTable.get(x)) + ", "
+            vision = "vision: " + str(visionTable.get(x)) + ", "
+            silence = "silence: " + str(silenceTable.get(x)) + ", "
+            wisdom = "wisdom: " + str(wisdomTable.get(x)) + ", "
+            gallantry = "gallantry: " + str(gallantryTable.get(x)) + ", "
+            health = "health: " + str(secondTeamTable.get(x)) + ", "
+            try: location = str(terrainTable.get(x)) + ", "
+            except: location = "plains, "
+            if x in hiddenUnits: hidden = "hidden, "
+            else: hidden = "visible, "
+            if x in immobileUnits: immobile = "immobile, "
+            else: immobile = "mobile"
+            if x in usedUnits: used = "used, "
+            else: used = "unused, "
+            line = str(x) + ": " + str(location) + str(hidden) + str(immobile) + str(used) + str(strength) + str(speed) + str(precision) + str(haste) + str(industry) + str(regeneration) + str(nobility) + str(vision) + str(silence) + str(wisdom) + str(gallantry) + str(health)
+            print(line)
+        score()  
+    sys.stdout = originalOutput      
+
 # Umpire commands
 
 def hide(arguments):

@@ -463,3 +463,4 @@ v5 - Eschaton V release
             v5.0-pre1_384 - fog() function created
             v5.0-pre1_385 - adjusted filenames
             v5.0-pre1_386 - shell() function created
+            v5.0-pre1_387 - log() function created
