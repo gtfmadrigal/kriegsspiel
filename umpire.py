@@ -65,6 +65,9 @@ for x in allUnits:
     silenceTable[x] = 0
     wisdomTable[x] = 0
     gallantryTable[x] = 0
+firstHealth = sum(firstTeamTable.values())
+secondHealth = sum(secondTeamTable.values())
+loadGame()
 
 # Meta-functions
 
@@ -227,8 +230,16 @@ def log():
             else: used = "unused, "
             line = str(x) + ": " + str(location) + str(hidden) + str(immobile) + str(used) + str(strength) + str(speed) + str(precision) + str(haste) + str(industry) + str(regeneration) + str(nobility) + str(vision) + str(silence) + str(wisdom) + str(gallantry) + str(health)
             print(line)
+        print(secrets)
         score()  
-    sys.stdout = originalOutput      
+    sys.stdout = originalOutput
+
+def score():
+    update()
+    firstPercent = firstHealth / firstHealthTotal * 100
+    secondPercent = secondHealth / secondHealthTotal * 100
+    print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
+    print(secondTeam, "total health:", secondHealth, "or", secondPercent, "%")
 
 # Umpire commands
 
