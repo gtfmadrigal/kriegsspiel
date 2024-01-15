@@ -21,6 +21,7 @@ attackTable = {"lightInfantry":4, "mediumInfantry":4, "heavyInfantry":6, "specia
 movementTable = {"foot":1.5, "horse":12, "motor":25, "tank":15, "oar":2, "sail":3, "steam":10, "nuclear":20}
 terrainSpeedTable = {"unpaved":1, "paved":2, "forest":-1, "hills":-1, "creek":-2, "denseForest":-2, "steepHills":-2, "swamp":-3, "jungle":-3, "mountains":-3, "plains":0}
 spyTable = {"engineers":6, "lightInfantry":8, "mediumInfantry":8, "heavyInfantry":8, "special":10, "spy":10}
+fireTable = {"lightArtillery":8, "mediumArtillery":10, "heavyArtillery":12, "lightCavalry":8, "mediumCavalry":10, "heavyCavalry":12, "corvette":6, "cruiser":20, "destroyer":10, "battleship":12}
 
 # create effect dictionaries from gamefile
 strengthTable = {}
@@ -305,8 +306,6 @@ def attack(arguments, teamTable, targetTeamTable):
     attackCritical = 0
     defenseCritical = 0
     haste = 0
-    # deal damage
-    # reveal
     del arguments[0]
     for x in arguments:
         if x == ">": pass
@@ -317,12 +316,12 @@ def attack(arguments, teamTable, targetTeamTable):
         elif x in targetTeamTable: defendingUnits.append(x)
         else: print(x, " does not exist.")
     for x in attackingUnits:
-        unitType = unitTable.get[x]
-        max = attackTable.get[unitType]
-        strength = strengthTable.get[x]
+        unitType = unitTable.get(x)
+        max = attackTable.get(unitType)
+        strength = strengthTable.get(x)
         base = random.randrange(1, max)
         total = base + strength
-        if total >= max: attackCritical = True
+        if total >= max: attackCritical = attackCritical + 1
         totalAttack = totalAttack + total
         if unitTable[x] == "lightInfantry": effect(x, silenceTable, -1)
         if unitTable[x] == "special": effect(x, silenceTable, -1)
@@ -333,14 +332,14 @@ def attack(arguments, teamTable, targetTeamTable):
         immobileUnits.append(x)
         usedUnits.append(x)
     for x in defendingUnits:
-        unitType = unitTable.get[x]
-        max = attackTable.get[unitType]
-        resistance = resistanceTable.get[x]
+        unitType = unitTable.get(x)
+        max = attackTable.get(unitType)
+        resistance = resistanceTable.get(x)
         base = random.randrange(1, max)
         total = base + resistance
         if total <= 1: 
             total = 1
-            defenseCritical = True
+            defenseCritical = defenseCritical + 1
         totalDefense = totalDefense + total
         if unitTable[x] == "lightInfantry": effect(x, silenceTable, -1)
         if unitTable[x] == "special": effect(x, silenceTable, -1)
@@ -413,7 +412,7 @@ def disengage(arguments):
         effect(unit, gallantryTable, -1)
     except: print(unit, " is not engaged in combat.")
 
-def spy(arguments, teamTable):
+def spy(arguments):
     global usedUnits
     try: unit = arguments[1]
     except:
@@ -438,6 +437,73 @@ def spy(arguments, teamTable):
         print(secrets)
     else: print("Give no information.")
     usedUnits.append(unit)   
+
+def fire(arguments, teamTable, targetTeamTable):
+    global hiddenUnits
+    global usedUnits
+    global silenceTable
+    global immobileUnits
+    attackingUnits = []
+    defendingUnits = []
+    totalAttack = 0
+    totalDefense = 0
+    attackCritical = 0
+    defenseCritical = 0
+    haste = 0
+    del arguments[0]
+    for x in arguments:
+        if x == ">": pass
+        elif x in usedUnits: pass
+        elif x in teamTable:
+            unitType = unitTable.get(x)
+            if not unitType in fireTable:
+                print(x, " cannot fire.")
+                pass
+            attackingUnits.append(x)
+            if x in hiddenUnits: reveal(x)
+        elif x in targetTeamTable: defendingUnits.append(x)
+        else: print(x, " does not exist.")
+    for x in attackingUnits:
+        unitType = unitTable.get(x)
+        max = fireTable.get(unitType)
+        precision = precisionTable.get(x)
+        base = random.randrange(1, max)
+        total = base + precision
+        totalAttack = totalAttack + total
+        if unitTable[x] == "lightInfantry": effect(x, silenceTable, -1)
+        if unitTable[x] == "special": effect(x, silenceTable, -1)
+        else: effect(x, silenceTable, -2)
+        hasteModifier = hasteTable.get(x)
+        haste = haste + hasteModifier
+        reveal(x)
+        if unitType == "lightArtillery": immobileUnits.append(x)
+        elif unitType == "mediumArtillery": immobileUnits.append(x)
+        elif unitType == "heavyArtillery": immobileUnits.append(x)
+        usedUnits.append(x)
+    for x in defendingUnits:
+        unitType = unitTable.get(x)
+        max = attackTable.get[unitType]
+        resistance = resistanceTable.get(x)
+        base = random.randrange(1, max)
+        total = base + resistance
+        totalDefense = totalDefense + total
+        if unitTable[x] == "lightInfantry": effect(x, silenceTable, -1)
+        if unitTable[x] == "special": effect(x, silenceTable, -1)
+        else: effect(x, silenceTable, -2)
+        reveal(x)
+    if totalDefense >= totalAttack:
+        print("Attack repelled.")
+        return
+    netDamage = totalAttack - totalDefense
+    if attackCritical > 0 and defenseCritical > 0:
+        criticalUnits = min(attackCritical, defenseCritical)
+        while criticalUnits > 0:
+            attackCriticalUnit = (random.choice(attackingUnits))
+            defenseCriticalUnit = (random.choice(defendingUnits))
+            critical(attackCriticalUnit, defenseCriticalUnit)
+            criticalUnits - 1
+    perUnitDamage = netDamage / len(defendingUnits)
+    for x in defendingUnits: damage(x, perUnitDamage, targetTeamTable, haste)
 
 # Army commands
 
@@ -487,10 +553,11 @@ def shell(team, teamTable, targetTeamTable):
     elif parsedCommand[0] == "attack": attack(parsedCommand, teamTable, targetTeamTable)
     elif parsedCommand[0] == "move": move(parsedCommand, teamTable)
     elif parsedCommand[0] == "disengage": disengage(parsedCommand)
-    elif parsedCommand[0] == "spy": spy(parsedCommand, teamTable)
+    elif parsedCommand[0] == "spy": spy(parsedCommand)
     elif parsedCommand[0] == "log": log()
     elif parsedCommand[0] == "score": score()
     elif parsedCommand[0] == "update": update()
+    elif parsedCommand[0] == "fire": fire(parsedCommand, teamTable, targetTeamTable)
     else: print("No such command.")
     log()
 

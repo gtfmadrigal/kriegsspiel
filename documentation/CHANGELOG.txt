@@ -468,3 +468,4 @@ v5 - Eschaton V release
             v5.0-pre1_389 - update() function created
             v5.0-pre1_390 - structureDamage() adjusted to account for haste effect
             v5.0-pre1_391 - effect() command added to shell
+            v5.0-pre1_392 - fire() command created
