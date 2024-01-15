@@ -113,7 +113,7 @@ def kill(arguments):
     global firstTeamTable
     global secondTeamTable
     global deadUnits
-    unit = arguments[0]
+    unit = arguments[1]
     if unit in firstTeamTable: firstTeamTable.remove(unit)
     if unit in secondTeamTable: secondTeamTable.remove(unit)
     deadUnits.append(unit)
@@ -374,7 +374,23 @@ def shell(team, teamTable, targetTeamTable):
         print("This command fails.")
         commandNumber = commandNumber + 1
         return
-    
+    if not parsedCommand:
+        print("This command does not exist.")
+        commandNumber = commandNumber + 1
+        return
+    elif parsedCommand[0] == "kill": kill(parsedCommand)
+    elif parsedCommand[0] == "effect":
+        pass
+    elif parsedCommand[0] == "hide": hide(parsedCommand)
+    elif parsedCommand[0] == "reveal": reveal(parsedCommand)
+    elif parsedCommand[0] == "attack": attack(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "move": move(parsedCommand, teamTable)
+    elif parsedCommand[0] == "disengage": disengage(parsedCommand)
+    elif parsedCommand[0] == "spy": spy(parsedCommand, teamTable)
+    else:
+        print("No such command.")
+        commandNumber = commandNumber + 1
+    log()
 
 # Shell
 while True: 
