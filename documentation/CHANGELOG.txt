@@ -465,3 +465,4 @@ v5 - Eschaton V release
             v5.0-pre1_386 - shell() function created
             v5.0-pre1_387 - log() function created
             v5.0-pre1_388 - score() function created
+            v5.0-pre1_389 - update() function created

@@ -241,6 +241,14 @@ def score():
     print(firstTeam, "total health:", firstHealth, "or", firstPercent, "%")
     print(secondTeam, "total health:", secondHealth, "or", secondPercent, "%")
 
+def update():
+    global firstHealth
+    global secondHealth
+    global firstTeamTable
+    global secondTeamTable
+    firstHealth = sum(firstTeamTable.values())
+    secondHealth = sum(secondTeamTable.values())
+
 # Umpire commands
 
 def hide(arguments):

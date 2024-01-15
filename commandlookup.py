@@ -70,15 +70,6 @@ secondHealth = sum(secondTeamTable.values())
 loadGame()
 
 # Meta-functions
-def update():
-    # update.globals
-    global firstHealth
-    global secondHealth
-    global firstTeamTable
-    global secondTeamTable
-    # update.push
-    firstHealth = sum(firstTeamTable.values())
-    secondHealth = sum(secondTeamTable.values())
 
 def error(code, function):
     # error.parse
