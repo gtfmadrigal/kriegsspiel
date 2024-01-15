@@ -461,3 +461,4 @@ v5 - Eschaton V release
             v5.0-pre1_382 - move() adjusted to account for heading
             v5.0-pre1_383 - spy() command created
             v5.0-pre1_384 - fog() function created
+            v5.0-pre1_385 - adjusted filenames
