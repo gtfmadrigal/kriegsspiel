@@ -474,3 +474,4 @@ v5 - Eschaton V release
             v5.0-pre1_395 - reorganize() command created
             v5.0-pre1_396 - reorganize() adjusted to account for effect tables
             v5.0-pre1_397 - conscript() command created
+            v5.0-pre1_398 - initialization script adjusted to account for effect

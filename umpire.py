@@ -74,7 +74,20 @@ for x in allUnits:
 firstHealth = sum(firstTeamTable.values())
 secondHealth = sum(secondTeamTable.values())
 loadGame()
-
+for x in firstTeam:
+    if x not in strengthTable: strengthTable[x] = 1
+    if x not in speedTable: speedTable[x] = 1
+    if x not in precisionTable: precisionTable[x] = 1
+    if x not in hasteTable: hasteTable[x] = 1
+    if x not in industryTable: industryTable[x] = 1
+    if x not in regenerationTable: regenerationTable[x] = 1
+    if x not in resistanceTable: resistanceTable[x] = 1
+    if x not in nobilityTable: nobilityTable[x] = 1
+    if x not in visionTable: visionTable[x] = 1
+    if x not in silenceTable: silenceTable[x] = 1
+    if x not in wisdomTable: wisdomTable[x] = 1
+    if x not in gallantryTable: gallantryTable[x] = 1
+    
 # Meta-functions
 
 def critical(attack, defense):
@@ -660,6 +673,7 @@ def conscript(arguments, teamTable):
     global silenceTable
     global gallantryTable
     global nobilityTable
+    global locationTable
     conscriptingUnits = []
     newUnits = []
     totalNewUnits = 0
@@ -700,9 +714,11 @@ def conscript(arguments, teamTable):
         effect(x, hasteTable, -1)
         effect(x, silenceTable, -1)
         effect(x, gallantryTable, -2)
+        terrainTable[x] = location
     update()
 
-    
+def build(arguments, teamTable):
+    pass
 
 # Naval commands
 
@@ -758,6 +774,7 @@ def shell(team, teamTable, targetTeamTable):
     elif parsedCommand[0] == "convert": convert(parsedCommand, teamTable)
     elif parsedCommand[0] == "reorganize": reorganize(parsedCommand, teamTable)
     elif parsedCommand[0] == "conscript": conscript(parsedCommand, teamTable)
+    elif parsedCommand[0] == "build": conscript(parsedCommand, teamTable)
     else: print("No such command.")
     log()
 
