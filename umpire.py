@@ -533,7 +533,6 @@ def fire(arguments, teamTable, targetTeamTable):
 def convert(arguments, teamTable):
     global firstTeamTable
     global secondTeamTable
-
     global strengthTable
     global speedTable
     global precisionTable
@@ -588,7 +587,8 @@ def convert(arguments, teamTable):
     silenceTable[newUnit] = silence
     wisdomTable[newUnit] = wisdom
     gallantryTable[newUnit] = gallantry
-
+    kill(unit)
+    update()
 
 # Army commands
 

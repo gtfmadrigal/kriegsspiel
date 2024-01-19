@@ -246,42 +246,6 @@ def use(arguments):
     # use.push
     usedUnits.append(unit)
 
-def convert(arguments, teamTable):
-    # convert.globals
-    global firstTeamTable
-    global secondTeamTable
-    global unitTable
-    # convert.parse
-    # convert.parse.unit
-    # convert.parse.unit.try
-    try:
-        unit = arguments[1]
-    # convert.parse.unit.except
-    except:
-        error("argument", "convert.parse.unit.except")
-        return
-    # convert.parse.type
-    localUnitType = unitTable.get(unit)
-    unitType = allUnitTypes.get(localUnitType)
-    # convert.check
-    # convert.check.function
-    # convert.check.function
-    if not unitType in convertTable:
-        error("function", "convert.check.function")
-        return
-    # convert.check.team
-    if not unit in teamTable:
-        error("team", "convert.check.team")
-        return
-    # convert.action
-    currentHealth = teamTable.get(unit)
-    if currentHealth > 4: newHealth = 4
-    else: newHealth = currentHealth
-    # convert.push
-    teamTable[unit] = newHealth
-    unitTable[unit] = "infantry"
-    update()
-
 def disable(arguments):
     # disable.globals
     global disabledUnits
