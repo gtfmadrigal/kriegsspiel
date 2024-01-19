@@ -16,6 +16,7 @@ immobileUnits = []
 allUnits = []
 headingTable = ["corvette", "destroyer", "carrier", "battleship", "cruiser"]
 convertTable = ["lightArtilllery", "mediumArtillery", "heavyArtillery", "lightCavalry", "mediumCavalry", "heavyCavalry"]
+reorganizeTable = ["lightInfantry", "mediumInfantry", "heavyInfantry", "lightArtillery", "mediumArtillery", "heavyArtillery", "lightCavalry", "mediumCavalry", "heavyCavalry", "spy", "special", "engineer"]
 
 # create dictionaries
 attackTable = {"lightInfantry":4, "mediumInfantry":4, "heavyInfantry":6, "special":12, "engineer":4, "spy":4, "command":12, "lightArtillery":4, "mediumArtillery":4, "heavyArtillery":4, "lightCavalry":6, "mediumCavalry":8, "heavyCavalry":10, "amphibious":4, "patrol":4, "corvette":6, "destroyer":8, "carrier":12, "battleship":12, "cruiser":12, "heavyFighter":6, "attackSubmarine":0, "missileSubmarine":0, "lightFighter":4, "bomber":4, "stealthBomber":4, "transport":4, "recon":4, "drone":4}
@@ -530,6 +531,8 @@ def fire(arguments, teamTable, targetTeamTable):
     perUnitDamage = netDamage / len(defendingUnits)
     for x in defendingUnits: damage(x, perUnitDamage, targetTeamTable, haste)
 
+# Army commands
+
 def convert(arguments, teamTable):
     global firstTeamTable
     global secondTeamTable
@@ -590,7 +593,57 @@ def convert(arguments, teamTable):
     kill(unit)
     update()
 
-# Army commands
+def reorganize(arguments, teamTable):
+    global firstTeamTable
+    global secondTeamTable
+    global unitTable
+    reorganizedUnits = []
+    reorganizedUnitTypeCheck = []
+    killedUnits = []
+    savedUnits = []
+    totalHealth = 0
+    for x in arguments:
+        if not x in unitTable: pass
+        if not x in teamTable: pass
+        unitType = teamTable.get(x)
+        reorganizedUnits.append(x)
+        reorganizedUnitTypeCheck.append(x)
+    newUnitType = reorganizedUnitTypeCheck[0]
+    try: len(set(reorganizedUnitTypeCheck)) == 1
+    except:
+        print("Units are not all of the same type.")
+        return
+    if unitType == "lightInfantry": newHealth = 4
+    elif unitType == "engineer": newHealth = 4
+    elif unitType == "mediumInfantry": newHealth = 6
+    elif unitType == "heavyInfantry": newHealth = 6
+    elif unitType == "special": newHealth = 20
+    elif unitType == "lightArtillery": newHealth = 6
+    elif unitType == "mediumArtillery": newHealth = 7
+    elif unitType == "heavyArtillery": newHealth = 8
+    elif unitType == "lightCavalry": newHealth = 8
+    elif unitType == "mediumCavalry": newHealth = 10
+    elif unitType == "heavyCavalry": newHealth = 12
+    else:
+        print("Units of type ", unitType, " cannot be reorganized.")
+        return
+    for x in reorganizedUnits:
+        health = teamTable.get(x)
+        totalHealth = totalHealth + health
+    for x in reorganizedUnits:
+        health = teamTable.get(x)
+        healthDifference = newHealth - health
+        totalHealth = totalHealth - healthDifference
+        if totalHealth < 0: killedUnits.append(x)
+        else:
+            teamTable[x] = newHealth
+            savedUnits.append(x)
+    for x in killedUnits: kill(x)
+    for x in savedUnits:
+        effect(x, strengthTable, -1)
+        effect(x, speedTable, -1)
+        effect(x, hasteTable, -1)
+    update()
 
 # Naval commands
 
@@ -643,6 +696,8 @@ def shell(team, teamTable, targetTeamTable):
     elif parsedCommand[0] == "score": score()
     elif parsedCommand[0] == "update": update()
     elif parsedCommand[0] == "fire": fire(parsedCommand, teamTable, targetTeamTable)
+    elif parsedCommand[0] == "convert": convert(parsedCommand, teamTable)
+    elif parsedCommand[0] == "reorganize": reorganize(parsedCommand, teamTable)
     else: print("No such command.")
     log()
 

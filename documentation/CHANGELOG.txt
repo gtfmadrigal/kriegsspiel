@@ -471,3 +471,5 @@ v5 - Eschaton V release
             v5.0-pre1_392 - fire() command created
             v5.0-pre1_393 - kill() adjusted to account for effect tables
             v5.0-pre1_394 - convert() command created
+            v5.0-pre1_395 - reorganize() command created
+            
