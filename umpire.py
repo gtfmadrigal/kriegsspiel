@@ -597,6 +597,9 @@ def reorganize(arguments, teamTable):
     global firstTeamTable
     global secondTeamTable
     global unitTable
+    global strengthTable
+    global speedTable
+    global hasteTable
     reorganizedUnits = []
     reorganizedUnitTypeCheck = []
     killedUnits = []
@@ -644,6 +647,11 @@ def reorganize(arguments, teamTable):
         effect(x, speedTable, -1)
         effect(x, hasteTable, -1)
     update()
+
+def conscript(arguments, teamTable):
+    global firstTeamTable
+    global secondTeamTable
+    
 
 # Naval commands
 
@@ -698,6 +706,7 @@ def shell(team, teamTable, targetTeamTable):
     elif parsedCommand[0] == "fire": fire(parsedCommand, teamTable, targetTeamTable)
     elif parsedCommand[0] == "convert": convert(parsedCommand, teamTable)
     elif parsedCommand[0] == "reorganize": reorganize(parsedCommand, teamTable)
+    elif parsedCommand[0] == "conscript": conscript(parsedCommand, teamTable)
     else: print("No such command.")
     log()
 
