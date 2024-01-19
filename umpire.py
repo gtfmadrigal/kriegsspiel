@@ -17,6 +17,7 @@ allUnits = []
 headingTable = ["corvette", "destroyer", "carrier", "battleship", "cruiser"]
 convertTable = ["lightArtilllery", "mediumArtillery", "heavyArtillery", "lightCavalry", "mediumCavalry", "heavyCavalry"]
 reorganizeTable = ["lightInfantry", "mediumInfantry", "heavyInfantry", "lightArtillery", "mediumArtillery", "heavyArtillery", "lightCavalry", "mediumCavalry", "heavyCavalry", "spy", "special", "engineer"]
+conscriptTable = ["lightInfantry", "mediumInfantry", "heavyInfantry", "special", "engineer", "spy", "command", "lightCavalry", "mediumCavalry", "heavyCavalry"]
 
 # create dictionaries
 attackTable = {"lightInfantry":4, "mediumInfantry":4, "heavyInfantry":6, "special":12, "engineer":4, "spy":4, "command":12, "lightArtillery":4, "mediumArtillery":4, "heavyArtillery":4, "lightCavalry":6, "mediumCavalry":8, "heavyCavalry":10, "amphibious":4, "patrol":4, "corvette":6, "destroyer":8, "carrier":12, "battleship":12, "cruiser":12, "heavyFighter":6, "attackSubmarine":0, "missileSubmarine":0, "lightFighter":4, "bomber":4, "stealthBomber":4, "transport":4, "recon":4, "drone":4}
@@ -611,7 +612,6 @@ def reorganize(arguments, teamTable):
         unitType = teamTable.get(x)
         reorganizedUnits.append(x)
         reorganizedUnitTypeCheck.append(x)
-    newUnitType = reorganizedUnitTypeCheck[0]
     try: len(set(reorganizedUnitTypeCheck)) == 1
     except:
         print("Units are not all of the same type.")
@@ -651,6 +651,57 @@ def reorganize(arguments, teamTable):
 def conscript(arguments, teamTable):
     global firstTeamTable
     global secondTeamTable
+    global firstTeamTable
+    global secondTeamTable
+    global strengthTable
+    global resistanceTable
+    global speedTable
+    global industryTable
+    global silenceTable
+    global gallantryTable
+    global nobilityTable
+    conscriptingUnits = []
+    newUnits = []
+    totalNewUnits = 0
+    for x in arguments:
+        if x in teamTable: conscriptingUnits.append(x)
+        elif x in terrainTable: location = x
+        else:
+            print("Error in parsing command.")
+            return
+    for x in conscriptingUnits:
+        unitType = unitTable.get(x)
+        if not unitType in conscriptTable:
+            print(unitType, " cannot conscript.")
+            conscriptingUnits.remove(x)
+        nobility = nobilityTable.get(x)
+        firstRoll = random.randrange(1, 6)
+        adjustedFirstRoll = firstRoll + nobility
+        if adjustedFirstRoll <= 2:
+            effect(x, nobilityTable, -1)
+            pass
+        else:
+            totalNewUnits = totalNewUnits + 1
+            usedUnits.append(x)
+    while totalNewUnits > 0:
+        newUnitRaw = input(totalNewUnits, " created. Name: ")
+        newUnit = str(newUnitRaw)
+        if newUnit in unitTable:
+            print(newUnit, " already exists.")
+            continue
+        newUnits.append(newUnit)
+        totalNewUnits = totalNewUnits - 1
+    for x in newUnits:
+        teamTable[x] = 4
+        unitTable[x] = "lightInfantry"
+        effect(x, strengthTable, -2)
+        effect(x, resistanceTable, -1)
+        effect(x, industryTable, -1)
+        effect(x, hasteTable, -1)
+        effect(x, silenceTable, -1)
+        effect(x, gallantryTable, -2)
+    update()
+
     
 
 # Naval commands
