@@ -15,6 +15,7 @@ deadUnits = []
 immobileUnits = []
 allUnits = []
 headingTable = ["corvette", "destroyer", "carrier", "battleship", "cruiser"]
+convertTable = ["lightArtilllery", "mediumArtillery", "heavyArtillery", "lightCavalry", "mediumCavalry", "heavyCavalry"]
 
 # create dictionaries
 attackTable = {"lightInfantry":4, "mediumInfantry":4, "heavyInfantry":6, "special":12, "engineer":4, "spy":4, "command":12, "lightArtillery":4, "mediumArtillery":4, "heavyArtillery":4, "lightCavalry":6, "mediumCavalry":8, "heavyCavalry":10, "amphibious":4, "patrol":4, "corvette":6, "destroyer":8, "carrier":12, "battleship":12, "cruiser":12, "heavyFighter":6, "attackSubmarine":0, "missileSubmarine":0, "lightFighter":4, "bomber":4, "stealthBomber":4, "transport":4, "recon":4, "drone":4}
@@ -119,10 +120,34 @@ def kill(arguments):
     global firstTeamTable
     global secondTeamTable
     global deadUnits
+    global strengthTable
+    global speedTable
+    global precisionTable
+    global hasteTable
+    global industryTable
+    global regenerationTable 
+    global resistanceTable
+    global nobilityTable
+    global visionTable
+    global silenceTable
+    global wisdomTable
+    global gallantryTable
     unit = arguments[1]
     if unit in firstTeamTable: firstTeamTable.remove(unit)
     if unit in secondTeamTable: secondTeamTable.remove(unit)
     deadUnits.append(unit)
+    strengthTable.remove(unit)
+    speedTable.remove(unit)
+    precisionTable.remove(unit)
+    hasteTable.remove(unit)
+    industryTable.remove(unit)
+    regenerationTable.remove(unit)
+    resistanceTable.remove(unit)
+    nobilityTable.remove(unit)
+    visionTable.remove(unit)
+    silenceTable.remove(unit)
+    wisdomTable.remove(unit)
+    gallantryTable.remove(unit)
 
 def structureDamage(damage, location, haste):
     global structureStrengthTable
@@ -457,7 +482,7 @@ def fire(arguments, teamTable, targetTeamTable):
         elif x in teamTable:
             unitType = unitTable.get(x)
             if not unitType in fireTable:
-                print(x, " cannot fire.")
+                print("Units of type: ", unitType, " cannot fire.")
                 pass
             attackingUnits.append(x)
             if x in hiddenUnits: reveal(x)
@@ -504,6 +529,66 @@ def fire(arguments, teamTable, targetTeamTable):
             criticalUnits - 1
     perUnitDamage = netDamage / len(defendingUnits)
     for x in defendingUnits: damage(x, perUnitDamage, targetTeamTable, haste)
+
+def convert(arguments, teamTable):
+    global firstTeamTable
+    global secondTeamTable
+
+    global strengthTable
+    global speedTable
+    global precisionTable
+    global hasteTable
+    global industryTable
+    global regenerationTable 
+    global resistanceTable
+    global nobilityTable
+    global visionTable
+    global silenceTable
+    global wisdomTable
+    global gallantryTable
+    try: 
+        unit = arguments[1]
+        if arguments[2] == ">": newUnit = arguments[3]
+        else: newUnit = arguments[2]
+    except:
+        print("Invalid number of arguments.")
+        return
+    unitType = unitTable.get(unit)
+    if not unitType in convertTable:
+        print("Units of type: ", unitType, " cannot be converted.")
+        return
+    if not unit in teamTable:
+        print(unit, " does not belong to that player.")
+        return
+    strength = strengthTable.get(unit)
+    speed = speedTable.get(unit)
+    haste = hasteTable.get(unit)
+    industry = industryTable.get(unit)
+    regeneration = regenerationTable.get(unit)
+    resistance = resistanceTable.get(unit)
+    nobility = nobilityTable.get(unit)
+    vision = visionTable.get(unit)
+    silence = silenceTable.get(unit)
+    wisdom = wisdomTable.get(unit)
+    gallantry = gallantryTable.get(unit)
+    currentHealth = teamTable.get(unit)
+    if currentHealth > 4: newHealth = 4
+    else: newHealth = currentHealth
+    teamTable[newUnit] = newHealth
+    unitTable[newUnit] = "lightInfantry"
+    strengthTable[newUnit] = strength
+    speedTable[newUnit] = speed
+    precisionTable[newUnit] = 0
+    hasteTable[newUnit] = haste
+    industryTable[newUnit] = industry
+    regenerationTable[newUnit] = regeneration
+    resistanceTable[newUnit] = resistance
+    nobilityTable[newUnit] = nobility
+    visionTable[newUnit] = vision
+    silenceTable[newUnit] = silence
+    wisdomTable[newUnit] = wisdom
+    gallantryTable[newUnit] = gallantry
+
 
 # Army commands
 
